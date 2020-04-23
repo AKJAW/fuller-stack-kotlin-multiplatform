@@ -11,17 +11,12 @@ apply plugin: 'maven-publish'
 
 kotlin {
     jvm()
+    jvm("ktor")
     js {
         browser {
         }
-        nodejs {
-        }
     }
-    // For ARM, should be changed to iosArm32 or iosArm64
-    // For Linux, should be changed to e.g. linuxX64
-    // For MacOS, should be changed to e.g. macosX64
-    // For Windows, should be changed to e.g. mingwX64
-    linuxX64("linux")
+
     sourceSets {
         commonMain {
             dependencies {
@@ -32,6 +27,17 @@ kotlin {
             dependencies {
                 implementation kotlin('test-common')
                 implementation kotlin('test-annotations-common')
+            }
+        }
+        ktorMain {
+            dependencies {
+                implementation kotlin('stdlib-jdk8')
+            }
+        }
+        ktorTest {
+            dependencies {
+                implementation kotlin('test')
+                implementation kotlin('test-junit')
             }
         }
         jvmMain {
@@ -54,10 +60,6 @@ kotlin {
             dependencies {
                 implementation kotlin('test-js')
             }
-        }
-        linuxMain {
-        }
-        linuxTest {
         }
     }
 }

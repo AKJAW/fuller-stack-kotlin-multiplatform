@@ -3,9 +3,10 @@ package sample
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class SampleTestsNative {
+class SampleTestsKtor {
     @Test
     fun testHello() {
-        assertTrue("Native" in hello())
+        println("aaas")
+        assertTrue("Ktor" in hello())
     }
 }
