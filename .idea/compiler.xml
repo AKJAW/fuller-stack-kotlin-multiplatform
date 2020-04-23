@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="com.akjaw.fuller_stack.shared.shared.jvmMain" target="1.6" />
+      <module name="com.akjaw.fuller_stack.shared.shared.jvmTest" target="1.6" />
+      <module name="com.akjaw.fuller_stack.shared.shared.ktorMain" target="1.6" />
+      <module name="com.akjaw.fuller_stack.shared.shared.ktorTest" target="1.6" />
+      <module name="com.example.com.akjaw.fuller_stack.jvmMain" target="1.6" />
+      <module name="com.example.com.akjaw.fuller_stack.jvmTest" target="1.6" />
+      <module name="com.example.com.akjaw.fuller_stack.ktorMain" target="1.6" />
+      <module name="com.example.com.akjaw.fuller_stack.ktorTest" target="1.6" />
+      <module name="com.example.shared.jvmMain" target="1.6" />
+      <module name="com.example.shared.jvmTest" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
