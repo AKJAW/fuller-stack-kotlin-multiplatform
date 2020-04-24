@@ -9,7 +9,6 @@ repositories {
 
 kotlin {
     jvm()
-    jvm("ktor")
     js {
         browser {
         }
@@ -25,18 +24,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-            }
-        }
-
-        val ktorMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-            }
-        }
-        val ktorTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
             }
         }
 

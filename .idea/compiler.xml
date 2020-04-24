@@ -20,6 +20,8 @@
       <module name="com.example.shared.jvmTest" target="1.6" />
       <module name="fuller_stack.ktor.main" target="1.8" />
       <module name="fuller_stack.ktor.test" target="1.8" />
+      <module name="fuller_stack.shared.ktorMain" target="1.6" />
+      <module name="fuller_stack.shared.ktorTest" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>
