@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="com.akjaw.fuller_stack.ktor.main" target="1.8" />
+      <module name="com.akjaw.fuller_stack.ktor.test" target="1.8" />
+      <module name="com.akjaw.fuller_stack.shared.jvmMain" target="1.6" />
+      <module name="com.akjaw.fuller_stack.shared.jvmTest" target="1.6" />
+      <module name="com.akjaw.fuller_stack.shared.ktorMain" target="1.6" />
+      <module name="com.akjaw.fuller_stack.shared.ktorTest" target="1.6" />
       <module name="com.akjaw.fuller_stack.shared.shared.jvmMain" target="1.6" />
       <module name="com.akjaw.fuller_stack.shared.shared.jvmTest" target="1.6" />
       <module name="com.akjaw.fuller_stack.shared.shared.ktorMain" target="1.6" />

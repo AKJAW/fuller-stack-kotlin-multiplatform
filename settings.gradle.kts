@@ -1,4 +1,4 @@
-rootProject.name = "com.akjaw.fuller_stack"
+rootProject.name = "fuller_stack"
 
 //pluginManagement?
 

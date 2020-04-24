@@ -2,7 +2,7 @@
   <artifact type="jar" name="shared-ktor-0.0.1">
     <output-path>$PROJECT_DIR$/shared/build/libs</output-path>
     <root id="archive" name="shared-ktor-0.0.1.jar">
-      <element id="module-output" name="com.akjaw.fuller_stack.shared.ktorMain" />
+      <element id="module-output" name="fuller_stack.shared.ktorMain" />
     </root>
   </artifact>
 </component>
