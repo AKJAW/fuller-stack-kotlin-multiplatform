@@ -39,7 +39,7 @@ android {
 
 //TODO version to other file
 dependencies {
-    //TODO common
+    implementation(project(":shared"))
 
     // kotlin jdk
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")

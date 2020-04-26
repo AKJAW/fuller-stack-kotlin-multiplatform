@@ -6,13 +6,17 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import sample.hello
 
-fun main(args: Array<String>) {
-    embeddedServer(Netty, 8080) {
-        routing {
-            get("/") {
-                call.respondText("Test ktor", ContentType.Text.Html)
-            }
+fun Application.module() {
+    install(Routing) {
+        get("/") {
+            val text = hello()
+            call.respondText("$text Ktor", ContentType.Text.Html)
         }
-    }.start(wait = true)
+    }
+}
+
+fun main() {
+    embeddedServer(Netty, 9000, module = Application::module).start(wait = true)
 }

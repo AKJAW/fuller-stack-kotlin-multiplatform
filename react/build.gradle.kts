@@ -10,6 +10,8 @@ repositories {
 
 
 dependencies {
+    implementation(project(":shared"))
+
     implementation(kotlin("stdlib-js"))
 
     implementation("org.jetbrains:kotlin-react:16.13.1-pre.102-kotlin-1.3.72")
