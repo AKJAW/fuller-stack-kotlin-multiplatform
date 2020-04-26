@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="com.akjaw.fuller_stack.ktor.main" target="1.8" />
       <module name="com.akjaw.fuller_stack.ktor.test" target="1.8" />
       <module name="com.akjaw.fuller_stack.shared.jvmMain" target="1.6" />

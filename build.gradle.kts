@@ -11,7 +11,6 @@ buildscript {
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
         classpath("com.android.tools.build:gradle:3.4.2")
-        //TODO kotlin-frontend-plugin?
     }
 }
 
@@ -21,13 +20,4 @@ plugins {
 
 allprojects {
     version = "0.0.1"
-
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-        maven("https://dl.bintray.com/kotlin/kotlin-eap")
-        maven("https://dl.bintray.com/kotlin/kotlin-js-wrappers")
-        maven("https://kotlin.bintray.com/kotlinx")
-    }
 }
