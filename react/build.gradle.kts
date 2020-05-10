@@ -4,6 +4,7 @@ plugins {
 
 repositories {
     maven("https://kotlin.bintray.com/kotlin-js-wrappers/")
+    maven("https://dl.bintray.com/kotlin/kotlinx")
     mavenCentral()
     jcenter()
 }
@@ -14,10 +15,14 @@ dependencies {
 
     implementation(kotlin("stdlib-js"))
 
+    //Kotlin wrappers
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
     implementation("org.jetbrains:kotlin-react:16.13.1-pre.102-kotlin-1.3.72")
     implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.102-kotlin-1.3.72")
-
     implementation("org.jetbrains:kotlin-styled:1.0.0-pre.102-kotlin-1.3.72")
+
+    //dependency injection
+    implementation("org.kodein.di:kodein-di-erased-js:6.5.5")
 }
 
 kotlin {
