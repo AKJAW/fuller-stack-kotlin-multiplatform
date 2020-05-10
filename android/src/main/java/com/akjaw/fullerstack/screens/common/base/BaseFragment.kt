@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.common
+package com.akjaw.fullerstack.screens.common.base
 
 import androidx.fragment.app.Fragment
 import org.kodein.di.Kodein

@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.akjaw.fullerstack.dependency_injection.Counter
-import com.akjaw.fullerstack.screens.common.BaseFragment
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
+import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import org.kodein.di.erased.instance
+import sample.Counter
 
 class NotesListFragment: BaseFragment(), NotesListViewMvc.Listener {
 

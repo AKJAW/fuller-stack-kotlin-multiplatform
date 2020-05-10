@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.common
+package com.akjaw.fullerstack.screens.common.base
 
 abstract class BaseObservableViewMvc<T>: BaseViewMvc() {
 

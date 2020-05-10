@@ -4,7 +4,9 @@ plugins {
 }
 
 repositories {
+    google()
     mavenCentral()
+    jcenter()
 }
 
 kotlin {
@@ -13,9 +15,6 @@ kotlin {
             kotlinOptions {
                 jvmTarget = "1.8"
             }
-
-            compileKotlinTask
-            output
         }
     }
     js {
@@ -24,6 +23,12 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            dependencies {
+                implementation("org.kodein.di:kodein-di-erased:6.5.5")
+            }
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))

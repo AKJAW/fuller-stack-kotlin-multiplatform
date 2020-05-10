@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.akjaw.fullerstack.android.R
-import com.akjaw.fullerstack.screens.common.BaseObservableViewMvc
+import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 
 class NotesListViewMvc(inflater: LayoutInflater, parent: ViewGroup?): BaseObservableViewMvc<NotesListViewMvc.Listener>() {
 

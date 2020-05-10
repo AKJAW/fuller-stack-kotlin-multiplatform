@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.common
+package com.akjaw.fullerstack.screens.common.base
 
 import android.content.Context
 import android.view.View
