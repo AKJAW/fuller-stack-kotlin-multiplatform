@@ -1,22 +1,31 @@
 package server
 
-import io.ktor.application.*
-import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import sample.hello
+import dependency_injection.common
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.http.ContentType
+import io.ktor.response.respondText
+import io.ktor.routing.Routing
+import io.ktor.routing.get
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import org.kodein.di.erased.instance
+import org.kodein.di.ktor.kodein
+import sample.Counter
 
 fun Application.module() {
+    kodein {
+        import(common)
+    }
     install(Routing) {
         get("/") {
-            val text = hello()
-            call.respondText("$text Ktor", ContentType.Text.Html)
+            val counter by kodein().instance<Counter>()
+            call.respondText(counter.getAndIncrement(), ContentType.Text.Html)
         }
     }
 }
 
 fun main() {
-    embeddedServer(Netty, 9000, module = Application::module).start(wait = true)
+    embeddedServer(Netty, port = 9000, module = Application::module).start(wait = true)
 }

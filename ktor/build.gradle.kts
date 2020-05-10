@@ -22,6 +22,10 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
+    //dependency injection
+    implementation("org.kodein.di:kodein-di-erased-jvm:6.5.5")
+    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:6.5.5")
 }
 
 tasks {
