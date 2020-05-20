@@ -1,6 +1,6 @@
 package server
 
-import dependency_injection.common
+import dependencyinjection.common
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install

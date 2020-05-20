@@ -1,4 +1,4 @@
-package dependency_injection
+package dependencyinjection
 
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind

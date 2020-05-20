@@ -7,7 +7,7 @@ buildscript {
         maven("https://dl.bintray.com/kotlin/kotlin-eap")
     }
 
-    //TODO version to separate file
+    // TODO version to separate file
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
         classpath("com.android.tools.build:gradle:3.4.2")
@@ -19,7 +19,6 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.9.1"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
 }
-
 
 allprojects {
     version = "0.0.1"

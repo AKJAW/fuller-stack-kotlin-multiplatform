@@ -1,6 +1,6 @@
-package components.counter_button
+package components.counterbutton
 
-import dependency_injection.KodeinEntry
+import dependencyinjection.KodeinEntry
 import kotlinx.html.js.onClickFunction
 import org.kodein.di.erased.instance
 import react.RBuilder
@@ -12,7 +12,7 @@ import react.dom.p
 import react.setState
 import sample.Counter
 
-class CounterButton: RComponent<CounterButtonProps, CounterButtonState>() {
+class CounterButton : RComponent<CounterButtonProps, CounterButtonState>() {
     private val counter: Counter by KodeinEntry.kodein.instance<Counter>()
 
     override fun RBuilder.render() {

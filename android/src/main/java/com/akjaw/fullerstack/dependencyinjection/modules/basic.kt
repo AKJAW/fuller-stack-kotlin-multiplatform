@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.dependency_injection.modules
+package com.akjaw.fullerstack.dependencyinjection.modules
 
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import org.kodein.di.Kodein

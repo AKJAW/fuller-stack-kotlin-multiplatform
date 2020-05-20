@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.notes_list
+package com.akjaw.fullerstack.screens.noteslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import org.kodein.di.erased.instance
 import sample.Counter
 
-class NotesListFragment: BaseFragment(), NotesListViewMvc.Listener {
+class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
     private val counter: Counter by instance<Counter>()

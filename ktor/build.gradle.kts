@@ -7,7 +7,7 @@ application {
     mainClassName = "MainKt"
 }
 
-//TODO move version to different files
+// TODO move version to different files
 val ktorVersion = "1.3.2"
 val logbackVersion = "1.2.3"
 dependencies {
@@ -18,7 +18,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-    //dependency injection
+    // dependency injection
     implementation("org.kodein.di:kodein-di-erased-jvm:6.5.5")
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:6.5.5")
 }
