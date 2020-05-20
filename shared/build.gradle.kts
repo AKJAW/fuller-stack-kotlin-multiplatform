@@ -19,7 +19,7 @@ kotlin {
     sourceSets {
         all {
             dependencies {
-                implementation("org.kodein.di:kodein-di-erased:6.5.5")
+                implementation(SharedLibs.KODEIN_DI_ERASED)
             }
         }
 

@@ -8,19 +8,17 @@ application {
 }
 
 // TODO move version to different files
-val ktorVersion = "1.3.2"
-val logbackVersion = "1.2.3"
 dependencies {
     implementation(project(":shared"))
 
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation(KtorLibs.SERVER_CORE)
+    implementation(KtorLibs.SERVER_NETTY)
+    implementation(KtorLibs.LOG_BACK_CLASSIC)
 
     // dependency injection
-    implementation("org.kodein.di:kodein-di-erased-jvm:6.5.5")
-    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:6.5.5")
+    implementation(KtorLibs.KODEIN_DI_ERASED_JVM)
+    implementation(KtorLibs.KODEIN_DI_FRAMEWORK_KTOR_SERVER)
 }
 
 tasks {

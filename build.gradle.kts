@@ -9,15 +9,15 @@ buildscript {
 
     // TODO version to separate file
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
-        classpath("com.android.tools.build:gradle:3.4.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${PluginsVersions.KOTLIN}")
+        classpath("com.android.tools.build:gradle:${PluginsVersions.GRADLE}")
     }
 }
 
 plugins {
-    kotlin("multiplatform") version "1.3.61"
-    id("io.gitlab.arturbosch.detekt") version "1.9.1"
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
+    kotlin("multiplatform") version PluginsVersions.KOTLIN
+    id("io.gitlab.arturbosch.detekt") version PluginsVersions.DETEKT
+    id("org.jlleitschuh.gradle.ktlint") version PluginsVersions.KTLINT
 }
 
 allprojects {
@@ -51,7 +51,7 @@ subprojects {
 
     ktlint {
         debug.set(false)
-        version.set("0.36.0")
+        version.set(Versions.KTLINT)
         verbose.set(true)
         android.set(false)
         outputToConsole.set(true)
