@@ -7,12 +7,6 @@ plugins {
     id("kotlin-android-extensions")
 }
 
-repositories {
-    google()
-    mavenCentral()
-    jcenter()
-}
-
 android {
     compileSdkVersion(29)
 

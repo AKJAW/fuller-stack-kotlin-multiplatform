@@ -5,8 +5,6 @@ plugins {
 repositories {
     maven("https://kotlin.bintray.com/kotlin-js-wrappers/")
     maven("https://dl.bintray.com/kotlin/kotlinx")
-    mavenCentral()
-    jcenter()
 }
 
 

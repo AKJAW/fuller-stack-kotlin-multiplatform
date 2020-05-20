@@ -3,11 +3,6 @@ plugins {
     kotlin("jvm")
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
 application {
     mainClassName = "MainKt"
 }

@@ -3,12 +3,6 @@ plugins {
     id("maven-publish")
 }
 
-repositories {
-    google()
-    mavenCentral()
-    jcenter()
-}
-
 kotlin {
     jvm {
         val main by compilations.getting {
