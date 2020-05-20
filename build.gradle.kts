@@ -16,7 +16,8 @@ buildscript {
 
 plugins {
     kotlin("multiplatform") version "1.3.61"
-    id("io.gitlab.arturbosch.detekt") version "1.8.0"
+    id("io.gitlab.arturbosch.detekt") version "1.9.1"
+    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
 }
 
 
@@ -33,6 +34,7 @@ allprojects {
 subprojects {
     apply {
         plugin("io.gitlab.arturbosch.detekt")
+        plugin("org.jlleitschuh.gradle.ktlint")
     }
 
     detekt {
@@ -45,6 +47,20 @@ subprojects {
                 enabled = true
                 destination = file("build/reports/detekt.html")
             }
+        }
+    }
+
+    ktlint {
+        debug.set(false)
+        version.set("0.36.0")
+        verbose.set(true)
+        android.set(false)
+        outputToConsole.set(true)
+        ignoreFailures.set(true)
+        enableExperimentalRules.set(true)
+        filter {
+            exclude("**/generated/**")
+            include("**/kotlin/**")
         }
     }
 }

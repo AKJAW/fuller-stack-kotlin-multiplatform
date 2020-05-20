@@ -31,10 +31,9 @@ android {
         setSourceCompatibility(JavaVersion.VERSION_1_8)
         setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
-
 }
 
-//TODO version to other file
+// TODO version to other file
 dependencies {
     implementation(project(":shared"))
 
@@ -46,7 +45,7 @@ dependencies {
     implementation("com.google.android.material:material:1.1.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta4")
 
-    //dependency injection
+    // dependency injection
     implementation("org.kodein.di:kodein-di-erased-jvm:6.5.5")
     implementation("org.kodein.di:kodein-di-framework-android-x:6.5.5")
 
