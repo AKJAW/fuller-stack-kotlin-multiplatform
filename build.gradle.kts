@@ -7,10 +7,9 @@ buildscript {
         maven("https://dl.bintray.com/kotlin/kotlin-eap")
     }
 
-    // TODO version to separate file
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${PluginsVersions.KOTLIN}")
-        classpath("com.android.tools.build:gradle:${PluginsVersions.GRADLE}")
+        classpath("com.android.tools.build:gradle:${PluginsVersions.GRADLE_BUILD_TOOLS}")
     }
 }
 

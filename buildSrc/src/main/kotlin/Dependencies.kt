@@ -29,7 +29,7 @@ object Versions {
 
 object PluginsVersions {
     const val KOTLIN = "1.3.72"
-    const val GRADLE = "3.4.2"
+    const val GRADLE_BUILD_TOOLS = "3.4.2"
     const val AGP = "3.6.3"
     const val DETEKT = "1.9.1"
     const val KTLINT = "9.2.1"
