@@ -35,3 +35,9 @@ kotlin {
         implementation(npm("inline-style-prefixer"))
     }
 }
+
+tasks {
+    val reactRun by registering {
+        dependsOn("browserRun")
+    }
+}

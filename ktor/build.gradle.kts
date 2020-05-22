@@ -30,8 +30,10 @@ tasks {
     }
 }
 
-task("devServer", JavaExec::class) {
-    group = "custom"
-    main = "server.MainKt"
-    classpath = sourceSets["main"].runtimeClasspath
+tasks {
+    val ktorRun by registering(JavaExec::class) {
+        group = "custom"
+        main = "server.MainKt"
+        classpath = sourceSets["main"].runtimeClasspath
+    }
 }
