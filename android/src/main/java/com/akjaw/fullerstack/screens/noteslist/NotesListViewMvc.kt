@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.notes_list
+package com.akjaw.fullerstack.screens.noteslist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,8 @@ import android.widget.TextView
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 
-class NotesListViewMvc(inflater: LayoutInflater, parent: ViewGroup?): BaseObservableViewMvc<NotesListViewMvc.Listener>() {
+class NotesListViewMvc(inflater: LayoutInflater, parent: ViewGroup?) :
+    BaseObservableViewMvc<NotesListViewMvc.Listener>() {
 
     interface Listener {
         fun onButtonClicked()
@@ -26,8 +27,7 @@ class NotesListViewMvc(inflater: LayoutInflater, parent: ViewGroup?): BaseObserv
         }
     }
 
-    fun setText(newText: String){
+    fun setText(newText: String) {
         textView.text = newText
     }
-
 }

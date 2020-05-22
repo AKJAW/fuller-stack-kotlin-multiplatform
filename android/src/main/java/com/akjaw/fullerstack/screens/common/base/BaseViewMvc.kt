@@ -12,8 +12,7 @@ abstract class BaseViewMvc {
     protected val context: Context
         get() = rootView.context
 
-    protected fun <T: View> findViewById(@IdRes id: Int): T = rootView.findViewById(id)
+    protected fun <T : View> findViewById(@IdRes id: Int): T = rootView.findViewById(id)
 
     protected fun getString(@StringRes id: Int): String = context.getString(id)
-
 }

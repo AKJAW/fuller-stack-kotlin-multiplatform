@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="shared-jvm-0.0.1">
-    <output-path>$PROJECT_DIR$/shared/build/libs</output-path>
-    <root id="archive" name="shared-jvm-0.0.1.jar">
-      <element id="module-output" name="fuller_stack.shared.jvmMain" />
-    </root>
-  </artifact>
-</component>
