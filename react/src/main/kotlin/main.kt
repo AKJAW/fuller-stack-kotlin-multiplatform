@@ -3,6 +3,6 @@ import kotlin.browser.document
 
 fun main() {
     render(document.getElementById("root")) {
-        child(App::class){}
+        child(App::class) {}
     }
 }

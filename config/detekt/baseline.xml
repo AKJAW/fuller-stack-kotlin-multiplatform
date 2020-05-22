@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <Blacklist></Blacklist>
+  <Whitelist>
+    <ID>NewLineAtEndOfFile:App.kt$.App.kt</ID>
+    <ID>NewLineAtEndOfFile:CounterButton.kt$components.counterbutton.CounterButton.kt</ID>
+    <ID>NewLineAtEndOfFile:CounterButtonProps.kt$components.counterbutton.CounterButtonProps.kt</ID>
+    <ID>NewLineAtEndOfFile:CounterButtonState.kt$components.counterbutton.CounterButtonState.kt</ID>
+    <ID>NewLineAtEndOfFile:KodeinEntry.kt$dependency_injection.KodeinEntry.kt</ID>
+    <ID>NewLineAtEndOfFile:main.kt$.main.kt</ID>
+    <ID>PackageNaming:CounterButton.kt$package components.counterbutton</ID>
+    <ID>PackageNaming:CounterButtonProps.kt$package components.counterbutton</ID>
+    <ID>PackageNaming:CounterButtonState.kt$package components.counterbutton</ID>
+    <ID>PackageNaming:KodeinEntry.kt$package dependency_injection</ID>
+  </Whitelist>
+</SmellBaseline>
