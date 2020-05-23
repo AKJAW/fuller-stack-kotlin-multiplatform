@@ -11,11 +11,19 @@ class NoteItemViewMvc(layoutInflater: LayoutInflater, parent: ViewGroup?):
     BaseObservableViewMvc<NoteItemViewMvc.Listener>() {
 
     interface Listener {
-        fun onClicked()
+        fun onClicked(title: String)
     }
 
-    override val rootView: View = layoutInflater.inflate(R.layout.item_notes_list, parent, true) //TODO is this true?
+    override val rootView: View = layoutInflater.inflate(R.layout.item_notes_list, parent, false)
     private val title: TextView = findViewById(R.id.note_title)
+
+    init {
+        rootView.setOnClickListener {
+            listeners.forEach { listener ->
+                listener.onClicked(title.text.toString())
+            }
+        }
+    }
 
     fun setTitle(titleText: String) {
         title.text = titleText

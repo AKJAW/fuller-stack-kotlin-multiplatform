@@ -8,6 +8,6 @@ import com.akjaw.fullerstack.screens.noteslist.recyclerview.NoteItemViewMvc
 
 class ViewMvcFactory(private val layoutInflater: LayoutInflater) {
     fun getMainViewMvc(parent: ViewGroup?) = MainViewMvc(layoutInflater, parent)
-    fun getNotesListViewMvc(parent: ViewGroup?) = NotesListViewMvc(layoutInflater, parent)
+    fun getNotesListViewMvc(parent: ViewGroup?) = NotesListViewMvc(layoutInflater, parent, this)
     fun getNoteItemViewMvc(parent: ViewGroup?) = NoteItemViewMvc(layoutInflater, parent)
 }

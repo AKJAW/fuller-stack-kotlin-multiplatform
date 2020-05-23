@@ -4,19 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
+import data.Note
 import org.kodein.di.erased.instance
-import sample.Counter
 
 class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
-    private val counter: Counter by instance<Counter>()
     private lateinit var viewMvc: NotesListViewMvc
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewMvc = viewMvcFactory.getNotesListViewMvc(container)
+
+        val notes = List(10) { Note(it.toString()) }
+        viewMvc.setNotes(notes)
 
         return viewMvc.rootView
     }
@@ -32,9 +35,7 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
         viewMvc.unregisterListener(this)
     }
 
-    override fun onButtonClicked() {
-        val count = counter.getAndIncrement()
-
-        viewMvc.setText(count.toString())
+    override fun onNoteClicked(title: String) {
+        Toast.makeText(context, title, Toast.LENGTH_SHORT).show()
     }
 }
