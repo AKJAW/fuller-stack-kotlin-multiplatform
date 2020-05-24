@@ -49,6 +49,9 @@ dependencies {
     implementation(AndroidLibs.KODEIN_DI_ERASED_JVM)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
+    // network
+    implementation(AndroidLibs.COROUTINES_ANDROID)
+
     testImplementation(SharedTestingLibs.JUNIT)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)

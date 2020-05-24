@@ -20,12 +20,14 @@ kotlin {
         all {
             dependencies {
                 implementation(SharedLibs.KODEIN_DI_ERASED)
+                implementation(SharedLibs.COROUTINES_CORE)
             }
         }
 
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation(SharedLibs.COROUTINES_COMMON)
             }
         }
         val commonTest by getting {

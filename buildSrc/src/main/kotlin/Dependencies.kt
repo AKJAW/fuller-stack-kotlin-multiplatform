@@ -1,6 +1,7 @@
 object Versions {
     //shared
     const val KODEIN = "6.5.5"
+    const val COROUTINES = "1.3.7"
     const val KTLINT = "0.36.0"
 
     //shared test
@@ -38,6 +39,8 @@ object PluginsVersions {
 
 object SharedLibs {
     const val KODEIN_DI_ERASED = "org.kodein.di:kodein-di-erased:${Versions.KODEIN}"
+    const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
+    const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
 }
 
 object SharedTestingLibs {
@@ -71,6 +74,8 @@ object AndroidLibs {
 
     const val KODEIN_DI_ERASED_JVM = "org.kodein.di:kodein-di-erased-jvm:${Versions.KODEIN}"
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
+
+    const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
 }
 
 object AndroidTestingLibs {
