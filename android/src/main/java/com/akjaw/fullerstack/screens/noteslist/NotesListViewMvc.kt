@@ -31,11 +31,11 @@ class NotesListViewMvc(
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    fun setNotes(notes: List<Note>){
+    fun setNotes(notes: List<Note>) {
         notesListAdapter.setNotes(notes)
     }
 
-    private fun onNoteClicked(title: String){
+    private fun onNoteClicked(title: String) {
         listeners.forEach { listeners ->
             listeners.onNoteClicked(title)
         }

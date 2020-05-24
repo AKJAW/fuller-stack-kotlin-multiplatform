@@ -6,9 +6,9 @@ import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import data.Note
 
 class NotesListAdapter(
-    private val onNoteClickedListener: (String) -> Unit,
+    private val onItemClicked: (String) -> Unit,
     private val viewMvcFactory: ViewMvcFactory
-): RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>(), NoteItemViewMvc.Listener {
+) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>(), NoteItemViewMvc.Listener {
 
     private var notes: List<Note> = listOf()
 
@@ -26,15 +26,15 @@ class NotesListAdapter(
         holder.noteItemViewMvc.setTitle(note.title)
     }
 
-    //TODO add diffutil
-    fun setNotes(newNotes: List<Note>){
+    // TODO add diffutil
+    fun setNotes(newNotes: List<Note>) {
         notes = newNotes
         notifyDataSetChanged()
     }
 
-    class NoteViewHolder(val noteItemViewMvc: NoteItemViewMvc): RecyclerView.ViewHolder(noteItemViewMvc.rootView)
+    class NoteViewHolder(val noteItemViewMvc: NoteItemViewMvc) : RecyclerView.ViewHolder(noteItemViewMvc.rootView)
 
-    override fun onClicked(title: String) {
-        onNoteClickedListener(title)
+    override fun onNoteClicked(title: String) {
+        onItemClicked(title)
     }
 }

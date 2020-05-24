@@ -10,6 +10,7 @@ import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import data.Note
 import org.kodein.di.erased.instance
 
+@Suppress("MagicNumber")
 class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()

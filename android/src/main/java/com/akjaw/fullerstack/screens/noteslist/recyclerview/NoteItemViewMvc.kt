@@ -7,11 +7,11 @@ import android.widget.TextView
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 
-class NoteItemViewMvc(layoutInflater: LayoutInflater, parent: ViewGroup?):
+class NoteItemViewMvc(layoutInflater: LayoutInflater, parent: ViewGroup?) :
     BaseObservableViewMvc<NoteItemViewMvc.Listener>() {
 
     interface Listener {
-        fun onClicked(title: String)
+        fun onNoteClicked(title: String)
     }
 
     override val rootView: View = layoutInflater.inflate(R.layout.item_notes_list, parent, false)
@@ -20,7 +20,7 @@ class NoteItemViewMvc(layoutInflater: LayoutInflater, parent: ViewGroup?):
     init {
         rootView.setOnClickListener {
             listeners.forEach { listener ->
-                listener.onClicked(title.text.toString())
+                listener.onNoteClicked(title.text.toString())
             }
         }
     }
