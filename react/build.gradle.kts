@@ -15,11 +15,16 @@ dependencies {
     // Kotlin wrappers
     implementation(ReactLibs.HTML_JS)
     implementation(ReactLibs.REACT)
+    implementation(ReactLibs.REDUX)
+    implementation(ReactLibs.REACT_REDUX)
     implementation(ReactLibs.REACT_DOM)
     implementation(ReactLibs.STYLED)
 
     // dependency injection
     implementation(ReactLibs.KODEIN_DI_ERASED_JS)
+
+    // network
+    implementation(ReactLibs.COROUTINES_JS)
 }
 
 kotlin {

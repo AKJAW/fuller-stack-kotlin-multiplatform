@@ -10,6 +10,8 @@ object Versions {
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
     const val REACT = "16.13.1"
+    const val REDUX = "4.0.0"
+    const val REACT_REDUX = "5.0.7"
 
     //ktor
     const val KTOR = "1.3.2"
@@ -50,11 +52,15 @@ object SharedTestingLibs {
 
 object ReactLibs {
     const val HTML_JS = "org.jetbrains.kotlinx:kotlinx-html-js:${Versions.KOTLINX_HTML_JS}"
-    const val REACT = "org.jetbrains:kotlin-react:${Versions.REACT}-pre.102-kotlin-${PluginsVersions.KOTLIN}"
-    const val REACT_DOM = "org.jetbrains:kotlin-react-dom:${Versions.REACT}-pre.102-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT = "org.jetbrains:kotlin-react:${Versions.REACT}-pre.106-kotlin-${PluginsVersions.KOTLIN}"
+    const val REDUX = "org.jetbrains:kotlin-redux:${Versions.REDUX}-pre.106-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT_REDUX = "org.jetbrains:kotlin-react-redux:${Versions.REACT_REDUX}-pre.106-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT_DOM = "org.jetbrains:kotlin-react-dom:${Versions.REACT}-pre.106-kotlin-${PluginsVersions.KOTLIN}"
     const val STYLED = "org.jetbrains:kotlin-styled:1.0.0-pre.102-kotlin-${PluginsVersions.KOTLIN}"
 
     const val KODEIN_DI_ERASED_JS = "org.kodein.di:kodein-di-erased-js:${Versions.KODEIN}"
+
+    const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
 }
 
 object KtorLibs {

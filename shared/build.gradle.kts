@@ -20,7 +20,6 @@ kotlin {
         all {
             dependencies {
                 implementation(SharedLibs.KODEIN_DI_ERASED)
-                implementation(SharedLibs.COROUTINES_CORE)
             }
         }
 
@@ -40,6 +39,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
+                implementation(SharedLibs.COROUTINES_CORE)
             }
         }
         val jvmTest by getting {
@@ -52,6 +52,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                implementation(SharedLibs.COROUTINES_CORE)
             }
         }
         val jsTest by getting {
