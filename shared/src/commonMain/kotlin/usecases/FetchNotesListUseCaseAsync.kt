@@ -1,31 +1,22 @@
 package usecases
 
 import data.Note
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
-// TODO refactor
 class FetchNotesListUseCaseAsync {
 
-    interface Listener {
-        fun onNoteListFetchSuccess(notes: List<Note>)
-        fun onNoteListFetchFail()
+    sealed class FetchNotesListResult {
+        class Success(val notes: List<Note>) : FetchNotesListResult()
+        object Failure : FetchNotesListResult()
     }
 
-    private val listeners = mutableListOf<Listener>()
-
-    fun registerListener(listener: Listener) {
-        listeners.add(listener)
-    }
-
-    fun unregisterListener(listener: Listener) {
-        listeners.remove(listener)
-    }
-
-    suspend fun run() {
-        delay(500)
-        val notes = List(10) { Note(it.toString()) }
-        listeners.forEach {
-            it.onNoteListFetchSuccess(notes)
+    suspend fun executeAsync(backgroundDispatcher: CoroutineDispatcher): FetchNotesListResult {
+        return withContext(backgroundDispatcher) {
+            delay(500)
+            val notes = List(10) { Note(it.toString()) }
+            FetchNotesListResult.Success(notes)
         }
     }
 }

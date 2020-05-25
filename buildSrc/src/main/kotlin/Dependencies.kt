@@ -22,6 +22,7 @@ object Versions {
     const val APP_COMPAT = "1.1.0"
     const val MATERIAL = "1.1.0"
     const val CONSTRAINT_LAYOUT = "2.0.0-beta4"
+    const val LIFECYCLE_RUNTIME_KTX = "2.2.0"
 
     //android test
     const val ANDROIDX_TEST = "1.1.0"
@@ -76,6 +77,7 @@ object AndroidLibs {
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
 
     const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
+    const val LIFECYCLE_RUNTIME_KTX =  "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_RUNTIME_KTX}"
 }
 
 object AndroidTestingLibs {

@@ -49,6 +49,9 @@ dependencies {
     implementation(AndroidLibs.KODEIN_DI_ERASED_JVM)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
+    // lifecycle
+    implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
+
     // network
     implementation(AndroidLibs.COROUTINES_ANDROID)
 
