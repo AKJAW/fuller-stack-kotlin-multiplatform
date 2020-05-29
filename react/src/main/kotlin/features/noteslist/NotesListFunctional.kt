@@ -11,6 +11,7 @@ import react.dom.div
 import react.functionalComponent
 import react.useEffect
 import react.useState
+import store.myStore
 import usecases.FetchNotesListUseCaseAsync
 
 val notesList = functionalComponent<RProps> {
@@ -23,9 +24,13 @@ val notesList = functionalComponent<RProps> {
             val result = fetchNotesListUseCaseAsync.executeAsync(Dispatchers.Default)
 
             when(result){
-                is FetchNotesListUseCaseAsync.FetchNotesListResult.Success -> setNotes(result.notes)
+                is FetchNotesListUseCaseAsync.FetchNotesListResult.Success -> {
+                    setNotes(result.notes)
+                    myStore.dispatch(SetNotesList(result.notes.toTypedArray()))
+                }
                 FetchNotesListUseCaseAsync.FetchNotesListResult.Failure -> TODO()
             }
+
         }
     }
 
