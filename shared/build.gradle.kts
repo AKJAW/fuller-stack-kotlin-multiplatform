@@ -1,10 +1,9 @@
 plugins {
     kotlin("multiplatform")
-    id("maven-publish")
 }
 
 kotlin {
-    jvm {
+    jvm("android") {
         val main by compilations.getting {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -12,8 +11,7 @@ kotlin {
         }
     }
     js {
-        browser {
-        }
+        browser()
     }
 
     sourceSets {
@@ -36,13 +34,13 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
+        val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation(SharedLibs.COROUTINES_CORE)
             }
         }
-        val jvmTest by getting {
+        val androidTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
@@ -52,7 +50,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
-                implementation(SharedLibs.COROUTINES_CORE)
+                implementation(ReactLibs.COROUTINES_JS)
             }
         }
         val jsTest by getting {

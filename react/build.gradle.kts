@@ -43,6 +43,6 @@ kotlin {
 
 tasks {
     val reactRun by registering {
-        dependsOn("browserRun")
+        dependsOn("browserDevelopmentRun")
     }
 }
