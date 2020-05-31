@@ -5,6 +5,7 @@ plugins {
 repositories {
     maven("https://kotlin.bintray.com/kotlin-js-wrappers/")
     maven("https://dl.bintray.com/kotlin/kotlinx")
+    maven("https://dl.bintray.com/cfraser/muirwik")
 }
 
 dependencies {
@@ -19,6 +20,10 @@ dependencies {
     implementation(ReactLibs.REACT_REDUX)
     implementation(ReactLibs.REACT_DOM)
     implementation(ReactLibs.STYLED)
+    implementation(ReactLibs.CSS_JS)
+
+    // react libraries wrappers
+    implementation(ReactLibs.MUIRWIK)
 
     // dependency injection
     implementation(ReactLibs.KODEIN_DI_ERASED_JS)
@@ -38,6 +43,8 @@ kotlin {
 
         implementation(npm("styled-components"))
         implementation(npm("inline-style-prefixer"))
+        implementation(npm("@material-ui/core", "^4.9.14"))
+        implementation(npm("react-hot-loader", "^4.12.20"))
     }
 }
 
