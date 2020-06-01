@@ -1,9 +1,9 @@
 @file:Suppress("MatchingDeclarationName")
 package store
 
+import kotlinext.js.js
 import redux.RAction
 import redux.WrapperAction
-import redux.applyMiddleware
 
 interface RThunk : RAction {
     operator fun invoke(
@@ -12,6 +12,7 @@ interface RThunk : RAction {
     ): WrapperAction
 }
 
+//Credit to https://github.com/AltmanEA/KotlinExamples
 fun rThunk() =
     applyMiddleware<State, RAction, WrapperAction, RAction, WrapperAction>(
         {store ->
@@ -25,3 +26,5 @@ fun rThunk() =
             }
         }
     )
+
+val nullAction = js {}.unsafeCast<WrapperAction>()

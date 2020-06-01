@@ -1,20 +1,22 @@
+@file:Suppress("MatchingDeclarationName")
 package features.noteslist
 
 import data.Note
-import dependencyinjection.KodeinEntry
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.kodein.di.erased.instance
-import react.*
+import react.RBuilder
+import react.RClass
+import react.RComponent
+import react.RProps
+import react.RState
+import react.child
+import react.invoke
 import react.redux.rConnect
+import redux.RAction
 import redux.WrapperAction
 import store.State
-import usecases.FetchNotesListUseCaseAsync
 
 interface NotesListConnectedProps : RProps {
     var notesList: Array<Note>
-    var setNotesList: (Array<Note>) -> Unit
+    var fetchNotesList: () -> Unit
 }
 
 private interface StateProps : RProps {
@@ -22,23 +24,13 @@ private interface StateProps : RProps {
 }
 
 private interface DispatchProps : RProps {
-    var setNotesList: (Array<Note>) -> Unit
+    var fetchNotesList: (Array<Note>) -> Unit
 }
 
 private class NotesListContainer(props: NotesListConnectedProps) : RComponent<NotesListConnectedProps, RState>(props) {
-    val fetchNotesListUseCaseAsync by KodeinEntry.kodein.instance<FetchNotesListUseCaseAsync>()
 
     override fun componentDidMount() {
-        GlobalScope.launch {
-            val result = fetchNotesListUseCaseAsync.executeAsync(Dispatchers.Default)
-
-            when(result){
-                is FetchNotesListUseCaseAsync.FetchNotesListResult.Success -> {
-                    props.setNotesList(result.notes.toTypedArray())
-                }
-                FetchNotesListUseCaseAsync.FetchNotesListResult.Failure -> TODO()
-            }
-        }
+        props.fetchNotesList()
     }
 
     override fun RBuilder.render() {
@@ -49,11 +41,11 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
 }
 
 val notesListContainer: RClass<RProps> =
-    rConnect<State, SetNotesList, WrapperAction, RProps, StateProps, DispatchProps, NotesListConnectedProps>(
+    rConnect<State, RAction, WrapperAction, RProps, StateProps, DispatchProps, NotesListConnectedProps>(
         { state, _ ->
             notesList = state.noteList
         },
         { dispatch, _ ->
-            setNotesList = { notes -> dispatch(SetNotesList(notes)) }
+            fetchNotesList = { dispatch(NotesListSlice.fetchNotesList()) }
         }
     )(NotesListContainer::class.js.unsafeCast<RClass<NotesListConnectedProps>>())

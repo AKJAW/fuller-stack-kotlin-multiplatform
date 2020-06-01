@@ -1,13 +1,13 @@
 package store
 
-import features.noteslist.noteListReducer
+import features.noteslist.NotesListSlice
 import redux.Reducer
 import redux.combineReducers
 import kotlin.reflect.KProperty1
 
 fun combinedReducers() = combineReducersInferred(
     mapOf(
-        State::noteList to ::noteListReducer
+        State::noteList to NotesListSlice::reducer
     )
 )
 

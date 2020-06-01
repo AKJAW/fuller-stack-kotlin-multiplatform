@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package features.noteslist
 
 import com.ccfraser.muirwik.components.list.mList
