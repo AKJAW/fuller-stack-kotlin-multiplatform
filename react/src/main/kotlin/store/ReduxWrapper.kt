@@ -16,3 +16,5 @@ external fun <S, A, R> createStore(
 ): Store<S, A, R>
 
 external fun <A, T1, R> compose(function1: (T1) -> R, function2: (A) -> T1): (A) -> R
+
+external fun <A, T1, R> compose(function1: (T1) -> R, function2: (A) -> T1, function3: (A) -> T1): (A) -> R
