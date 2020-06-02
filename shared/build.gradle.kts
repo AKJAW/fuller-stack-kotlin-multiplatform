@@ -13,6 +13,13 @@ kotlin {
     js {
         browser()
     }
+    detekt {
+        input = files(
+            "src/androidMain/kotlin", "src/androidTest/kotlin",
+            "src/commonMain/kotlin", "src/commonTest/kotlin",
+            "src/jsMain/kotlin", "src/jsTest/kotlin"
+        )
+    }
 
     sourceSets {
         all {
