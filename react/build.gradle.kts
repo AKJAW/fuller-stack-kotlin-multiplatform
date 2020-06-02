@@ -44,7 +44,6 @@ kotlin {
         implementation(npm("styled-components"))
         implementation(npm("inline-style-prefixer"))
         implementation(npm("@material-ui/core", "^4.9.14"))
-        implementation(npm("react-hot-loader", "^4.12.20"))
     }
 }
 
