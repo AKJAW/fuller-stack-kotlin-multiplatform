@@ -1,4 +1,3 @@
-@file:Suppress("MatchingDeclarationName")
 package features.noteslist
 
 import data.Note

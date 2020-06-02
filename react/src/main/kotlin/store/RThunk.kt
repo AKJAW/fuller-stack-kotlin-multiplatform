@@ -1,4 +1,3 @@
-@file:Suppress("MatchingDeclarationName")
 package store
 
 import kotlinext.js.js
