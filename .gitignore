@@ -324,3 +324,5 @@ sketch
 
 # End of https://www.gitignore.io/api/node,react,kotlin,android,intellij
 .idea/
+
+!gradle/wrapper/gradle-wrapper.jar
