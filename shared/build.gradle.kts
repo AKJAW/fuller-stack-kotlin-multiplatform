@@ -46,7 +46,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation(AndroidLibs.COROUTINES_ANDROID)
-                implementation(JVMTestingLibs.COROUTINES_TEST)
             }
         }
         val androidTest by getting {
@@ -54,6 +53,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
                 implementation(SharedLibs.COROUTINES_COMMON)
+                implementation(JVMTestingLibs.COROUTINES_TEST)
             }
         }
 

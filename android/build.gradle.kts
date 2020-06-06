@@ -56,6 +56,7 @@ dependencies {
     implementation(AndroidLibs.COROUTINES_ANDROID)
 
     testImplementation(JVMTestingLibs.JUNIT5)
+    testImplementation(JVMTestingLibs.COROUTINES_TEST)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)
 }
