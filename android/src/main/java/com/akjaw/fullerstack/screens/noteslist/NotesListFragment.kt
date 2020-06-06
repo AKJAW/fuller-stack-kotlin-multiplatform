@@ -11,13 +11,10 @@ import base.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import data.Note
-import kotlinx.coroutines.Dispatchers
+import feature.noteslist.FetchNotesListUseCaseAsync
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.kodein.di.erased.instance
-import usecases.FetchNotesListUseCaseAsync
 
-@Suppress("MagicNumber")
 class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
@@ -48,18 +45,13 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 
     private fun fetchNotesList() {
         lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                fetchNotesListUseCaseAsync.executeAsync(
-                    Dispatchers.IO,
-                    UseCaseAsync.None()
-                ) { result ->
-                    when (result){
-                        is Either.Left -> onNoteListFetchFail()
-                        is Either.Right -> onNoteListFetchSuccess(result.r)
-                    }
+            fetchNotesListUseCaseAsync.executeAsync(
+                UseCaseAsync.None()
+            ) { result ->
+                when (result){
+                    is Either.Left -> onNoteListFetchFail()
+                    is Either.Right -> onNoteListFetchSuccess(result.r)
                 }
-
-
             }
         }
     }

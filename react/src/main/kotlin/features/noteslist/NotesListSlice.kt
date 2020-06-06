@@ -5,7 +5,7 @@ import base.Failure
 import base.UseCaseAsync
 import data.Note
 import dependencyinjection.KodeinEntry
-import kotlinx.coroutines.Dispatchers
+import feature.noteslist.FetchNotesListUseCaseAsync
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.erased.instance
@@ -14,7 +14,6 @@ import redux.WrapperAction
 import store.RThunk
 import store.State
 import store.nullAction
-import usecases.FetchNotesListUseCaseAsync
 
 
 object NotesListSlice {
@@ -25,7 +24,6 @@ object NotesListSlice {
             console.log("fetchNotesList")
             GlobalScope.launch {
                 fetchNotesListUseCaseAsync.executeAsync(
-                    Dispatchers.Default,
                     UseCaseAsync.None()
                 ) { result -> handleResult(dispatch, result) }
             }
