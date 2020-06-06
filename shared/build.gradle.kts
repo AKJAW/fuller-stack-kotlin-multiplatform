@@ -38,19 +38,22 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(SharedLibs.COROUTINES_COMMON)
             }
         }
 
         val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-                implementation(SharedLibs.COROUTINES_CORE)
+                implementation(AndroidLibs.COROUTINES_ANDROID)
+                implementation(JVMTestingLibs.COROUTINES_TEST)
             }
         }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+                implementation(SharedLibs.COROUTINES_COMMON)
             }
         }
 
@@ -63,6 +66,7 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
+                implementation(SharedLibs.COROUTINES_COMMON)
             }
         }
     }

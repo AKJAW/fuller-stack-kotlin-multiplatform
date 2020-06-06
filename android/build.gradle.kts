@@ -55,7 +55,7 @@ dependencies {
     // network
     implementation(AndroidLibs.COROUTINES_ANDROID)
 
-    testImplementation(SharedTestingLibs.JUNIT)
+    testImplementation(JVMTestingLibs.JUNIT5)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)
 }

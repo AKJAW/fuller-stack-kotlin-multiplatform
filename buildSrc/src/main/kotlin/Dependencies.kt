@@ -5,7 +5,7 @@ object Versions {
     const val KTLINT = "0.36.0"
 
     //shared test
-    const val JUNIT = "4.13"
+    const val JUNIT5 = "5.6.2"
 
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
@@ -47,8 +47,9 @@ object SharedLibs {
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
 }
 
-object SharedTestingLibs {
-    const val JUNIT = "junit:junit:${Versions.JUNIT}"
+object JVMTestingLibs {
+    const val JUNIT5 = "org.junit.jupiter:junit-jupiter:${Versions.JUNIT5}"
+    const val COROUTINES_TEST =  "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
 }
 
 object ReactLibs {
