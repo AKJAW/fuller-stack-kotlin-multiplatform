@@ -1,22 +1,15 @@
 package usecases
 
+import base.Either
+import base.Failure
+import base.UseCaseAsync
 import data.Note
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
-class FetchNotesListUseCaseAsync {
-
-    sealed class FetchNotesListResult {
-        class Success(val notes: List<Note>) : FetchNotesListResult()
-        object Failure : FetchNotesListResult()
-    }
-
-    suspend fun executeAsync(backgroundDispatcher: CoroutineDispatcher): FetchNotesListResult {
-        return withContext(backgroundDispatcher) {
-            delay(500)
-            val notes = List(10) { Note(it.toString()) }
-            FetchNotesListResult.Success(notes)
-        }
+class FetchNotesListUseCaseAsync : UseCaseAsync<UseCaseAsync.None, List<Note>>() {
+    override suspend fun run(params: None): Either<Failure, List<Note>> {
+        delay(500)
+        val notes = List(10) { Note(it.toString()) }
+        return Either.Right(notes)
     }
 }

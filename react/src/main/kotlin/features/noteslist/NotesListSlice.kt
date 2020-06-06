@@ -1,5 +1,8 @@
 package features.noteslist
 
+import base.Either
+import base.Failure
+import base.UseCaseAsync
 import data.Note
 import dependencyinjection.KodeinEntry
 import kotlinx.coroutines.Dispatchers
@@ -21,18 +24,23 @@ object NotesListSlice {
         override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
             console.log("fetchNotesList")
             GlobalScope.launch {
-                val result = fetchNotesListUseCaseAsync.executeAsync(Dispatchers.Default)
-
-                when(result){
-                    is FetchNotesListUseCaseAsync.FetchNotesListResult.Success -> {
-                        val action = SetNotesList(result.notes.toTypedArray())
-                        dispatch(action)
-                    }
-                    FetchNotesListUseCaseAsync.FetchNotesListResult.Failure -> TODO()
-                }
+                fetchNotesListUseCaseAsync.executeAsync(
+                    Dispatchers.Default,
+                    UseCaseAsync.None()
+                ) { result -> handleResult(dispatch, result) }
             }
+
             return nullAction //TODO is this necessary
         }
+
+        fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, List<Note>>) =
+            when(result){
+                is Either.Left -> TODO()
+                is Either.Right -> {
+                    val action = SetNotesList(result.r.toTypedArray())
+                    dispatch(action)
+                }
+            }
     }
 
     class SetNotesList(val notesList: Array<Note>): RAction

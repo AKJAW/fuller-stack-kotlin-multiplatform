@@ -50,5 +50,9 @@ kotlin {
 tasks {
     val reactRun by registering {
         dependsOn("browserDevelopmentRun")
+
+        doLast {
+            println("running on http://localhost:8080/")
+        }
     }
 }

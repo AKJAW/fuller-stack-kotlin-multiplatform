@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import base.Either
+import base.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import data.Note
@@ -14,7 +16,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.kodein.di.erased.instance
 import usecases.FetchNotesListUseCaseAsync
-import usecases.FetchNotesListUseCaseAsync.FetchNotesListResult
 
 @Suppress("MagicNumber")
 class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
@@ -48,12 +49,17 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
     private fun fetchNotesList() {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                val result = fetchNotesListUseCaseAsync.executeAsync(Dispatchers.IO)
-
-                when (result) {
-                    is FetchNotesListResult.Success -> onNoteListFetchSuccess(result.notes)
-                    is FetchNotesListResult.Failure -> onNoteListFetchFail()
+                fetchNotesListUseCaseAsync.executeAsync(
+                    Dispatchers.IO,
+                    UseCaseAsync.None()
+                ) { result ->
+                    when (result){
+                        is Either.Left -> onNoteListFetchFail()
+                        is Either.Right -> onNoteListFetchSuccess(result.r)
+                    }
                 }
+
+
             }
         }
     }
