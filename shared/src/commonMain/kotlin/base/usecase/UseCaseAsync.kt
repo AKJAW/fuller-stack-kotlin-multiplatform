@@ -1,5 +1,6 @@
-package base
+package base.usecase
 
+import base.CommonDispatchers
 import kotlinx.coroutines.withContext
 
 abstract class UseCaseAsync<in Params, out Type> where Type : Any {

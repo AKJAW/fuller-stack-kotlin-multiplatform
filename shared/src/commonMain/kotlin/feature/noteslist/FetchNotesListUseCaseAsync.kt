@@ -1,16 +1,20 @@
 package feature.noteslist
 
-import base.Either
-import base.Failure
-import base.UseCaseAsync
+import base.usecase.Either
+import base.usecase.Failure
+import base.usecase.UseCaseAsync
 import data.Note
-import kotlinx.coroutines.delay
+import network.NoteApi
 
-@Suppress("MagicNumber")
-class FetchNotesListUseCaseAsync : UseCaseAsync<UseCaseAsync.None, List<Note>>() {
+class FetchNotesListUseCaseAsync(
+    private val noteApi: NoteApi
+) : UseCaseAsync<UseCaseAsync.None, List<Note>>() {
     override suspend fun run(params: None): Either<Failure, List<Note>> {
-        delay(1500)
-        val notes = List(10) { Note(it.toString()) }
-        return Either.Right(notes)
+        return try {
+            val notes = noteApi.getNotes()
+            Either.Right(notes)
+        } catch (e: Throwable) { //TODO make more defined
+            Either.Left(Failure.ServerError)
+        }
     }
 }

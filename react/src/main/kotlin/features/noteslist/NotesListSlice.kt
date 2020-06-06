@@ -1,8 +1,8 @@
 package features.noteslist
 
-import base.Either
-import base.Failure
-import base.UseCaseAsync
+import base.usecase.Either
+import base.usecase.Failure
+import base.usecase.UseCaseAsync
 import data.Note
 import dependencyinjection.KodeinEntry
 import feature.noteslist.FetchNotesListUseCaseAsync

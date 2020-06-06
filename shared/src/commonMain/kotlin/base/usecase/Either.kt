@@ -1,4 +1,4 @@
-package base
+package base.usecase
 
 sealed class Either<out L, out R> {
 
