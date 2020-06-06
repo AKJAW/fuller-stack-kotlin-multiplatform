@@ -10,5 +10,4 @@ actual object CommonDispatchers {
 
     actual val MainDispatcher: CoroutineDispatcher
         get() = Dispatchers.Main
-
 }

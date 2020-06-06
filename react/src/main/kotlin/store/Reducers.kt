@@ -11,7 +11,7 @@ fun combinedReducers() = combineReducersInferred(
     )
 )
 
-//credit https://github.com/JetBrains/kotlin-wrappers/blob/master/kotlin-redux/README.md
+// credit https://github.com/JetBrains/kotlin-wrappers/blob/master/kotlin-redux/README.md
 fun <S, A, R> combineReducersInferred(reducers: Map<KProperty1<S, R>, Reducer<*, A>>): Reducer<S, A> {
     return combineReducers(reducers.mapKeys { it.key.name })
 }

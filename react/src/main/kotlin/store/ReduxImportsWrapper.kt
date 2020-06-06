@@ -9,7 +9,6 @@ import redux.Middleware
 import redux.Reducer
 import redux.Store
 
-
 external fun <S, A, R> createStore(
     reducer: Reducer<S, A>,
     preloadedState: S,

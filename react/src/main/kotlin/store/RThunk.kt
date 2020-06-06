@@ -11,13 +11,13 @@ interface RThunk : RAction {
     ): WrapperAction
 }
 
-//Credit to https://github.com/AltmanEA/KotlinExamples
+// Credit to https://github.com/AltmanEA/KotlinExamples
 fun rThunk() =
     applyMiddleware<State, RAction, WrapperAction, RAction, WrapperAction>(
-        {store ->
-            {next ->
-                {action ->
-                    if(action is RThunk)
+        { store ->
+            { next ->
+                { action ->
+                    if (action is RThunk)
                         action(store::dispatch, store::getState)
                     else
                         next(action)

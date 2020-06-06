@@ -12,7 +12,7 @@ import react.functionalComponent
 import styled.css
 import styled.styledDiv
 
-interface NotesListProps: RProps {
+interface NotesListProps : RProps {
     var notesList: Array<Note>
 }
 

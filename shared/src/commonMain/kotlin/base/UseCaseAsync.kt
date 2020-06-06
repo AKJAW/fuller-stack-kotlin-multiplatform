@@ -4,7 +4,7 @@ import kotlinx.coroutines.withContext
 
 abstract class UseCaseAsync<in Params, out Type> where Type : Any {
 
-    protected abstract suspend fun run(params: Params) : Either<Failure, Type>
+    protected abstract suspend fun run(params: Params): Either<Failure, Type>
 
     suspend fun executeAsync(
         params: Params,
@@ -12,7 +12,7 @@ abstract class UseCaseAsync<in Params, out Type> where Type : Any {
     ) {
         withContext(CommonDispatchers.BackgroundDispatcher) {
             val result = run(params)
-            withContext(CommonDispatchers.MainDispatcher){
+            withContext(CommonDispatchers.MainDispatcher) {
                 onResult(result)
             }
         }

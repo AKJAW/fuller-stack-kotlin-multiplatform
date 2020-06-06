@@ -48,7 +48,7 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
             fetchNotesListUseCaseAsync.executeAsync(
                 UseCaseAsync.None()
             ) { result ->
-                when (result){
+                when (result) {
                     is Either.Left -> onNoteListFetchFail()
                     is Either.Right -> onNoteListFetchSuccess(result.r)
                 }

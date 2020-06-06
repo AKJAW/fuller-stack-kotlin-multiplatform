@@ -15,7 +15,6 @@ import store.RThunk
 import store.State
 import store.nullAction
 
-
 object NotesListSlice {
     val fetchNotesListUseCaseAsync by KodeinEntry.kodein.instance<FetchNotesListUseCaseAsync>()
 
@@ -28,11 +27,11 @@ object NotesListSlice {
                 ) { result -> handleResult(dispatch, result) }
             }
 
-            return nullAction //TODO is this necessary
+            return nullAction // TODO is this necessary
         }
 
         fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, List<Note>>) =
-            when(result){
+            when (result) {
                 is Either.Left -> TODO()
                 is Either.Right -> {
                     val action = SetNotesList(result.r.toTypedArray())
@@ -41,10 +40,10 @@ object NotesListSlice {
             }
     }
 
-    class SetNotesList(val notesList: Array<Note>): RAction
+    class SetNotesList(val notesList: Array<Note>) : RAction
 
     fun reducer(state: Array<Note> = emptyArray(), action: RAction): Array<Note> {
-        return when(action) {
+        return when (action) {
             is SetNotesList -> {
                 action.notesList
             }

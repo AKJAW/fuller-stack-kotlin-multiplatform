@@ -17,7 +17,7 @@ sealed class Either<out L, out R> {
     fun <R> right(r: R) = Left(r)
 
     fun fold(leftFunction: (L) -> Any, rightFunction: (R) -> Any): Any =
-        when(this){
+        when (this) {
             is Left -> leftFunction(this.l)
             is Right -> rightFunction(this.r)
         }

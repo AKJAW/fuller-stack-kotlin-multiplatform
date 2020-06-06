@@ -6,7 +6,7 @@ import react.RState
 import react.ReactElement
 import react.dom.h1
 
-interface ErrorBoundaryState: RState {
+interface ErrorBoundaryState : RState {
     var hasError: Boolean?
 }
 
@@ -18,7 +18,7 @@ class ErrorBoundary : RComponent<RProps, ErrorBoundaryState>() {
     }
 
     override fun RBuilder.render() {
-        if(state.hasError == true){
+        if (state.hasError == true) {
             h1 { + "Something went wrong" }
         } else {
             props.children()
