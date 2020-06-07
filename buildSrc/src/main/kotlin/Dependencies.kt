@@ -24,7 +24,7 @@ object Versions {
     const val TARGET_SDK_VERSION = 29
     const val COMPILE_SDK_VERSION = 29
     const val APP_COMPAT = "1.1.0"
-    const val MATERIAL = "1.1.0"
+    const val MATERIAL = "1.2.0-beta01"
     const val CONSTRAINT_LAYOUT = "2.0.0-beta4"
     const val LIFECYCLE_RUNTIME_KTX = "2.2.0"
 

@@ -13,4 +13,10 @@ class CustomApplication : Application(), DIAware {
         import(common)
         import(basic)
     }
+
+    override fun onCreate() {
+        super.onCreate()
+
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
 }

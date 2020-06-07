@@ -3,11 +3,13 @@ package com.akjaw.fullerstack.screens.noteslist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
+import com.akjaw.fullerstack.screens.noteslist.recyclerview.DividerItemDecorator
 import com.akjaw.fullerstack.screens.noteslist.recyclerview.NotesListAdapter
 import data.Note
 
@@ -29,6 +31,10 @@ class NotesListViewMvc(
         notesRecyclerView.adapter = notesListAdapter
         notesRecyclerView.setHasFixedSize(true)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
+        val divider = ContextCompat.getDrawable(context, R.drawable.divider)
+        if(divider != null){
+            notesRecyclerView.addItemDecoration(DividerItemDecorator(divider))
+        }
     }
 
     fun setNotes(notes: List<Note>) {
