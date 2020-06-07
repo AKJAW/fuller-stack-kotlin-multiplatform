@@ -10,10 +10,10 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import org.kodein.di.ktor.kodein
+import org.kodein.di.ktor.di
 
 fun Application.module() {
-    kodein {
+    di {
         import(common)
     }
     install(Routing) {

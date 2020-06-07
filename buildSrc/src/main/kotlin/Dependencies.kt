@@ -1,6 +1,6 @@
 object Versions {
     //shared
-    const val KODEIN = "6.5.5"
+    const val KODEIN = "7.0.0"
     const val COROUTINES = "1.3.7"
     const val KTLINT = "0.36.0"
 
@@ -13,6 +13,7 @@ object Versions {
     const val REDUX = "4.0.0"
     const val REACT_REDUX = "5.0.7"
     const val MUIRWIK = "0.5.1"
+    const val NPM_METRIAL_UI = "^4.9.14"
 
     //ktor
     const val KTOR = "1.3.2"
@@ -42,7 +43,7 @@ object PluginsVersions {
 }
 
 object SharedLibs {
-    const val KODEIN_DI_ERASED = "org.kodein.di:kodein-di-erased:${Versions.KODEIN}"
+    const val KODEIN_DI = "org.kodein.di:kodein-di:${Versions.KODEIN}"
     const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
 }
@@ -62,8 +63,6 @@ object ReactLibs {
     const val CSS_JS = "org.jetbrains:kotlin-css-js:1.0.0-pre.104-kotlin-${PluginsVersions.KOTLIN}"
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
 
-    const val KODEIN_DI_ERASED_JS = "org.kodein.di:kodein-di-erased-js:${Versions.KODEIN}"
-
     const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
 }
 
@@ -72,7 +71,6 @@ object KtorLibs {
     const val SERVER_NETTY = "io.ktor:ktor-server-netty:${Versions.KTOR}"
     const val LOG_BACK_CLASSIC = "ch.qos.logback:logback-classic:${Versions.LOG_BACK}"
 
-    const val KODEIN_DI_ERASED_JVM = "org.kodein.di:kodein-di-erased-jvm:${Versions.KODEIN}"
     const val KODEIN_DI_FRAMEWORK_KTOR_SERVER = "org.kodein.di:kodein-di-framework-ktor-server-jvm:${Versions.KODEIN}"
 }
 
@@ -83,7 +81,6 @@ object AndroidLibs {
     const val MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
 
-    const val KODEIN_DI_ERASED_JVM = "org.kodein.di:kodein-di-erased-jvm:${Versions.KODEIN}"
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
 
     const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"

@@ -5,7 +5,7 @@ import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseActivity
 import com.akjaw.fullerstack.screens.noteslist.NotesListFragment
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 class MainActivity : BaseActivity() {
 

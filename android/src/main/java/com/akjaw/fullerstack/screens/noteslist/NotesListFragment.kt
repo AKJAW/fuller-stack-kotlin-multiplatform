@@ -13,7 +13,7 @@ import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import data.Note
 import feature.noteslist.FetchNotesListUseCaseAsync
 import kotlinx.coroutines.launch
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 
 class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 

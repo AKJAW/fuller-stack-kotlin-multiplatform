@@ -33,7 +33,6 @@ android {
     }
 }
 
-// TODO version to other file
 dependencies {
     implementation(project(":shared"))
 
@@ -46,7 +45,7 @@ dependencies {
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
 
     // dependency injection
-    implementation(AndroidLibs.KODEIN_DI_ERASED_JVM)
+    implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
     // lifecycle

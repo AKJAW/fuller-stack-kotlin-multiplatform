@@ -17,7 +17,7 @@ dependencies {
     implementation(KtorLibs.LOG_BACK_CLASSIC)
 
     // dependency injection
-    implementation(KtorLibs.KODEIN_DI_ERASED_JVM)
+    implementation(SharedLibs.KODEIN_DI)
     implementation(KtorLibs.KODEIN_DI_FRAMEWORK_KTOR_SERVER)
 }
 
@@ -35,5 +35,7 @@ tasks {
         group = "custom"
         main = "server.MainKt"
         classpath = sourceSets["main"].runtimeClasspath
+
+        println("running on http://localhost:9000/")
     }
 }

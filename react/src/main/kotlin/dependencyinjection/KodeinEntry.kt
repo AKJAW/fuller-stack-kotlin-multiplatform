@@ -1,10 +1,10 @@
 package dependencyinjection
 
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 
-object KodeinEntry : KodeinAware {
-    override val kodein by Kodein.lazy {
+object KodeinEntry : DIAware {
+    override val di by DI.lazy {
         import(common)
     }
 }

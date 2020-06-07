@@ -26,7 +26,7 @@ dependencies {
     implementation(ReactLibs.MUIRWIK)
 
     // dependency injection
-    implementation(ReactLibs.KODEIN_DI_ERASED_JS)
+    implementation(SharedLibs.KODEIN_DI)
 
     // network
     implementation(ReactLibs.COROUTINES_JS)
@@ -43,7 +43,7 @@ kotlin {
 
         implementation(npm("styled-components"))
         implementation(npm("inline-style-prefixer"))
-        implementation(npm("@material-ui/core", "^4.9.14"))
+        implementation(npm("@material-ui/core", Versions.NPM_METRIAL_UI))
     }
 }
 

@@ -24,7 +24,7 @@ kotlin {
     sourceSets {
         all {
             dependencies {
-                implementation(SharedLibs.KODEIN_DI_ERASED)
+                implementation(SharedLibs.KODEIN_DI)
             }
         }
 
