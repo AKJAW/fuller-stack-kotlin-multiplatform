@@ -10,11 +10,13 @@ import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 import com.akjaw.fullerstack.screens.noteslist.recyclerview.NotesListAdapter
 import data.Note
+import helpers.date.PatternProvider
 
 class NotesListViewMvc(
     inflater: LayoutInflater,
     parent: ViewGroup?,
-    viewMvcFactory: ViewMvcFactory
+    viewMvcFactory: ViewMvcFactory,
+    patternProvider: PatternProvider
 ) : BaseObservableViewMvc<NotesListViewMvc.Listener>() {
 
     interface Listener {
@@ -22,7 +24,11 @@ class NotesListViewMvc(
     }
 
     override val rootView: View = inflater.inflate(R.layout.layout_notes_list, parent, false)
-    private val notesListAdapter: NotesListAdapter = NotesListAdapter(::onNoteClicked, viewMvcFactory)
+    private val notesListAdapter: NotesListAdapter = NotesListAdapter(
+        ::onNoteClicked,
+        viewMvcFactory,
+        patternProvider.getNotesListItemPattern()
+    )
     private val notesRecyclerView: RecyclerView = rootView.findViewById(R.id.notes_list)
 
     init {

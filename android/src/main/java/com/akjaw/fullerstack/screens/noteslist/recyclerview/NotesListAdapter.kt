@@ -8,7 +8,8 @@ import data.Note
 
 class NotesListAdapter(
     private val onItemClicked: (String) -> Unit,
-    private val viewMvcFactory: ViewMvcFactory
+    private val viewMvcFactory: ViewMvcFactory,
+    private val dateFormat: DateFormat
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>(), NoteItemViewMvc.Listener {
 
     private var notes: List<Note> = listOf()
@@ -25,7 +26,7 @@ class NotesListAdapter(
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
         holder.noteItemViewMvc.setTitle(note.title)
-        holder.noteItemViewMvc.setDate(note.creationDate.format(DateFormat("dd.MM")))
+        holder.noteItemViewMvc.setDate(note.creationDate.format(dateFormat))
     }
 
     // TODO add diffutil
