@@ -38,7 +38,7 @@
                     android:textSize="?attr/noteTitleTextSize"
                     tools:text="Note 1Note 1Note 1Note 1Note 1Note 1"/>
             <TextView
-                    android:id="@+id/note_time"
+                    android:id="@+id/note_date"
                     style="@style/NotesListItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

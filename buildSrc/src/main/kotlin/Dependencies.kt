@@ -3,6 +3,7 @@ object Versions {
     const val KODEIN = "7.0.0"
     const val COROUTINES = "1.3.7"
     const val KTLINT = "0.36.0"
+    const val KLOCK = "1.11.11"
 
     //shared test
     const val JUNIT5 = "5.6.2"
@@ -46,6 +47,11 @@ object SharedLibs {
     const val KODEIN_DI = "org.kodein.di:kodein-di:${Versions.KODEIN}"
     const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
+    const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
+}
+
+object JVMLibs {
+    const val KLOCK_JVM = "com.soywiz.korlibs.klock:klock-jvm:${Versions.KLOCK}"
 }
 
 object JVMTestingLibs {

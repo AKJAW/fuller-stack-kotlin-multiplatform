@@ -32,6 +32,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation(SharedLibs.COROUTINES_COMMON)
+                implementation(SharedLibs.KLOCK)
             }
         }
         val commonTest by getting {

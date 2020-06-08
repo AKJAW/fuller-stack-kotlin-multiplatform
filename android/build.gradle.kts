@@ -54,6 +54,9 @@ dependencies {
     // network
     implementation(AndroidLibs.COROUTINES_ANDROID)
 
+    // date
+    implementation(SharedLibs.KLOCK)
+
     testImplementation(JVMTestingLibs.JUNIT5)
     testImplementation(JVMTestingLibs.COROUTINES_TEST)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)

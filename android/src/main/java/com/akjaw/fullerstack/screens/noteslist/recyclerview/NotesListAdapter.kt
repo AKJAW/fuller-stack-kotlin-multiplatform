@@ -3,6 +3,7 @@ package com.akjaw.fullerstack.screens.noteslist.recyclerview
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
+import com.soywiz.klock.DateFormat
 import data.Note
 
 class NotesListAdapter(
@@ -24,6 +25,7 @@ class NotesListAdapter(
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
         holder.noteItemViewMvc.setTitle(note.title)
+        holder.noteItemViewMvc.setDate(note.creationDate.format(DateFormat("dd.MM")))
     }
 
     // TODO add diffutil
