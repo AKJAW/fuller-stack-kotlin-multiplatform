@@ -3,40 +3,40 @@ package feature.noteslist
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import data.Note
 import network.NetworkApiFake
+import repository.NoteRepositoryFake
 import runTest
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class FetchNotesListUseCaseAsyncTest {
+class FetchNotesTest {
 
     private lateinit var noteApiFake : NetworkApiFake
-    private lateinit var SUT : FetchNotesListUseCaseAsync
+    private lateinit var noteRepositoryFake: NoteRepositoryFake
+    private lateinit var SUT : FetchNotes
 
     @BeforeTest
     fun setUp(){
         noteApiFake = NetworkApiFake()
-        SUT = FetchNotesListUseCaseAsync(noteApiFake)
+        noteRepositoryFake = NoteRepositoryFake(noteApiFake)
+        SUT = FetchNotes(noteRepositoryFake)
     }
 
-    @JsName("callsTheApiOnce")
+    @JsName("callsTheRepositoryRefreshNotesOnce")
     @Test
-    fun `executeAsync calls the Api once`() = runTest {
+    fun `executeAsync calls the repository refreshNotes once`() = runTest {
         SUT.executeAsync(UseCaseAsync.None()) {}
-        assertEquals(1, noteApiFake.callCount)
+        assertEquals(1, noteRepositoryFake.refreshNotesCallCount)
     }
 
-    @JsName("callsTheCallbackWithList")
+    @JsName("callsTheCallbackWithFlow")
     @Test
-    fun `executeAsync success calls the callback with the list`() = runTest {
-        val expectedList = listOf(Note("a"), Note("b"))
-        noteApiFake.notes = expectedList
+    fun `executeAsync success calls the callback with the repository flow`() = runTest {
         SUT.executeAsync(UseCaseAsync.None()) {
-            val result = it as Either.Right
-            assertEquals(expectedList, result.r)
+            val flow = (it as Either.Right).r
+            assertEquals(noteRepositoryFake.notes, flow)
         }
     }
 

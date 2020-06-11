@@ -10,7 +10,7 @@ class NetworkApiFake : NoteApi {
     override suspend fun getNotes(): List<Note> {
         callCount++
         if (willFail) {
-            throw Error() // TODO make more defined
+            throw Exception() // TODO make more defined
         }
         return notes
     }
