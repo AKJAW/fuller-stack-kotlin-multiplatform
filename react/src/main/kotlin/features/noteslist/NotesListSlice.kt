@@ -5,7 +5,7 @@ import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import data.Note
 import dependencyinjection.KodeinEntry.di
-import feature.noteslist.FetchNotesListUseCaseAsync
+import feature.noteslist.RefreshNotes
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
@@ -16,7 +16,7 @@ import store.State
 import store.nullAction
 
 object NotesListSlice {
-    val fetchNotesListUseCaseAsync by di.instance<FetchNotesListUseCaseAsync>()
+    val fetchNotesListUseCaseAsync by di.instance<RefreshNotes>()
 
     fun fetchNotesList(): RThunk = object : RThunk {
         override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {

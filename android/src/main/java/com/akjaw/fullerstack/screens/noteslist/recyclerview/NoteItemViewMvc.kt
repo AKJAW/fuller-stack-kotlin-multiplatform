@@ -15,11 +15,12 @@ class NoteItemViewMvc(layoutInflater: LayoutInflater, parent: ViewGroup?) :
     }
 
     override val rootView: View = layoutInflater.inflate(R.layout.item_notes_list, parent, false)
+    private val noteContainer: View = findViewById(R.id.note_container)
     private val title: TextView = findViewById(R.id.note_title)
     private val date: TextView = findViewById(R.id.note_date)
 
     init {
-        rootView.setOnClickListener {
+        noteContainer.setOnClickListener {
             listeners.forEach { listener ->
                 listener.onNoteClicked(title.text.toString())
             }

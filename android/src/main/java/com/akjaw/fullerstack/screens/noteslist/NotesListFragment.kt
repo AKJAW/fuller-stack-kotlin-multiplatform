@@ -7,18 +7,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import base.usecase.Either
+import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import data.Note
-import feature.noteslist.FetchNotesListUseCaseAsync
+import feature.noteslist.AddNote
+import feature.noteslist.FetchNotes
+import feature.noteslist.RefreshNotes
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
 class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
 
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
-    private val fetchNotesListUseCaseAsync: FetchNotesListUseCaseAsync by instance<FetchNotesListUseCaseAsync>()
+    private val refreshNotes: RefreshNotes by instance<RefreshNotes>()
+    private val fetchNotes: FetchNotes by instance<FetchNotes>()
+    private val addNote: AddNote by instance<AddNote>()
     private lateinit var viewMvc: NotesListViewMvc
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,7 +39,30 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
         super.onStart()
         viewMvc.registerListener(this)
 
-        fetchNotesList()
+        fetchNotes()
+    }
+
+    private fun fetchNotes() {
+        lifecycleScope.launch {
+            fetchNotes.executeAsync(UseCaseAsync.None()) { either ->
+                when(either) {
+                    is Either.Left -> onNoteListRefreshFail(either.l)
+                    is Either.Right -> listenToNotesChanges(either.r)
+                }
+            }
+        }
+    }
+
+    private fun onNoteListRefreshFail(failure: Failure) {
+        TODO("Not yet implemented")
+    }
+
+    private fun listenToNotesChanges(notesFlow: Flow<List<Note>>) {
+        lifecycleScope.launch {
+            notesFlow.collect { notes ->
+                viewMvc.setNotes(notes)
+            }
+        }
     }
 
     override fun onStop() {
@@ -40,27 +71,9 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
     }
 
     override fun onNoteClicked(title: String) {
-        Toast.makeText(context, title, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun fetchNotesList() {
         lifecycleScope.launch {
-            fetchNotesListUseCaseAsync.executeAsync(
-                UseCaseAsync.None()
-            ) { result ->
-                when (result) {
-                    is Either.Left -> onNoteListFetchFail()
-                    is Either.Right -> onNoteListFetchSuccess(result.r)
-                }
-            }
+            addNote.executeAsync(Note("Teee"))
         }
-    }
-
-    private fun onNoteListFetchSuccess(notes: List<Note>) {
-        viewMvc.setNotes(notes)
-    }
-
-    private fun onNoteListFetchFail() {
-        TODO("Not yet implemented")
+        Toast.makeText(context, title, Toast.LENGTH_SHORT).show()
     }
 }
