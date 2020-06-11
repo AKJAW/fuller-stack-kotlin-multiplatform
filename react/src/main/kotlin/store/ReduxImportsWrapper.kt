@@ -17,4 +17,6 @@ external fun <S, A, R> createStore(
 
 external fun <A, T1, T2, R> compose(function1: (T2) -> R, function2: (T1) -> T2, function3: (A) -> T1): (A) -> R
 
-external fun <S, A1, R1, A2, R2> applyMiddleware(vararg middlewares: Middleware<S, A1, R1, A2, R2>): Enhancer<S, A1, R1, A2, R2>
+external fun <S, A1, R1, A2, R2> applyMiddleware(
+    vararg middlewares: Middleware<S, A1, R1, A2, R2>
+): Enhancer<S, A1, R1, A2, R2>

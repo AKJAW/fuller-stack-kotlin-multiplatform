@@ -5,8 +5,12 @@ import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import data.Note
 import dependencyinjection.KodeinEntry.di
-import feature.noteslist.RefreshNotes
+import feature.noteslist.AddNote
+import feature.noteslist.FetchNotes
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 import redux.RAction
@@ -16,10 +20,14 @@ import store.State
 import store.nullAction
 
 object NotesListSlice {
-    val fetchNotesListUseCaseAsync by di.instance<RefreshNotes>()
+    private val fetchNotesListUseCaseAsync by di.instance<FetchNotes>()
+    private val addNoteUseCaseAsync by di.instance<AddNote>()
+    private var notesFlowJob: Job? = null
 
+    //TODO should this be cancelled somewhere?
     fun fetchNotesList(): RThunk = object : RThunk {
         override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
+            if(notesFlowJob != null) return nullAction
             console.log("fetchNotesList")
             GlobalScope.launch {
                 fetchNotesListUseCaseAsync.executeAsync(
@@ -30,14 +38,42 @@ object NotesListSlice {
             return nullAction // TODO is this necessary
         }
 
-        fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, List<Note>>) =
+        private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, Flow<List<Note>>>) =
             when (result) {
                 is Either.Left -> TODO()
-                is Either.Right -> {
-                    val action = SetNotesList(result.r.toTypedArray())
+                is Either.Right -> listenToNoteChanges(dispatch, result.r)
+            }
+
+        private fun listenToNoteChanges(
+            dispatch: (RAction) -> WrapperAction,
+            notesFlow: Flow<List<Note>>
+        ) {
+            notesFlowJob = GlobalScope.launch {
+                notesFlow.collect { notes ->
+                    val action = SetNotesList(notes.toTypedArray())
                     dispatch(action)
                 }
             }
+        }
+    }
+
+    fun addNote(note: Note): RThunk = object : RThunk {
+        override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
+            GlobalScope.launch {
+                addNoteUseCaseAsync.executeAsync(
+                    note
+                ) { result -> handleResult(dispatch, result) }
+            }
+
+            return nullAction
+        }
+
+        private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, UseCaseAsync.None>) {
+            when (result) {
+                is Either.Left -> TODO()
+                is Either.Right -> {/* empty */}
+            }
+        }
     }
 
     class SetNotesList(val notesList: Array<Note>) : RAction

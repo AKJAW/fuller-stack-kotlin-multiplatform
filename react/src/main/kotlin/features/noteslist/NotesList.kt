@@ -14,6 +14,7 @@ import styled.styledDiv
 
 interface NotesListProps : RProps {
     var notesList: Array<Note>
+    var onNoteClicked: (note: Note) -> Unit
 }
 
 val notesList = functionalComponent<NotesListProps> { props ->
@@ -24,7 +25,7 @@ val notesList = functionalComponent<NotesListProps> { props ->
         }
         mList {
             props.notesList.forEach { note ->
-                mListItem(note.toString())
+                mListItem(primaryText = note.toString(), onClick = { props.onNoteClicked(Note("Teee")) })
             }
         }
     }

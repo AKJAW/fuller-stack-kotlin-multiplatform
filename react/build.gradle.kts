@@ -30,6 +30,9 @@ dependencies {
 
     // network
     implementation(ReactLibs.COROUTINES_JS)
+
+    // date
+    implementation(SharedLibs.KLOCK)
 }
 
 kotlin {
