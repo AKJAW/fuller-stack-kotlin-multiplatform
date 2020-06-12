@@ -1,6 +1,9 @@
 package features.noteslist
 
 import data.Note
+import dependencyinjection.KodeinEntry
+import helpers.date.PatternProvider
+import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
 import react.RComponent
@@ -29,6 +32,8 @@ private interface DispatchProps : RProps {
 }
 
 private class NotesListContainer(props: NotesListConnectedProps) : RComponent<NotesListConnectedProps, RState>(props) {
+    val patternProvider by KodeinEntry.di.instance<PatternProvider>()
+    val dateFormat = patternProvider.getNotesListItemPattern()
 
     override fun componentDidMount() {
         props.fetchNotesList()
@@ -38,6 +43,7 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
         child(notesList) {
             attrs.notesList = props.notesList
             attrs.onNoteClicked = props.addNote
+            attrs.dateFormat = dateFormat
         }
     }
 }
