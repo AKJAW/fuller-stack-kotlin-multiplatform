@@ -46,14 +46,14 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
         lifecycleScope.launch {
             fetchNotes.executeAsync(UseCaseAsync.None()) { either ->
                 when(either) {
-                    is Either.Left -> onNoteListRefreshFail(either.l)
+                    is Either.Left -> onFetchNotesFail(either.l)
                     is Either.Right -> listenToNotesChanges(either.r)
                 }
             }
         }
     }
 
-    private fun onNoteListRefreshFail(failure: Failure) {
+    private fun onFetchNotesFail(failure: Failure) {
         TODO("Not yet implemented")
     }
 
