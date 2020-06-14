@@ -13,7 +13,7 @@ import com.akjaw.fullerstack.screens.noteslist.recyclerview.NotesListAdapter
 import data.Note
 import helpers.date.PatternProvider
 
-class NotesListViewMvc(
+class NotesListViewMvc(//TODO Make an abstraction
     inflater: LayoutInflater,
     parent: ViewGroup?,
     viewMvcFactory: ViewMvcFactory,

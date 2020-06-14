@@ -7,11 +7,11 @@ import kotlinx.coroutines.delay
 @Suppress("MagicNumber")
 class NoteApiFake : NoteApi {
     private val notes = listOf(
-        Note("Note 1", DateTime.createAdjusted(2020, 6, 2)),
-        Note("Note 2", DateTime.createAdjusted(2020, 6, 2)),
-        Note("Note 3", DateTime.createAdjusted(2020, 6, 5)),
-        Note("Note 4", DateTime.createAdjusted(2020, 6, 7)),
-        Note("Note 5", DateTime.createAdjusted(2020, 6, 8))
+        Note(title = "Note 1", creationDate = DateTime.createAdjusted(2020, 6, 2)),
+        Note(title = "Note 2", creationDate = DateTime.createAdjusted(2020, 6, 2)),
+        Note(title = "Note 3", creationDate = DateTime.createAdjusted(2020, 6, 5)),
+        Note(title = "Note 4", creationDate = DateTime.createAdjusted(2020, 6, 7)),
+        Note(title = "Note 5", creationDate = DateTime.createAdjusted(2020, 6, 8))
     )
 
     override suspend fun getNotes(): List<Note> {
