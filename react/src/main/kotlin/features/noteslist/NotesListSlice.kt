@@ -7,8 +7,9 @@ import data.Note
 import dependencyinjection.KodeinEntry.di
 import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ import store.nullAction
 object NotesListSlice {
     private val fetchNotesListUseCaseAsync by di.instance<FetchNotes>()
     private val addNoteUseCaseAsync by di.instance<AddNote>()
+    private val notesListScope = CoroutineScope(SupervisorJob())
     private var notesFlowJob: Job? = null
 
     //TODO should this be cancelled somewhere?
@@ -29,7 +31,7 @@ object NotesListSlice {
         override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
             if(notesFlowJob != null) return nullAction
             console.log("fetchNotesList")
-            GlobalScope.launch {
+            notesListScope.launch {
                 fetchNotesListUseCaseAsync.executeAsync(
                     UseCaseAsync.None()
                 ) { result -> handleResult(dispatch, result) }
@@ -48,7 +50,7 @@ object NotesListSlice {
             dispatch: (RAction) -> WrapperAction,
             notesFlow: Flow<List<Note>>
         ) {
-            notesFlowJob = GlobalScope.launch {
+            notesFlowJob = notesListScope.launch {
                 notesFlow.collect { notes ->
                     val action = SetNotesList(notes.toTypedArray())
                     dispatch(action)
@@ -59,7 +61,7 @@ object NotesListSlice {
 
     fun addNote(note: Note): RThunk = object : RThunk {
         override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
-            GlobalScope.launch {
+            notesListScope.launch {
                 addNoteUseCaseAsync.executeAsync(
                     note
                 ) { result -> handleResult(dispatch, result) }

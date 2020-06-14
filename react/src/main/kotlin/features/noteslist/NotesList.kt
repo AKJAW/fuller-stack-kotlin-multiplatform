@@ -10,7 +10,13 @@ import kotlinx.css.Color
 import kotlinx.css.LinearDimension
 import kotlinx.css.alignSelf
 import kotlinx.css.backgroundColor
+import kotlinx.css.boxShadow
+import kotlinx.css.margin
 import kotlinx.css.marginRight
+import kotlinx.css.padding
+import kotlinx.css.properties.BoxShadow
+import kotlinx.css.px
+import kotlinx.css.rgba
 import kotlinx.css.width
 import react.RProps
 import react.dom.span
@@ -25,12 +31,19 @@ interface NotesListProps : RProps {
     var dateFormat: DateFormat
 }
 
+@Suppress("MagicNumber")
 private object Classes : StyleSheet("NoteList", isStatic = true) {
     val list by css {
         width = LinearDimension("100%")
     }
     val note by css {
-//        boxShadow(Color.blacks, 0.px, 2.px, 1.px, (-1).px)
+        boxShadow += BoxShadow(false, 0.px, 1.px, 3.px, 0.px, rgba(0,0,0,0.12))
+        boxShadow += BoxShadow(false, 0.px, 1.px, 2.px, 0.px, rgba(0,0,0,0.24))
+        margin = "5px 0"
+        padding = "0px 8px 0 0"
+    }
+    val noteTitle by css {
+        padding = "3px"
     }
     val colorBadge by css {
         width = LinearDimension("5px")
@@ -53,7 +66,9 @@ val notesList = functionalComponent<NotesListProps> { props ->
                             backgroundColor = Color("#00b7ffc2")
                         }
                     }
-                    mListItemText(note.title)
+                    mListItemText(note.title) {
+                        css(Classes.noteTitle)
+                    }
                     span {
                         + note.creationDate.format(props.dateFormat)
                     }

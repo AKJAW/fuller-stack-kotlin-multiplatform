@@ -16,10 +16,10 @@ class App : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
         mContainer(maxWidth = Breakpoint.lg) {
             mGridContainer(spacing = MGridSpacing.spacing2) {
-                mGridItem(sm = MGridSize.cells12, lg = MGridSize.cells6) {
+                mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
                     notesListContainer { }
                 }
-                mGridItem(sm = MGridSize.cells12, lg = MGridSize.cells6) {
+                mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
                     div {
                         + "No tutaj będzie edycja"
                     }

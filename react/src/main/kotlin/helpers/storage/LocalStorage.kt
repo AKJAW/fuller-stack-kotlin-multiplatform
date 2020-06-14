@@ -8,6 +8,6 @@ class LocalStorage : Storage {
     }
 
     override fun setString(key: String, value: String) {
-
+        /* TODO */
     }
 }
