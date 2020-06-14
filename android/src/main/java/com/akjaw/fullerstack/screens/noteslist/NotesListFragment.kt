@@ -15,7 +15,6 @@ import data.Note
 import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes
 import feature.noteslist.RefreshNotes
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -43,8 +42,10 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
     }
 
     private fun fetchNotes() {
+        viewMvc.showLoading()
         lifecycleScope.launch {
             fetchNotes.executeAsync(UseCaseAsync.None()) { either ->
+                viewMvc.hideLoading()
                 when(either) {
                     is Either.Left -> onFetchNotesFail(either.l)
                     is Either.Right -> listenToNotesChanges(either.r)
