@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Android</string>
     <string name="note_color_badge_content_description">Note color badge</string>
+    <string name="note_editor_action_add">Add</string>
 </resources>

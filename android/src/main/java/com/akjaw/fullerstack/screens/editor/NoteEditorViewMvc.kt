@@ -5,15 +5,17 @@ import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 abstract class NoteEditorViewMvc : BaseObservableViewMvc<NoteEditorViewMvc.Listener>() {
 
     interface Listener {
-        fun onAddClicked()
+        fun onActionClicked()
         fun onCancelClicked()
     }
 
-    abstract fun getTitle(): String
+    abstract fun setToolbarTitle(text: String)
 
-    abstract fun showTitleError(text: String)
+    abstract fun getNoteTitle(): String
 
-    abstract fun hideTitleError()
+    abstract fun showNoteTitleError(text: String)
 
-    abstract fun getBody(): String
+    abstract fun hideNoteTitleError()
+
+    abstract fun getNoteContent(): String
 }

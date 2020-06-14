@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseActivity
+import com.akjaw.fullerstack.screens.editor.NoteEditorDialog
 import com.akjaw.fullerstack.screens.noteslist.NotesListFragment
 import org.kodein.di.instance
 
@@ -23,5 +24,9 @@ class MainActivity : BaseActivity() {
             fragmentTransaction.add(R.id.fragment_placeholder, NotesListFragment())
             fragmentTransaction.commit()
         }
+
+        val dialog = NoteEditorDialog.newNoteEditorDialog()
+
+        dialog.show(supportFragmentManager, null)
     }
 }

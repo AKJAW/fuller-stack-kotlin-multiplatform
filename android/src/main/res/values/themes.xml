@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.NotesList">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NotesList" parent="AppTheme">
         <item name="noteTitleTextSize">20sp</item>
         <item name="noteDateTextSize">12sp</item>
         <item name="noteColorBadgeWidth">5dp</item>
+    </style>
+
+    <style name="AppTheme.NotesEditorDialog" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 </resources>

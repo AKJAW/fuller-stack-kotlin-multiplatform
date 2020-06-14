@@ -21,14 +21,15 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewMvc = viewMvcFactory.getNoteEditorViewMvc(null)
+        viewMvc = viewMvcFactory.getNoteEditorViewMvc(null, R.menu.note_editor_add)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = Dialog(requireContext(), R.style.NotesEditorDialog)
+        val dialog = Dialog(requireContext(), R.style.AppTheme_NotesEditorDialog)
         dialog.setContentView(viewMvc.rootView)
 
-        viewMvc.showTitleError("Error title")
+        viewMvc.setToolbarTitle("Add a note")
+        viewMvc.showNoteTitleError("Error title")
 
         return dialog
     }
@@ -43,7 +44,7 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
         viewMvc.unregisterListener(this)
     }
 
-    override fun onAddClicked() {
+    override fun onActionClicked() {
         TODO("Not yet implemented")
     }
 
