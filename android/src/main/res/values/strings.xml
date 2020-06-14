@@ -7,4 +7,5 @@
     <string name="note_editor_failure_add">Syncing with cloud failed</string>
     <string name="note_editor_error_empty_title">Title cannot be empty</string>
     <string name="note_editor_error_title_too_long">Title is too long</string>
+    <string name="note_list_add_note">Add a note</string>
 </resources>

@@ -10,6 +10,7 @@ import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 import com.akjaw.fullerstack.screens.noteslist.recyclerview.NotesListAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import data.Note
 import helpers.date.PatternProvider
 
@@ -21,7 +22,10 @@ class NotesListViewMvc(//TODO Make an abstraction
 ) : BaseObservableViewMvc<NotesListViewMvc.Listener>() {
 
     interface Listener {
+
         fun onNoteClicked(title: String)
+
+        fun onAddNoteClicked()
     }
 
     override val rootView: View = inflater.inflate(R.layout.layout_notes_list, parent, false)
@@ -32,11 +36,16 @@ class NotesListViewMvc(//TODO Make an abstraction
     )
     private val notesRecyclerView: RecyclerView = rootView.findViewById(R.id.notes_list)
     private val loadingIndicator: ProgressBar = rootView.findViewById(R.id.loading_indicator)
+    private val fab: FloatingActionButton = rootView.findViewById(R.id.floating_action_button)
 
     init {
         notesRecyclerView.adapter = notesListAdapter
         notesRecyclerView.setHasFixedSize(true)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        fab.setOnClickListener {
+            listeners.forEach { it.onAddNoteClicked() }
+        }
     }
 
     private fun onNoteClicked(title: String) {

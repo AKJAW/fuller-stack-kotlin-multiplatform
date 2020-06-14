@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
+import com.akjaw.fullerstack.screens.editor.NoteEditorDialog
 import data.Note
 import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes
@@ -72,9 +72,14 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
     }
 
     override fun onNoteClicked(title: String) {
-        lifecycleScope.launch {
-            addNote.executeAsync(Note("Teee"))
+        TODO("Not implemented")
+    }
+
+    override fun onAddNoteClicked() {
+        fragmentManager?.let { fragmentManager ->
+            val dialog = NoteEditorDialog.newNoteEditorDialog()
+
+            dialog.show(fragmentManager, null)
         }
-        Toast.makeText(context, title, Toast.LENGTH_SHORT).show()
     }
 }
