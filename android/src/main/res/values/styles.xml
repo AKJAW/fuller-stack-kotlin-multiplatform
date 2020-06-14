@@ -24,4 +24,10 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="NotesEditorDialog" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
 </resources>
