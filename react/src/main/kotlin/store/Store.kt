@@ -4,9 +4,9 @@ import redux.RAction
 import redux.rEnhancer
 
 @Suppress("MaxLineLength")
-val myStore = createStore<State, RAction, dynamic>(
+val myStore = createStore<AppState, RAction, dynamic>(
     combinedReducers(),
-    State(),
+    AppState(),
     compose(
         rThunk(),
         rEnhancer(),

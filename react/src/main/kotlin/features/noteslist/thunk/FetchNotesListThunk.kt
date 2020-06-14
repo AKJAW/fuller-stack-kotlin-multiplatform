@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 import org.kodein.di.instance
 import redux.RAction
 import redux.WrapperAction
+import store.AppState
 import store.RThunk
-import store.State
 import store.nullAction
 
 class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
@@ -24,9 +24,10 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
     private var notesFlowJob: Job? = null
 
     //TODO should this be cancelled somewhere?
-    override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
+    override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         if(notesFlowJob != null) return nullAction
-        console.log("fetchNotesList")
+
+        dispatch(NotesListSlice.SetIsLoading(true))
         scope.launch {
             fetchNotesListUseCaseAsync.executeAsync(
                 UseCaseAsync.None()
@@ -36,11 +37,13 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
         return nullAction // TODO is this necessary
     }
 
-    private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, Flow<List<Note>>>) =
+    private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, Flow<List<Note>>>) {
+        dispatch(NotesListSlice.SetIsLoading(false))
         when (result) {
             is Either.Left -> TODO()
             is Either.Right -> listenToNoteChanges(dispatch, result.r)
         }
+    }
 
     private fun listenToNoteChanges(
         dispatch: (RAction) -> WrapperAction,

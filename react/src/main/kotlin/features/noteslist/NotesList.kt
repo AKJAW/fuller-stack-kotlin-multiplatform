@@ -3,16 +3,23 @@ package features.noteslist
 import com.ccfraser.muirwik.components.list.mList
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemText
+import com.ccfraser.muirwik.components.mCircularProgress
 import com.soywiz.klock.DateFormat
 import data.Note
 import kotlinx.css.Align
 import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.JustifyContent
 import kotlinx.css.LinearDimension
+import kotlinx.css.alignItems
 import kotlinx.css.alignSelf
 import kotlinx.css.backgroundColor
 import kotlinx.css.boxShadow
+import kotlinx.css.display
+import kotlinx.css.justifyContent
 import kotlinx.css.margin
 import kotlinx.css.marginRight
+import kotlinx.css.minHeight
 import kotlinx.css.padding
 import kotlinx.css.properties.BoxShadow
 import kotlinx.css.px
@@ -26,6 +33,7 @@ import styled.css
 import styled.styledDiv
 
 interface NotesListProps : RProps {
+    var isLoading: Boolean
     var notesList: Array<Note>
     var onNoteClicked: (note: Note) -> Unit
     var dateFormat: DateFormat
@@ -33,6 +41,14 @@ interface NotesListProps : RProps {
 
 @Suppress("MagicNumber")
 private object Classes : StyleSheet("NoteList", isStatic = true) {
+    val root by css {
+        minHeight = LinearDimension("400px")
+    }
+    val loading by css {
+        display = Display.flex
+        justifyContent = JustifyContent.center
+        alignItems = Align.center
+    }
     val list by css {
         width = LinearDimension("100%")
     }
@@ -55,22 +71,28 @@ private object Classes : StyleSheet("NoteList", isStatic = true) {
 val notesList = functionalComponent<NotesListProps> { props ->
 
     styledDiv {
-        mList {
-            css(Classes.list)
-            props.notesList.forEach { note ->
-                mListItem(button = true, onClick = { props.onNoteClicked(Note("Teee")) }) {
-                    css(Classes.note)
-                    styledDiv {
-                        css(Classes.colorBadge)
-                        css {
-                            backgroundColor = Color("#00b7ffc2")
+        css(Classes.root)
+        if(props.isLoading){
+            css(Classes.loading)
+            mCircularProgress {  }
+        } else {
+            mList {
+                css(Classes.list)
+                props.notesList.forEach { note ->
+                    mListItem(button = true, onClick = { props.onNoteClicked(Note("Teee")) }) {
+                        css(Classes.note)
+                        styledDiv {
+                            css(Classes.colorBadge)
+                            css {
+                                backgroundColor = Color("#00b7ffc2")
+                            }
                         }
-                    }
-                    mListItemText(note.title) {
-                        css(Classes.noteTitle)
-                    }
-                    span {
-                        + note.creationDate.format(props.dateFormat)
+                        mListItemText(note.title) {
+                            css(Classes.noteTitle)
+                        }
+                        span {
+                            + note.creationDate.format(props.dateFormat)
+                        }
                     }
                 }
             }

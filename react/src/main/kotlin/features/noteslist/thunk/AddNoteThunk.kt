@@ -11,14 +11,14 @@ import kotlinx.coroutines.launch
 import org.kodein.di.instance
 import redux.RAction
 import redux.WrapperAction
+import store.AppState
 import store.RThunk
-import store.State
 import store.nullAction
 
 class AddNoteThunk(private val scope: CoroutineScope, private val note: Note) : RThunk {
     private val addNoteUseCaseAsync by KodeinEntry.di.instance<AddNote>()
 
-    override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> State): WrapperAction {
+    override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         console.log("AddNoteThunk invoke")
         scope.launch {
             addNoteUseCaseAsync.executeAsync(

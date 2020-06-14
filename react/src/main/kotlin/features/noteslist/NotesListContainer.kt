@@ -14,15 +14,17 @@ import react.invoke
 import react.redux.rConnect
 import redux.RAction
 import redux.WrapperAction
-import store.State
+import store.AppState
 
 interface NotesListConnectedProps : RProps {
+    var isLoading: Boolean
     var notesList: Array<Note>
     var fetchNotesList: () -> Unit
     var addNote: (note: Note) -> Unit
 }
 
 private interface StateProps : RProps {
+    var isLoading: Boolean
     var notesList: Array<Note>
 }
 
@@ -41,6 +43,7 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
 
     override fun RBuilder.render() {
         child(notesList) {
+            attrs.isLoading = props.isLoading
             attrs.notesList = props.notesList
             attrs.onNoteClicked = props.addNote
             attrs.dateFormat = dateFormat
@@ -49,9 +52,10 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
 }
 
 val notesListContainer: RClass<RProps> =
-    rConnect<State, RAction, WrapperAction, RProps, StateProps, DispatchProps, NotesListConnectedProps>(
+    rConnect<AppState, RAction, WrapperAction, RProps, StateProps, DispatchProps, NotesListConnectedProps>(
         { state, _ ->
-            notesList = state.noteList
+            notesList = state.notesListState.notesList
+            isLoading = state.notesListState.isLoading
         },
         { dispatch, _ ->
             fetchNotesList = { dispatch(NotesListSlice.fetchNotesList()) }

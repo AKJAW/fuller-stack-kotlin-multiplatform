@@ -9,6 +9,11 @@ import redux.RAction
 import store.RThunk
 
 object NotesListSlice {
+    data class State(
+        val notesList: Array<Note> = emptyArray(),
+        val isLoading: Boolean = true
+    )
+
     private val notesListScope = CoroutineScope(SupervisorJob())
     private val fetchNotesListThunk = FetchNotesListThunk(notesListScope)
 
@@ -18,10 +23,15 @@ object NotesListSlice {
 
     class SetNotesList(val notesList: Array<Note>) : RAction
 
-    fun reducer(state: Array<Note> = emptyArray(), action: RAction): Array<Note> {
+    class SetIsLoading(val isLoading: Boolean) : RAction
+
+    fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is SetNotesList -> {
-                action.notesList
+                state.copy(notesList = action.notesList)
+            }
+            is SetIsLoading -> {
+                state.copy(isLoading = action.isLoading)
             }
             else -> state
         }

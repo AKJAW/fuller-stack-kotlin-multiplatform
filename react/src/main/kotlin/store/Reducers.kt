@@ -7,7 +7,7 @@ import kotlin.reflect.KProperty1
 
 fun combinedReducers() = combineReducersInferred(
     mapOf(
-        State::noteList to NotesListSlice::reducer
+        AppState::notesListState to NotesListSlice::reducer
     )
 )
 
