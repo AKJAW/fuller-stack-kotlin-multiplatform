@@ -1,4 +1,4 @@
-package features.noteslist.thunk
+package features.noteeditor.thunk
 
 import base.usecase.Either
 import base.usecase.Failure

@@ -1,5 +1,6 @@
 package store
 
+import features.noteeditor.NoteEditorSlice
 import features.noteslist.NotesListSlice
 import redux.Reducer
 import redux.combineReducers
@@ -7,7 +8,8 @@ import kotlin.reflect.KProperty1
 
 fun combinedReducers() = combineReducersInferred(
     mapOf(
-        AppState::notesListState to NotesListSlice::reducer
+        AppState::notesListState to NotesListSlice::reducer,
+        AppState::noteEditorState to NoteEditorSlice::reducer
     )
 )
 

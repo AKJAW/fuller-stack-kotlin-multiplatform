@@ -16,6 +16,7 @@ import styled.css
 import styled.styledDiv
 
 interface NoteEditorProps : RProps {
+    var selectedNote: Note?
     var addNote: (note: Note) -> Unit
 }
 
@@ -30,26 +31,27 @@ private object Classes : StyleSheet("NoteEditor", isStatic = true) {
 }
 
 val noteEditor = functionalComponent<NoteEditorProps> { props ->
-    val (title, setTitle) = useState("")
-    val (content, setContent) = useState("")
-
-    styledDiv {
-        css(Classes.root)
-        mTextField(label = "Title",
-            value = title,
-            variant = MFormControlVariant.outlined,
-            onChange = { event -> setTitle(event.targetInputValue) }
-        ) {
-            css(Classes.titleTextField)
-        }
-        mTextFieldMultiLine(
-            label = "Content",
-            value = content,
-            rowsMax = 10,
-            variant = MFormControlVariant.outlined,
-            onChange = { event -> setContent(event.targetInputValue) }
-        ) {
-            css(Classes.titleTextField)
+    val (title, setTitle) = useState(props.selectedNote?.title ?: "")
+    val (content, setContent) = useState(props.selectedNote?.content ?: "")
+    if(props.selectedNote != null) {
+        styledDiv {
+            css(Classes.root)
+            mTextField(label = "Title",
+                value = title,
+                variant = MFormControlVariant.outlined,
+                onChange = { event -> setTitle(event.targetInputValue) }
+            ) {
+                css(Classes.titleTextField)
+            }
+            mTextFieldMultiLine(
+                label = "Content",
+                value = content,
+                rowsMax = 10,
+                variant = MFormControlVariant.outlined,
+                onChange = { event -> setContent(event.targetInputValue) }
+            ) {
+                css(Classes.titleTextField)
+            }
         }
     }
 }
