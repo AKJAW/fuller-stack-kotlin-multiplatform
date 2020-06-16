@@ -20,7 +20,6 @@ interface NotesListConnectedProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
     var fetchNotesList: () -> Unit
-    var addNote: (note: Note) -> Unit
 }
 
 private interface StateProps : RProps {
@@ -30,7 +29,6 @@ private interface StateProps : RProps {
 
 private interface DispatchProps : RProps {
     var fetchNotesList: () -> Unit
-    var addNote: (note: Note) -> Unit
 }
 
 private class NotesListContainer(props: NotesListConnectedProps) : RComponent<NotesListConnectedProps, RState>(props) {
@@ -45,7 +43,6 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
         child(notesList) {
             attrs.isLoading = props.isLoading
             attrs.notesList = props.notesList
-            attrs.onNoteClicked = props.addNote
             attrs.dateFormat = dateFormat
         }
     }
@@ -59,6 +56,5 @@ val notesListContainer: RClass<RProps> =
         },
         { dispatch, _ ->
             fetchNotesList = { dispatch(NotesListSlice.fetchNotesList()) }
-            addNote = { note -> dispatch(NotesListSlice.addNote(note)) }
         }
     )(NotesListContainer::class.js.unsafeCast<RClass<NotesListConnectedProps>>())

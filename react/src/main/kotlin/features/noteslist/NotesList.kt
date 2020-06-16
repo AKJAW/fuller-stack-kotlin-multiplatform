@@ -79,7 +79,7 @@ val notesList = functionalComponent<NotesListProps> { props ->
             mList {
                 css(Classes.list)
                 props.notesList.forEach { note ->
-                    mListItem(button = true, onClick = { props.onNoteClicked(Note("Teee")) }) {
+                    mListItem(button = true) {
                         css(Classes.note)
                         styledDiv {
                             css(Classes.colorBadge)
