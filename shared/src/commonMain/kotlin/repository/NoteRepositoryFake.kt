@@ -16,6 +16,8 @@ internal class NoteRepositoryFake(private val noteApi: NoteApi) : NoteRepository
     }
 
     override suspend fun addNote(note: Note) {
+        //It should add the note before the call to the api, but if there is an error. It should be updated with
+        // a refresh icon
         val newNotes = notesMutableState.value + note
         notesMutableState.value = newNotes
     }

@@ -12,7 +12,6 @@ import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.editor.NoteEditorDialog
 import data.Note
-import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes
 import feature.noteslist.RefreshNotes
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +24,6 @@ class NotesListFragment : BaseFragment(), NotesListViewMvc.Listener {
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
     private val refreshNotes: RefreshNotes by instance<RefreshNotes>()
     private val fetchNotes: FetchNotes by instance<FetchNotes>()
-    private val addNote: AddNote by instance<AddNote>()
     private lateinit var viewMvc: NotesListViewMvc
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -58,6 +58,7 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
             val note = Note(viewMvc.getNoteTitle(), viewMvc.getNoteContent())
             lifecycleScope.launch {
                 addNote.executeAsync(note) { result ->
+                    dismiss()
                     when (result) {
                         is Either.Left -> {
                             //TODO the note should be flagged and a refresh icon should be shown
@@ -77,7 +78,6 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
                     }
                 }
             }
-            dismiss()
         }
     }
 
