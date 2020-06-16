@@ -27,6 +27,7 @@ import styled.styledDiv
 interface NotesListItemProps : RProps {
     var note: Note
     var dateFormat: DateFormat
+    var onNoteClicked: (note: Note) -> Unit
 }
 
 @Suppress("MagicNumber")
@@ -50,7 +51,7 @@ private object NotesListItemClasses : StyleSheet("NoteList", isStatic = true) {
 val notesListItem = functionalComponent<NotesListItemProps> { props ->
     val note = props.note
     styledDiv {
-        mListItem(button = true) {
+        mListItem(button = true, onClick = { props.onNoteClicked(note) }) {
             css(NotesListItemClasses.note)
             styledDiv {
                 css(NotesListItemClasses.colorBadge)
@@ -62,7 +63,7 @@ val notesListItem = functionalComponent<NotesListItemProps> { props ->
                 css(NotesListItemClasses.noteTitle)
             }
             span {
-                +note.creationDate.format(props.dateFormat)
+                + note.creationDate.format(props.dateFormat)
             }
         }
     }

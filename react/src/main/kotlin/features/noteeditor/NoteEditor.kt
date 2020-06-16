@@ -9,6 +9,7 @@ import kotlinx.css.LinearDimension
 import kotlinx.css.minHeight
 import kotlinx.css.width
 import react.RProps
+import react.dom.div
 import react.functionalComponent
 import react.useState
 import styled.StyleSheet
@@ -31,8 +32,10 @@ private object Classes : StyleSheet("NoteEditor", isStatic = true) {
 }
 
 val noteEditor = functionalComponent<NoteEditorProps> { props ->
+    console.log(props.selectedNote?.title)
     val (title, setTitle) = useState(props.selectedNote?.title ?: "")
     val (content, setContent) = useState(props.selectedNote?.content ?: "")
+
     if(props.selectedNote != null) {
         styledDiv {
             css(Classes.root)
@@ -53,5 +56,7 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
                 css(Classes.titleTextField)
             }
         }
+    } else {
+        div {  }
     }
 }

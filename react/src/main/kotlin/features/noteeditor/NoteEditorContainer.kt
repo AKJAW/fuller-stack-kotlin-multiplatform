@@ -8,6 +8,7 @@ import react.RProps
 import react.RState
 import react.child
 import react.invoke
+import react.key
 import react.redux.rConnect
 import redux.RAction
 import redux.WrapperAction
@@ -29,6 +30,7 @@ private interface DispatchProps : RProps {
 private class NoteEditorContainer(props: NoteEditorConnectedProps) : RComponent<NoteEditorConnectedProps, RState>(props) {
     override fun RBuilder.render() {
         child(noteEditor) {
+            attrs.key = props.selectedNote.toString()
             attrs.addNote = props.addNote
             attrs.selectedNote = props.selectedNote
         }

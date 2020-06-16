@@ -2,6 +2,7 @@ package features.noteslist
 
 import data.Note
 import dependencyinjection.KodeinEntry
+import features.noteeditor.NoteEditorSlice
 import helpers.date.PatternProvider
 import org.kodein.di.instance
 import react.RBuilder
@@ -20,6 +21,7 @@ interface NotesListConnectedProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
     var fetchNotesList: () -> Unit
+    var selectNote: (note: Note) -> Unit
 }
 
 private interface StateProps : RProps {
@@ -29,6 +31,7 @@ private interface StateProps : RProps {
 
 private interface DispatchProps : RProps {
     var fetchNotesList: () -> Unit
+    var selectNote: (note: Note) -> Unit
 }
 
 private class NotesListContainer(props: NotesListConnectedProps) : RComponent<NotesListConnectedProps, RState>(props) {
@@ -44,6 +47,7 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
             attrs.isLoading = props.isLoading
             attrs.notesList = props.notesList
             attrs.dateFormat = dateFormat
+            attrs.onNoteClicked = props.selectNote
         }
     }
 }
@@ -56,5 +60,6 @@ val notesListContainer: RClass<RProps> =
         },
         { dispatch, _ ->
             fetchNotesList = { dispatch(NotesListSlice.fetchNotesList()) }
+            selectNote = { note -> dispatch(NoteEditorSlice.SelectNote(note)) }
         }
     )(NotesListContainer::class.js.unsafeCast<RClass<NotesListConnectedProps>>())

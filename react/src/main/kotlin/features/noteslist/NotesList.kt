@@ -57,6 +57,7 @@ val notesList = functionalComponent<NotesListProps> { props ->
                     child(notesListItem) {
                         attrs.note = note
                         attrs.dateFormat = props.dateFormat
+                        attrs.onNoteClicked = props.onNoteClicked
                     }
                 }
             }
