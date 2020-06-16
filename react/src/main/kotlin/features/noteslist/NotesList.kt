@@ -23,7 +23,7 @@ import styled.styledDiv
 interface NotesListProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
-    var onNoteClicked: (note: Note) -> Unit
+    var openEditor: (note: Note?) -> Unit
     var dateFormat: DateFormat
 }
 
@@ -50,14 +50,16 @@ val notesList = functionalComponent<NotesListProps> { props ->
             css(NotesListClasses.loading)
             mCircularProgress { }
         } else {
-            child(addNoteButton)
+            child(addNoteButton) {
+                attrs.onClick = props.openEditor
+            }
             mList {
                 css(NotesListClasses.list)
                 props.notesList.forEach { note ->
                     child(notesListItem) {
                         attrs.note = note
                         attrs.dateFormat = props.dateFormat
-                        attrs.onNoteClicked = props.onNoteClicked
+                        attrs.onNoteClicked = props.openEditor
                     }
                 }
             }

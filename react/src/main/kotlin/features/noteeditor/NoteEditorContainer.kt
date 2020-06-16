@@ -17,6 +17,7 @@ import store.AppState
 interface NoteEditorConnectedProps : RProps {
     var selectedNote: Note?
     var addNote: (note: Note) -> Unit
+    var closeEditor: () -> Unit
 }
 
 private interface StateProps : RProps {
@@ -25,14 +26,18 @@ private interface StateProps : RProps {
 
 private interface DispatchProps : RProps {
     var addNote: (note: Note) -> Unit
+    var closeEditor: () -> Unit
 }
 
-private class NoteEditorContainer(props: NoteEditorConnectedProps) : RComponent<NoteEditorConnectedProps, RState>(props) {
+private class NoteEditorContainer(props: NoteEditorConnectedProps)
+    : RComponent<NoteEditorConnectedProps, RState>(props) {
+
     override fun RBuilder.render() {
         child(noteEditor) {
             attrs.key = props.selectedNote.toString()
             attrs.addNote = props.addNote
             attrs.selectedNote = props.selectedNote
+            attrs.closeEditor = props.closeEditor
         }
     }
 }
@@ -44,5 +49,6 @@ val noteEditorContainer: RClass<RProps> =
         },
         { dispatch, _ ->
             addNote = { note -> dispatch(NoteEditorSlice.addNote(note)) }
+            closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
         }
     )(NoteEditorContainer::class.js.unsafeCast<RClass<NoteEditorConnectedProps>>())

@@ -2,7 +2,6 @@ package features.noteslist
 
 import com.ccfraser.muirwik.components.button.MButtonVariant
 import com.ccfraser.muirwik.components.button.mButton
-import com.soywiz.klock.DateFormat
 import data.Note
 import kotlinx.css.LinearDimension
 import kotlinx.css.width
@@ -12,8 +11,7 @@ import styled.StyleSheet
 import styled.css
 
 interface AddNoteButtonProps : RProps {
-    var note: Note
-    var dateFormat: DateFormat
+    var onClick: (note: Note?) -> Unit
 }
 
 @Suppress("MagicNumber")
@@ -24,7 +22,7 @@ private object AddNoteButtonClasses : StyleSheet("AddNoteButtonClasses", isStati
 }
 
 val addNoteButton = functionalComponent<AddNoteButtonProps> { props ->
-    mButton(caption = "Add a new note", variant = MButtonVariant.outlined) {
+    mButton(caption = "Add a new note", variant = MButtonVariant.outlined, onClick = { props.onClick(null) }) {
         css(AddNoteButtonClasses.root)
     }
 }

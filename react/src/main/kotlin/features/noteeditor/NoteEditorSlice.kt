@@ -9,24 +9,26 @@ import store.RThunk
 
 object NoteEditorSlice { //TODO make an interface?
     data class State(
-        val selectedNote: Note? = null
+        val selectedNote: Note? = null,
+        val isEditing: Boolean = false
     )
 
     private val noteEditorScope = CoroutineScope(SupervisorJob())
 
     fun addNote(note: Note): RThunk = AddNoteThunk(noteEditorScope, note)
 
-    data class SelectNote(val note: Note): RAction
+    data class OpenEditor(val note: Note?): RAction
 
-    class UnselectNote: RAction
+    class CloseEditor: RAction
 
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
-            is SelectNote -> {
-                state.copy(selectedNote = action.note)
+            is OpenEditor -> {
+                val note = action.note ?: Note()
+                state.copy(selectedNote = note, isEditing = action.note != null)
             }
-            is UnselectNote -> {
-                state.copy(selectedNote = null)
+            is CloseEditor -> {
+                state.copy(selectedNote = null, isEditing = false)
             }
             else -> state
         }
