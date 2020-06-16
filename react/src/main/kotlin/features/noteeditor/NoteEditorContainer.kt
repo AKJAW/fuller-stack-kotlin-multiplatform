@@ -28,7 +28,7 @@ private interface DispatchProps : RProps {
 private class NoteEditorContainer(props: NoteEditorConnectedProps) : RComponent<NoteEditorConnectedProps, RState>(props) {
     override fun RBuilder.render() {
         child(noteEditor) {
-            attrs.onNoteClicked = props.addNote
+            attrs.addNote = props.addNote
         }
     }
 }

@@ -4,7 +4,6 @@ import com.ccfraser.muirwik.components.form.MFormControlVariant
 import com.ccfraser.muirwik.components.mTextField
 import com.ccfraser.muirwik.components.mTextFieldMultiLine
 import com.ccfraser.muirwik.components.targetInputValue
-import com.soywiz.klock.DateFormat
 import data.Note
 import kotlinx.css.LinearDimension
 import kotlinx.css.minHeight
@@ -17,14 +16,11 @@ import styled.css
 import styled.styledDiv
 
 interface NoteEditorProps : RProps {
-    var isLoading: Boolean
-    var notesList: Array<Note>
-    var onNoteClicked: (note: Note) -> Unit
-    var dateFormat: DateFormat
+    var addNote: (note: Note) -> Unit
 }
 
 @Suppress("MagicNumber")
-private object Classes : StyleSheet("NoteList", isStatic = true) {
+private object Classes : StyleSheet("NoteEditor", isStatic = true) {
     val root by css {
         minHeight = LinearDimension("400px")
     }
