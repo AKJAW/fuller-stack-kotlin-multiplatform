@@ -7,6 +7,7 @@ object Versions {
 
     //shared test
     const val JUNIT5 = "5.6.2"
+    const val MOCKK = "1.10.0"
 
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
@@ -36,11 +37,10 @@ object Versions {
 
 object PluginsVersions {
     const val KOTLIN = "1.3.72"
-    const val GRADLE_BUILD_TOOLS = "3.4.2"
-    const val AGP = "3.6.3"
+    const val GRADLE_BUILD_TOOLS = "3.5.0"
+    const val ANDROID_JUNIT5 = "1.6.2.0"
     const val DETEKT = "1.9.1"
     const val KTLINT = "9.2.1"
-    const val VERSIONS_PLUGIN = "0.28.0"
 }
 
 object SharedLibs {
@@ -48,6 +48,10 @@ object SharedLibs {
     const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
     const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
+}
+
+object SharedTestingLibs {
+    const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
 }
 
 object JVMLibs {

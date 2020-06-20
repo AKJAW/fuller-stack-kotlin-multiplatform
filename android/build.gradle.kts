@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-android-extensions")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation(SharedLibs.KLOCK)
 
     testImplementation(JVMTestingLibs.JUNIT5)
+    testImplementation(SharedTestingLibs.MOCKK)
     testImplementation(JVMTestingLibs.COROUTINES_TEST)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)
