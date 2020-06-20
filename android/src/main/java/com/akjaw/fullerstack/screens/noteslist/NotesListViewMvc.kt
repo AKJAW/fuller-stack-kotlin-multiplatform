@@ -18,4 +18,5 @@ abstract class NotesListViewMvc : BaseObservableViewMvc<NotesListViewMvc.Listene
 
     abstract fun hideLoading()
 
+    abstract fun showError()
 }

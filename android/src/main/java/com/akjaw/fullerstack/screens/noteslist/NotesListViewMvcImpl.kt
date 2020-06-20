@@ -58,4 +58,8 @@ class NotesListViewMvcImpl(
         loadingIndicator.visibility = View.GONE
     }
 
+    override fun showError() {
+        TODO("Not yet implemented")
+    }
+
 }
