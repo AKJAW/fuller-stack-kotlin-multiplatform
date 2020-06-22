@@ -4,6 +4,8 @@ import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes
 import feature.noteslist.RefreshNotes
 import helpers.date.PatternProvider
+import helpers.validation.NoteEditorInputValidator
+import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import network.NoteApi
 import network.NoteApiFake
@@ -22,4 +24,5 @@ val common = DI.Module("Common") {
     bind() from singleton { FetchNotes(instance()) }
     bind() from singleton { AddNote(instance()) }
     bind() from singleton { PatternProvider(instance()) }
+    bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }
 }

@@ -10,6 +10,7 @@ import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseDialogFragment
 import data.Note
 import feature.noteslist.AddNote
+import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
@@ -25,6 +26,7 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
 
     private val addNote: AddNote by instance<AddNote>()
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
+    private val noteInputValidator: NoteInputValidator by instance<NoteInputValidator>()
     private lateinit var viewMvc: NoteEditorViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +55,7 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
     }
 
     override fun onActionClicked() {
-        val isTitleValid = checkIfNoteTitleIsValid(viewMvc.getNoteTitle())
+        val isTitleValid = noteInputValidator.isTitleValid(viewMvc.getNoteTitle())
         if(isTitleValid) {
             val note = Note(viewMvc.getNoteTitle(), viewMvc.getNoteContent())
             lifecycleScope.launch {
@@ -78,20 +80,6 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
                     }
                 }
             }
-        }
-    }
-
-    private fun checkIfNoteTitleIsValid(noteTitle: String) : Boolean {
-        return when {
-            noteTitle.isBlank() -> {
-                viewMvc.showNoteTitleError(getString(R.string.note_editor_error_empty_title))
-                false
-            }
-            noteTitle.length > MAX_TITLE_LENGTH -> {
-                viewMvc.showNoteTitleError(getString(R.string.note_editor_error_title_too_long))
-                false
-            }
-            else -> true
         }
     }
 
