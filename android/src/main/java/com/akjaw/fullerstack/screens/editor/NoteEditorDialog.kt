@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import base.usecase.Either
+import base.usecase.Failure
+import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseDialogFragment
@@ -17,8 +19,6 @@ import org.kodein.di.instance
 class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
 
     companion object {
-        private const val MAX_TITLE_LENGTH = 40
-
         fun newNoteEditorDialog(): NoteEditorDialog {
             return NoteEditorDialog()
         }
@@ -58,27 +58,38 @@ class NoteEditorDialog : BaseDialogFragment(), NoteEditorViewMvc.Listener {
         val isTitleValid = noteInputValidator.isTitleValid(viewMvc.getNoteTitle())
         if(isTitleValid) {
             val note = Note(viewMvc.getNoteTitle(), viewMvc.getNoteContent())
-            lifecycleScope.launch {
-                addNote.executeAsync(note) { result ->
-                    dismiss()
-                    when (result) {
-                        is Either.Left -> {
-                            //TODO the note should be flagged and a refresh icon should be shown
-                            Toast.makeText(
-                                context,
-                                getString(R.string.note_editor_failure_add),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is Either.Right -> {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.note_editor_success_add),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
+            addNote(note)
+        } else {
+            //TODO use the ValidationResult
+            viewMvc.showNoteTitleError("Title is invalid")
+        }
+    }
+
+    private fun addNote(note: Note) {
+        lifecycleScope.launch {
+            addNote.executeAsync(note) { result ->
+                dismiss()
+                handleResult(result)
+            }
+        }
+    }
+
+    private fun handleResult(result: Either<Failure, UseCaseAsync.None>) {
+        when (result) {
+            is Either.Left -> {
+                //TODO the note should be flagged and a refresh icon should be shown
+                Toast.makeText(
+                    context,
+                    getString(R.string.note_editor_failure_add),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            is Either.Right -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.note_editor_success_add),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
