@@ -1,6 +1,9 @@
 package features.noteeditor
 
 import data.Note
+import dependencyinjection.KodeinEntry
+import helpers.validation.NoteInputValidator
+import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
 import react.RComponent
@@ -10,9 +13,14 @@ import react.child
 import react.invoke
 import react.key
 import react.redux.rConnect
+import react.setState
 import redux.RAction
 import redux.WrapperAction
 import store.AppState
+
+private interface NoteEditorState: RState {
+    var isTitleValid: Boolean
+}
 
 interface NoteEditorConnectedProps : RProps {
     var selectedNote: Note?
@@ -30,13 +38,30 @@ private interface DispatchProps : RProps {
 }
 
 private class NoteEditorContainer(props: NoteEditorConnectedProps)
-    : RComponent<NoteEditorConnectedProps, RState>(props) {
+    : RComponent<NoteEditorConnectedProps, NoteEditorState>(props) {
+
+    override fun NoteEditorState.init(props: NoteEditorConnectedProps) {
+        isTitleValid = true
+    }
+
+    private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance<NoteInputValidator>()
+
+    fun validateAndAddNote(title: String, content: String){
+        if(noteInputValidator.isTitleValid(title)){
+            props.addNote(Note(title, content))
+            setState { isTitleValid = true }
+        } else {//TODO use the ValidationResult
+            setState { isTitleValid = false }
+        }
+
+    }
 
     override fun RBuilder.render() {
         child(noteEditor) {
             attrs.key = props.selectedNote.toString()
-            attrs.addNote = props.addNote
             attrs.selectedNote = props.selectedNote
+            attrs.isTitleValid = state.isTitleValid
+            attrs.validateAndAddNote = ::validateAndAddNote
             attrs.closeEditor = props.closeEditor
         }
     }

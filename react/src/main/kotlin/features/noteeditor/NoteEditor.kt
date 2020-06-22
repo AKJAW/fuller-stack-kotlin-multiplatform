@@ -23,7 +23,8 @@ import styled.styledDiv
 
 interface NoteEditorProps : RProps {
     var selectedNote: Note?
-    var addNote: (note: Note) -> Unit
+    var isTitleValid: Boolean
+    var validateAndAddNote: (title: String, content: String) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -42,7 +43,7 @@ private object Classes : StyleSheet("NoteEditor", isStatic = true) {
 }
 
 val noteEditor = functionalComponent<NoteEditorProps> { props ->
-    console.log(props.selectedNote?.title)
+
     val (title, setTitle) = useState(props.selectedNote?.title ?: "")
     val (content, setContent) = useState(props.selectedNote?.content ?: "")
 
@@ -52,11 +53,12 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
             styledDiv {
                 css(Classes.actions)
                 mButton("Cancel", onClick = { props.closeEditor() })
-                mButton("Save", onClick = { props.addNote(Note(title, content)) })
+                mButton("Save", onClick = { props.validateAndAddNote(title, content) })
             }
             mTextField(label = "Title",
                 value = title,
                 variant = MFormControlVariant.outlined,
+                error = props.isTitleValid.not(),
                 onChange = { event -> setTitle(event.targetInputValue) }
             ) {
                 css(Classes.titleTextField)
