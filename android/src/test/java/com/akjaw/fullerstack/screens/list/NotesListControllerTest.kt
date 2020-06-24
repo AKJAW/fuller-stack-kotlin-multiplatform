@@ -1,8 +1,8 @@
-package com.akjaw.fullerstack.screens.noteslist
+package com.akjaw.fullerstack.screens.list
 
 import base.usecase.Either
 import base.usecase.Failure
-import com.akjaw.fullerstack.screens.common.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import data.Note
 import feature.noteslist.FetchNotes
 import io.mockk.coEvery

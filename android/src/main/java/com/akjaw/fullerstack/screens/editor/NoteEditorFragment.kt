@@ -12,7 +12,7 @@ import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
-import com.zhuinden.simplestackextensions.fragmentsktx.backstack
+import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import data.Note
 import feature.noteslist.AddNote
 import helpers.validation.NoteInputValidator
@@ -23,6 +23,7 @@ class NoteEditorFragment: BaseFragment(), NoteEditorViewMvc.Listener {
 
     private val addNote: AddNote by instance<AddNote>()
     private val noteInputValidator: NoteInputValidator by instance<NoteInputValidator>()
+    private val screenNavigator: ScreenNavigator by instance<ScreenNavigator>()
     private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
     private lateinit var viewMvc: NoteEditorViewMvc
 
@@ -57,7 +58,7 @@ class NoteEditorFragment: BaseFragment(), NoteEditorViewMvc.Listener {
     private fun addNote(note: Note) {
         lifecycleScope.launch {
             addNote.executeAsync(note) { result ->
-                backstack.goBack()
+                screenNavigator.goBack(requireContext())
                 handleResult(result)
             }
         }
@@ -84,7 +85,7 @@ class NoteEditorFragment: BaseFragment(), NoteEditorViewMvc.Listener {
     }
 
     override fun onCancelClicked() {
-        backstack.goBack()
+        screenNavigator.goBack(requireContext())
     }
 
 }

@@ -11,7 +11,7 @@ abstract class BaseActivity : AppCompatActivity(), DIAware {
     override val di: DI by DI.lazy {
         val customApplication = application as CustomApplication
         extend(customApplication.di)
-        import(navigatorModule(supportFragmentManager))
+        import(navigatorModule)
         import(presentationModule)
     }
 }

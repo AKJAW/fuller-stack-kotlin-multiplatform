@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.noteslist
+package com.akjaw.fullerstack.screens.list
 
 import android.os.Bundle
 import android.view.LayoutInflater

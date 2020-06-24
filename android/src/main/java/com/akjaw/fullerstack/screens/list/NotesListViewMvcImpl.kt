@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.noteslist
+package com.akjaw.fullerstack.screens.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
-import com.akjaw.fullerstack.screens.noteslist.recyclerview.NotesListAdapter
+import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import data.Note
 import helpers.date.PatternProvider

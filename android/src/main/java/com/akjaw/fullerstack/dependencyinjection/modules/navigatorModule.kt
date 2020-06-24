@@ -1,16 +1,12 @@
 package com.akjaw.fullerstack.dependencyinjection.modules
 
-import androidx.fragment.app.FragmentManager
-import com.akjaw.fullerstack.screens.common.FragmentScreenNavigator
-import com.akjaw.fullerstack.screens.common.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.navigation.SimpleStackScreenNavigator
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.singleton
 
-val navigatorModule: (FragmentManager) -> DI.Module = { fragmentManager ->
-    DI.Module("navigatorModule") {
-        bind<ScreenNavigator>() with singleton {
-            FragmentScreenNavigator(fragmentManager)
-        }
-    }
+val navigatorModule = DI.Module("navigatorModule") {
+    bind<ScreenNavigator>() with singleton { SimpleStackScreenNavigator() }
 }
+

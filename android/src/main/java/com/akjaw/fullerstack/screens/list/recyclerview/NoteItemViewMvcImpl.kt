@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.noteslist.recyclerview
+package com.akjaw.fullerstack.screens.list.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View

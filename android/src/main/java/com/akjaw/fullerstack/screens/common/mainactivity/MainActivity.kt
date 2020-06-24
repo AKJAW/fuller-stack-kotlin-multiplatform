@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseActivity
-import com.akjaw.fullerstack.screens.common.navigation.NotesListScreen
+import com.akjaw.fullerstack.screens.common.navigation.keys.NotesListScreen
 import com.zhuinden.simplestack.History
 import com.zhuinden.simplestack.SimpleStateChanger
 import com.zhuinden.simplestack.StateChange
@@ -28,12 +28,6 @@ class MainActivity : BaseActivity(), SimpleStateChanger.NavigationHandler {
         Navigator.configure()
             .setStateChanger(SimpleStateChanger(this))
             .install(this, viewMvc.rootView.findViewById(R.id.root), History.of(NotesListScreen()))
-
-//        if (savedInstanceState == null) {
-//            val fragmentTransaction = supportFragmentManager.beginTransaction()
-//            fragmentTransaction.add(R.id.fragment_placeholder, NotesListFragment())
-//            fragmentTransaction.commit()
-//        }
     }
 
     override fun onBackPressed() {

@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.noteslist.recyclerview
+package com.akjaw.fullerstack.screens.list.recyclerview
 
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
 

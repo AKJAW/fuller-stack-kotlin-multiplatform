@@ -6,10 +6,10 @@ import androidx.annotation.MenuRes
 import com.akjaw.fullerstack.screens.common.mainactivity.MainViewMvc
 import com.akjaw.fullerstack.screens.editor.NoteEditorViewMvc
 import com.akjaw.fullerstack.screens.editor.NoteEditorViewMvcImpl
-import com.akjaw.fullerstack.screens.noteslist.NotesListViewMvc
-import com.akjaw.fullerstack.screens.noteslist.NotesListViewMvcImpl
-import com.akjaw.fullerstack.screens.noteslist.recyclerview.NoteItemViewMvc
-import com.akjaw.fullerstack.screens.noteslist.recyclerview.NoteItemViewMvcImpl
+import com.akjaw.fullerstack.screens.list.NotesListViewMvc
+import com.akjaw.fullerstack.screens.list.NotesListViewMvcImpl
+import com.akjaw.fullerstack.screens.list.recyclerview.NoteItemViewMvc
+import com.akjaw.fullerstack.screens.list.recyclerview.NoteItemViewMvcImpl
 import helpers.date.PatternProvider
 
 class ViewMvcFactory(private val layoutInflater: LayoutInflater, private val patternProvider: PatternProvider) {
