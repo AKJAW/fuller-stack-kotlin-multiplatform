@@ -3,6 +3,8 @@ package com.akjaw.fullerstack.screens.noteslist
 import base.usecase.Either
 import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.navigation.NoteEditorScreen
+import com.zhuinden.simplestack.navigator.Navigator
 import data.Note
 import feature.noteslist.FetchNotes
 import kotlinx.coroutines.CoroutineScope
@@ -70,7 +72,8 @@ class NotesListController(
     }
 
     override fun onAddNoteClicked() {
-        screenNavigator.openAddNoteScreen()
+        val backstack = Navigator.getBackstack(viewMvc.rootView.context)
+        backstack.goTo(NoteEditorScreen())
     }
 
 }
