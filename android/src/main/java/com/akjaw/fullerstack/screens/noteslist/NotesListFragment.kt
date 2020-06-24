@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
+import com.akjaw.fullerstack.screens.common.navigation.NotesListScreen
 import org.kodein.di.instance
 
 class NotesListFragment : BaseFragment() {
@@ -18,6 +19,7 @@ class NotesListFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewMvc = viewMvcFactory.getNotesListViewMvc(container)
         notesListController.bindView(viewMvc, lifecycleScope)
+        val key: NotesListScreen = getKey()
         return viewMvc.rootView
     }
 

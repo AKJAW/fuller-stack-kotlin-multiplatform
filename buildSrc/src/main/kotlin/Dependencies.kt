@@ -1,4 +1,5 @@
 object Versions {
+
     //shared
     const val KODEIN = "7.0.0"
     const val COROUTINES = "1.3.7"
@@ -29,6 +30,8 @@ object Versions {
     const val MATERIAL = "1.2.0-beta01"
     const val CONSTRAINT_LAYOUT = "2.0.0-beta4"
     const val LIFECYCLE_RUNTIME_KTX = "2.2.0"
+    const val SIMPLE_STACK = "2.3.2"
+    const val SIMPLE_STACK_EXTENSIONS = "2.0.0"
 
     //android test
     const val ANDROIDX_TEST = "1.1.0"
@@ -95,6 +98,9 @@ object AndroidLibs {
 
     const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
     const val LIFECYCLE_RUNTIME_KTX =  "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_RUNTIME_KTX}"
+
+    const val SIMPLE_STACK = "com.github.Zhuinden:simple-stack:${Versions.SIMPLE_STACK}"
+    const val SIMPLE_STACK_EXTENSIONS = "com.github.Zhuinden:simple-stack-extensions:${Versions.SIMPLE_STACK_EXTENSIONS}"
 }
 
 object AndroidTestingLibs {

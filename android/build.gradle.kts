@@ -8,6 +8,10 @@ plugins {
     id("de.mannodermaus.android-junit5")
 }
 
+repositories {
+    maven { setUrl("https://jitpack.io") }
+}
+
 android {
     compileSdkVersion(Versions.COMPILE_SDK_VERSION)
 
@@ -57,6 +61,10 @@ dependencies {
 
     // date
     implementation(SharedLibs.KLOCK)
+
+    //navigation
+    implementation(AndroidLibs.SIMPLE_STACK)
+    implementation(AndroidLibs.SIMPLE_STACK_EXTENSIONS)
 
     testImplementation(JVMTestingLibs.JUNIT5)
     testImplementation(SharedTestingLibs.MOCKK)
