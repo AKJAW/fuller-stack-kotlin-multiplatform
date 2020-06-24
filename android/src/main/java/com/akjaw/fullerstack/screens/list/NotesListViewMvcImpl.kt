@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
@@ -26,11 +27,13 @@ class NotesListViewMvcImpl(
         viewMvcFactory,
         patternProvider.getNotesListItemPattern()
     )
+    private val toolbar: Toolbar = findViewById(R.id.toolbar)
     private val notesRecyclerView: RecyclerView = rootView.findViewById(R.id.notes_list)
     private val loadingIndicator: ProgressBar = rootView.findViewById(R.id.loading_indicator)
     private val fab: FloatingActionButton = rootView.findViewById(R.id.floating_action_button)
 
     init {
+        toolbar.title = context.getString(R.string.notes_list_toolbar_title)
         notesRecyclerView.adapter = notesListAdapter
         notesRecyclerView.setHasFixedSize(true)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)

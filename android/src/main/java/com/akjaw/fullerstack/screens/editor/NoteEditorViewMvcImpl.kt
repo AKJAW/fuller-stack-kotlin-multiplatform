@@ -19,6 +19,7 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
 
     init {
         toolbar.inflateMenu(menu)
+        toolbar.setNavigationIcon(R.drawable.ic_close_24dp)
         toolbar.setNavigationOnClickListener {
             listeners.onEach { listener ->
                 listener.onCancelClicked()

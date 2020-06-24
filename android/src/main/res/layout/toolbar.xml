@@ -12,7 +12,6 @@
             android:layout_height="?attr/actionBarSize"
             android:paddingEnd="16dp"
             android:paddingStart="6dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:navigationIcon="@drawable/ic_close_24dp" />
+            app:contentInsetStartWithNavigation="0dp" />
 
 </com.google.android.material.appbar.AppBarLayout>
