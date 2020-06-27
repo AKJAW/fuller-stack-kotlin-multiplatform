@@ -8,7 +8,13 @@ import network.NoteApi
 //TODO how to handle errors
 internal class NoteRepositoryFake(private val noteApi: NoteApi) : NoteRepository {
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
-    override val notes: Flow<List<Note>> = notesMutableState
+
+    override suspend fun getNotes(): Flow<List<Note>> {
+        if(notesMutableState.value.isEmpty()){ //TODO maybe a better check
+            refreshNotes()
+        }
+        return notesMutableState
+    }
 
     override suspend fun refreshNotes() {
         val newNotes = noteApi.getNotes()

@@ -12,8 +12,7 @@ class FetchNotes(
 ) : UseCaseAsync<UseCaseAsync.None, Flow<List<Note>>>() {
     override suspend fun run(params: None): Either<Failure, Flow<List<Note>>> {
         return try {
-            noteRepository.refreshNotes()
-            Either.Right(noteRepository.notes)
+            Either.Right(noteRepository.getNotes())
         } catch (e: Exception) { //TODO make more defined
             Either.Left(Failure.ServerError)
         }

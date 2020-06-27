@@ -16,13 +16,13 @@ class NotesListController(
 ) : NotesListViewMvc.Listener {
 
     private sealed class NotesListState {
-        object Uninitialized: NotesListState()
         object Idle: NotesListState() //Maybe showing list?
     }
 
     private lateinit var viewMvc: NotesListViewMvc
     private lateinit var scope: CoroutineScope
-    private var currentState: NotesListState = NotesListState.Uninitialized
+    private var currentState: NotesListState = NotesListState.Idle
+    private var notes: List<Note> = listOf()
 
     fun bindView(
         viewMvc: NotesListViewMvc,
@@ -34,16 +34,13 @@ class NotesListController(
 
     fun onStart() {
         viewMvc.registerListener(this)
-        if(currentState is NotesListState.Uninitialized){
-            initializeNotes()
-        }
+        initializeNotes()
     }
 
     private fun initializeNotes() {
         viewMvc.showLoading()
         scope.launch {
             fetchNotes.executeAsync(UseCaseAsync.None()) { result ->
-                currentState = NotesListState.Idle
                 viewMvc.hideLoading()
                 when (result) {
                     is Either.Left -> viewMvc.showError() //TODO more elaborate

@@ -2,7 +2,7 @@ package feature.noteslist
 
 import base.usecase.UseCaseAsync
 import network.NetworkApiFake
-import repository.NoteRepositoryFake
+import repository.NoteRepositoryTestFake
 import runTest
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
@@ -12,20 +12,20 @@ import kotlin.test.assertEquals
 class RefreshNotesTest {
 
     lateinit var networkApiFake: NetworkApiFake
-    lateinit var noteRepositoryFake: NoteRepositoryFake
+    lateinit var noteRepositoryTestFake: NoteRepositoryTestFake
     lateinit var SUT: RefreshNotes
 
     @BeforeTest
     fun setUp(){
         networkApiFake = NetworkApiFake()
-        noteRepositoryFake = NoteRepositoryFake(networkApiFake)
-        SUT = RefreshNotes(noteRepositoryFake)
+        noteRepositoryTestFake = NoteRepositoryTestFake(networkApiFake)
+        SUT = RefreshNotes(noteRepositoryTestFake)
     }
 
     @JsName("callsTheRepositoryRefreshNotesOnce")
     @Test
     fun `executeAsync passes the note to the repository refreshNotes`() = runTest {
         SUT.executeAsync(UseCaseAsync.None())
-        assertEquals(1, noteRepositoryFake.refreshNotesCallCount)
+        assertEquals(1, noteRepositoryTestFake.refreshNotesCallCount)
     }
 }

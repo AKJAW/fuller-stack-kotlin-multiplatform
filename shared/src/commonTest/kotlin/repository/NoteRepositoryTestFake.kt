@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import network.NoteApi
 
-class NoteRepositoryFake(private val noteApi: NoteApi) : NoteRepository {
+class NoteRepositoryTestFake(private val noteApi: NoteApi) : NoteRepository {
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
     override val notes: Flow<List<Note>> = notesMutableState
 

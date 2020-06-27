@@ -4,7 +4,7 @@ import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import network.NetworkApiFake
-import repository.NoteRepositoryFake
+import repository.NoteRepositoryTestFake
 import runTest
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
@@ -14,21 +14,21 @@ import kotlin.test.assertEquals
 class FetchNotesTest {
 
     private lateinit var noteApiFake : NetworkApiFake
-    private lateinit var noteRepositoryFake: NoteRepositoryFake
+    private lateinit var noteRepositoryTestFake: NoteRepositoryTestFake
     private lateinit var SUT : FetchNotes
 
     @BeforeTest
     fun setUp(){
         noteApiFake = NetworkApiFake()
-        noteRepositoryFake = NoteRepositoryFake(noteApiFake)
-        SUT = FetchNotes(noteRepositoryFake)
+        noteRepositoryTestFake = NoteRepositoryTestFake(noteApiFake)
+        SUT = FetchNotes(noteRepositoryTestFake)
     }
 
     @JsName("callsTheRepositoryRefreshNotesOnce")
     @Test
     fun `executeAsync calls the repository refreshNotes once`() = runTest {
         SUT.executeAsync(UseCaseAsync.None()) {}
-        assertEquals(1, noteRepositoryFake.refreshNotesCallCount)
+        assertEquals(1, noteRepositoryTestFake.refreshNotesCallCount)
     }
 
     @JsName("callsTheCallbackWithFlow")
@@ -36,7 +36,7 @@ class FetchNotesTest {
     fun `executeAsync success calls the callback with the repository flow`() = runTest {
         SUT.executeAsync(UseCaseAsync.None()) {
             val flow = (it as Either.Right).r
-            assertEquals(noteRepositoryFake.notes, flow)
+            assertEquals(noteRepositoryTestFake.notes, flow)
         }
     }
 

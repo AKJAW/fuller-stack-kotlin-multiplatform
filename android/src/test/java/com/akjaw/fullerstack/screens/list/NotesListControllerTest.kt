@@ -32,13 +32,14 @@ internal class NotesListControllerTest {
     private val testDispatcher = TestCoroutineDispatcher()
     private val testScope = TestCoroutineScope(testDispatcher)
     private val viewMvc: NotesListViewMvc = mockk {
+        every { rootView.context } returns mockk()
         every { showLoading() } answers {}
         every { hideLoading() } answers {}
         every { registerListener(any()) } answers {}
         every { unregisterListener(any()) } answers {}
     }
     private val screenNavigator: ScreenNavigator = mockk() {
-        every { openAddNoteScreen() } answers {}
+        every { openAddNoteScreen(any()) } answers {}
     }
     private val fetchNotes: FetchNotes = mockk()
     private lateinit var SUT: NotesListController
@@ -55,7 +56,7 @@ internal class NotesListControllerTest {
         SUT.onAddNoteClicked()
 
         verify {
-            screenNavigator.openAddNoteScreen()
+            screenNavigator.openAddNoteScreen(any())
         }
     }
 
@@ -67,19 +68,19 @@ internal class NotesListControllerTest {
     @Nested
     inner class OnStartTest{
         @Test
-        fun `onStart first call fetches the notes list`() {
+        fun `onStart call fetches the notes list`() {
             fetchNotesSuccess()
             SUT.onStart()
             coVerify { fetchNotes.executeAsync(any(), any()) }
         }
 
         @Test
-        fun `onStart consecutive calls dont fetch the notes list`() {
+        fun `onStart consecutive calls also fetch the notes list`() {
             fetchNotesSuccess()
             SUT.onStart()
             SUT.onStart()
             SUT.onStart()
-            coVerify(atMost = 1) { fetchNotes.executeAsync(any(), any()) }
+            coVerify(exactly = 3) { fetchNotes.executeAsync(any(), any()) }
         }
 
         @Test
