@@ -40,6 +40,7 @@ internal class NotesListControllerTest {
     }
     private val screenNavigator: ScreenNavigator = mockk() {
         every { openAddNoteScreen(any()) } answers {}
+        every { openEditNoteScreen(any(), any()) } answers {}
     }
     private val fetchNotes: FetchNotes = mockk()
     private lateinit var SUT: NotesListController
@@ -61,8 +62,14 @@ internal class NotesListControllerTest {
     }
 
     @Test
-    fun `onNoteClicked open the edit note screen`(){
-        SUT.onNoteClicked("TODO")
+    fun `onNoteClicked opens the edit note screen`(){
+        val note = Note("1", "one")
+
+        SUT.onNoteClicked(note)
+
+        verify {
+            screenNavigator.openEditNoteScreen(any(), note)
+        }
     }
 
     @Nested

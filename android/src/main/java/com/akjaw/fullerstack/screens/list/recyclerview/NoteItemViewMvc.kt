@@ -1,15 +1,14 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
+import data.Note
 
 abstract class NoteItemViewMvc : BaseObservableViewMvc<NoteItemViewMvc.Listener>() {
 
     interface Listener {
-        fun onNoteClicked(title: String)
+        fun onNoteClicked(note: Note)
     }
 
-    abstract fun setTitle(titleText: String)
-
-    abstract fun setDate(dateText: String)
+    abstract fun setNote(note: Note)
 
 }

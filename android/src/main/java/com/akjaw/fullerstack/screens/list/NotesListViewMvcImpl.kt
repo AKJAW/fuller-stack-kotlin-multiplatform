@@ -12,20 +12,17 @@ import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import data.Note
-import helpers.date.PatternProvider
 
 class NotesListViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?,
-    viewMvcFactory: ViewMvcFactory,
-    patternProvider: PatternProvider
+    viewMvcFactory: ViewMvcFactory
 ) : NotesListViewMvc() {
 
     override val rootView: View = inflater.inflate(R.layout.layout_notes_list, parent, false)
     private val notesListAdapter: NotesListAdapter = NotesListAdapter(
         ::onNoteClicked,
-        viewMvcFactory,
-        patternProvider.getNotesListItemPattern()
+        viewMvcFactory
     )
     private val toolbar: Toolbar = findViewById(R.id.toolbar)
     private val notesRecyclerView: RecyclerView = rootView.findViewById(R.id.notes_list)
@@ -43,9 +40,9 @@ class NotesListViewMvcImpl(
         }
     }
 
-    private fun onNoteClicked(title: String) {
+    private fun onNoteClicked(note: Note) {
         listeners.forEach { listeners ->
-            listeners.onNoteClicked(title)
+            listeners.onNoteClicked(note)
         }
     }
 

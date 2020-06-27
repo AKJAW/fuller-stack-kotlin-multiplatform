@@ -7,7 +7,7 @@ abstract class NotesListViewMvc : BaseObservableViewMvc<NotesListViewMvc.Listene
 
     interface Listener {
 
-        fun onNoteClicked(title: String)
+        fun onNoteClicked(note: Note)
 
         fun onAddNoteClicked()
     }

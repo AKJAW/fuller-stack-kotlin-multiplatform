@@ -17,9 +17,13 @@ class ViewMvcFactory(private val layoutInflater: LayoutInflater, private val pat
     fun getMainViewMvc(parent: ViewGroup?) = MainViewMvc(layoutInflater, parent)
 
     fun getNotesListViewMvc(parent: ViewGroup?) : NotesListViewMvc
-            = NotesListViewMvcImpl(layoutInflater, parent, this, patternProvider)
+            = NotesListViewMvcImpl(layoutInflater, parent, this)
 
-    fun getNoteItemViewMvc(parent: ViewGroup?): NoteItemViewMvc = NoteItemViewMvcImpl(layoutInflater, parent)
+    fun getNoteItemViewMvc(parent: ViewGroup?): NoteItemViewMvc = NoteItemViewMvcImpl(
+        layoutInflater,
+        parent,
+        patternProvider.getNotesListItemPattern()
+    )
 
     fun getNoteEditorViewMvc(parent: ViewGroup?, @MenuRes menu: Int) : NoteEditorViewMvc
             = NoteEditorViewMvcImpl(layoutInflater, parent, menu)

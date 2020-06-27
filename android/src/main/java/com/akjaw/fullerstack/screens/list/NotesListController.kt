@@ -62,8 +62,8 @@ class NotesListController(
         viewMvc.unregisterListener(this)
     }
 
-    override fun onNoteClicked(title: String) {
-        TODO("Not yet implemented")
+    override fun onNoteClicked(note: Note) {
+        screenNavigator.openEditNoteScreen(viewMvc.rootView.context, note)
     }
 
     override fun onAddNoteClicked() {

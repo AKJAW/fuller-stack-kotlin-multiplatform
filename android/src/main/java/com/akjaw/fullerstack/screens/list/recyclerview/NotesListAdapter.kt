@@ -3,13 +3,11 @@ package com.akjaw.fullerstack.screens.list.recyclerview
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
-import com.soywiz.klock.DateFormat
 import data.Note
 
 class NotesListAdapter(
-    private val onItemClicked: (String) -> Unit,
-    private val viewMvcFactory: ViewMvcFactory,
-    private val dateFormat: DateFormat
+    private val onItemClicked: (Note) -> Unit,
+    private val viewMvcFactory: ViewMvcFactory
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>(), NoteItemViewMvc.Listener {
 
     private var notes: List<Note> = listOf()
@@ -25,8 +23,7 @@ class NotesListAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        holder.noteItemViewMvc.setTitle(note.title)
-        holder.noteItemViewMvc.setDate(note.creationDate.format(dateFormat))
+        holder.noteItemViewMvc.setNote(note)
     }
 
     // TODO add diffutil
@@ -37,7 +34,7 @@ class NotesListAdapter(
 
     class NoteViewHolder(val noteItemViewMvc: NoteItemViewMvc) : RecyclerView.ViewHolder(noteItemViewMvc.rootView)
 
-    override fun onNoteClicked(title: String) {
-        onItemClicked(title)
+    override fun onNoteClicked(note: Note) {
+        onItemClicked(note)
     }
 }
