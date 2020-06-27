@@ -33,8 +33,12 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
         }
     }
 
-    override fun setToolbarTitle(text: String) {
-        toolbar.title = text
+    override fun setAddToolbarTitle() {
+        toolbar.title = context.getString(R.string.note_editor_toolbar_title_add)
+    }
+
+    override fun setEditToolbarTitle() {
+        TODO("Not yet implemented")
     }
 
     override fun getNoteTitle(): String = titleEditText.text.toString()
