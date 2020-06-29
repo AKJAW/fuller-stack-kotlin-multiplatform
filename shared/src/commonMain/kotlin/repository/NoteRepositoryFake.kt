@@ -34,7 +34,10 @@ internal class NoteRepositoryFake(private val noteApi: NoteApi) : NoteRepository
     override suspend fun updateNote(updatedNote: Note) {
         notesMutableState.value = notesMutableState.value.map {  note ->
             if (note.id == updatedNote.id){
-                updatedNote
+                note.copy(
+                    title = updatedNote.title,
+                    content = updatedNote.content
+                )
             } else {
                 note
             }

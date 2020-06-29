@@ -24,7 +24,8 @@ import styled.styledDiv
 interface NoteEditorProps : RProps {
     var selectedNote: Note?
     var isTitleValid: Boolean
-    var validateAndAddNote: (title: String, content: String) -> Unit
+    var positiveActionCaption: String
+    var onPositiveActionClicked: (title: String, content: String) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -53,7 +54,10 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
             styledDiv {
                 css(Classes.actions)
                 mButton("Cancel", onClick = { props.closeEditor() })
-                mButton("Save", onClick = { props.validateAndAddNote(title, content) })
+                mButton(
+                    caption = props.positiveActionCaption,
+                    onClick = { props.onPositiveActionClicked(title, content) }
+                )
             }
             mTextField(label = "Title",
                 value = title,

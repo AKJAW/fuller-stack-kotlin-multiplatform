@@ -5,7 +5,7 @@ import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import data.Note
 import dependencyinjection.KodeinEntry
-import feature.noteslist.AddNote
+import feature.noteslist.UpdateNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
@@ -15,12 +15,12 @@ import store.AppState
 import store.RThunk
 import store.nullAction
 
-class AddNoteThunk(private val scope: CoroutineScope, private val note: Note) : RThunk {
-    private val addNote by KodeinEntry.di.instance<AddNote>()
+class UpdateNoteThunk(private val scope: CoroutineScope, private val note: Note) : RThunk {
+    private val updateNote by KodeinEntry.di.instance<UpdateNote>()
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
-            addNote.executeAsync(
+            updateNote.executeAsync(
                 note
             ) { result -> handleResult(dispatch, result) }
         }
