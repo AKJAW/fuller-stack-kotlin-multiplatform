@@ -13,4 +13,6 @@ interface NoteRepository {
 
     suspend fun addNote(note: Note)
 
+    suspend fun updateNote(note: Note)
+
 }

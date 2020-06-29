@@ -11,7 +11,7 @@ abstract class NoteEditorViewMvc : BaseObservableViewMvc<NoteEditorViewMvc.Liste
 
     abstract fun setAddToolbarTitle()
 
-    abstract fun setEditToolbarTitle()
+    abstract fun setUpdateToolbarTitle()
 
     abstract fun setNoteTitle(title: String)
 

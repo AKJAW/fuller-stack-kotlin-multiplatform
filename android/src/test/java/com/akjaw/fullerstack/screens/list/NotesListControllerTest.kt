@@ -25,8 +25,8 @@ internal class NotesListControllerTest {
 
     companion object {
         private val NOTES = listOf(
-            Note("first", "Hey"),
-            Note("second", "Hi")
+            Note(id = 1, title = "first", content = "Hey"),
+            Note(id = 2, title = "second", content = "Hi")
         )
     }
 
@@ -64,7 +64,7 @@ internal class NotesListControllerTest {
 
     @Test
     fun `onNoteClicked opens the edit note screen`(){
-        val note = Note("1", "one")
+        val note = Note(id = 1, title = "1", content = "one")
 
         SUT.onNoteClicked(note)
 

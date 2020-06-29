@@ -3,6 +3,7 @@ package dependencyinjection
 import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes
 import feature.noteslist.RefreshNotes
+import feature.noteslist.UpdateNote
 import helpers.date.PatternProvider
 import helpers.validation.NoteEditorInputValidator
 import helpers.validation.NoteInputValidator
@@ -23,6 +24,7 @@ val common = DI.Module("Common") {
     bind() from singleton { RefreshNotes(instance()) }
     bind() from singleton { FetchNotes(instance()) }
     bind() from singleton { AddNote(instance()) }
+    bind() from singleton { UpdateNote(instance()) }
     bind() from singleton { PatternProvider(instance()) }
     bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }
 }

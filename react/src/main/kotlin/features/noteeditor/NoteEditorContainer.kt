@@ -48,7 +48,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps)
 
     fun validateAndAddNote(title: String, content: String){
         if(noteInputValidator.isTitleValid(title)){
-            props.addNote(Note(title, content))
+            props.addNote(Note(id = -1, title = title, content = content))
             setState { isTitleValid = true }
         } else {//TODO use the ValidationResult
             setState { isTitleValid = false }

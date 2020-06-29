@@ -21,11 +21,24 @@ internal class NoteRepositoryFake(private val noteApi: NoteApi) : NoteRepository
         notesMutableState.value = newNotes
     }
 
-    override suspend fun addNote(note: Note) {
-        //It should add the note before the call to the api, but if there is an error. It should be updated with
+    override suspend fun addNote(newNote: Note) {
+        // This should add the note before the call to the api, but if there is an error. It should be updated with
         // a refresh icon
-        val newNotes = notesMutableState.value + note
+        val latestId= notesMutableState.value.maxBy { it.id }?.id ?: -1
+        val noteWithId = newNote.copy(id = latestId + 1)
+
+        val newNotes = notesMutableState.value + noteWithId
         notesMutableState.value = newNotes
+    }
+
+    override suspend fun updateNote(updatedNote: Note) {
+        notesMutableState.value = notesMutableState.value.map {  note ->
+            if (note.id == updatedNote.id){
+                updatedNote
+            } else {
+                note
+            }
+        }
     }
 
 }

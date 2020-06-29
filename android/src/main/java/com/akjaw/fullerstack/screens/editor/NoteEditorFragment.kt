@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ParcelableNote
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
@@ -30,7 +29,7 @@ class NoteEditorFragment: BaseFragment() {
     private lateinit var viewMvc: NoteEditorViewMvc
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewMvc = viewMvcFactory.getNoteEditorViewMvc(container, R.menu.note_editor_add)
+        viewMvc = viewMvcFactory.getNoteEditorViewMvc(container)
 
         val note = arguments?.getParcelable<ParcelableNote>(NOTE_EXTRA)
         controller.bindView(viewMvc, lifecycleScope, note)

@@ -25,7 +25,7 @@ class AddNoteTest {
     @JsName("passesTheNoteToTheRepositoryAddNote")
     @Test
     fun `executeAsync passes the note to the repository addNote`() = runTest {
-        val note = Note("testing")
+        val note = Note(id = -1, title = "testing")
         SUT.executeAsync(note)
         assertEquals(note, noteRepositoryTestFake.addedNotes[0])
         assertEquals(1, noteRepositoryTestFake.addNoteCallCount)

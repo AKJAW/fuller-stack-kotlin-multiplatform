@@ -9,18 +9,21 @@ import com.akjaw.fullerstack.screens.common.ParcelableNote
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import data.Note
 import feature.noteslist.AddNote
+import feature.noteslist.UpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class NoteEditorController(
     private val addNote: AddNote,
+    private val updateNote: UpdateNote,
     private val noteInputValidator: NoteInputValidator,
     private val screenNavigator: ScreenNavigator
 ): NoteEditorViewMvc.Listener {
 
     private lateinit var scope: CoroutineScope
     private lateinit var viewMvc: NoteEditorViewMvc
+    private var note: ParcelableNote? = null
 
     fun bindView(
         viewMvc: NoteEditorViewMvc,
@@ -30,10 +33,12 @@ class NoteEditorController(
         this.viewMvc = viewMvc
         this.scope = scope
 
+        this.note = note
+
         if(note != null){
             viewMvc.setNoteTitle(note.title)
             viewMvc.setNoteContent(note.content)
-            viewMvc.setEditToolbarTitle()
+            viewMvc.setUpdateToolbarTitle()
         } else {
             viewMvc.setAddToolbarTitle()
         }
@@ -49,25 +54,44 @@ class NoteEditorController(
 
     override fun onActionClicked() {
         val isTitleValid = noteInputValidator.isTitleValid(viewMvc.getNoteTitle())
-        if(isTitleValid) {
-            val note = Note(viewMvc.getNoteTitle(), viewMvc.getNoteContent())
-            addNote(note)
-        } else {
+        if(!isTitleValid) {
             //TODO use the ValidationResult
             viewMvc.showNoteTitleError("Title is invalid")
+            return
+        }
+
+        val note = note
+        if(note == null){
+            addNewNote()
+        } else {
+            updateExistingNote(note.id)
         }
     }
 
-    private fun addNote(note: Note) {
+    private fun addNewNote() {
+        val note = Note(
+            title = viewMvc.getNoteTitle(),
+            content = viewMvc.getNoteContent()
+        )
         scope.launch {
-            addNote.executeAsync(note) { result ->
-                screenNavigator.goBack(viewMvc.rootView.context)
-                handleResult(result)
-            }
+            addNote.executeAsync(note, ::handleResult)
+        }
+    }
+
+    private fun updateExistingNote(id: Int){
+        val note = Note(
+            id = id,
+            title = viewMvc.getNoteTitle(),
+            content = viewMvc.getNoteContent()
+        )
+        scope.launch {
+            updateNote.executeAsync(note, ::handleResult)
         }
     }
 
     private fun handleResult(result: Either<Failure, UseCaseAsync.None>) {
+        screenNavigator.goBack(viewMvc.rootView.context)
+
         val context = viewMvc.rootView.context
         when (result) {
             is Either.Left -> {

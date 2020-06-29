@@ -11,5 +11,5 @@ import org.kodein.di.singleton
 val presentationModule = DI.Module("presentationModule") {
     bind() from singleton { ViewMvcFactory(instance(), instance()) }
     bind() from singleton { NotesListController(instance(), instance()) }
-    bind() from singleton { NoteEditorController(instance(), instance(), instance()) }
+    bind() from singleton { NoteEditorController(instance(), instance(), instance(), instance()) }
 }

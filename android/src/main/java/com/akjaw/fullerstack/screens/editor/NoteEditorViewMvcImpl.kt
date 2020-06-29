@@ -4,12 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.annotation.MenuRes
 import androidx.appcompat.widget.Toolbar
 import com.akjaw.fullerstack.android.R
 import com.google.android.material.textfield.TextInputLayout
 
-class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuRes menu: Int) : NoteEditorViewMvc() {
+class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : NoteEditorViewMvc() {
     override val rootView: View = inflater.inflate(R.layout.layout_note_editor, parent, false)
 
     private val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -18,7 +17,6 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
     private val contentEditText: EditText = findViewById(R.id.content_edit_text)
 
     init {
-        toolbar.inflateMenu(menu)
         toolbar.setNavigationIcon(R.drawable.ic_close_24dp)
         toolbar.setNavigationOnClickListener {
             listeners.onEach { listener ->
@@ -35,10 +33,12 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
 
     override fun setAddToolbarTitle() {
         toolbar.title = context.getString(R.string.note_editor_toolbar_title_add)
+        toolbar.inflateMenu(R.menu.note_editor_add)
     }
 
-    override fun setEditToolbarTitle() {
+    override fun setUpdateToolbarTitle() {
         toolbar.title = context.getString(R.string.note_editor_toolbar_title_add)
+        toolbar.inflateMenu(R.menu.note_editor_update)
     }
 
     override fun setNoteTitle(title: String) {

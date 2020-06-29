@@ -24,7 +24,7 @@ object NoteEditorSlice { //TODO make an interface?
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is OpenEditor -> {
-                val note = action.note ?: Note()
+                val note = action.note ?: Note(id = -1)
                 state.copy(selectedNote = note, isEditing = action.note != null)
             }
             is CloseEditor -> {

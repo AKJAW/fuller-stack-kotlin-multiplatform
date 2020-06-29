@@ -2,7 +2,6 @@ package com.akjaw.fullerstack.screens.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.MenuRes
 import com.akjaw.fullerstack.screens.common.mainactivity.MainViewMvc
 import com.akjaw.fullerstack.screens.editor.NoteEditorViewMvc
 import com.akjaw.fullerstack.screens.editor.NoteEditorViewMvcImpl
@@ -25,6 +24,6 @@ class ViewMvcFactory(private val layoutInflater: LayoutInflater, private val pat
         patternProvider.getNotesListItemPattern()
     )
 
-    fun getNoteEditorViewMvc(parent: ViewGroup?, @MenuRes menu: Int) : NoteEditorViewMvc
-            = NoteEditorViewMvcImpl(layoutInflater, parent, menu)
+    fun getNoteEditorViewMvc(parent: ViewGroup?) : NoteEditorViewMvc
+            = NoteEditorViewMvcImpl(layoutInflater, parent)
 }
