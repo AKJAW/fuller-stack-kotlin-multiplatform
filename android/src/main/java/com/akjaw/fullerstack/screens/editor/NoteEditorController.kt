@@ -14,6 +14,7 @@ import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+
 class NoteEditorController(
     private val addNote: AddNote,
     private val updateNote: UpdateNote,
@@ -59,6 +60,8 @@ class NoteEditorController(
             viewMvc.showNoteTitleError("Title is invalid")
             return
         }
+
+        viewMvc.hideKeyboard()
 
         val note = note
         if(note == null){
@@ -114,6 +117,7 @@ class NoteEditorController(
     }
 
     override fun onCancelClicked() {
+        viewMvc.hideKeyboard()
         screenNavigator.goBack(viewMvc.rootView.context)
     }
 

@@ -24,4 +24,5 @@ abstract class NoteEditorViewMvc : BaseObservableViewMvc<NoteEditorViewMvc.Liste
     abstract fun setNoteContent(content: String)
 
     abstract fun getNoteContent(): String
+
 }

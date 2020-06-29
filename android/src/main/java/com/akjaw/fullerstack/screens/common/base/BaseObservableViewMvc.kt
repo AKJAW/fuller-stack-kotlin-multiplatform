@@ -12,4 +12,5 @@ abstract class BaseObservableViewMvc<T> : BaseViewMvc() {
     fun unregisterListener(listener: T) {
         _listeners.remove(listener)
     }
+
 }
