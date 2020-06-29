@@ -1,7 +1,7 @@
 package com.akjaw.fullerstack.screens.common.navigation
 
 import android.content.Context
-import data.Note
+import com.akjaw.fullerstack.screens.common.ParcelableNote
 
 interface ScreenNavigator {
 
@@ -9,6 +9,6 @@ interface ScreenNavigator {
 
     fun goBack(context: Context)
 
-    fun openEditNoteScreen(context: Context, note: Note)
+    fun openEditNoteScreen(context: Context, note: ParcelableNote)
 
 }

@@ -33,7 +33,7 @@ internal class NoteEditorControllerTest {
     @BeforeEach
     fun setUp(){
         SUT = NoteEditorController(addNote, noteInputValidator, screenNavigator)
-        SUT.bindView(viewMvc, testScope)
+        SUT.bindView(viewMvc, testScope, null)
     }
 
     @Test

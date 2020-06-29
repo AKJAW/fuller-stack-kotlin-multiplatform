@@ -13,11 +13,15 @@ abstract class NoteEditorViewMvc : BaseObservableViewMvc<NoteEditorViewMvc.Liste
 
     abstract fun setEditToolbarTitle()
 
+    abstract fun setNoteTitle(title: String)
+
     abstract fun getNoteTitle(): String
 
     abstract fun showNoteTitleError(text: String)
 
     abstract fun hideNoteTitleError()
+
+    abstract fun setNoteContent(content: String)
 
     abstract fun getNoteContent(): String
 }

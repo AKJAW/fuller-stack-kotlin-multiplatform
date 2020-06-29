@@ -3,6 +3,7 @@ package com.akjaw.fullerstack.screens.list
 import base.usecase.Either
 import base.usecase.Failure
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.toParcelable
 import data.Note
 import feature.noteslist.FetchNotes
 import io.mockk.coEvery
@@ -68,7 +69,7 @@ internal class NotesListControllerTest {
         SUT.onNoteClicked(note)
 
         verify {
-            screenNavigator.openEditNoteScreen(any(), note)
+            screenNavigator.openEditNoteScreen(any(), note.toParcelable())
         }
     }
 

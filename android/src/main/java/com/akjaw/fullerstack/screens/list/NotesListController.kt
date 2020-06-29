@@ -3,6 +3,7 @@ package com.akjaw.fullerstack.screens.list
 import base.usecase.Either
 import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.toParcelable
 import data.Note
 import feature.noteslist.FetchNotes
 import kotlinx.coroutines.CoroutineScope
@@ -63,7 +64,7 @@ class NotesListController(
     }
 
     override fun onNoteClicked(note: Note) {
-        screenNavigator.openEditNoteScreen(viewMvc.rootView.context, note)
+        screenNavigator.openEditNoteScreen(viewMvc.rootView.context, note.toParcelable())
     }
 
     override fun onAddNoteClicked() {

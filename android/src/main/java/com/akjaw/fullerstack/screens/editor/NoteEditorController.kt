@@ -5,6 +5,7 @@ import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.screens.common.ParcelableNote
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import data.Note
 import feature.noteslist.AddNote
@@ -21,11 +22,21 @@ class NoteEditorController(
     private lateinit var scope: CoroutineScope
     private lateinit var viewMvc: NoteEditorViewMvc
 
-    fun bindView(viewMvc: NoteEditorViewMvc, scope: CoroutineScope) {
+    fun bindView(
+        viewMvc: NoteEditorViewMvc,
+        scope: CoroutineScope,
+        note: ParcelableNote?
+    ) {
         this.viewMvc = viewMvc
         this.scope = scope
 
-        viewMvc.setAddToolbarTitle()
+        if(note != null){
+            viewMvc.setNoteTitle(note.title)
+            viewMvc.setNoteContent(note.content)
+            viewMvc.setEditToolbarTitle()
+        } else {
+            viewMvc.setAddToolbarTitle()
+        }
     }
 
     fun onStart() {

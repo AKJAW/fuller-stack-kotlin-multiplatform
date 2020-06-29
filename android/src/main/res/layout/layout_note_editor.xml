@@ -38,7 +38,7 @@
             style="@style/NotesEditorDialogEditText"
     >
         <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/body_edit_text"
+                android:id="@+id/content_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"

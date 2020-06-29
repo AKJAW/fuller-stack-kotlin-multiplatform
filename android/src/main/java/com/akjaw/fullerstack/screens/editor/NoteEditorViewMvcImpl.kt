@@ -15,7 +15,7 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
     private val toolbar: Toolbar = findViewById(R.id.toolbar)
     private val titleLayout: TextInputLayout = findViewById(R.id.title_layout)
     private val titleEditText: EditText = findViewById(R.id.title_edit_text)
-    private val bodyEditText: EditText = findViewById(R.id.body_edit_text)
+    private val contentEditText: EditText = findViewById(R.id.content_edit_text)
 
     init {
         toolbar.inflateMenu(menu)
@@ -38,7 +38,11 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
     }
 
     override fun setEditToolbarTitle() {
-        TODO("Not yet implemented")
+        toolbar.title = context.getString(R.string.note_editor_toolbar_title_add)
+    }
+
+    override fun setNoteTitle(title: String) {
+        titleEditText.setText(title)
     }
 
     override fun getNoteTitle(): String = titleEditText.text.toString()
@@ -51,6 +55,10 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?, @MenuR
         titleLayout.error = ""
     }
 
-    override fun getNoteContent(): String = bodyEditText.text.toString()
+    override fun setNoteContent(content: String) {
+        contentEditText.setText(content)
+    }
+
+    override fun getNoteContent(): String = contentEditText.text.toString()
 
 }
