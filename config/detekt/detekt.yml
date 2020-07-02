@@ -1,5 +1,5 @@
 build:
-  maxIssues: 0
+  maxIssues: 5
   excludeCorrectable: false
   weights:
     # complexity: 2
@@ -25,8 +25,8 @@ processors:
 console-reports:
   active: true
   exclude:
-     - 'ProjectStatisticsReport'
-     - 'ComplexityReport'
+#     - 'ProjectStatisticsReport'
+#     - 'ComplexityReport'
      - 'NotificationReport'
   #  - 'FindingsReport'
      - 'FileBasedFindingsReport'
@@ -369,6 +369,7 @@ naming:
   MatchingDeclarationName:
     active: true
     mustBeFirst: true
+    excludes: ['**/react/**']
   MemberNameEqualsClassName:
     active: true
     ignoreOverridden: true
@@ -398,7 +399,7 @@ naming:
     minimumVariableNameLength: 1
   VariableNaming:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jsTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
     variablePattern: '[a-z][A-Za-z0-9]*'
     privateVariablePattern: '(_)?[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
@@ -517,7 +518,7 @@ style:
     maxJumpCount: 1
   MagicNumber:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
     ignoreNumbers: ['-1', '0', '1', '2']
     ignoreHashCodeFunction: true
     ignorePropertyDeclaration: false

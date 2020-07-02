@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "DETEKT HOOK RUNNING"
+
+#Needed for intelij pre hook bash execution
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+set -e 
+set -o pipefail
+
+eval './gradlew detekt'

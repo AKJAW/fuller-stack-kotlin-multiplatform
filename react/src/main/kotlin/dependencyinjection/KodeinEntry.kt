@@ -1,10 +1,15 @@
 package dependencyinjection
 
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
+import helpers.storage.LocalStorage
+import helpers.storage.Storage
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.bind
+import org.kodein.di.singleton
 
-object KodeinEntry : KodeinAware {
-    override val kodein by Kodein.lazy {
+object KodeinEntry : DIAware {
+    override val di by DI.lazy {
         import(common)
+        bind<Storage>() with singleton { LocalStorage() }
     }
 }

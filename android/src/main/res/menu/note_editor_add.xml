@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/note_editor_action"
+            android:title="@string/note_editor_action_add"
+            app:showAsAction="ifRoom"
+        />
+</menu>

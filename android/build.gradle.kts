@@ -5,6 +5,11 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-android-extensions")
+    id("de.mannodermaus.android-junit5")
+}
+
+repositories {
+    maven { setUrl("https://jitpack.io") }
 }
 
 android {
@@ -33,7 +38,6 @@ android {
     }
 }
 
-// TODO version to other file
 dependencies {
     implementation(project(":shared"))
 
@@ -46,10 +50,25 @@ dependencies {
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
 
     // dependency injection
-    implementation(AndroidLibs.KODEIN_DI_ERASED_JVM)
+    implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
-    testImplementation(SharedTestingLibs.JUNIT)
+    // lifecycle
+    implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
+
+    // network
+    implementation(AndroidLibs.COROUTINES_ANDROID)
+
+    // date
+    implementation(SharedLibs.KLOCK)
+
+    // navigation
+    implementation(AndroidLibs.SIMPLE_STACK)
+    implementation(AndroidLibs.SIMPLE_STACK_EXTENSIONS)
+
+    testImplementation(JVMTestingLibs.JUNIT5)
+    testImplementation(SharedTestingLibs.MOCKK)
+    testImplementation(JVMTestingLibs.COROUTINES_TEST)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)
 }
