@@ -31,6 +31,7 @@ internal class NoteEditorControllerTest {
         every { setUpdateToolbarTitle() } answers {}
         every { setNoteTitle(any()) } answers {}
         every { setNoteContent(any()) } answers {}
+        every { hideKeyboard() } answers {}
     }
     private val screenNavigator: ScreenNavigator = mockk { every { goBack(any()) } answers {} }
     private val addNote: AddNote = mockk()
