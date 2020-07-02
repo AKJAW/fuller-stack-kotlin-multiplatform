@@ -51,6 +51,7 @@ object SharedLibs {
     const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
     const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
+    const val SERIALIZATION = "org.jetbrains.kotlin:kotlin-serialization:${PluginsVersions.KOTLIN}"
 }
 
 object SharedTestingLibs {
@@ -58,7 +59,7 @@ object SharedTestingLibs {
 }
 
 object JVMLibs {
-    const val KLOCK_JVM = "com.soywiz.korlibs.klock:klock-jvm:${Versions.KLOCK}"
+    const val KtorLibs = "com.soywiz.korlibs.klock:klock-jvm:${Versions.KLOCK}"
 }
 
 object JVMTestingLibs {
@@ -85,6 +86,8 @@ object KtorLibs {
     const val LOG_BACK_CLASSIC = "ch.qos.logback:logback-classic:${Versions.LOG_BACK}"
 
     const val KODEIN_DI_FRAMEWORK_KTOR_SERVER = "org.kodein.di:kodein-di-framework-ktor-server-jvm:${Versions.KODEIN}"
+
+    const val KTOR_SERIALIZATION = "io.ktor:ktor-serialization:${Versions.KTOR}"
 }
 
 object AndroidLibs {

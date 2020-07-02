@@ -1,6 +1,7 @@
 plugins {
     application
     kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 application {
@@ -19,6 +20,11 @@ dependencies {
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
     implementation(KtorLibs.KODEIN_DI_FRAMEWORK_KTOR_SERVER)
+
+    // serialization
+    implementation(SharedLibs.SERIALIZATION)
+    implementation(KtorLibs.KTOR_SERIALIZATION)
+
 }
 
 tasks {
