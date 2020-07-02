@@ -17,7 +17,7 @@ class NotesListController(
 ) : NotesListViewMvc.Listener {
 
     private sealed class NotesListState {
-        object Idle: NotesListState() //Maybe showing list?
+        object Idle : NotesListState() // Maybe showing list?
     }
 
     private lateinit var viewMvc: NotesListViewMvc
@@ -44,7 +44,7 @@ class NotesListController(
             fetchNotes.executeAsync(UseCaseAsync.None()) { result ->
                 viewMvc.hideLoading()
                 when (result) {
-                    is Either.Left -> viewMvc.showError() //TODO more elaborate
+                    is Either.Left -> viewMvc.showError() // TODO more elaborate
                     is Either.Right -> listenToNoteChanges(result.r)
                 }
             }
@@ -70,5 +70,4 @@ class NotesListController(
     override fun onAddNoteClicked() {
         screenNavigator.openAddNoteScreen(viewMvc.rootView.context)
     }
-
 }

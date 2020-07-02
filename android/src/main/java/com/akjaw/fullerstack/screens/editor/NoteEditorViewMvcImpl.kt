@@ -60,5 +60,4 @@ class NoteEditorViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : Note
     }
 
     override fun getNoteContent(): String = contentEditText.text.toString()
-
 }

@@ -31,7 +31,7 @@ class MainActivity : BaseActivity(), SimpleStateChanger.NavigationHandler {
     }
 
     override fun onBackPressed() {
-        if(!Navigator.onBackPressed(this)){
+        if (!Navigator.onBackPressed(this)) {
             super.onBackPressed()
         }
     }
@@ -39,5 +39,4 @@ class MainActivity : BaseActivity(), SimpleStateChanger.NavigationHandler {
     override fun onNavigationEvent(stateChange: StateChange) {
         fragmentStateChanger.handleStateChange(stateChange)
     }
-
 }

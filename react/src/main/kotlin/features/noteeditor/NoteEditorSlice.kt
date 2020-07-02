@@ -8,7 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import redux.RAction
 import store.RThunk
 
-object NoteEditorSlice { //TODO make an interface?
+object NoteEditorSlice { // TODO make an interface?
     data class State(
         val selectedNote: Note? = null,
         val isUpdating: Boolean = false
@@ -17,12 +17,12 @@ object NoteEditorSlice { //TODO make an interface?
     private val noteEditorScope = CoroutineScope(SupervisorJob())
 
     fun addNote(note: Note): RThunk = AddNoteThunk(noteEditorScope, note)
-    
+
     fun updateNote(note: Note): RThunk = UpdateNoteThunk(noteEditorScope, note)
 
-    data class OpenEditor(val note: Note?): RAction
+    data class OpenEditor(val note: Note?) : RAction
 
-    class CloseEditor: RAction
+    class CloseEditor : RAction
 
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {

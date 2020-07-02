@@ -11,7 +11,7 @@ data class ParcelableNote(
     val content: String
 ) : Parcelable
 
-fun Note.toParcelable(): ParcelableNote { //TODO move to mapper
+fun Note.toParcelable(): ParcelableNote { // TODO move to mapper
     return ParcelableNote(
         id = this.id,
         title = this.title,

@@ -14,13 +14,12 @@ import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
 class NoteEditorController(
     private val addNote: AddNote,
     private val updateNote: UpdateNote,
     private val noteInputValidator: NoteInputValidator,
     private val screenNavigator: ScreenNavigator
-): NoteEditorViewMvc.Listener {
+) : NoteEditorViewMvc.Listener {
 
     private lateinit var scope: CoroutineScope
     private lateinit var viewMvc: NoteEditorViewMvc
@@ -36,7 +35,7 @@ class NoteEditorController(
 
         this.note = note
 
-        if(note != null){
+        if (note != null) {
             viewMvc.setNoteTitle(note.title)
             viewMvc.setNoteContent(note.content)
             viewMvc.setUpdateToolbarTitle()
@@ -55,8 +54,8 @@ class NoteEditorController(
 
     override fun onActionClicked() {
         val isTitleValid = noteInputValidator.isTitleValid(viewMvc.getNoteTitle())
-        if(!isTitleValid) {
-            //TODO use the ValidationResult
+        if (!isTitleValid) {
+            // TODO use the ValidationResult
             viewMvc.showNoteTitleError("Title is invalid")
             return
         }
@@ -64,7 +63,7 @@ class NoteEditorController(
         viewMvc.hideKeyboard()
 
         val note = note
-        if(note == null){
+        if (note == null) {
             addNewNote()
         } else {
             updateExistingNote(note.id)
@@ -81,7 +80,7 @@ class NoteEditorController(
         }
     }
 
-    private fun updateExistingNote(id: Int){
+    private fun updateExistingNote(id: Int) {
         val note = Note(
             id = id,
             title = viewMvc.getNoteTitle(),
@@ -98,8 +97,8 @@ class NoteEditorController(
         val context = viewMvc.rootView.context
         when (result) {
             is Either.Left -> {
-                //TODO the note should be flagged and a refresh icon should be shown
-                //TODO move to a separate class which can be use by both platforms
+                // TODO the note should be flagged and a refresh icon should be shown
+                // TODO move to a separate class which can be use by both platforms
                 Toast.makeText(
                     context,
                     context.getString(R.string.note_editor_failure_add),
@@ -120,5 +119,4 @@ class NoteEditorController(
         viewMvc.hideKeyboard()
         screenNavigator.goBack(viewMvc.rootView.context)
     }
-
 }

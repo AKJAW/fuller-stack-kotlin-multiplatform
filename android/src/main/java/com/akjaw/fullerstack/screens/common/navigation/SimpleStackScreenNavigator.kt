@@ -18,5 +18,4 @@ class SimpleStackScreenNavigator : ScreenNavigator {
     override fun openEditNoteScreen(context: Context, note: ParcelableNote) {
         context.backstack.goTo(NoteEditorScreen(note))
     }
-
 }

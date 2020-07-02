@@ -10,5 +10,4 @@ abstract class NoteItemViewMvc : BaseObservableViewMvc<NoteItemViewMvc.Listener>
     }
 
     abstract fun setNote(note: Note)
-
 }

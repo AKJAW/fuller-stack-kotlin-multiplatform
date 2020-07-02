@@ -13,12 +13,12 @@ import kotlin.test.assertEquals
 
 class FetchNotesTest {
 
-    private lateinit var noteApiFake : NetworkApiFake
+    private lateinit var noteApiFake: NetworkApiFake
     private lateinit var noteRepositoryTestFake: NoteRepositoryTestFake
-    private lateinit var SUT : FetchNotes
+    private lateinit var SUT: FetchNotes
 
     @BeforeTest
-    fun setUp(){
+    fun setUp() {
         noteApiFake = NetworkApiFake()
         noteRepositoryTestFake = NoteRepositoryTestFake(noteApiFake)
         SUT = FetchNotes(noteRepositoryTestFake)

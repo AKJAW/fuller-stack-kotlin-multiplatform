@@ -16,7 +16,7 @@ class AddNoteTest {
     lateinit var SUT: AddNote
 
     @BeforeTest
-    fun setUp(){
+    fun setUp() {
         networkApiFake = NetworkApiFake()
         noteRepositoryTestFake = NoteRepositoryTestFake(networkApiFake)
         SUT = AddNote(noteRepositoryTestFake)

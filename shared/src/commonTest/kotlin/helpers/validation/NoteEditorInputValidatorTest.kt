@@ -10,13 +10,13 @@ class NoteEditorInputValidatorTest {
     private lateinit var SUT: NoteEditorInputValidator
 
     @BeforeTest
-    fun setUp(){
+    fun setUp() {
         SUT = NoteEditorInputValidator()
     }
 
     @JsName("TitleLongerThan30IsInvalid")
     @Test
-    fun `A title longer than 30 is invalid`(){
+    fun `A title longer than 30 is invalid`() {
         val title = "K".repeat(31)
 
         val result = SUT.isTitleValid(title)
@@ -26,7 +26,7 @@ class NoteEditorInputValidatorTest {
 
     @JsName("BlankTitleIsInvalid")
     @Test
-    fun `A blank title is invalid`(){
+    fun `A blank title is invalid`() {
         val title = ""
 
         val result = SUT.isTitleValid(title)
@@ -36,7 +36,7 @@ class NoteEditorInputValidatorTest {
 
     @JsName("ATitleWithLengthBetween1and30IsValid")
     @Test
-    fun `A title with length between 1 and 30 is valid`(){
+    fun `A title with length between 1 and 30 is valid`() {
         val title = "An interesting title"
 
         val result = SUT.isTitleValid(title)

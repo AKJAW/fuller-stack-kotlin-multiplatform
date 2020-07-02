@@ -10,5 +10,4 @@ interface ScreenNavigator {
     fun goBack(context: Context)
 
     fun openEditNoteScreen(context: Context, note: ParcelableNote)
-
 }

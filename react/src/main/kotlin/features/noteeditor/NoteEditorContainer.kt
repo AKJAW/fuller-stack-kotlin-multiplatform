@@ -18,7 +18,7 @@ import redux.RAction
 import redux.WrapperAction
 import store.AppState
 
-private interface NoteEditorState: RState {
+private interface NoteEditorState : RState {
     var isTitleValid: Boolean
 }
 
@@ -41,8 +41,8 @@ private interface DispatchProps : RProps {
     var closeEditor: () -> Unit
 }
 
-private class NoteEditorContainer(props: NoteEditorConnectedProps)
-    : RComponent<NoteEditorConnectedProps, NoteEditorState>(props) {
+private class NoteEditorContainer(props: NoteEditorConnectedProps) :
+    RComponent<NoteEditorConnectedProps, NoteEditorState>(props) {
 
     override fun NoteEditorState.init(props: NoteEditorConnectedProps) {
         isTitleValid = true
@@ -67,9 +67,9 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps)
             else -> "Add"
         }
 
-    fun onPositiveActionClicked(title: String, content: String){
+    fun onPositiveActionClicked(title: String, content: String) {
         val isTitleValid = noteInputValidator.isTitleValid(title)
-        if(!isTitleValid){
+        if (!isTitleValid) {
             setState { this.isTitleValid = false }
             return
         }
@@ -79,7 +79,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps)
         val selectedNote = props.selectedNote
         console.log(props.isUpdating)
         console.log(selectedNote)
-        if(props.isUpdating && selectedNote != null){
+        if (props.isUpdating && selectedNote != null) {
             val noteWithId = newNote.copy(id = selectedNote.id)
             props.updateNote(noteWithId)
         } else {

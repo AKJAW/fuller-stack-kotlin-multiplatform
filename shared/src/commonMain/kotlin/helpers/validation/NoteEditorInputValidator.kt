@@ -13,5 +13,4 @@ class NoteEditorInputValidator : NoteInputValidator {
             else -> true
         }
     }
-
 }

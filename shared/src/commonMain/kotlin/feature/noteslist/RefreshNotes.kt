@@ -12,7 +12,7 @@ class RefreshNotes(
         return try {
             noteRepository.refreshNotes()
             Either.Right(None())
-        } catch (e: Throwable) { //TODO make more defined
+        } catch (e: Throwable) { // TODO make more defined
             Either.Left(Failure.ServerError)
         }
     }

@@ -61,5 +61,4 @@ class NotesListViewMvcImpl(
     override fun showError() {
         TODO("Not yet implemented")
     }
-
 }

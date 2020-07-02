@@ -48,7 +48,7 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
     val (title, setTitle) = useState(props.selectedNote?.title ?: "")
     val (content, setContent) = useState(props.selectedNote?.content ?: "")
 
-    if(props.selectedNote != null) {
+    if (props.selectedNote != null) {
         styledDiv {
             css(Classes.root)
             styledDiv {
@@ -59,7 +59,8 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
                     onClick = { props.onPositiveActionClicked(title, content) }
                 )
             }
-            mTextField(label = "Title",
+            mTextField(
+                label = "Title",
                 value = title,
                 variant = MFormControlVariant.outlined,
                 error = props.isTitleValid.not(),
@@ -78,6 +79,6 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
             }
         }
     } else {
-        div {  }
+        div { }
     }
 }

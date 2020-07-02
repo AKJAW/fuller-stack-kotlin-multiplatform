@@ -9,4 +9,3 @@ import org.kodein.di.singleton
 val navigatorModule = DI.Module("navigatorModule") {
     bind<ScreenNavigator>() with singleton { SimpleStackScreenNavigator() }
 }
-

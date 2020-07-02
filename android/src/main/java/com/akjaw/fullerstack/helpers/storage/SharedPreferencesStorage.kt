@@ -14,5 +14,4 @@ class SharedPreferencesStorage(private val sharedPreferences: SharedPreferences)
     override fun setString(key: String, value: String) {
         sharedPreferences.edit().putString(key, value).apply()
     }
-
 }

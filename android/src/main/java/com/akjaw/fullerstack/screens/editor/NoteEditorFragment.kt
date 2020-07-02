@@ -10,7 +10,7 @@ import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import org.kodein.di.instance
 
-class NoteEditorFragment: BaseFragment() {
+class NoteEditorFragment : BaseFragment() {
 
     companion object {
         private const val NOTE_EXTRA = "NOTE_EXTRA"
@@ -46,5 +46,4 @@ class NoteEditorFragment: BaseFragment() {
         super.onStop()
         controller.onStop()
     }
-
 }

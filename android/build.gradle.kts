@@ -62,7 +62,7 @@ dependencies {
     // date
     implementation(SharedLibs.KLOCK)
 
-    //navigation
+    // navigation
     implementation(AndroidLibs.SIMPLE_STACK)
     implementation(AndroidLibs.SIMPLE_STACK_EXTENSIONS)
 

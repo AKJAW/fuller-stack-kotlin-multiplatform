@@ -25,5 +25,4 @@ class NoteRepositoryTestFake(private val noteApi: NoteApi) : NoteRepository {
         val newNotes = notesMutableState.value + note
         notesMutableState.value = newNotes
     }
-
 }

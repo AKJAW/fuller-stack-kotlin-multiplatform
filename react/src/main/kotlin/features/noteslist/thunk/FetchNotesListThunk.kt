@@ -23,9 +23,9 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
     private val fetchNotesListUseCaseAsync by KodeinEntry.di.instance<FetchNotes>()
     private var notesFlowJob: Job? = null
 
-    //TODO should this be cancelled somewhere?
+    // TODO should this be cancelled somewhere?
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
-        if(notesFlowJob != null) return nullAction
+        if (notesFlowJob != null) return nullAction
 
         dispatch(NotesListSlice.SetIsLoading(true))
         scope.launch {

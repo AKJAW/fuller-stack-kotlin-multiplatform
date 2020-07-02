@@ -31,7 +31,7 @@ class AddNoteThunk(private val scope: CoroutineScope, private val note: Note) : 
     private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, UseCaseAsync.None>) {
         when (result) {
             is Either.Left -> TODO()
-            is Either.Right -> {/* empty */}
+            is Either.Right -> { /* empty */ }
         }
     }
 }

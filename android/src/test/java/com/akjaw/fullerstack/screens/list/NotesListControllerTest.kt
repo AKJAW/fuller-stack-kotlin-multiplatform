@@ -47,14 +47,14 @@ internal class NotesListControllerTest {
     private lateinit var SUT: NotesListController
 
     @BeforeEach
-    fun setUp(){
+    fun setUp() {
         SUT = NotesListController(screenNavigator, fetchNotes)
         SUT.bindView(viewMvc, testScope)
         testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
-    fun `onAddNoteClicked opens the add note screen`(){
+    fun `onAddNoteClicked opens the add note screen`() {
         SUT.onAddNoteClicked()
 
         verify {
@@ -63,7 +63,7 @@ internal class NotesListControllerTest {
     }
 
     @Test
-    fun `onNoteClicked opens the edit note screen`(){
+    fun `onNoteClicked opens the edit note screen`() {
         val note = Note(id = 1, title = "1", content = "one")
 
         SUT.onNoteClicked(note)
@@ -74,7 +74,7 @@ internal class NotesListControllerTest {
     }
 
     @Nested
-    inner class OnStartTest{
+    inner class OnStartTest {
         @Test
         fun `onStart call fetches the notes list`() {
             fetchNotesSuccess()
@@ -153,5 +153,4 @@ internal class NotesListControllerTest {
             secondArg<(Either<Failure, Flow<List<Note>>>) -> Unit>().invoke(Either.Left(Failure.ServerError))
         }
     }
-
 }

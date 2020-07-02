@@ -6,6 +6,6 @@ import com.zhuinden.simplestackextensions.fragments.DefaultFragmentKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class NotesListScreen: DefaultFragmentKey() {
+class NotesListScreen : DefaultFragmentKey() {
     override fun instantiateFragment(): Fragment = NotesListFragment()
 }

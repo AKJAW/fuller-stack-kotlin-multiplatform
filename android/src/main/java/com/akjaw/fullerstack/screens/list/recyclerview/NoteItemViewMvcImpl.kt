@@ -32,5 +32,4 @@ class NoteItemViewMvcImpl(
         title.text = note.title
         date.text = note.creationDate.format(dateFormat)
     }
-
 }

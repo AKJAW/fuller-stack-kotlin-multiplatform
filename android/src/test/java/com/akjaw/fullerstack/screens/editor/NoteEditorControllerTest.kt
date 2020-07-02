@@ -39,20 +39,20 @@ internal class NoteEditorControllerTest {
     private lateinit var SUT: NoteEditorController
 
     @BeforeEach
-    fun setUp(){
+    fun setUp() {
         SUT = NoteEditorController(addNote, updateNote, noteInputValidator, screenNavigator)
         SUT.bindView(viewMvc, testScope, null)
     }
 
     @Test
-    fun `toolbar title is set on initialization`(){
+    fun `toolbar title is set on initialization`() {
         verify {
             viewMvc.setAddToolbarTitle()
         }
     }
 
     @Test
-    fun `onStart registers to the view`(){
+    fun `onStart registers to the view`() {
         SUT.onStart()
 
         verify {
@@ -61,7 +61,7 @@ internal class NoteEditorControllerTest {
     }
 
     @Test
-    fun `onStop() unregisters from the view`(){
+    fun `onStop() unregisters from the view`() {
         SUT.onStop()
 
         verify {
@@ -73,12 +73,12 @@ internal class NoteEditorControllerTest {
     inner class CreatingNote {
 
         @BeforeEach
-        fun setUp(){
+        fun setUp() {
             SUT.bindView(viewMvc, testScope, null)
         }
 
         @Test
-        fun `Positive action doesnt add a note if the title is incorrect`(){
+        fun `Positive action doesnt add a note if the title is incorrect`() {
             every { noteInputValidator.isTitleValid(any()) } returns false
             every { viewMvc.getNoteTitle() } returns ""
             every { viewMvc.getNoteContent() } returns ""
@@ -91,7 +91,7 @@ internal class NoteEditorControllerTest {
         }
 
         @Test
-        fun `Positive action adds the note if the title is correct`(){
+        fun `Positive action adds the note if the title is correct`() {
             every { noteInputValidator.isTitleValid(any()) } returns true
             every { viewMvc.getNoteTitle() } returns "title"
             every { viewMvc.getNoteContent() } returns "content"
@@ -110,7 +110,7 @@ internal class NoteEditorControllerTest {
         private val note = Note(1, "title", "content")
 
         @BeforeEach
-        fun setUp(){
+        fun setUp() {
             SUT.bindView(viewMvc, testScope, note.toParcelable())
 
             every { noteInputValidator.isTitleValid(any()) } returns true
@@ -119,8 +119,7 @@ internal class NoteEditorControllerTest {
         }
 
         @Test
-        fun `Positive action edits the note`(){
-
+        fun `Positive action edits the note`() {
             SUT.onActionClicked()
 
             coVerify(exactly = 1) {
@@ -130,8 +129,7 @@ internal class NoteEditorControllerTest {
     }
 
     @Test
-    fun `Negative action navigates back`(){
-
+    fun `Negative action navigates back`() {
         SUT.onCancelClicked()
 
         verify {

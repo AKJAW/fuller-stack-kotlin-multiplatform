@@ -1,6 +1,6 @@
 package helpers.storage
 
-//TODO implement using browser local storage
+// TODO implement using browser local storage
 class LocalStorage : Storage {
 
     override fun getString(key: String): String? {

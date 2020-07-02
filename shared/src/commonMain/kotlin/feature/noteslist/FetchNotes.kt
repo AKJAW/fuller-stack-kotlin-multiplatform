@@ -13,7 +13,7 @@ class FetchNotes(
     override suspend fun run(params: None): Either<Failure, Flow<List<Note>>> {
         return try {
             Either.Right(noteRepository.getNotes())
-        } catch (e: Exception) { //TODO make more defined
+        } catch (e: Exception) { // TODO make more defined
             Either.Left(Failure.ServerError)
         }
     }

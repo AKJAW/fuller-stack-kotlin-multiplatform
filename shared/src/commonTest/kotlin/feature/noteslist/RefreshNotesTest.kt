@@ -16,7 +16,7 @@ class RefreshNotesTest {
     lateinit var SUT: RefreshNotes
 
     @BeforeTest
-    fun setUp(){
+    fun setUp() {
         networkApiFake = NetworkApiFake()
         noteRepositoryTestFake = NoteRepositoryTestFake(networkApiFake)
         SUT = RefreshNotes(noteRepositoryTestFake)
