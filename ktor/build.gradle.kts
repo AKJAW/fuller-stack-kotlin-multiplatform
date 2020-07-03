@@ -21,6 +21,9 @@ dependencies {
     implementation(SharedLibs.KODEIN_DI)
     implementation(KtorLibs.KODEIN_DI_FRAMEWORK_KTOR_SERVER)
 
+    // date
+    implementation(SharedLibs.KLOCK)
+
     // serialization
     implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
     implementation(KtorLibs.KTOR_SERIALIZATION)
