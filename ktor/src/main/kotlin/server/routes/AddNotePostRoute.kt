@@ -10,19 +10,19 @@ import org.kodein.di.ktor.di
 import server.routes.helpers.getNoteSchemaFromBody
 import server.storage.NotesStorage
 
-fun Routing.updateNotePostRoute(){
+fun Routing.addNotePostRoute(){
     val notesStorage: NotesStorage by di().instance<NotesStorage>()
 
-    post("/update-note") {
+    post("/add-note") {
         val note = getNoteSchemaFromBody(call)
         println(note)
 
-        if(note == null || note.id < 0){
+        if(note == null){
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
 
         call.respond(HttpStatusCode.OK)
-        notesStorage.updateNote(note)
+        notesStorage.addNote(note)
     }
 }

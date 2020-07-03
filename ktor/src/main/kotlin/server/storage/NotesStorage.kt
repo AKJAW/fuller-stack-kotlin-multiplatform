@@ -40,6 +40,11 @@ class NotesStorage {
 
     fun getNotes(): List<NoteSchema> = notes
 
+    fun addNote(newNote: NoteSchema) {
+        val lastId = notes.maxBy { it.id }?.id ?: -1
+        notes = notes + newNote.copy(id = lastId + 1, creationDateTimestamp = DateTime.nowUnixLong())
+    }
+
     fun updateNote(updatedNote: NoteSchema) {
         notes = notes.map { note ->
             if(updatedNote.id == note.id){

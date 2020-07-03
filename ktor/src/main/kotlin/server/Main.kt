@@ -10,6 +10,7 @@ import io.ktor.server.netty.Netty
 import org.kodein.di.bind
 import org.kodein.di.ktor.di
 import org.kodein.di.singleton
+import server.routes.addNotePostRoute
 import server.routes.notesGetRoute
 import server.routes.rootGetRoute
 import server.routes.updateNotePostRoute
@@ -23,6 +24,7 @@ fun Application.module() {
         rootGetRoute()
         notesGetRoute()
         updateNotePostRoute()
+        addNotePostRoute()
     }
     install(ContentNegotiation) {
         json()
