@@ -12,6 +12,7 @@ import org.kodein.di.ktor.di
 import org.kodein.di.singleton
 import server.routes.notesGetRoute
 import server.routes.rootGetRoute
+import server.routes.updateNotePostRoute
 import server.storage.NotesStorage
 
 fun Application.module() {
@@ -21,6 +22,7 @@ fun Application.module() {
     install(Routing) {
         rootGetRoute()
         notesGetRoute()
+        updateNotePostRoute()
     }
     install(ContentNegotiation) {
         json()

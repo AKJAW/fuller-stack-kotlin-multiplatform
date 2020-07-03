@@ -5,7 +5,7 @@ import model.schema.NoteSchema
 
 @Suppress("MagicNumber")
 class NotesStorage {
-    private val notes = mutableListOf(
+    private var notes = listOf(
         NoteSchema(
             id = 0,
             title = "Note 1",
@@ -39,4 +39,17 @@ class NotesStorage {
     )
 
     fun getNotes(): List<NoteSchema> = notes
+
+    fun updateNote(updatedNote: NoteSchema) {
+        notes = notes.map { note ->
+            if(updatedNote.id == note.id){
+                note.copy(
+                    title = updatedNote.title,
+                    content = updatedNote.content
+                )
+            } else {
+                note
+            }
+        }
+    }
 }
