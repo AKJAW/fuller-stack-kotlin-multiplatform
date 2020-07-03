@@ -1,8 +1,8 @@
 package repository
 
-import data.Note
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import model.Note
 import network.NoteApi
 
 // TODO how to handle errors

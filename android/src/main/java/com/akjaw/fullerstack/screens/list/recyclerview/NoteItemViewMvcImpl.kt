@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.akjaw.fullerstack.android.R
 import com.soywiz.klock.DateFormat
-import data.Note
+import model.Note
 
 class NoteItemViewMvcImpl(
     layoutInflater: LayoutInflater,

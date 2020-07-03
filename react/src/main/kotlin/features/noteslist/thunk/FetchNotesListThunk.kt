@@ -3,7 +3,6 @@ package features.noteslist.thunk
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import data.Note
 import dependencyinjection.KodeinEntry
 import feature.noteslist.FetchNotes
 import features.noteslist.NotesListSlice
@@ -12,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import model.Note
 import org.kodein.di.instance
 import redux.RAction
 import redux.WrapperAction

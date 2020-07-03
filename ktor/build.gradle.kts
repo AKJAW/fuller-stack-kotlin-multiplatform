@@ -22,7 +22,7 @@ dependencies {
     implementation(KtorLibs.KODEIN_DI_FRAMEWORK_KTOR_SERVER)
 
     // serialization
-    implementation(SharedLibs.SERIALIZATION)
+    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
     implementation(KtorLibs.KTOR_SERIALIZATION)
 
 }

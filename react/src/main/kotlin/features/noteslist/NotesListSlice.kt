@@ -1,9 +1,9 @@
 package features.noteslist
 
-import data.Note
 import features.noteslist.thunk.FetchNotesListThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import model.Note
 import redux.RAction
 import store.RThunk
 

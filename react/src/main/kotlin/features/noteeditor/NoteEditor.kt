@@ -5,7 +5,6 @@ import com.ccfraser.muirwik.components.form.MFormControlVariant
 import com.ccfraser.muirwik.components.mTextField
 import com.ccfraser.muirwik.components.mTextFieldMultiLine
 import com.ccfraser.muirwik.components.targetInputValue
-import data.Note
 import kotlinx.css.Display
 import kotlinx.css.JustifyContent
 import kotlinx.css.LinearDimension
@@ -13,6 +12,7 @@ import kotlinx.css.display
 import kotlinx.css.justifyContent
 import kotlinx.css.minHeight
 import kotlinx.css.width
+import model.Note
 import react.RProps
 import react.dom.div
 import react.functionalComponent

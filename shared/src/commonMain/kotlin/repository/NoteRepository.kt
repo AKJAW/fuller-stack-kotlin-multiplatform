@@ -1,8 +1,8 @@
 package repository
 
-import data.Note
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import model.Note
 
 @ExperimentalCoroutinesApi
 interface NoteRepository {

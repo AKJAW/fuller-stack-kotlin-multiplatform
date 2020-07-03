@@ -3,7 +3,7 @@ package feature.noteslist
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import data.Note
+import model.Note
 import repository.NoteRepository
 
 class AddNote(

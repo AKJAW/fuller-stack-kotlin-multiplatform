@@ -1,8 +1,8 @@
 package features.noteeditor
 
-import data.Note
 import dependencyinjection.KodeinEntry
 import helpers.validation.NoteInputValidator
+import model.Note
 import org.kodein.di.instance
 import react.RBuilder
 import react.RClass

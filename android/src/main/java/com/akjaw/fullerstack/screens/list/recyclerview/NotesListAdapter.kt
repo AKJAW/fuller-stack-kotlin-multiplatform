@@ -3,7 +3,7 @@ package com.akjaw.fullerstack.screens.list.recyclerview
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
-import data.Note
+import model.Note
 
 class NotesListAdapter(
     private val onItemClicked: (Note) -> Unit,

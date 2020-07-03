@@ -1,7 +1,7 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
 import com.akjaw.fullerstack.screens.common.base.BaseObservableViewMvc
-import data.Note
+import model.Note
 
 abstract class NoteItemViewMvc : BaseObservableViewMvc<NoteItemViewMvc.Listener>() {
 

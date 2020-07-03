@@ -7,12 +7,12 @@ import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ParcelableNote
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
-import data.Note
 import feature.noteslist.AddNote
 import feature.noteslist.UpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import model.Note
 
 class NoteEditorController(
     private val addNote: AddNote,

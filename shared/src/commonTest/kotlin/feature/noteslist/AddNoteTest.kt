@@ -1,6 +1,6 @@
 package feature.noteslist
 
-import data.Note
+import model.Note
 import network.NetworkApiFake
 import repository.NoteRepositoryTestFake
 import runTest

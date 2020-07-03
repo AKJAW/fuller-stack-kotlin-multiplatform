@@ -3,8 +3,8 @@ package feature.noteslist
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import data.Note
 import kotlinx.coroutines.flow.Flow
+import model.Note
 import repository.NoteRepository
 
 class FetchNotes(

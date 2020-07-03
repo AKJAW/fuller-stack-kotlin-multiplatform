@@ -3,11 +3,11 @@ package features.noteeditor.thunk
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import data.Note
 import dependencyinjection.KodeinEntry
 import feature.noteslist.AddNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import model.Note
 import org.kodein.di.instance
 import redux.RAction
 import redux.WrapperAction

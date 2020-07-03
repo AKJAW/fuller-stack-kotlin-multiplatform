@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
@@ -33,6 +34,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
                 implementation(SharedLibs.COROUTINES_COMMON)
                 implementation(SharedLibs.KLOCK)
+                implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
             }
         }
         val commonTest by getting {
@@ -47,6 +49,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation(AndroidLibs.COROUTINES_ANDROID)
+                implementation(JVMLibs.SERIALIZATION_RUNTIME_JVM)
             }
         }
         val androidTest by getting {
@@ -62,6 +65,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation(ReactLibs.COROUTINES_JS)
+                implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
             }
         }
         val jsTest by getting {

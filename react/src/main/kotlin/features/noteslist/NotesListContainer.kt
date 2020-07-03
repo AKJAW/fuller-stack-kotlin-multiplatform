@@ -1,9 +1,9 @@
 package features.noteslist
 
-import data.Note
 import dependencyinjection.KodeinEntry
 import features.noteeditor.NoteEditorSlice
 import helpers.date.PatternProvider
+import model.Note
 import org.kodein.di.instance
 import react.RBuilder
 import react.RClass

@@ -1,8 +1,8 @@
 package network
 
 import com.soywiz.klock.DateTime
-import data.Note
 import kotlinx.coroutines.delay
+import model.Note
 
 @Suppress("MagicNumber")
 class NoteApiFake : NoteApi {

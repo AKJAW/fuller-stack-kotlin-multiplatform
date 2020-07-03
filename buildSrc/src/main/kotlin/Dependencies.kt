@@ -5,6 +5,7 @@ object Versions {
     const val COROUTINES = "1.3.7"
     const val KTLINT = "0.36.0"
     const val KLOCK = "1.11.11"
+    const val SERIALIZATION = "0.20.0"
 
     //shared test
     const val JUNIT5 = "5.6.2"
@@ -51,7 +52,8 @@ object SharedLibs {
     const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
     const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
-    const val SERIALIZATION = "org.jetbrains.kotlin:kotlin-serialization:${PluginsVersions.KOTLIN}"
+    const val SERIALIZATION_RUNTIME_COMMON = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.SERIALIZATION}"
+
 }
 
 object SharedTestingLibs {
@@ -59,7 +61,7 @@ object SharedTestingLibs {
 }
 
 object JVMLibs {
-    const val KtorLibs = "com.soywiz.korlibs.klock:klock-jvm:${Versions.KLOCK}"
+    const val SERIALIZATION_RUNTIME_JVM = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.SERIALIZATION}"
 }
 
 object JVMTestingLibs {
@@ -78,6 +80,7 @@ object ReactLibs {
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
 
     const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
+    const val SERIALIZATION_RUNTIME_JS = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.SERIALIZATION}"
 }
 
 object KtorLibs {

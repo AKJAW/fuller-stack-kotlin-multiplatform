@@ -3,7 +3,6 @@ package features.noteslist
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemText
 import com.soywiz.klock.DateFormat
-import data.Note
 import kotlinx.css.Align
 import kotlinx.css.Color
 import kotlinx.css.LinearDimension
@@ -17,6 +16,7 @@ import kotlinx.css.properties.BoxShadow
 import kotlinx.css.px
 import kotlinx.css.rgba
 import kotlinx.css.width
+import model.Note
 import react.RProps
 import react.dom.span
 import react.functionalComponent

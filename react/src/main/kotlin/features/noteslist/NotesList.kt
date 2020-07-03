@@ -3,7 +3,6 @@ package features.noteslist
 import com.ccfraser.muirwik.components.list.mList
 import com.ccfraser.muirwik.components.mCircularProgress
 import com.soywiz.klock.DateFormat
-import data.Note
 import kotlinx.css.Align
 import kotlinx.css.Display
 import kotlinx.css.JustifyContent
@@ -13,6 +12,7 @@ import kotlinx.css.display
 import kotlinx.css.justifyContent
 import kotlinx.css.minHeight
 import kotlinx.css.width
+import model.Note
 import react.RProps
 import react.child
 import react.functionalComponent

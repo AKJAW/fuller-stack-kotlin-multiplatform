@@ -1,10 +1,10 @@
 package features.noteeditor
 
-import data.Note
 import features.noteeditor.thunk.AddNoteThunk
 import features.noteeditor.thunk.UpdateNoteThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import model.Note
 import redux.RAction
 import store.RThunk
 

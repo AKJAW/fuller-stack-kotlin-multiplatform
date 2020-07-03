@@ -2,9 +2,9 @@ package features.noteslist
 
 import com.ccfraser.muirwik.components.button.MButtonVariant
 import com.ccfraser.muirwik.components.button.mButton
-import data.Note
 import kotlinx.css.LinearDimension
 import kotlinx.css.width
+import model.Note
 import react.RProps
 import react.functionalComponent
 import styled.StyleSheet

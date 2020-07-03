@@ -1,6 +1,6 @@
 package network
 
-import data.Note
+import model.Note
 
 class NetworkApiFake : NoteApi {
     var callCount = 0
