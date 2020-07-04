@@ -8,18 +8,27 @@ import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.kodein.di.bind
+import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import org.kodein.di.singleton
 import server.routes.addNotePostRoute
 import server.routes.notesGetRoute
 import server.routes.rootGetRoute
 import server.routes.updateNotePostRoute
-import server.storage.NotesStorage
+import server.storage.ExposedDatabase
+import server.storage.H2Database
+import server.storage.NotesService
 
 fun Application.module() {
     di {
-        bind() from singleton { NotesStorage() }
+        bind<ExposedDatabase>() with singleton { H2Database() }
+        bind() from singleton { NotesService(instance()) }
     }
+    val database: ExposedDatabase by di().instance<ExposedDatabase>()
+    database.initializeDatabase()
+    println(database.getDatabase())
+    println(database.getDatabase())
+
     install(Routing) {
         rootGetRoute()
         notesGetRoute()

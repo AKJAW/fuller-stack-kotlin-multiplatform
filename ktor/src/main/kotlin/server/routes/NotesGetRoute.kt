@@ -6,10 +6,10 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
-import server.storage.NotesStorage
+import server.storage.NotesService
 
 fun Routing.notesGetRoute(){
-    val notesStorage by di().instance<NotesStorage>()
+    val notesStorage by di().instance<NotesService>()
 
     get("/notes") {
         call.respond(notesStorage.getNotes())

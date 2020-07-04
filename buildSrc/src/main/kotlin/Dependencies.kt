@@ -22,6 +22,7 @@ object Versions {
     //ktor
     const val KTOR = "1.3.2"
     const val LOG_BACK = "1.2.3"
+    const val EXPOSED = "0.26.1"
 
     //android
     const val MIN_SDK_VERSION = 21
@@ -91,6 +92,11 @@ object KtorLibs {
     const val KODEIN_DI_FRAMEWORK_KTOR_SERVER = "org.kodein.di:kodein-di-framework-ktor-server-jvm:${Versions.KODEIN}"
 
     const val KTOR_SERIALIZATION = "io.ktor:ktor-serialization:${Versions.KTOR}"
+    
+    const val EXPOSED_CORE = "org.jetbrains.exposed:exposed-core:${Versions.EXPOSED}"
+    const val EXPOSED_DAO = "org.jetbrains.exposed:exposed-dao:${Versions.EXPOSED}"
+    const val EXPOSED_JDBC = "org.jetbrains.exposed:exposed-jdbc:${Versions.EXPOSED}"
+    const val H2 = "com.h2database:h2:1.4.199" //TODO
 }
 
 object AndroidLibs {

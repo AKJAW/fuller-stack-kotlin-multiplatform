@@ -28,6 +28,12 @@ dependencies {
     implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
     implementation(KtorLibs.KTOR_SERIALIZATION)
 
+    // database
+    implementation(KtorLibs.EXPOSED_CORE)
+    implementation(KtorLibs.EXPOSED_DAO)
+    implementation(KtorLibs.EXPOSED_JDBC)
+    implementation(KtorLibs.H2)
+
 }
 
 tasks {

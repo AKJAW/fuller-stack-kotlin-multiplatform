@@ -8,10 +8,10 @@ import io.ktor.routing.post
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import server.routes.helpers.getNoteSchemaFromBody
-import server.storage.NotesStorage
+import server.storage.NotesService
 
 fun Routing.updateNotePostRoute(){
-    val notesStorage: NotesStorage by di().instance<NotesStorage>()
+    val notesService: NotesService by di().instance<NotesService>()
 
     post("/update-note") {
         val note = getNoteSchemaFromBody(call)
@@ -23,6 +23,6 @@ fun Routing.updateNotePostRoute(){
         }
 
         call.respond(HttpStatusCode.OK)
-        notesStorage.updateNote(note)
+        notesService.updateNote(note)
     }
 }
