@@ -24,10 +24,6 @@ fun Application.module() {
         bind<ExposedDatabase>() with singleton { H2Database() }
         bind() from singleton { NotesService(instance()) }
     }
-    val database: ExposedDatabase by di().instance<ExposedDatabase>()
-    database.initializeDatabase()
-    println(database.getDatabase())
-    println(database.getDatabase())
 
     install(Routing) {
         rootGetRoute()

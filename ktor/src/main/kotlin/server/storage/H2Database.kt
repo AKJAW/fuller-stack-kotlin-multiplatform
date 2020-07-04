@@ -11,14 +11,14 @@ import java.sql.Connection
 
 @Suppress("MagicNumber")
 class H2Database : ExposedDatabase {
-    private lateinit var database: Database
+    private val database: Database = Database.connect(
+        "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;",
+        "org.h2.Driver"
+    ).also {
+        initializeDatabase()
+    }
 
-    override fun initializeDatabase() {
-        database = Database.connect(
-            "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;",
-            "org.h2.Driver"
-        )
-
+    private fun initializeDatabase() {
         TransactionManager.manager.defaultIsolationLevel =
             Connection.TRANSACTION_REPEATABLE_READ
 

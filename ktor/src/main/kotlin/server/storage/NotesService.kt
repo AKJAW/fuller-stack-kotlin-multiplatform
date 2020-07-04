@@ -1,18 +1,16 @@
 package server.storage
 
 import com.soywiz.klock.DateTime
-import kotlinx.coroutines.Dispatchers
 import model.schema.NoteSchema
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
 import org.jetbrains.exposed.sql.update
+import server.routes.helpers.queryDatabase
 import server.storage.model.NotesTable
 
-//TODO coroutines
 class NotesService(private val database: ExposedDatabase) {
 
-    suspend fun getNotes(): List<NoteSchema> = queryDb {
+    suspend fun getNotes(): List<NoteSchema> = queryDatabase {
         NotesTable.selectAll().map { row ->
             NoteSchema(
                 id = row[NotesTable.id].value,
@@ -21,10 +19,10 @@ class NotesService(private val database: ExposedDatabase) {
                 creationDateTimestamp = row[NotesTable.creationDateTimestamp]
             )
         }
-    }.await()
+    }
 
 
-    suspend fun addNote(newNote: NoteSchema) = queryDb {
+    suspend fun addNote(newNote: NoteSchema) = queryDatabase {
         NotesTable.insertAndGetId {
             it[title] = newNote.title
             it[content] = newNote.content
@@ -33,14 +31,10 @@ class NotesService(private val database: ExposedDatabase) {
         println(NotesTable.selectAll().count())
     }
 
-    suspend fun updateNote(updatedNote: NoteSchema) = queryDb {
+    suspend fun updateNote(updatedNote: NoteSchema) = queryDatabase {
         NotesTable.update({ NotesTable.id eq updatedNote.id }) {
             it[title] = updatedNote.title
             it[content] = updatedNote.content
         }
-    }
-
-    private suspend fun <T> queryDb(block: suspend () -> T) = suspendedTransactionAsync(Dispatchers.IO) {
-        block()
     }
 }
