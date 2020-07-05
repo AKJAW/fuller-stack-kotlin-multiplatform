@@ -19,6 +19,15 @@ import server.storage.ExposedDatabase
 import server.storage.H2Database
 import server.storage.NotesService
 
+fun main() {
+    embeddedServer(
+        factory = Netty,
+        port = getPort(),
+        module = Application::module,
+        watchPaths = listOf("ktor")
+    ).start(wait = true)
+}
+
 fun Application.module() {
     di {
         bind<ExposedDatabase>() with singleton { H2Database() }
@@ -36,11 +45,4 @@ fun Application.module() {
     }
 }
 
-fun main() {
-    embeddedServer(
-        factory = Netty,
-        port = 9000,
-        module = Application::module,
-        watchPaths = listOf("ktor")
-    ).start(wait = true)
-}
+private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000

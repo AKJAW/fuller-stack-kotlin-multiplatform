@@ -1,14 +1,16 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     application
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 application {
-    mainClassName = "MainKt"
+    mainClassName = "server.MainKt"
 }
 
-// TODO move version to different files
 dependencies {
     implementation(project(":shared"))
 
@@ -53,4 +55,15 @@ tasks {
 
         println("running on http://localhost:9000/")
     }
+
+    named<ShadowJar>("shadowJar") {
+        archiveBaseName.set("fuller-stack-ktor")
+        manifest {
+            attributes(mapOf(
+                "Main-Class" to "server.MainKt",
+                "Class-Path" to sourceSets["main"].runtimeClasspath
+            ))
+        }
+    }
 }
+
