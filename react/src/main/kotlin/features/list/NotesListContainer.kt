@@ -1,7 +1,7 @@
-package features.noteslist
+package features.list
 
 import composition.KodeinEntry
-import features.noteeditor.NoteEditorSlice
+import features.editor.NoteEditorSlice
 import helpers.date.PatternProvider
 import model.Note
 import org.kodein.di.instance

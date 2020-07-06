@@ -1,4 +1,4 @@
-package features.noteeditor
+package features.editor
 
 import composition.KodeinEntry
 import helpers.validation.NoteInputValidator

@@ -4,7 +4,7 @@ import base.usecase.Either
 import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.toParcelable
-import feature.noteslist.FetchNotes
+import feature.list.FetchNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

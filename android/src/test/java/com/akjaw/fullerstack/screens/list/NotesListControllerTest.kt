@@ -4,7 +4,7 @@ import base.usecase.Either
 import base.usecase.Failure
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.toParcelable
-import feature.noteslist.FetchNotes
+import feature.list.FetchNotes
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

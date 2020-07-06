@@ -1,4 +1,4 @@
-package features.noteslist
+package features.list
 
 import com.ccfraser.muirwik.components.list.mList
 import com.ccfraser.muirwik.components.mCircularProgress

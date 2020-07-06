@@ -1,6 +1,6 @@
-package features.noteslist
+package features.list
 
-import features.noteslist.thunk.FetchNotesListThunk
+import features.list.thunk.FetchNotesListThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import model.Note

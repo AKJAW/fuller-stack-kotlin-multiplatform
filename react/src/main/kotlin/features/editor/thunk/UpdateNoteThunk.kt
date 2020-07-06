@@ -1,10 +1,10 @@
-package features.noteeditor.thunk
+package features.editor.thunk
 
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import composition.KodeinEntry
-import feature.noteslist.UpdateNote
+import feature.editor.UpdateNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import model.Note

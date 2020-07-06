@@ -1,7 +1,7 @@
 package store
 
-import features.noteeditor.NoteEditorSlice
-import features.noteslist.NotesListSlice
+import features.editor.NoteEditorSlice
+import features.list.NotesListSlice
 
 data class AppState(
     val notesListState: NotesListSlice.State = NotesListSlice.State(),

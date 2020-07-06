@@ -1,4 +1,4 @@
-package features.noteslist
+package features.list
 
 import com.ccfraser.muirwik.components.button.MButtonVariant
 import com.ccfraser.muirwik.components.button.mButton

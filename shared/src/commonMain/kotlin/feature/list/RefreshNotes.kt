@@ -1,4 +1,4 @@
-package feature.noteslist
+package feature.list
 
 import base.usecase.Either
 import base.usecase.Failure

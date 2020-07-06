@@ -1,4 +1,4 @@
-package feature.noteslist
+package feature.editor
 
 import base.usecase.Either
 import base.usecase.Failure
@@ -6,12 +6,12 @@ import base.usecase.UseCaseAsync
 import model.Note
 import repository.NoteRepository
 
-class AddNote(
+class UpdateNote(
     private val noteRepository: NoteRepository
 ) : UseCaseAsync<Note, UseCaseAsync.None>() {
 
     override suspend fun run(params: Note): Either<Failure, None> {
-        noteRepository.addNote(params)
+        noteRepository.updateNote(params)
         return Either.Right(None())
     }
 }

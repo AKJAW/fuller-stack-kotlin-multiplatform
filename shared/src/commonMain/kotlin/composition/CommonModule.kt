@@ -1,9 +1,9 @@
 package composition
 
-import feature.noteslist.AddNote
-import feature.noteslist.FetchNotes
-import feature.noteslist.RefreshNotes
-import feature.noteslist.UpdateNote
+import feature.editor.AddNote
+import feature.editor.UpdateNote
+import feature.list.FetchNotes
+import feature.list.RefreshNotes
 import helpers.date.PatternProvider
 import helpers.validation.NoteEditorInputValidator
 import helpers.validation.NoteInputValidator

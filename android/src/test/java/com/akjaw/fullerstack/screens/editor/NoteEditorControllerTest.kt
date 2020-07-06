@@ -2,8 +2,8 @@ package com.akjaw.fullerstack.screens.editor
 
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.toParcelable
-import feature.noteslist.AddNote
-import feature.noteslist.UpdateNote
+import feature.editor.AddNote
+import feature.editor.UpdateNote
 import helpers.validation.NoteInputValidator
 import io.mockk.coVerify
 import io.mockk.every

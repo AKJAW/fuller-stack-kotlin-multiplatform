@@ -5,8 +5,8 @@ import com.ccfraser.muirwik.components.mContainer
 import com.ccfraser.muirwik.components.mGridContainer
 import com.ccfraser.muirwik.components.mGridItem
 import com.ccfraser.muirwik.components.styles.Breakpoint
-import features.noteeditor.noteEditorContainer
-import features.noteslist.notesListContainer
+import features.editor.noteEditorContainer
+import features.list.notesListContainer
 import react.RBuilder
 import react.RComponent
 import react.RProps

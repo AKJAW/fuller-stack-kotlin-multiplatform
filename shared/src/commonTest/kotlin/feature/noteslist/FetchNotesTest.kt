@@ -3,6 +3,7 @@ package feature.noteslist
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
+import feature.list.FetchNotes
 import network.NetworkApiFake
 import repository.NoteRepositoryTestFake
 import runTest

@@ -1,7 +1,7 @@
-package features.noteeditor
+package features.editor
 
-import features.noteeditor.thunk.AddNoteThunk
-import features.noteeditor.thunk.UpdateNoteThunk
+import features.editor.thunk.AddNoteThunk
+import features.editor.thunk.UpdateNoteThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import model.Note

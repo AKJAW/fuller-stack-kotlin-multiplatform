@@ -1,4 +1,4 @@
-package features.noteslist
+package features.list
 
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemText

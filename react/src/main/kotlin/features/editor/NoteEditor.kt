@@ -1,4 +1,4 @@
-package features.noteeditor
+package features.editor
 
 import com.ccfraser.muirwik.components.button.mButton
 import com.ccfraser.muirwik.components.form.MFormControlVariant

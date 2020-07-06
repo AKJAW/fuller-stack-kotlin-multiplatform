@@ -1,11 +1,11 @@
-package features.noteslist.thunk
+package features.list.thunk
 
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
 import composition.KodeinEntry
-import feature.noteslist.FetchNotes
-import features.noteslist.NotesListSlice
+import feature.list.FetchNotes
+import features.list.NotesListSlice
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow

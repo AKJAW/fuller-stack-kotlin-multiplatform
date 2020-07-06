@@ -7,8 +7,8 @@ import base.usecase.UseCaseAsync
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ParcelableNote
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
-import feature.noteslist.AddNote
-import feature.noteslist.UpdateNote
+import feature.editor.AddNote
+import feature.editor.UpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

@@ -1,7 +1,7 @@
 package store
 
-import features.noteeditor.NoteEditorSlice
-import features.noteslist.NotesListSlice
+import features.editor.NoteEditorSlice
+import features.list.NotesListSlice
 import redux.Reducer
 import redux.combineReducers
 import kotlin.reflect.KProperty1
