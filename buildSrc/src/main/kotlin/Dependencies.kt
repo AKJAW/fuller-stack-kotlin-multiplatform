@@ -25,6 +25,7 @@ object Versions {
     const val EXPOSED = "0.26.1"
     const val H2 = "1.4.199"
     const val POSTGRE_SQL = "42.2.2"
+    const val HIKARI_CP = "3.4.5"
 
     //android
     const val MIN_SDK_VERSION = 21
@@ -100,6 +101,7 @@ object KtorLibs {
     const val EXPOSED_JDBC = "org.jetbrains.exposed:exposed-jdbc:${Versions.EXPOSED}"
     const val H2 = "com.h2database:h2:${Versions.H2}"
     const val POSTGRE_SQL = "org.postgresql:postgresql:${Versions.POSTGRE_SQL}"
+    const val HIKARI_CP = "com.zaxxer:HikariCP:${Versions.HIKARI_CP}"
 }
 
 object AndroidLibs {

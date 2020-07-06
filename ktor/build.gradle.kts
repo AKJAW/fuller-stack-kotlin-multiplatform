@@ -34,6 +34,7 @@ dependencies {
     implementation(KtorLibs.EXPOSED_CORE)
     implementation(KtorLibs.EXPOSED_DAO)
     implementation(KtorLibs.EXPOSED_JDBC)
+    implementation(KtorLibs.HIKARI_CP)
     if(System.getenv("JDBC_DATABASE_URL") == null){
         implementation(KtorLibs.H2)
     } else {
