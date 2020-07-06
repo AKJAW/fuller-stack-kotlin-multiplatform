@@ -15,8 +15,8 @@ import server.routes.addNotePostRoute
 import server.routes.notesGetRoute
 import server.routes.rootGetRoute
 import server.routes.updateNotePostRoute
+import server.storage.DatabaseFactory
 import server.storage.ExposedDatabase
-import server.storage.H2Database
 import server.storage.NotesService
 
 fun main() {
@@ -28,9 +28,11 @@ fun main() {
     ).start(wait = true)
 }
 
+private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
+
 fun Application.module() {
     di {
-        bind<ExposedDatabase>() with singleton { H2Database() }
+        bind<ExposedDatabase>() with singleton { DatabaseFactory().create() }
         bind() from singleton { NotesService(instance()) }
     }
 
@@ -44,5 +46,3 @@ fun Application.module() {
         json()
     }
 }
-
-private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
