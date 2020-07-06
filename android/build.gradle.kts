@@ -36,6 +36,9 @@ android {
         setSourceCompatibility(JavaVersion.VERSION_1_8)
         setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
+    packagingOptions {
+        exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
+    }
 }
 
 dependencies {
