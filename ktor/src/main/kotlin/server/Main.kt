@@ -23,6 +23,7 @@ fun main() {
     ).start(wait = true)
 }
 
+@Suppress("MagicNumber")
 private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
 
 fun Application.module() {

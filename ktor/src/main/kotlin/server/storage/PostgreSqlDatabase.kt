@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 
+@Suppress("MagicNumber")
 class PostgreSqlDatabase(databaseUrl: String) : ExposedDatabase {
     private val database: Database = Database.connect(hikari(databaseUrl))
 
