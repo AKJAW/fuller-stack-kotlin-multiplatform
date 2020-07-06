@@ -10,14 +10,14 @@ import org.kodein.di.ktor.di
 import server.routes.helpers.getNoteSchemaFromBody
 import server.storage.NotesService
 
-fun Routing.updateNotePostRoute(){
+fun Routing.updateNotePostRoute() {
     val notesService: NotesService by di().instance<NotesService>()
 
     post("/update-note") {
         val note = getNoteSchemaFromBody(call)
         println(note)
 
-        if(note == null || note.id < 0){
+        if (note == null || note.id < 0) {
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }

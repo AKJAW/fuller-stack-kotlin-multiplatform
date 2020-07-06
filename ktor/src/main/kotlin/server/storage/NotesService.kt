@@ -21,7 +21,6 @@ class NotesService(private val database: ExposedDatabase) {
         }
     }
 
-
     suspend fun addNote(newNote: NoteSchema) = queryDatabase {
         NotesTable.insertAndGetId {
             it[title] = newNote.title

@@ -8,7 +8,7 @@ import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import server.storage.NotesService
 
-fun Routing.notesGetRoute(){
+fun Routing.notesGetRoute() {
     val notesStorage by di().instance<NotesService>()
 
     get("/notes") {

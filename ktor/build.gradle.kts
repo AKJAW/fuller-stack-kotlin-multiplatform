@@ -35,12 +35,11 @@ dependencies {
     implementation(KtorLibs.EXPOSED_DAO)
     implementation(KtorLibs.EXPOSED_JDBC)
     implementation(KtorLibs.HIKARI_CP)
-    if(System.getenv("JDBC_DATABASE_URL") == null){
+    if (System.getenv("JDBC_DATABASE_URL") == null) {
         implementation(KtorLibs.H2)
     } else {
         implementation(KtorLibs.POSTGRE_SQL)
     }
-
 }
 
 tasks {
@@ -64,11 +63,12 @@ tasks {
     named<ShadowJar>("shadowJar") {
         archiveBaseName.set("fuller-stack-ktor")
         manifest {
-            attributes(mapOf(
-                "Main-Class" to "server.MainKt",
-                "Class-Path" to sourceSets["main"].runtimeClasspath
-            ))
+            attributes(
+                mapOf(
+                    "Main-Class" to "server.MainKt",
+                    "Class-Path" to sourceSets["main"].runtimeClasspath
+                )
+            )
         }
     }
 }
-
