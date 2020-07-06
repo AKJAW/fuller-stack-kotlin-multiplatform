@@ -2,9 +2,8 @@ package com.akjaw.fullerstack.screens.editor
 
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.toParcelable
-import data.Note
-import feature.noteslist.AddNote
-import feature.noteslist.UpdateNote
+import feature.editor.AddNote
+import feature.editor.UpdateNote
 import helpers.validation.NoteInputValidator
 import io.mockk.coVerify
 import io.mockk.every
@@ -13,6 +12,7 @@ import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
+import model.Note
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

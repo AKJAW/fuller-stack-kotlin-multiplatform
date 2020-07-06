@@ -11,7 +11,7 @@ import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import data.Note
+import model.Note
 
 class NotesListViewMvcImpl(
     inflater: LayoutInflater,

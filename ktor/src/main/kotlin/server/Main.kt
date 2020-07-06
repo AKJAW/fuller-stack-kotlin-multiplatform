@@ -1,28 +1,43 @@
 package server
 
-import dependencyinjection.common
 import io.ktor.application.Application
-import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
+import io.ktor.features.ContentNegotiation
 import io.ktor.routing.Routing
-import io.ktor.routing.get
+import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.kodein.di.ktor.di
+import server.composition.databaseModule
+import server.routes.addNotePostRoute
+import server.routes.notesGetRoute
+import server.routes.rootGetRoute
+import server.routes.updateNotePostRoute
+
+fun main() {
+    embeddedServer(
+        factory = Netty,
+        port = getPort(),
+        module = Application::module,
+        watchPaths = listOf("ktor")
+    ).start(wait = true)
+}
+
+@Suppress("MagicNumber")
+private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
 
 fun Application.module() {
     di {
-        import(common)
+        import(databaseModule)
     }
-    install(Routing) {
-        get("/") {
-            call.respondText("Ktor server", ContentType.Text.Html)
-        }
-    }
-}
 
-fun main() {
-    embeddedServer(Netty, port = 9000, module = Application::module).start(wait = true)
+    install(Routing) {
+        rootGetRoute()
+        notesGetRoute()
+        updateNotePostRoute()
+        addNotePostRoute()
+    }
+    install(ContentNegotiation) {
+        json()
+    }
 }

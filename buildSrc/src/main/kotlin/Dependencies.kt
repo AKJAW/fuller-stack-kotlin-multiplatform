@@ -5,6 +5,7 @@ object Versions {
     const val COROUTINES = "1.3.7"
     const val KTLINT = "0.36.0"
     const val KLOCK = "1.11.11"
+    const val SERIALIZATION = "0.20.0"
 
     //shared test
     const val JUNIT5 = "5.6.2"
@@ -21,6 +22,10 @@ object Versions {
     //ktor
     const val KTOR = "1.3.2"
     const val LOG_BACK = "1.2.3"
+    const val EXPOSED = "0.26.1"
+    const val H2 = "1.4.199"
+    const val POSTGRE_SQL = "42.2.2"
+    const val HIKARI_CP = "3.4.5"
 
     //android
     const val MIN_SDK_VERSION = 21
@@ -51,6 +56,8 @@ object SharedLibs {
     const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
     const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
+    const val SERIALIZATION_RUNTIME_COMMON = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.SERIALIZATION}"
+
 }
 
 object SharedTestingLibs {
@@ -58,7 +65,7 @@ object SharedTestingLibs {
 }
 
 object JVMLibs {
-    const val KLOCK_JVM = "com.soywiz.korlibs.klock:klock-jvm:${Versions.KLOCK}"
+    const val SERIALIZATION_RUNTIME_JVM = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.SERIALIZATION}"
 }
 
 object JVMTestingLibs {
@@ -77,6 +84,7 @@ object ReactLibs {
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
 
     const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
+    const val SERIALIZATION_RUNTIME_JS = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.SERIALIZATION}"
 }
 
 object KtorLibs {
@@ -85,6 +93,15 @@ object KtorLibs {
     const val LOG_BACK_CLASSIC = "ch.qos.logback:logback-classic:${Versions.LOG_BACK}"
 
     const val KODEIN_DI_FRAMEWORK_KTOR_SERVER = "org.kodein.di:kodein-di-framework-ktor-server-jvm:${Versions.KODEIN}"
+
+    const val KTOR_SERIALIZATION = "io.ktor:ktor-serialization:${Versions.KTOR}"
+    
+    const val EXPOSED_CORE = "org.jetbrains.exposed:exposed-core:${Versions.EXPOSED}"
+    const val EXPOSED_DAO = "org.jetbrains.exposed:exposed-dao:${Versions.EXPOSED}"
+    const val EXPOSED_JDBC = "org.jetbrains.exposed:exposed-jdbc:${Versions.EXPOSED}"
+    const val H2 = "com.h2database:h2:${Versions.H2}"
+    const val POSTGRE_SQL = "org.postgresql:postgresql:${Versions.POSTGRE_SQL}"
+    const val HIKARI_CP = "com.zaxxer:HikariCP:${Versions.HIKARI_CP}"
 }
 
 object AndroidLibs {

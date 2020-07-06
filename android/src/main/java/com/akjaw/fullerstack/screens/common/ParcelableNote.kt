@@ -1,8 +1,8 @@
 package com.akjaw.fullerstack.screens.common
 
 import android.os.Parcelable
-import data.Note
 import kotlinx.android.parcel.Parcelize
+import model.Note
 
 @Parcelize
 data class ParcelableNote(

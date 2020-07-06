@@ -1,6 +1,7 @@
 package feature.noteslist
 
 import base.usecase.UseCaseAsync
+import feature.list.RefreshNotes
 import network.NetworkApiFake
 import repository.NoteRepositoryTestFake
 import runTest

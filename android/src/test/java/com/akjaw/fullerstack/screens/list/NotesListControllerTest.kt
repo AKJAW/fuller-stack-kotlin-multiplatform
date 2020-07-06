@@ -4,8 +4,7 @@ import base.usecase.Either
 import base.usecase.Failure
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.toParcelable
-import data.Note
-import feature.noteslist.FetchNotes
+import feature.list.FetchNotes
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
+import model.Note
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
