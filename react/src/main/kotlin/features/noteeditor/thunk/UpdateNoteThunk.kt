@@ -3,7 +3,7 @@ package features.noteeditor.thunk
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import dependencyinjection.KodeinEntry
+import composition.KodeinEntry
 import feature.noteslist.UpdateNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

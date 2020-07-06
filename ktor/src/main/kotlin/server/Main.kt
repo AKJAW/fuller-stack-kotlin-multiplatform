@@ -7,17 +7,12 @@ import io.ktor.routing.Routing
 import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import org.kodein.di.bind
-import org.kodein.di.instance
 import org.kodein.di.ktor.di
-import org.kodein.di.singleton
+import server.composition.databaseModule
 import server.routes.addNotePostRoute
 import server.routes.notesGetRoute
 import server.routes.rootGetRoute
 import server.routes.updateNotePostRoute
-import server.storage.DatabaseFactory
-import server.storage.ExposedDatabase
-import server.storage.NotesService
 
 fun main() {
     embeddedServer(
@@ -32,8 +27,7 @@ private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
 
 fun Application.module() {
     di {
-        bind<ExposedDatabase>() with singleton { DatabaseFactory().create() }
-        bind() from singleton { NotesService(instance()) }
+        import(databaseModule)
     }
 
     install(Routing) {

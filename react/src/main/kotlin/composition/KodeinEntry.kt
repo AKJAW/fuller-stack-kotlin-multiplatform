@@ -1,4 +1,4 @@
-package dependencyinjection
+package composition
 
 import helpers.storage.LocalStorage
 import helpers.storage.Storage

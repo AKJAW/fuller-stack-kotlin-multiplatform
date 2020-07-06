@@ -1,8 +1,8 @@
 package com.akjaw.fullerstack.screens.common
 
 import android.app.Application
-import com.akjaw.fullerstack.dependencyinjection.modules.androidModule
-import dependencyinjection.common
+import com.akjaw.fullerstack.composition.modules.androidModule
+import composition.common
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.androidXModule

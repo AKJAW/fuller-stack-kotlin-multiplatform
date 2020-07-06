@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.dependencyinjection.modules
+package com.akjaw.fullerstack.composition.modules
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE

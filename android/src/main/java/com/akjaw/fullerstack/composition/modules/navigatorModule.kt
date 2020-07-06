@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.dependencyinjection.modules
+package com.akjaw.fullerstack.composition.modules
 
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.navigation.SimpleStackScreenNavigator

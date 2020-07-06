@@ -1,6 +1,6 @@
 package features.noteslist
 
-import dependencyinjection.KodeinEntry
+import composition.KodeinEntry
 import features.noteeditor.NoteEditorSlice
 import helpers.date.PatternProvider
 import model.Note

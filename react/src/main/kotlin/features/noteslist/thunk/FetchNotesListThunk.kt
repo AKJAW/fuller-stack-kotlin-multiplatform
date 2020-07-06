@@ -3,7 +3,7 @@ package features.noteslist.thunk
 import base.usecase.Either
 import base.usecase.Failure
 import base.usecase.UseCaseAsync
-import dependencyinjection.KodeinEntry
+import composition.KodeinEntry
 import feature.noteslist.FetchNotes
 import features.noteslist.NotesListSlice
 import kotlinx.coroutines.CoroutineScope

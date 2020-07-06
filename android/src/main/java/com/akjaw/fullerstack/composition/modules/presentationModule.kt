@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.dependencyinjection.modules
+package com.akjaw.fullerstack.composition.modules
 
 import com.akjaw.fullerstack.screens.common.ViewMvcFactory
 import com.akjaw.fullerstack.screens.editor.NoteEditorController

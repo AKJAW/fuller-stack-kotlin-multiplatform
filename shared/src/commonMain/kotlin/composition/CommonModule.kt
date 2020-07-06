@@ -1,4 +1,4 @@
-package dependencyinjection
+package composition
 
 import feature.noteslist.AddNote
 import feature.noteslist.FetchNotes

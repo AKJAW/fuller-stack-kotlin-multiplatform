@@ -1,6 +1,6 @@
 package features.noteeditor
 
-import dependencyinjection.KodeinEntry
+import composition.KodeinEntry
 import helpers.validation.NoteInputValidator
 import model.Note
 import org.kodein.di.instance
