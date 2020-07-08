@@ -51,6 +51,8 @@ dependencies {
     implementation(AndroidLibs.APP_COMPAT)
     implementation(AndroidLibs.MATERIAL)
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
+    implementation(AndroidLibs.LIFECYCLE_VIEWMODEL)
+    implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
 
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
