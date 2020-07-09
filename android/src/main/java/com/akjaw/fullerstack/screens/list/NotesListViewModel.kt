@@ -24,11 +24,14 @@ internal class NotesListViewModel(
     }
 
     // TODO job
-
-    private val _viewState = MutableLiveData<NotesListState>()
+    private val _viewState = MutableLiveData<NotesListState>(NotesListState.Loading)
     val viewState: LiveData<NotesListState> = _viewState
 
-    fun listenToNotesListChanges() = viewModelScope.launch {
+    init {
+        listenToNotesListChanges()
+    }
+
+    private fun listenToNotesListChanges() = viewModelScope.launch {
         _viewState.postValue(NotesListState.Loading)
         fetchNotes.executeAsync(UseCaseAsync.None()) { result ->
             handleResult(result)

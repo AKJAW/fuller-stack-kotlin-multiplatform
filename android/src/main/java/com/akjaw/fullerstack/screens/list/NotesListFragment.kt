@@ -1,34 +1,78 @@
 package com.akjaw.fullerstack.screens.list
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
-import com.akjaw.fullerstack.screens.common.ViewMvcFactory
+import android.widget.ProgressBar
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.helpers.viewmodel.viewModels
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
+import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
+import com.akjaw.fullerstack.screens.common.toParcelable
+import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
+import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import model.Note
 import org.kodein.di.instance
 
-class NotesListFragment : BaseFragment() {
+class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
-    private val viewMvcFactory: ViewMvcFactory by instance<ViewMvcFactory>()
-    private val notesListController: NotesListController by instance<NotesListController>()
-    private lateinit var viewMvc: NotesListViewMvc
+    private lateinit var toolbar: Toolbar
+    private lateinit var loadingIndicator: ProgressBar
+    private lateinit var fab: FloatingActionButton
+    private lateinit var notesRecyclerView: RecyclerView
+    private lateinit var notesListAdapter: NotesListAdapter
+    private val screenNavigator: ScreenNavigator by instance<ScreenNavigator>()
+    private val notesListAdapterFactory: NotesListAdapterFactory by instance<NotesListAdapterFactory>()
+    private val viewModel: NotesListViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewMvc = viewMvcFactory.getNotesListViewMvc(container)
-        notesListController.bindView(viewMvc, lifecycleScope)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        return viewMvc.rootView
+        notesListAdapter = notesListAdapterFactory.create(::onNoteClicked)
+    }
+
+    private fun onNoteClicked(note: Note) {
+        screenNavigator.openEditNoteScreen(requireContext(), note.toParcelable())
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        toolbar = view.findViewById(R.id.toolbar)
+        notesRecyclerView = view.findViewById(R.id.notes_list)
+        loadingIndicator = view.findViewById(R.id.loading_indicator)
+        fab = view.findViewById(R.id.floating_action_button)
+
+        notesRecyclerView.apply {
+            adapter = notesListAdapter
+            notesRecyclerView.setHasFixedSize(true)
+            notesRecyclerView.layoutManager = LinearLayoutManager(context)
+        }
+
+        viewModel.viewState.observe(
+            viewLifecycleOwner,
+            Observer {
+                render(it)
+            }
+        )
+    }
+
+    private fun render(viewState: NotesListViewModel.NotesListState?) {
+        when (viewState) {
+            NotesListViewModel.NotesListState.Loading -> loadingIndicator.visibility = View.VISIBLE
+            NotesListViewModel.NotesListState.Error -> TODO()
+            is NotesListViewModel.NotesListState.ShowingList -> {
+                loadingIndicator.visibility = View.INVISIBLE
+                notesListAdapter.setNotes(viewState.notes)
+            }
+            null -> TODO()
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        notesListController.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        notesListController.onStop()
     }
 }
