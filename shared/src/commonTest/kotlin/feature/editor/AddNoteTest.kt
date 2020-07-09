@@ -1,6 +1,5 @@
-package feature.noteslist
+package feature.editor
 
-import feature.editor.AddNote
 import model.Note
 import network.NetworkApiFake
 import repository.NoteRepositoryTestFake
