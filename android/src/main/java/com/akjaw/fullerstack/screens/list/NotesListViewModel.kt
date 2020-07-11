@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import base.usecase.Either
 import base.usecase.Failure
-import base.usecase.UseCaseAsync
 import feature.list.FetchNotes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -27,20 +26,15 @@ internal class NotesListViewModel(
     private val _viewState = MutableLiveData<NotesListState>(NotesListState.Loading)
     val viewState: LiveData<NotesListState> = _viewState
 
-    init {
-        listenToNotesListChanges()
-    }
-
-    private fun listenToNotesListChanges() = viewModelScope.launch {
+    fun initializeNotes() = viewModelScope.launch {
         _viewState.postValue(NotesListState.Loading)
-        fetchNotes.executeAsync(UseCaseAsync.None()) { result ->
-            handleResult(result)
-        }
+        val result= fetchNotes.executeAsync()
+        handleResult(result)
     }
 
     private fun handleResult(result: Either<Failure, Flow<List<Note>>>) {
         when (result) {
-            is Either.Right -> viewModelScope.launch {
+            is Either.Right -> viewModelScope.launch { //TODO if there is a flow running then replace?
                 result.r.collect {
                     _viewState.postValue(NotesListState.ShowingList(it))
                 }

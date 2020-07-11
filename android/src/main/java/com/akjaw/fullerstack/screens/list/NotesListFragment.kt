@@ -33,6 +33,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         super.onCreate(savedInstanceState)
 
         notesListAdapter = notesListAdapterFactory.create(::onNoteClicked)
+        viewModel.initializeNotes()
     }
 
     private fun onNoteClicked(note: Note) {

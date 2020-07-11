@@ -42,7 +42,7 @@ internal class NotesListViewModelTest {
         Dispatchers.setMain(Dispatchers.Default)
         fetchNotesSuccess()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         assertEquals(NotesListState.Loading, viewState)
@@ -52,7 +52,7 @@ internal class NotesListViewModelTest {
     fun `successful fetch shows the notes list`() {
         fetchNotesSuccess()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         val expectedViewState = NotesListState.ShowingList(NOTES)
@@ -63,7 +63,7 @@ internal class NotesListViewModelTest {
     fun `notes list changes are shown in the view`() {
         fetchNotesSuccess()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         assertEquals(
             NotesListState.ShowingList(NOTES),
@@ -81,21 +81,17 @@ internal class NotesListViewModelTest {
     fun `fetch error is shown in the view`() {
         fetchNotesFailure()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         assertEquals(NotesListState.Error, viewState)
     }
 
     private fun fetchNotesSuccess() {
-        coEvery { fetchNotes.executeAsync(any(), any()) } answers {
-            secondArg<(Either<Failure, Flow<List<Note>>>) -> Unit>().invoke(Either.Right(notesListStateFlow))
-        }
+        coEvery { fetchNotes.executeAsync() } returns Either.Right(notesListStateFlow as Flow<List<Note>>)
     }
 
     private fun fetchNotesFailure() {
-        coEvery { fetchNotes.executeAsync(any(), any()) } answers {
-            secondArg<(Either<Failure, Flow<List<Note>>>) -> Unit>().invoke(Either.Left(Failure.ServerError))
-        }
+        coEvery { fetchNotes.executeAsync() } returns Either.Left(Failure.ServerError)
     }
 }

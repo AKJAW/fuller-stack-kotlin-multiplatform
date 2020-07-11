@@ -2,7 +2,6 @@ package features.list.thunk
 
 import base.usecase.Either
 import base.usecase.Failure
-import base.usecase.UseCaseAsync
 import composition.KodeinEntry
 import feature.list.FetchNotes
 import features.list.NotesListSlice
@@ -20,7 +19,7 @@ import store.RThunk
 import store.nullAction
 
 class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
-    private val fetchNotesListUseCaseAsync by KodeinEntry.di.instance<FetchNotes>()
+    private val fetchNotes by KodeinEntry.di.instance<FetchNotes>()
     private var notesFlowJob: Job? = null
 
     // TODO should this be cancelled somewhere?
@@ -29,9 +28,8 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
 
         dispatch(NotesListSlice.SetIsLoading(true))
         scope.launch {
-            fetchNotesListUseCaseAsync.executeAsync(
-                UseCaseAsync.None()
-            ) { result -> handleResult(dispatch, result) }
+            val result = fetchNotes.executeAsync()
+            handleResult(dispatch, result)
         }
 
         return nullAction // TODO is this necessary
