@@ -48,6 +48,10 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         loadingIndicator = view.findViewById(R.id.loading_indicator)
         fab = view.findViewById(R.id.floating_action_button)
 
+        fab.setOnClickListener {
+            screenNavigator.openAddNoteScreen(requireContext())
+        }
+
         notesRecyclerView.apply {
             adapter = notesListAdapter
             notesRecyclerView.setHasFixedSize(true)

@@ -4,25 +4,32 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.Note
 import network.NoteApi
+import network.NoteApiFake
 
-class NoteRepositoryTestFake(private val noteApi: NoteApi) : NoteRepository {
+class NoteRepositoryTestFake : NoteRepository {
+    private val noteApi: NoteApi = NoteApiFake()
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
-    override val notes: Flow<List<Note>> = notesMutableState
 
-    var refreshNotesCallCount = 0
-    var addNoteCallCount = 0
-    val addedNotes = mutableListOf<Note>()
+    override suspend fun getNotes(): Flow<List<Note>> = notesMutableState
 
     override suspend fun refreshNotes() {
-        refreshNotesCallCount++
         val newNotes = noteApi.getNotes()
         notesMutableState.value = newNotes
     }
 
     override suspend fun addNote(note: Note) {
-        addNoteCallCount++
-        addedNotes.add(note)
         val newNotes = notesMutableState.value + note
+        notesMutableState.value = newNotes
+    }
+
+    override suspend fun updateNote(updatedNote: Note) {
+        val newNotes = notesMutableState.value.map { note ->
+            if(note.id == updatedNote.id) {
+                note.copy(title = updatedNote.title, content = updatedNote.content)
+            } else {
+                note
+            }
+        }
         notesMutableState.value = newNotes
     }
 }

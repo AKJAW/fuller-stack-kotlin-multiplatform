@@ -8,6 +8,7 @@ import repository.NoteRepository
 class RefreshNotes(
     private val noteRepository: NoteRepository
 ) : UseCaseAsync<UseCaseAsync.None, UseCaseAsync.None>() {
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun run(params: None): Either<Failure, None> {
         return try {
             noteRepository.refreshNotes()

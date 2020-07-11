@@ -1,5 +1,6 @@
 package composition
 
+import base.CommonDispatchers
 import feature.editor.AddNote
 import feature.editor.UpdateNote
 import feature.list.FetchNotes
@@ -22,7 +23,11 @@ val common = DI.Module("Common") {
     bind<NoteApi>() with singleton { NoteApiFake() }
     bind<NoteRepository>() with singleton { NoteRepositoryFake(instance()) }
     bind() from singleton { RefreshNotes(instance()) }
-    bind() from singleton { FetchNotes(instance()) }
+    bind() from singleton {
+        FetchNotes(
+            CommonDispatchers.BackgroundDispatcher, //TODO make dispatcher injectable
+            instance())
+    }
     bind() from singleton { AddNote(instance()) }
     bind() from singleton { UpdateNote(instance()) }
     bind() from singleton { PatternProvider(instance()) }

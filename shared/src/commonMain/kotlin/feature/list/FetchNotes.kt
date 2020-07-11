@@ -1,8 +1,8 @@
 package feature.list
 
-import base.CommonDispatchers
 import base.usecase.Either
 import base.usecase.Failure
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -10,6 +10,7 @@ import model.Note
 import repository.NoteRepository
 
 class FetchNotes(
+    private val coroutineDispatcher: CoroutineDispatcher,
     private val noteRepository: NoteRepository
 ) {
     sealed class Result {
@@ -18,7 +19,8 @@ class FetchNotes(
         data class Content(val notesFlow: Flow<List<Note>>) : Result()
     }
 
-    suspend fun executeTest(): Flow<Result> = withContext(CommonDispatchers.BackgroundDispatcher){
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun executeTest(): Flow<Result> = withContext(coroutineDispatcher){
         flow {
             emit(Result.Loading)
 
@@ -31,6 +33,7 @@ class FetchNotes(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     suspend fun executeAsync(): Either<Failure, Flow<List<Note>>> {
         return try {
             Either.Right(noteRepository.getNotes())
