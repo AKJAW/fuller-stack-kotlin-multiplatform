@@ -1,6 +1,5 @@
 package feature.list
 
-import base.usecase.Either
 import base.usecase.Failure
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +19,7 @@ class FetchNotes(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun executeTest(): Flow<Result> = withContext(coroutineDispatcher){
+    suspend fun executeAsync(): Flow<Result> = withContext(coroutineDispatcher){
         flow {
             emit(Result.Loading)
 
@@ -30,15 +29,6 @@ class FetchNotes(
                 Result.Error(Failure.ServerError)
             }
             emit(result)
-        }
-    }
-
-    @Suppress("TooGenericExceptionCaught")
-    suspend fun executeAsync(): Either<Failure, Flow<List<Note>>> {
-        return try {
-            Either.Right(noteRepository.getNotes())
-        } catch (e: Exception) { // TODO make more defined
-            Either.Left(Failure.ServerError)
         }
     }
 }

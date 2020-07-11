@@ -1,7 +1,5 @@
 package features.list.thunk
 
-import base.usecase.Either
-import base.usecase.Failure
 import composition.KodeinEntry
 import feature.list.FetchNotes
 import features.list.NotesListSlice
@@ -26,20 +24,23 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         if (notesFlowJob != null) return nullAction
 
-        dispatch(NotesListSlice.SetIsLoading(true))
         scope.launch {
-            val result = fetchNotes.executeAsync()
-            handleResult(dispatch, result)
+            fetchNotes.executeAsync().collect {
+                handleFetchNotesResult(dispatch, it)
+            }
         }
 
         return nullAction // TODO is this necessary
     }
 
-    private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, Flow<List<Note>>>) {
-        dispatch(NotesListSlice.SetIsLoading(false))
-        when (result) {
-            is Either.Left -> TODO()
-            is Either.Right -> listenToNoteChanges(dispatch, result.r)
+    private fun handleFetchNotesResult(dispatch: (RAction) -> WrapperAction, fetchNotesResult: FetchNotes.Result) {
+        when(fetchNotesResult) {
+            FetchNotes.Result.Loading -> dispatch(NotesListSlice.SetIsLoading(true))
+            is FetchNotes.Result.Error -> TODO()
+            is FetchNotes.Result.Content -> {
+                dispatch(NotesListSlice.SetIsLoading(false))
+                listenToNoteChanges(dispatch, fetchNotesResult.notesFlow)
+            }
         }
     }
 
@@ -47,7 +48,7 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
         dispatch: (RAction) -> WrapperAction,
         notesFlow: Flow<List<Note>>
     ) {
-        notesFlowJob = scope.launch {
+        notesFlowJob = scope.launch { //TODO handle error
             notesFlow.collect { notes ->
                 val action = NotesListSlice.SetNotesList(notes.toTypedArray())
                 dispatch(action)

@@ -45,7 +45,7 @@ internal class NotesListViewModelTest {
         Dispatchers.setMain(Dispatchers.Default)
         fetchNotesSuccess()
 
-        SUT.initializeNotesTest()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         assertEquals(NotesListState.Loading, viewState)
@@ -55,7 +55,7 @@ internal class NotesListViewModelTest {
     fun `successful fetch shows the notes list`() {
         fetchNotesSuccess()
 
-        SUT.initializeNotesTest()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         val expectedViewState = NotesListState.ShowingList(NOTES)
@@ -66,7 +66,7 @@ internal class NotesListViewModelTest {
     fun `notes list changes are shown in the view`() {
         fetchNotesSuccess()
 
-        SUT.initializeNotesTest()
+        SUT.initializeNotes()
 
         assertEquals(
             NotesListState.ShowingList(NOTES),
@@ -84,7 +84,7 @@ internal class NotesListViewModelTest {
     fun `fetch error is shown in the view`() {
         fetchNotesFailure()
 
-        SUT.initializeNotesTest()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         assertEquals(NotesListState.Error, viewState)
