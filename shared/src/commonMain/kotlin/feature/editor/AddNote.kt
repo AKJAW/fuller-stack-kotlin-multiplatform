@@ -1,17 +1,22 @@
 package feature.editor
 
-import base.usecase.Either
-import base.usecase.Failure
-import base.usecase.UseCaseAsync
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import model.Note
 import repository.NoteRepository
 
 class AddNote(
+    private val coroutineDispatcher: CoroutineDispatcher,
     private val noteRepository: NoteRepository
-) : UseCaseAsync<Note, UseCaseAsync.None>() {
+) {
 
-    override suspend fun run(params: Note): Either<Failure, None> {
-        noteRepository.addNote(params)
-        return Either.Right(None())
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun executeAsync(note: Note): Boolean = withContext(coroutineDispatcher) {
+        try {
+            noteRepository.addNote(note)
+            true
+        } catch (e: Exception) {//TODO make more defined
+            false
+        }
     }
 }

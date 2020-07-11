@@ -25,8 +25,8 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     private lateinit var fab: FloatingActionButton
     private lateinit var notesRecyclerView: RecyclerView
     private lateinit var notesListAdapter: NotesListAdapter
-    private val screenNavigator: ScreenNavigator by instance<ScreenNavigator>()
-    private val notesListAdapterFactory: NotesListAdapterFactory by instance<NotesListAdapterFactory>()
+    private val screenNavigator: ScreenNavigator by instance()
+    private val notesListAdapterFactory: NotesListAdapterFactory by instance()
     private val viewModel: NotesListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
