@@ -33,7 +33,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         super.onCreate(savedInstanceState)
 
         notesListAdapter = notesListAdapterFactory.create(::onNoteClicked)
-        viewModel.initializeNotes()
+        viewModel.initializeNotesTest()
     }
 
     private fun onNoteClicked(note: Note) {
@@ -43,6 +43,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar = view.findViewById(R.id.toolbar)
+        toolbar.title = requireContext().getString(R.string.notes_list_toolbar_title)
         notesRecyclerView = view.findViewById(R.id.notes_list)
         loadingIndicator = view.findViewById(R.id.loading_indicator)
         fab = view.findViewById(R.id.floating_action_button)

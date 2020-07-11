@@ -22,7 +22,6 @@ internal class NotesListViewModel(
         data class ShowingList(val notes: List<Note>) : NotesListState()
     }
 
-    // TODO job
     private val _viewState = MutableLiveData<NotesListState>(NotesListState.Loading)
     val viewState: LiveData<NotesListState> = _viewState
 
@@ -32,9 +31,27 @@ internal class NotesListViewModel(
         handleResult(result)
     }
 
+    fun initializeNotesTest() = viewModelScope.launch {
+        if(viewState.value is NotesListState.ShowingList) return@launch
+
+        fetchNotes.executeTest().collect(::handleFetchNotesResult)
+    }
+
+    private suspend fun handleFetchNotesResult(fetchNotesResult: FetchNotes.Result) {
+        when (fetchNotesResult) {
+            FetchNotes.Result.Loading -> _viewState.postValue(NotesListState.Loading)
+            is FetchNotes.Result.Error -> _viewState.postValue(NotesListState.Error)
+            is FetchNotes.Result.Content -> viewModelScope.launch { //TODO exception handling
+                fetchNotesResult.notesFlow.collect {
+                    _viewState.postValue(NotesListState.ShowingList(it))
+                }
+            }
+        }
+    }
+
     private fun handleResult(result: Either<Failure, Flow<List<Note>>>) {
         when (result) {
-            is Either.Right -> viewModelScope.launch { //TODO if there is a flow running then replace?
+            is Either.Right -> viewModelScope.launch {
                 result.r.collect {
                     _viewState.postValue(NotesListState.ShowingList(it))
                 }
