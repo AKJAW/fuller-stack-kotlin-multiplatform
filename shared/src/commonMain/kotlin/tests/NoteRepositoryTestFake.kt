@@ -1,16 +1,25 @@
-package repository
+package tests
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.Note
 import network.NoteApi
 import network.NoteApiFake
+import repository.NoteRepository
 
 class NoteRepositoryTestFake : NoteRepository {
     private val noteApi: NoteApi = NoteApiFake()
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
 
-    override suspend fun getNotes(): Flow<List<Note>> = notesMutableState
+    private var shouldNoteFlowThrow = false
+
+    override suspend fun getNotes(): Flow<List<Note>> {
+        return if(shouldNoteFlowThrow){
+            throw RuntimeException()
+        } else {
+            notesMutableState
+        }
+    }
 
     override suspend fun refreshNotes() {
         val newNotes = noteApi.getNotes()
@@ -31,5 +40,13 @@ class NoteRepositoryTestFake : NoteRepository {
             }
         }
         notesMutableState.value = newNotes
+    }
+
+    fun setNotes(notes: List<Note>) {
+        notesMutableState.value = notes
+    }
+
+    fun setNotesFlowError() {
+        shouldNoteFlowThrow = true
     }
 }

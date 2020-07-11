@@ -5,18 +5,14 @@ import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
 import feature.list.FetchNotes
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import model.Note
-import network.NoteApi
-import network.NoteApiFake
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import repository.NoteRepository
+import tests.NoteRepositoryTestFake
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class NotesListViewModelTest {
@@ -96,49 +92,5 @@ internal class NotesListViewModelTest {
 
     private fun fetchNotesFailure() {
         repositoryTestFake.setNotesFlowError()
-    }
-}
-
-class NoteRepositoryTestFake : NoteRepository {
-    private val noteApi: NoteApi = NoteApiFake()
-    private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
-
-    private var shouldNoteFlowThrow = false
-
-    override suspend fun getNotes(): Flow<List<Note>> {
-        return if(shouldNoteFlowThrow){
-            throw RuntimeException()
-        } else {
-            notesMutableState
-        }
-    }
-
-    override suspend fun refreshNotes() {
-        val newNotes = noteApi.getNotes()
-        notesMutableState.value = newNotes
-    }
-
-    override suspend fun addNote(note: Note) {
-        val newNotes = notesMutableState.value + note
-        notesMutableState.value = newNotes
-    }
-
-    override suspend fun updateNote(updatedNote: Note) {
-        val newNotes = notesMutableState.value.map { note ->
-            if(note.id == updatedNote.id) {
-                note.copy(title = updatedNote.title, content = updatedNote.content)
-            } else {
-                note
-            }
-        }
-        notesMutableState.value = newNotes
-    }
-
-    fun setNotes(notes: List<Note>) {
-        notesMutableState.value = notes
-    }
-
-    fun setNotesFlowError() {
-        shouldNoteFlowThrow = true
     }
 }

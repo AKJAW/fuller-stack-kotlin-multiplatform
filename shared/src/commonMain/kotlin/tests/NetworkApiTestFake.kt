@@ -1,14 +1,13 @@
-package network
+package tests
 
 import model.Note
+import network.NoteApi
 
-class NetworkApiFake : NoteApi {
-    var callCount = 0
+class NetworkApiTestFake : NoteApi {
     var notes: List<Note> = listOf()
     var willFail = false
 
     override suspend fun getNotes(): List<Note> {
-        callCount++
         if (willFail) {
             throw Exception() // TODO make more defined
         }
