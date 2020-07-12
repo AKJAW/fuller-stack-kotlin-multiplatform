@@ -10,8 +10,6 @@ import helpers.validation.NoteEditorInputValidator
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import network.NoteApi
-import network.NoteApiFake
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -21,7 +19,6 @@ import repository.NoteRepositoryFake
 
 @ExperimentalCoroutinesApi
 val common = DI.Module("Common") {
-    bind<NoteApi>() with singleton { NoteApiFake() }
     bind<NoteRepository>() with singleton { NoteRepositoryFake(instance()) }
     bind<CoroutineDispatcher>(tag = "BackgroundDispatcher") with singleton { CommonDispatchers.BackgroundDispatcher }
     bind() from singleton { FetchNotes(instance("BackgroundDispatcher"), instance()) }

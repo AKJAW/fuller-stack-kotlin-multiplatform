@@ -63,6 +63,10 @@ dependencies {
 
     // network
     implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(AndroidLibs.OKHTTP)
+    implementation(AndroidLibs.OKHTTP_LOGGING_INTERCEPTOR)
+    implementation(AndroidLibs.RETROFIT)
+    implementation(AndroidLibs.RETROFIT_KOTLINX_SERIALIZATION)
 
     // date
     implementation(SharedLibs.KLOCK)
