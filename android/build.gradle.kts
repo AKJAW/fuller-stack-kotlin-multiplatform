@@ -67,6 +67,7 @@ dependencies {
     implementation(AndroidLibs.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(AndroidLibs.RETROFIT)
     implementation(AndroidLibs.RETROFIT_KOTLINX_SERIALIZATION)
+    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
 
     // date
     implementation(SharedLibs.KLOCK)
