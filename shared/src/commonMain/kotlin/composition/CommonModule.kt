@@ -23,9 +23,9 @@ import repository.NoteRepositoryFake
 val common = DI.Module("Common") {
     bind<NoteApi>() with singleton { NoteApiFake() }
     bind<NoteRepository>() with singleton { NoteRepositoryFake(instance()) }
-    bind() from singleton { RefreshNotes(instance()) }
     bind<CoroutineDispatcher>(tag = "BackgroundDispatcher") with singleton { CommonDispatchers.BackgroundDispatcher }
     bind() from singleton { FetchNotes(instance("BackgroundDispatcher"), instance()) }
+    bind() from singleton { RefreshNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { PatternProvider(instance()) }
