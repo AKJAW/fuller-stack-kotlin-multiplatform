@@ -35,6 +35,7 @@ subprojects {
     apply {
         plugin("io.gitlab.arturbosch.detekt")
         plugin("org.jlleitschuh.gradle.ktlint")
+        plugin("org.jetbrains.kotlin.plugin.serialization")
     }
 
     detekt {

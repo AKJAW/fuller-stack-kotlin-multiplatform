@@ -13,4 +13,12 @@ class NetworkApiTestFake : NoteApi {
         }
         return notes
     }
+
+    override suspend fun addNote(newNote: Note) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateNote(updatedNote: Note) {
+        TODO("Not yet implemented")
+    }
 }

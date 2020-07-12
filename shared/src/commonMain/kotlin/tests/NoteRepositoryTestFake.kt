@@ -28,8 +28,8 @@ class NoteRepositoryTestFake : NoteRepository {
         notesMutableState.value = newNotes
     }
 
-    override suspend fun addNote(note: Note) {
-        val newNotes = notesMutableState.value + note
+    override suspend fun addNote(newNote: Note) {
+        val newNotes = notesMutableState.value + newNote
         notesMutableState.value = newNotes
     }
 

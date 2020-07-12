@@ -1,7 +1,7 @@
 package com.akjaw.fullerstack.composition.modules
 
-import com.akjaw.fullerstack.network.NoteService
-import com.akjaw.fullerstack.network.RetrofitNoteApi
+import com.akjaw.fullerstack.notes.network.NoteService
+import com.akjaw.fullerstack.notes.network.RetrofitNoteApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import network.NoteApi
