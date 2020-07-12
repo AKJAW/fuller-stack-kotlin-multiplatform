@@ -15,7 +15,7 @@ class NoteRepositoryTestFake : NoteRepository {
 
     override suspend fun getNotes(): Flow<List<Note>> {
         return if(shouldNoteFlowThrow){
-            throw RuntimeException()
+            throw RuntimeException() //TODO
         } else {
             notesMutableState
         }
