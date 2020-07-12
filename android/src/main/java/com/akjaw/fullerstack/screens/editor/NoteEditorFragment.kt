@@ -42,7 +42,7 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
         noteEditorViewModel.setNote(note)
 
         noteEditorViewModel.navigationLiveEvent.observe(this) {
-            screenNavigator.goBack(requireContext())
+            context?.let { screenNavigator.goBack(it) }
         }
     }
 
@@ -64,7 +64,7 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
         toolbar.setNavigationIcon(R.drawable.ic_close_24dp)
         toolbar.setNavigationOnClickListener {
             hideKeyboard()
-            screenNavigator.goBack(requireContext())
+            context?.let { screenNavigator.goBack(it) }
         }
         toolbar.setOnMenuItemClickListener {
             hideKeyboard()
@@ -72,11 +72,11 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
             true
         }
         if (getNote() != null) {
-            toolbar.title = requireContext().getString(R.string.note_editor_toolbar_title_update)
+            toolbar.title = getString(R.string.note_editor_toolbar_title_update)
             toolbar.inflateMenu(R.menu.note_editor_update)
 
         } else {
-            toolbar.title = requireContext().getString(R.string.note_editor_toolbar_title_add)
+            toolbar.title = getString(R.string.note_editor_toolbar_title_add)
             toolbar.inflateMenu(R.menu.note_editor_add)
         }
     }

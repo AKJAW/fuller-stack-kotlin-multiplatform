@@ -37,19 +37,20 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     }
 
     private fun onNoteClicked(note: Note) {
-        screenNavigator.openEditNoteScreen(requireContext(), note.toParcelable())
+        val context = context ?: return
+        screenNavigator.openEditNoteScreen(context, note.toParcelable())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar = view.findViewById(R.id.toolbar)
-        toolbar.title = requireContext().getString(R.string.notes_list_toolbar_title)
+        toolbar.title = getString(R.string.notes_list_toolbar_title)
         notesRecyclerView = view.findViewById(R.id.notes_list)
         loadingIndicator = view.findViewById(R.id.loading_indicator)
         fab = view.findViewById(R.id.floating_action_button)
 
         fab.setOnClickListener {
-            screenNavigator.openAddNoteScreen(requireContext())
+            context?.let { screenNavigator.openAddNoteScreen(it) }
         }
 
         notesRecyclerView.apply {
@@ -76,9 +77,5 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             }
             null -> TODO()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 }

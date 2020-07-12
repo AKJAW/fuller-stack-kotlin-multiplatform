@@ -16,8 +16,8 @@ abstract class BaseFragment : KeyedFragment, DIAware {
 
     fun hideKeyboard() {
         val focusedView = activity?.currentFocus ?: return
-        val imm: InputMethodManager = requireContext()
-            .getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val context = context ?: return
+        val imm: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(focusedView.windowToken, 0)
     }
 }
