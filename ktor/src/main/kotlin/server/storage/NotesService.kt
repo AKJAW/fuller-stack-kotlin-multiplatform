@@ -5,7 +5,6 @@ import model.schema.NoteSchema
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
-import server.routes.helpers.queryDatabase
 import server.storage.model.NotesTable
 
 class NotesService(private val database: ExposedDatabase) {
