@@ -40,8 +40,13 @@ fun Routing.notesRoute() {
             call.respond(HttpStatusCode.BadRequest)
             return@patch
         }
-        notesService.updateNote(note)
-        call.respond(HttpStatusCode.OK)
+
+        val wasUpdated = notesService.updateNote(note)
+        if(wasUpdated){
+            call.respond(HttpStatusCode.OK)
+        } else {
+            call.respond(HttpStatusCode.BadRequest)
+        }
     }
 
     delete("/notes/{noteId}") {
