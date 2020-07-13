@@ -2,6 +2,7 @@ package server.storage
 
 import com.soywiz.klock.DateTime
 import model.schema.NoteSchema
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
@@ -34,5 +35,10 @@ class NotesService(private val database: ExposedDatabase) {
             it[title] = updatedNote.title
             it[content] = updatedNote.content
         }
+    }
+
+    suspend fun deleteNote(noteId: Int): Boolean = queryDatabase {
+        val id = NotesTable.deleteWhere { NotesTable.id eq noteId }
+        return@queryDatabase id > 0
     }
 }
