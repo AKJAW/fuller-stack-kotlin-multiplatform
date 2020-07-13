@@ -23,7 +23,12 @@ class RetrofitNoteApi(
     }
 
     override suspend fun updateNote(updatedNote: Note) {
-        TODO("Not yet implemented")
+        val noteRequest = UpdateNoteRequest(
+            id = updatedNote.id,
+            title = updatedNote.title,
+            content = updatedNote.content
+        )
+        noteService.updateNote(noteRequest)
     }
 
     private fun NoteSchema.toNote(): Note =

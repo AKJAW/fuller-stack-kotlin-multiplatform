@@ -50,27 +50,23 @@ class NoteEditorViewModel(
         navigationLiveEvent.postValue(Unit)
     }
 
-    private fun addNewNote(newNote: Note) {
-        viewModelScope.launch {
-            val wasSuccessful = addNote.executeAsync(newNote)
+    private fun addNewNote(newNote: Note) = viewModelScope.launch {
+        val wasSuccessful = addNote.executeAsync(newNote)
 
-            if(wasSuccessful.not()){
-                // TODO the note should be flagged and a refresh icon should be shown
-                // TODO move to a separate class which can be use by both platforms
-            }
+        if(wasSuccessful.not()){
+            // TODO the note should be flagged and a refresh icon should be shown
+            // TODO move to a separate class which can be use by both platforms
         }
     }
 
-    private fun updateExistingNote(updatedNote: Note) {
+    private fun updateExistingNote(updatedNote: Note) = viewModelScope.launch {
         require(updatedNote.id != -1)
 
-        viewModelScope.launch {
-            val wasSuccessful = updateNote.executeAsync(updatedNote)
+        val wasSuccessful = updateNote.executeAsync(updatedNote)
 
-            if(wasSuccessful.not()){
-                // TODO the note should be flagged and a refresh icon should be shown
-                // TODO move to a separate class which can be use by both platforms
-            }
+        if(wasSuccessful.not()){
+            // TODO the note should be flagged and a refresh icon should be shown
+            // TODO move to a separate class which can be use by both platforms
         }
     }
 }

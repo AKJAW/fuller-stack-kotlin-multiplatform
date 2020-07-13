@@ -26,6 +26,7 @@ class NoteRepositoryImpl(private val noteApi: NoteApi) : NoteRepository {
     }
 
     override suspend fun updateNote(updatedNote: Note) {
-        TODO("Not yet implemented")
+        noteApi.updateNote(updatedNote)
+        refreshNotes()
     }
 }

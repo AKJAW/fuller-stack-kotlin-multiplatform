@@ -15,4 +15,8 @@ interface NoteService {
     @POST("add-note")
     suspend fun addNote(@Body addNoteRequest: AddNoteRequest)
 
+    @Headers("Content-Type: application/json")
+    @POST("update-note")
+    suspend fun updateNote(@Body updateNoteRequest: UpdateNoteRequest)
+
 }
