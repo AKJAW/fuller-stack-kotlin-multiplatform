@@ -2,7 +2,10 @@ package server
 
 import io.ktor.application.Application
 import io.ktor.application.install
+import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.routing.Routing
 import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
@@ -39,5 +42,15 @@ fun Application.module() {
     }
     install(ContentNegotiation) {
         json()
+    }
+    install(CORS) {
+        method(HttpMethod.Get)
+        method(HttpMethod.Post)
+        method(HttpMethod.Patch)
+        method(HttpMethod.Delete)
+        header(HttpHeaders.AccessControlAllowHeaders)
+        header(HttpHeaders.ContentType)
+        header(HttpHeaders.AccessControlAllowOrigin)
+        host("*") //TODO change when react goes to production
     }
 }
