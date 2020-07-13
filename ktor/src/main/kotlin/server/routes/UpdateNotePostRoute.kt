@@ -4,25 +4,26 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Routing
-import io.ktor.routing.post
+import io.ktor.routing.patch
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import server.routes.helpers.getNoteSchemaFromBody
 import server.storage.NotesService
 
-fun Routing.updateNotePostRoute() {
-    val notesService: NotesService by di().instance<NotesService>()
+fun Routing.updateNotePatchRoute() {
+    val notesService: NotesService by di().instance()
 
-    post("/update-note") {
+    patch("/notes/{noteId}") {
+        val noteId = call.parameters["noteId"]?.toIntOrNull()
         val note = getNoteSchemaFromBody(call)
-        println(note)
 
-        if (note == null || note.id < 0) {
+        if (note == null  || noteId == null || noteId < 0) {
             call.respond(HttpStatusCode.BadRequest)
-            return@post
+            return@patch
         }
 
         call.respond(HttpStatusCode.OK)
-        notesService.updateNote(note)
+        val noteWithId = note.copy(id = noteId)
+        notesService.updateNote(noteWithId)
     }
 }

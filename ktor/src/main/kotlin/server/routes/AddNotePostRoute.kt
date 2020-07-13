@@ -11,9 +11,9 @@ import server.routes.helpers.getNoteSchemaFromBody
 import server.storage.NotesService
 
 fun Routing.addNotePostRoute() {
-    val notesService: NotesService by di().instance<NotesService>()
+    val notesService: NotesService by di().instance()
 
-    post("/add-note") {
+    post("/notes") {
         val note = getNoteSchemaFromBody(call)
         println(note)
 

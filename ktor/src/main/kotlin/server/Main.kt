@@ -12,7 +12,7 @@ import server.composition.databaseModule
 import server.routes.addNotePostRoute
 import server.routes.notesGetRoute
 import server.routes.rootGetRoute
-import server.routes.updateNotePostRoute
+import server.routes.updateNotePatchRoute
 
 fun main() {
     embeddedServer(
@@ -34,7 +34,7 @@ fun Application.module() {
     install(Routing) {
         rootGetRoute()
         notesGetRoute()
-        updateNotePostRoute()
+        updateNotePatchRoute()
         addNotePostRoute()
     }
     install(ContentNegotiation) {
