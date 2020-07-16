@@ -30,6 +30,10 @@ dependencies {
 
     // network
     implementation(ReactLibs.COROUTINES_JS)
+    implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
+    implementation(ReactLibs.KTOR_CLIENT_JS)
+    implementation(ReactLibs.KTOR_CLIENT_JSON)
+    implementation(ReactLibs.KTOR_CLIENT_SERIALIZATION)
 
     // date
     implementation(SharedLibs.KLOCK)
