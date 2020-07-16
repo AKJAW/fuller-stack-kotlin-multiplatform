@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import model.Note
+import network.NetworkResponse
+import network.safeApiCall
 import repository.NoteRepository
 
 class FetchNotes(
@@ -23,11 +25,14 @@ class FetchNotes(
         flow {
             emit(Result.Loading)
 
-            val result = try {
-                Result.Content(noteRepository.getNotes())
-            } catch (e: Exception) { // TODO make more defined
-                Result.Error(Failure.ServerError)
+            val networkResponse = safeApiCall { noteRepository.getNotes() }
+
+            val result = when(networkResponse) {
+                is NetworkResponse.Success -> Result.Content(networkResponse.result)
+                is NetworkResponse.ApiError -> Result.Error(Failure.ApiError)
+                else -> Result.Error(Failure.NetworkError)
             }
+
             emit(result)
         }
     }
