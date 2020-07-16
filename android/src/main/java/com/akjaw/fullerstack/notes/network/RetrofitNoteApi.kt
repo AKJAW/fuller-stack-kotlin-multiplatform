@@ -1,17 +1,17 @@
 package com.akjaw.fullerstack.notes.network
 
-import com.soywiz.klock.DateTime
 import model.Note
-import model.schema.NoteSchema
 import network.NoteApi
+import network.NoteSchemaMapper
 
 class RetrofitNoteApi(
-    private val noteService: NoteService
+    private val noteService: NoteService,
+    private val noteSchemaMapper: NoteSchemaMapper
 ) : NoteApi {
 
     override suspend fun getNotes(): List<Note> {
         val schemas = noteService.getNotes()
-        return schemas.map { it.toNote() }
+        return noteSchemaMapper.toNotes(schemas)
     }
 
     override suspend fun addNote(newNote: Note) {
@@ -30,13 +30,4 @@ class RetrofitNoteApi(
         )
         noteService.updateNote(noteRequest)
     }
-
-    private fun NoteSchema.toNote(): Note =
-        Note(
-            id = this.id,
-            title = this.title,
-            content = this.content,
-            creationDate = DateTime(this.creationDateTimestamp)
-        )
-
 }
