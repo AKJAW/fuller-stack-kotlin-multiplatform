@@ -1,9 +1,9 @@
-package com.akjaw.fullerstack.notes.network
+package model.schema
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AddNoteRequest(
+data class NoteRequest(
     val title: String,
     val content: String
 )
