@@ -2,6 +2,8 @@ package feature.list
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import network.NetworkResponse
+import network.safeApiCall
 import repository.NoteRepository
 
 class RefreshNotes(
@@ -9,11 +11,13 @@ class RefreshNotes(
     private val noteRepository: NoteRepository
 ) {
     @Suppress("TooGenericExceptionCaught")
-    suspend fun executeAsync() = withContext(coroutineDispatcher) {//TODO failure?
-        try {
-            noteRepository.refreshNotes()
-        } catch (e: Throwable) { // TODO make more defined
-            //TODO
+    suspend fun executeAsync(): Boolean = withContext(coroutineDispatcher) {//TODO failure?
+
+        val result = safeApiCall { noteRepository.refreshNotes() }
+
+        when (result) {
+            is NetworkResponse.Success -> true
+            else -> false
         }
     }
 }

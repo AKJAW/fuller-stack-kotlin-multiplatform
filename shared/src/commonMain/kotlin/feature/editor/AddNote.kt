@@ -3,6 +3,8 @@ package feature.editor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import model.Note
+import network.NetworkResponse
+import network.safeApiCall
 import repository.NoteRepository
 
 class AddNote(
@@ -12,11 +14,12 @@ class AddNote(
 
     @Suppress("TooGenericExceptionCaught")
     suspend fun executeAsync(note: Note): Boolean = withContext(coroutineDispatcher) {
-        try {
-            noteRepository.addNote(note)
-            true
-        } catch (e: Exception) {//TODO make more defined
-            false
+
+        val result = safeApiCall { noteRepository.addNote(note) }
+
+        when (result) {
+            is NetworkResponse.Success -> true
+            else -> false
         }
     }
 }
