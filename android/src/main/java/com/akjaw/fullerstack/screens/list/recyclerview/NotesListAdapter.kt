@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
 import com.soywiz.klock.DateFormat
@@ -36,10 +37,11 @@ class NotesListAdapter(
         }
     }
 
-    // TODO add diffutil
     fun setNotes(newNotes: List<Note>) {
+        val diffCallback = NotesDiffCallback(notes, newNotes)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes = newNotes
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class NoteViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView) {

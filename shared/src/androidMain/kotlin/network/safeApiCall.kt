@@ -8,6 +8,7 @@ actual suspend fun <T> safeApiCall(block: suspend () -> T): NetworkResponse<T> {
         val result = block()
         NetworkResponse.Success(result)
     } catch (throwable: Throwable) {
+        throwable.printStackTrace()
         when(throwable) {
             is IOException -> NetworkResponse.NetworkError
             is HttpException -> NetworkResponse.ApiError
