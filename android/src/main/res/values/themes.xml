@@ -7,7 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NotesList" parent="AppTheme">
+    <style name="AppTheme.NotesListItem" parent="AppTheme">
         <item name="noteTitleTextSize">20sp</item>
         <item name="noteDateTextSize">12sp</item>
         <item name="noteColorBadgeWidth">5dp</item>

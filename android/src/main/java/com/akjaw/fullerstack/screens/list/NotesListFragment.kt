@@ -11,7 +11,7 @@ import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.helpers.viewmodel.viewModels
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
-import com.akjaw.fullerstack.screens.common.recyclerview.MarginItemDecoration
+import com.akjaw.fullerstack.screens.common.recyclerview.SpacingItemDecoration
 import com.akjaw.fullerstack.screens.common.toParcelable
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
@@ -58,8 +58,8 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             adapter = notesListAdapter
             notesRecyclerView.setHasFixedSize(true)
             notesRecyclerView.layoutManager = LinearLayoutManager(context)
-            val spacing = resources.getDimension(R.dimen.note_spacing)
-            addItemDecoration(MarginItemDecoration(spacing.toInt()))
+            val spacing = resources.getDimension(R.dimen.note_item_spacing)
+            addItemDecoration(SpacingItemDecoration(spacing.toInt()))
         }
 
         viewModel.viewState.observe(
