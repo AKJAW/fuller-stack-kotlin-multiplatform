@@ -18,8 +18,8 @@ class NotesListAdapter(
     private val dateFormat: DateFormat
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
+    private val notesSelectionTracker = NotesSelectionTracker()
     private var notes: List<Note> = listOf()
-    private var selectedNoteIds: MutableList<Int> = mutableListOf() //TODO preserve on save instance state
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,7 +31,7 @@ class NotesListAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        val isSelected = selectedNoteIds.contains(note.id)
+        val isSelected = notesSelectionTracker.isSelected(note.id)
         holder.apply {
             title.text = note.title
             date.text = note.creationDate.format(dateFormat)
@@ -42,10 +42,9 @@ class NotesListAdapter(
             }
 
             noteContainer.setOnLongClickListener {
-                selectNote(
-                    noteId = note.id,
-                    position = position
-                )
+                notesSelectionTracker.selectNote(note.id, itemView)
+                notifyItemChanged(position)
+                true
             }
         }
     }
@@ -61,22 +60,13 @@ class NotesListAdapter(
         }
     }
 
-    private fun selectNote(noteId: Int, position: Int): Boolean {
-        if(selectedNoteIds.contains(noteId)){
-            selectedNoteIds.remove(noteId)
-        } else {
-            selectedNoteIds.add(noteId)
-        }
-        notifyItemChanged(position)
-        return true
-    }
-
     fun setNotes(newNotes: List<Note>) {
         val diffCallback = NotesDiffCallback(notes, newNotes)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         notes = newNotes
         diffResult.dispatchUpdatesTo(this)
     }
+
 
     class NoteViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView) {
         val noteContainer: View = rootView.findViewById(R.id.note_container)
