@@ -18,7 +18,7 @@ class NotesListAdapter(
     private val dateFormat: DateFormat
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
-    private val notesSelectionTracker = NotesSelectionTracker()
+    private val notesSelectionTracker = NotesSelectionTracker(::onDestroyActionMode)
     private var notes: List<Note> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -38,12 +38,15 @@ class NotesListAdapter(
             setBackgroundColor(isSelected)
 
             noteContainer.setOnClickListener {
-                onItemClicked(note)
+                if(notesSelectionTracker.isSelectionModeEnabled()){
+                    selectNote(note, position)
+                } else {
+                    onItemClicked(note)
+                }
             }
 
             noteContainer.setOnLongClickListener {
-                notesSelectionTracker.selectNote(note.id, itemView)
-                notifyItemChanged(position)
+                selectNote(note, position)
                 true
             }
         }
@@ -60,6 +63,11 @@ class NotesListAdapter(
         }
     }
 
+    private fun NoteViewHolder.selectNote(note: Note, position: Int) {
+        notesSelectionTracker.selectNote(note.id, itemView)
+        notifyItemChanged(position)
+    }
+
     fun setNotes(newNotes: List<Note>) {
         val diffCallback = NotesDiffCallback(notes, newNotes)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -67,6 +75,7 @@ class NotesListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    private fun onDestroyActionMode() = notifyDataSetChanged()
 
     class NoteViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView) {
         val noteContainer: View = rootView.findViewById(R.id.note_container)

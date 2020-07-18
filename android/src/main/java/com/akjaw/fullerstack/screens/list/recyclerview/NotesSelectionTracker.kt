@@ -7,7 +7,9 @@ import android.view.MenuItem
 import android.view.View
 import com.akjaw.fullerstack.android.R
 
-class NotesSelectionTracker : ActionMode.Callback {
+class NotesSelectionTracker(
+    private val onDestroyActionMode: () -> Unit
+) : ActionMode.Callback {
 
     private var actionMode: ActionMode? = null
     private var selectedNoteIds: MutableList<Int> = mutableListOf() //TODO preserve on save instance state
@@ -23,7 +25,9 @@ class NotesSelectionTracker : ActionMode.Callback {
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
 
     override fun onDestroyActionMode(mode: ActionMode?) {
+        selectedNoteIds.clear()
         actionMode = null
+        onDestroyActionMode()
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
@@ -32,6 +36,8 @@ class NotesSelectionTracker : ActionMode.Callback {
         }
         return true
     }
+
+    fun isSelectionModeEnabled(): Boolean = selectedNoteIds.isNotEmpty()
 
     fun isSelected(noteId: Int): Boolean = selectedNoteIds.contains(noteId)
 
