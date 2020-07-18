@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="selectedNoteBackground">#DFDFDF</color>
+
     <color name="divider">#7C7C7C</color>
 </resources>
