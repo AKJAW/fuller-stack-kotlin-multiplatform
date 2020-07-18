@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#BBDEFB</color>
+    <color name="colorPrimaryDark">#8AACC8</color>
+    <color name="colorSecondary">#F8BBD0</color>
 
     <color name="selectedNoteBackground">#DFDFDF</color>
-
-    <color name="divider">#7C7C7C</color>
 </resources>
