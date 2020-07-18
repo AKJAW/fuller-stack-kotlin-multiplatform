@@ -30,4 +30,10 @@ class RetrofitNoteApi(
         )
         noteService.updateNote(updatedNote.id, noteRequest)
     }
+
+    override suspend fun deleteNotes(noteIds: List<Int>) {
+        noteIds.forEach { noteId ->//TODO make correct API endpoint
+            noteService.deleteNote(noteId)
+        }
+    }
 }

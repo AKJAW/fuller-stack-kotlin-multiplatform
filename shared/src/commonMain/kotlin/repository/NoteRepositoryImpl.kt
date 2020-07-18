@@ -29,4 +29,9 @@ class NoteRepositoryImpl(private val noteApi: NoteApi) : NoteRepository {
         noteApi.updateNote(updatedNote)
         refreshNotes()
     }
+
+    override suspend fun deleteNotes(noteIds: List<Int>) {
+        noteApi.deleteNotes(noteIds)
+        refreshNotes()
+    }
 }

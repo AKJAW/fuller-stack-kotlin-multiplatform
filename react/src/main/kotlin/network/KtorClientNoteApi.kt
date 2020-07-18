@@ -2,6 +2,7 @@ package network
 
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -42,6 +43,12 @@ class KtorClientNoteApi(
                 content = updatedNote.content
             )
             body = json.write(request)
+        }
+    }
+
+    override suspend fun deleteNotes(noteIds: List<Int>) {
+        noteIds.forEach { noteId ->
+            client.delete("$apiUrl/${noteId}")
         }
     }
 }

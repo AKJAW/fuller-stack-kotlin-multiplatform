@@ -12,9 +12,7 @@ class UpdateNote(
     private val noteRepository: NoteRepository
 ) {
 
-    @Suppress("TooGenericExceptionCaught")
     suspend fun executeAsync(note: Note): Boolean = withContext(coroutineDispatcher) {
-
         val result = safeApiCall { noteRepository.updateNote(note) }
 
         when (result) {

@@ -20,7 +20,6 @@ class FetchNotes(
         data class Content(val notesFlow: Flow<List<Note>>) : Result()
     }
 
-    @Suppress("TooGenericExceptionCaught")
     suspend fun executeAsync(): Flow<Result> = withContext(coroutineDispatcher){
         flow {
             emit(Result.Loading)

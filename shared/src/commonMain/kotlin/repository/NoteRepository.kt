@@ -14,4 +14,6 @@ interface NoteRepository {
     suspend fun addNote(newNote: Note)
 
     suspend fun updateNote(updatedNote: Note)
+
+    suspend fun deleteNotes(noteIds: List<Int>)
 }

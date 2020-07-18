@@ -3,6 +3,7 @@ package network
 import retrofit2.HttpException
 import java.io.IOException
 
+@Suppress("TooGenericExceptionCaught")
 actual suspend fun <T> safeApiCall(block: suspend () -> T): NetworkResponse<T> {
     return try {
         val result = block()
