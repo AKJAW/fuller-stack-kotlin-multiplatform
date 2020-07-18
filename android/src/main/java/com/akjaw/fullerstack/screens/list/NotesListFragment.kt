@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
-import com.akjaw.fullerstack.helpers.viewmodel.viewModels
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.recyclerview.SpacingItemDecoration
@@ -17,6 +17,7 @@ import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Note
+import org.kodein.di.direct
 import org.kodein.di.instance
 
 
@@ -29,7 +30,9 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     private lateinit var notesListAdapter: NotesListAdapter
     private val screenNavigator: ScreenNavigator by instance()
     private val notesListAdapterFactory: NotesListAdapterFactory by instance()
-    private val viewModel: NotesListViewModel by viewModels()
+    private val viewModel: NotesListViewModel by activityViewModels {
+        di.direct.instance()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

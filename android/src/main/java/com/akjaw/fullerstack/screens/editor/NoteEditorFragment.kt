@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.akjaw.fullerstack.android.R
-import com.akjaw.fullerstack.helpers.viewmodel.viewModels
 import com.akjaw.fullerstack.screens.common.ParcelableNote
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.google.android.material.textfield.TextInputLayout
+import org.kodein.di.direct
 import org.kodein.di.instance
 
 class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
@@ -28,7 +29,9 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
     }
 
     private val screenNavigator: ScreenNavigator by instance()
-    private val noteEditorViewModel: NoteEditorViewModel by viewModels()
+    private val noteEditorViewModel: NoteEditorViewModel by viewModels {
+        di.direct.instance()
+    }
 
     private lateinit var toolbar: Toolbar
     private lateinit var titleLayout: TextInputLayout

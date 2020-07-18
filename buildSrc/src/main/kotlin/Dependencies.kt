@@ -40,6 +40,7 @@ object Versions {
     const val RETROFIT = "2.9.0"
     const val RETROFIT_KOTLINX_SERIALIZATION = "0.5.0"
     const val OKHTTP = "4.8.0"
+    const val FRAGMENT_KTX = "1.2.5"
 
     //android test
     const val ANDROIDX_TEST = "1.1.0"
@@ -120,6 +121,7 @@ object AndroidLibs {
     const val LIFECYCLE_LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE}"
     const val LIFECYCLE_SAVEDSTATE = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${Versions.LIFECYCLE}"
     const val LIFECYCLE_RUNTIME_KTX =  "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE}"
+    const val FRAGMENT_KTX =  "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
 
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
 

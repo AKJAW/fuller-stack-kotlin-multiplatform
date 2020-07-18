@@ -53,6 +53,7 @@ dependencies {
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
     implementation(AndroidLibs.LIFECYCLE_VIEWMODEL)
     implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
+    implementation(AndroidLibs.FRAGMENT_KTX)
 
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
