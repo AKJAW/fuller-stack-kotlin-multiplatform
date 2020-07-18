@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.helpers.viewmodel.viewModels
 import com.akjaw.fullerstack.screens.common.ParcelableNote
@@ -55,9 +55,9 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
 
         setUpToolbar()
 
-        noteEditorViewModel.viewState.observe(viewLifecycleOwner, Observer {
+        noteEditorViewModel.viewState.observe(viewLifecycleOwner) {
             render(it)
-        })
+        }
     }
 
     private fun setUpToolbar() {

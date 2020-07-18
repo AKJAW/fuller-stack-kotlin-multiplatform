@@ -7,18 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.screens.list.DeleteNoteConfirmDialog
 import com.soywiz.klock.DateFormat
 import model.Note
 
 class NotesListAdapter(
+    private val fragmentManager: FragmentManager,
     private val onItemClicked: (Note) -> Unit,
     private val dateFormat: DateFormat
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
-    private val notesSelectionTracker = NotesSelectionTracker(::onDestroyActionMode)
+    private val notesSelectionTracker = NotesSelectionTracker(::onDestroyActionMode, ::onDeleteClicked)
     private var notes: List<Note> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -76,6 +79,10 @@ class NotesListAdapter(
     }
 
     private fun onDestroyActionMode() = notifyDataSetChanged()
+
+    private fun onDeleteClicked(noteIds: List<Int>) {
+        DeleteNoteConfirmDialog().show(fragmentManager, "DeleteNotes")
+    }
 
     class NoteViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView) {
         val noteContainer: View = rootView.findViewById(R.id.note_container)

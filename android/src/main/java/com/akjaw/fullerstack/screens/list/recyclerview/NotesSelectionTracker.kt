@@ -1,6 +1,5 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -8,7 +7,8 @@ import android.view.View
 import com.akjaw.fullerstack.android.R
 
 class NotesSelectionTracker(
-    private val onDestroyActionMode: () -> Unit
+    private val onDestroyActionMode: () -> Unit,
+    private val onDeleteClicked: (List<Int>) -> Unit
 ) : ActionMode.Callback {
 
     private var actionMode: ActionMode? = null
@@ -32,7 +32,7 @@ class NotesSelectionTracker(
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if(item?.itemId == R.id.delete_note) {
-            Log.d("Delete note", selectedNoteIds.toString())
+            onDeleteClicked(selectedNoteIds)
         }
         return true
     }

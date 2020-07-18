@@ -5,4 +5,5 @@
     <color name="colorSecondary">#F8BBD0</color>
 
     <color name="selectedNoteBackground">#DFDFDF</color>
+    <color name="deleteDialogColorPrimary">#587287</color>
 </resources>

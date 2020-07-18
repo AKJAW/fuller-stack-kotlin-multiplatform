@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
@@ -18,6 +18,7 @@ import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Note
 import org.kodein.di.instance
+
 
 class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
@@ -33,13 +34,8 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        notesListAdapter = notesListAdapterFactory.create(::onNoteClicked)
+        notesListAdapter = notesListAdapterFactory.create(parentFragmentManager,::onNoteClicked)
         viewModel.initializeNotes()
-    }
-
-    private fun onNoteClicked(note: Note) {
-        val context = context ?: return
-        screenNavigator.openEditNoteScreen(context, note.toParcelable())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,12 +58,9 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             addItemDecoration(SpacingItemDecoration(spacing.toInt()))
         }
 
-        viewModel.viewState.observe(
-            viewLifecycleOwner,
-            Observer {
-                render(it)
-            }
-        )
+        viewModel.viewState.observe(viewLifecycleOwner){
+            render(it)
+        }
     }
 
     private fun render(viewState: NotesListViewModel.NotesListState?) {
@@ -80,5 +73,10 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             }
             null -> TODO()
         }
+    }
+
+    private fun onNoteClicked(note: Note) {
+        val context = context ?: return
+        screenNavigator.openEditNoteScreen(context, note.toParcelable())
     }
 }

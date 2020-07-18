@@ -15,4 +15,8 @@
         <item name="noteColorBadgeWidth">5dp</item>
     </style>
 
+    <style name="AppTheme.AlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="colorPrimary">@color/deleteDialogColorPrimary</item>
+    </style>
+
 </resources>
