@@ -54,6 +54,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         child(noteEditor) {
             attrs.key = props.selectedNote.toString()
             attrs.selectedNote = props.selectedNote
+            attrs.isUpdating = props.isUpdating
             attrs.isTitleValid = state.isTitleValid
             attrs.positiveActionCaption = getPositiveActionCaption()
             attrs.onPositiveActionClicked = ::onPositiveActionClicked

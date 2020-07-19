@@ -5,15 +5,19 @@ import com.ccfraser.muirwik.components.form.MFormControlVariant
 import com.ccfraser.muirwik.components.mTextField
 import com.ccfraser.muirwik.components.mTextFieldMultiLine
 import com.ccfraser.muirwik.components.targetInputValue
+import kotlinx.css.Align
 import kotlinx.css.Display
 import kotlinx.css.JustifyContent
 import kotlinx.css.LinearDimension
+import kotlinx.css.alignItems
 import kotlinx.css.display
 import kotlinx.css.justifyContent
+import kotlinx.css.marginRight
 import kotlinx.css.minHeight
 import kotlinx.css.width
 import model.Note
 import react.RProps
+import react.child
 import react.dom.div
 import react.functionalComponent
 import react.useState
@@ -23,6 +27,7 @@ import styled.styledDiv
 
 interface NoteEditorProps : RProps {
     var selectedNote: Note?
+    var isUpdating: Boolean
     var isTitleValid: Boolean
     var positiveActionCaption: String
     var onPositiveActionClicked: (title: String, content: String) -> Unit
@@ -37,6 +42,10 @@ private object Classes : StyleSheet("NoteEditor", isStatic = true) {
     val actions by css {
         display = Display.flex
         justifyContent = JustifyContent.spaceBetween
+        alignItems = Align.center
+        children("button:first-child") {
+            marginRight = LinearDimension.auto
+        }
     }
     val titleTextField by css {
         width = LinearDimension("100%")
@@ -53,11 +62,17 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
             css(Classes.root)
             styledDiv {
                 css(Classes.actions)
-                mButton("Cancel", onClick = { props.closeEditor() })
+                mButton("Close", onClick = { props.closeEditor() })
                 mButton(
                     caption = props.positiveActionCaption,
                     onClick = { props.onPositiveActionClicked(title, content) }
                 )
+                styledDiv {
+                    css {
+                        display = if(props.isUpdating) Display.block else Display.none
+                    }
+                    child(editorMoreButton)
+                }
             }
             mTextField(
                 label = "Title",

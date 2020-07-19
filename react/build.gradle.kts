@@ -51,6 +51,7 @@ kotlin {
         implementation(npm("styled-components"))
         implementation(npm("inline-style-prefixer"))
         implementation(npm("@material-ui/core", Versions.NPM_METRIAL_UI))
+        implementation(npm("@material-ui/icons"))
     }
 }
 
