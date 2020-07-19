@@ -3,6 +3,7 @@ package tests
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.Note
+import model.NoteIdentifier
 import network.NoteApi
 import repository.NoteRepository
 
@@ -43,8 +44,8 @@ class NoteRepositoryTestFake : NoteRepository {
         notesMutableState.value = newNotes
     }
 
-    override suspend fun deleteNotes(noteIds: List<Int>) {
-        val newNotes = notesMutableState.value.filterNot { noteIds.contains(it.noteIdentifier.id) }
+    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
+        val newNotes = notesMutableState.value.filterNot { noteIdentifiers.contains(it.noteIdentifier) }
         notesMutableState.value = newNotes
     }
 

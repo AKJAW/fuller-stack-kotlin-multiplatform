@@ -1,6 +1,7 @@
 package com.akjaw.fullerstack.notes.network
 
 import model.Note
+import model.NoteIdentifier
 import model.schema.NoteRequest
 import network.NoteApi
 import network.NoteSchemaMapper
@@ -31,9 +32,9 @@ class RetrofitNoteApi(
         noteService.updateNote(updatedNote.noteIdentifier.id, noteRequest)
     }
 
-    override suspend fun deleteNotes(noteIds: List<Int>) {
-        noteIds.forEach { noteId ->//TODO make correct API endpoint
-            noteService.deleteNote(noteId)
+    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
+        noteIdentifiers.forEach { identifier ->//TODO make correct API endpoint
+            noteService.deleteNote(identifier.id)
         }
     }
 }

@@ -3,6 +3,7 @@ package repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.Note
+import model.NoteIdentifier
 import network.NoteApi
 
 class NoteRepositoryImpl(private val noteApi: NoteApi) : NoteRepository {
@@ -30,8 +31,8 @@ class NoteRepositoryImpl(private val noteApi: NoteApi) : NoteRepository {
         refreshNotes()
     }
 
-    override suspend fun deleteNotes(noteIds: List<Int>) {
-        noteApi.deleteNotes(noteIds)
+    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
+        noteApi.deleteNotes(noteIdentifiers)
         refreshNotes()
     }
 }

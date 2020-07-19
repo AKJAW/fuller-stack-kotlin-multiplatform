@@ -8,16 +8,17 @@ import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.list.DeleteNotesConfirmDialog
+import model.NoteIdentifier
 
 //TODO can this be tested?
 class NotesSelectionTracker(
     private val fragmentManager: FragmentManager,
     private val onActionModeDestroyed: () -> Unit,
-    private val onNoteChanged: (Int) -> Unit
+    private val onNoteChanged: (NoteIdentifier) -> Unit
 ) : ActionMode.Callback, DeleteNotesConfirmDialog.DeleteNotesConfirmationListener {
 
     private var actionMode: ActionMode? = null
-    private var selectedNoteIds: MutableList<Int> = mutableListOf() //TODO preserve on save instance state
+    private var selectedNoteIdentifiers: MutableList<NoteIdentifier> = mutableListOf() //TODO preserve on save instance state
 
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         actionMode = mode
@@ -30,15 +31,15 @@ class NotesSelectionTracker(
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
 
     override fun onDestroyActionMode(mode: ActionMode?) {
-        selectedNoteIds.clear()
+        selectedNoteIdentifiers.clear()
         actionMode = null
         onActionModeDestroyed()
-        Log.d("SelectedNotes", selectedNoteIds.toString())
+        Log.d("SelectedNotes", selectedNoteIdentifiers.toString())
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if(item?.itemId == R.id.delete_note) {
-            val dialog = DeleteNotesConfirmDialog.newInstance(selectedNoteIds)
+            val dialog = DeleteNotesConfirmDialog.newInstance(selectedNoteIdentifiers)
             dialog.setPositiveClickListener(this)
             dialog.show(fragmentManager, "DeleteNotes")
         }
@@ -47,23 +48,23 @@ class NotesSelectionTracker(
 
     override fun onNotesDeleted() = exitActionMode()
 
-    fun isSelectionModeEnabled(): Boolean = selectedNoteIds.isNotEmpty()
+    fun isSelectionModeEnabled(): Boolean = selectedNoteIdentifiers.isNotEmpty()
 
-    fun isSelected(noteId: Int): Boolean = selectedNoteIds.contains(noteId)
+    fun isSelected(noteIdentifier: NoteIdentifier): Boolean = selectedNoteIdentifiers.contains(noteIdentifier)
 
-    fun selectNote(noteId: Int, view: View) {
-        if(selectedNoteIds.contains(noteId)){
-            selectedNoteIds.remove(noteId)
+    fun selectNote(noteIdentifier: NoteIdentifier, view: View) {
+        if(selectedNoteIdentifiers.contains(noteIdentifier)){
+            selectedNoteIdentifiers.remove(noteIdentifier)
         } else {
-            selectedNoteIds.add(noteId)
+            selectedNoteIdentifiers.add(noteIdentifier)
         }
         toggleActionMode(view)
-        onNoteChanged(noteId)
-        Log.d("SelectedNotes", selectedNoteIds.toString())
+        onNoteChanged(noteIdentifier)
+        Log.d("SelectedNotes", selectedNoteIdentifiers.toString())
     }
 
     private fun toggleActionMode(view: View) {
-        if (selectedNoteIds.isNotEmpty()) {
+        if (selectedNoteIdentifiers.isNotEmpty()) {
             startActionMode(view)
         } else {
             exitActionMode()

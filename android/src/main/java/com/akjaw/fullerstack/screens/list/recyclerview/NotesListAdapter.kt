@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
 import com.soywiz.klock.DateFormat
 import model.Note
+import model.NoteIdentifier
 
 class NotesListAdapter(
     fragmentManager: FragmentManager,
@@ -37,7 +38,7 @@ class NotesListAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        val isSelected = notesSelectionTracker.isSelected(note.noteIdentifier.id)
+        val isSelected = notesSelectionTracker.isSelected(note.noteIdentifier)
         holder.bind(note, isSelected)
     }
 
@@ -52,8 +53,8 @@ class NotesListAdapter(
         notifyDataSetChanged()
     }
 
-    private fun onNoteSelectionChanged(noteId: Int) {
-        val positionOfNote = notes.indexOfFirst { it.noteIdentifier.id == noteId }
+    private fun onNoteSelectionChanged(noteIdentifier: NoteIdentifier) {
+        val positionOfNote = notes.indexOfFirst { it.noteIdentifier == noteIdentifier }
         if(positionOfNote == -1) return
         notifyItemChanged(positionOfNote)
     }
@@ -100,7 +101,7 @@ class NotesListAdapter(
         }
 
         private fun selectNote(note: Note) {
-            selectionTracker.selectNote(note.noteIdentifier.id, itemView)
+            selectionTracker.selectNote(note.noteIdentifier, itemView)
         }
     }
 }

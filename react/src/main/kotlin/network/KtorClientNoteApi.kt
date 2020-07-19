@@ -8,6 +8,7 @@ import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.url
 import model.Note
+import model.NoteIdentifier
 import model.schema.NoteRequest
 import model.schema.NoteSchema
 
@@ -46,9 +47,9 @@ class KtorClientNoteApi(
         }
     }
 
-    override suspend fun deleteNotes(noteIds: List<Int>) {
-        noteIds.forEach { noteId ->
-            client.delete("$apiUrl/${noteId}")
+    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
+        noteIdentifiers.forEach { identifier ->
+            client.delete("$apiUrl/${identifier.id}")
         }
     }
 }

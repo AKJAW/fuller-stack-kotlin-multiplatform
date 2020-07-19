@@ -2,6 +2,7 @@ package feature.list
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import model.NoteIdentifier
 import network.NetworkResponse
 import network.safeApiCall
 import repository.NoteRepository
@@ -11,8 +12,8 @@ class DeleteNotes(
     private val noteRepository: NoteRepository
 ) {
 
-    suspend fun executeAsync(noteIds: List<Int>): Boolean = withContext(coroutineDispatcher) {
-        val result = safeApiCall { noteRepository.deleteNotes(noteIds) }
+    suspend fun executeAsync(noteIdentifiers: List<NoteIdentifier>): Boolean = withContext(coroutineDispatcher) {
+        val result = safeApiCall { noteRepository.deleteNotes(noteIdentifiers) }
 
         when (result) {
             is NetworkResponse.Success -> true

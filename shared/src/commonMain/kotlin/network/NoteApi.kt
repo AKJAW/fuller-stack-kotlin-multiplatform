@@ -1,6 +1,7 @@
 package network
 
 import model.Note
+import model.NoteIdentifier
 
 interface NoteApi {
 
@@ -10,5 +11,5 @@ interface NoteApi {
 
     suspend fun updateNote(updatedNote: Note)
 
-    suspend fun deleteNotes(noteIds: List<Int>)
+    suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>)
 }

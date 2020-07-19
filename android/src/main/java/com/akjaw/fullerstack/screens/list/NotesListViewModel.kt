@@ -9,6 +9,7 @@ import feature.list.FetchNotes
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import model.Note
+import model.NoteIdentifier
 
 internal class NotesListViewModel(
     private val fetchNotes: FetchNotes,
@@ -42,7 +43,7 @@ internal class NotesListViewModel(
         }
     }
 
-    fun deleteNotes(noteIds: List<Int>) = viewModelScope.launch {//TODO error handling
-        deleteNotes.executeAsync(noteIds)
+    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = viewModelScope.launch {//TODO error handling
+        deleteNotes.executeAsync(noteIdentifiers)
     }
 }

@@ -3,6 +3,7 @@ package repository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import model.Note
+import model.NoteIdentifier
 
 @ExperimentalCoroutinesApi
 interface NoteRepository {
@@ -15,5 +16,5 @@ interface NoteRepository {
 
     suspend fun updateNote(updatedNote: Note)
 
-    suspend fun deleteNotes(noteIds: List<Int>)
+    suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>)
 }

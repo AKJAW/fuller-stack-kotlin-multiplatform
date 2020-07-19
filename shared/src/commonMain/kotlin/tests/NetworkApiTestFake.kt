@@ -1,6 +1,7 @@
 package tests
 
 import model.Note
+import model.NoteIdentifier
 import network.NoteApi
 
 class NetworkApiTestFake : NoteApi {
@@ -22,7 +23,7 @@ class NetworkApiTestFake : NoteApi {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteNotes(noteIds: List<Int>) {
+    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
         TODO("Not yet implemented")
     }
 }
