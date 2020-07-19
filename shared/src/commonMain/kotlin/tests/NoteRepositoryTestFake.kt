@@ -34,7 +34,7 @@ class NoteRepositoryTestFake : NoteRepository {
 
     override suspend fun updateNote(updatedNote: Note) {
         val newNotes = notesMutableState.value.map { note ->
-            if(note.id == updatedNote.id) {
+            if(note.noteIdentifier == updatedNote.noteIdentifier) {
                 note.copy(title = updatedNote.title, content = updatedNote.content)
             } else {
                 note
@@ -44,7 +44,7 @@ class NoteRepositoryTestFake : NoteRepository {
     }
 
     override suspend fun deleteNotes(noteIds: List<Int>) {
-        val newNotes = notesMutableState.value.filterNot { noteIds.contains(it.id) }
+        val newNotes = notesMutableState.value.filterNot { noteIds.contains(it.noteIdentifier.id) }
         notesMutableState.value = newNotes
     }
 

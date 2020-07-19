@@ -37,7 +37,7 @@ class KtorClientNoteApi(
 
     override suspend fun updateNote(updatedNote: Note) {
         client.patch<Unit> {
-            url("$apiUrl/${updatedNote.id}")
+            url("$apiUrl/${updatedNote.noteIdentifier.id}")
             val request = NoteRequest(
                 title = updatedNote.title,
                 content = updatedNote.content

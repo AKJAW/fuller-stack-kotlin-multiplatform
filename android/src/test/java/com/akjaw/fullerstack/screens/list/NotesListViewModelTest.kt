@@ -3,11 +3,13 @@ package com.akjaw.fullerstack.screens.list
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
+import feature.list.DeleteNotes
 import feature.list.FetchNotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import model.Note
+import model.NoteIdentifier
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,13 +21,14 @@ internal class NotesListViewModelTest {
 
     companion object {
         private val NOTES = listOf(
-            Note(id = 1, title = "first", content = "Hey"),
-            Note(id = 2, title = "second", content = "Hi")
+            Note(noteIdentifier = NoteIdentifier(1), title = "first", content = "Hey"),
+            Note(noteIdentifier = NoteIdentifier(2), title = "second", content = "Hi")
         )
     }
 
     private lateinit var repositoryTestFake: NoteRepositoryTestFake
     private lateinit var fetchNotes: FetchNotes
+    private lateinit var deleteNotes: DeleteNotes
     private lateinit var SUT: NotesListViewModel
 
     @BeforeEach
@@ -33,7 +36,8 @@ internal class NotesListViewModelTest {
         repositoryTestFake = NoteRepositoryTestFake()
         repositoryTestFake.setNotes(NOTES)
         fetchNotes = FetchNotes(TestCoroutineDispatcher(), repositoryTestFake)
-        SUT = NotesListViewModel(fetchNotes)
+        deleteNotes = DeleteNotes(TestCoroutineDispatcher(), repositoryTestFake)
+        SUT = NotesListViewModel(fetchNotes, deleteNotes)
     }
 
     @Test

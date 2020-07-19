@@ -10,6 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import model.Note
+import model.NoteIdentifier
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -74,7 +75,7 @@ internal class NoteEditorViewModelTest {
     @Nested
     inner class UpdatingNote {
 
-        private val note = Note(1, "title", "content")
+        private val note = Note(NoteIdentifier(1), "title", "content")
 
         @BeforeEach
         fun setUp(){

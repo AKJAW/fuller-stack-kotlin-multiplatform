@@ -80,7 +80,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         console.log(props.isUpdating)
         console.log(selectedNote)
         if (props.isUpdating && selectedNote != null) {
-            val noteWithId = newNote.copy(id = selectedNote.id)
+            val noteWithId = newNote.copy(noteIdentifier = selectedNote.noteIdentifier)
             props.updateNote(noteWithId)
         } else {
             props.addNote(newNote)

@@ -11,6 +11,7 @@ import feature.editor.UpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.launch
 import model.Note
+import model.NoteIdentifier
 
 class NoteEditorViewModel(
     private val addNote: AddNote,
@@ -42,7 +43,7 @@ class NoteEditorViewModel(
         val note = Note(title = title, content = content)
 
         if(stateNote?.id != null) {
-            updateExistingNote(note.copy(id = stateNote.id))
+            updateExistingNote(note.copy(noteIdentifier = NoteIdentifier(stateNote.id)))
         } else {
             addNewNote(note)
         }
@@ -60,7 +61,7 @@ class NoteEditorViewModel(
     }
 
     private fun updateExistingNote(updatedNote: Note) = viewModelScope.launch {
-        require(updatedNote.id != -1)
+        require(updatedNote.noteIdentifier.id != -1)
 
         val wasSuccessful = updateNote.executeAsync(updatedNote)
 

@@ -37,7 +37,7 @@ class NotesListAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        val isSelected = notesSelectionTracker.isSelected(note.id)
+        val isSelected = notesSelectionTracker.isSelected(note.noteIdentifier.id)
         holder.bind(note, isSelected)
     }
 
@@ -53,7 +53,7 @@ class NotesListAdapter(
     }
 
     private fun onNoteSelectionChanged(noteId: Int) {
-        val positionOfNote = notes.indexOfFirst { it.id == noteId }
+        val positionOfNote = notes.indexOfFirst { it.noteIdentifier.id == noteId }
         if(positionOfNote == -1) return
         notifyItemChanged(positionOfNote)
     }
@@ -100,7 +100,7 @@ class NotesListAdapter(
         }
 
         private fun selectNote(note: Note) {
-            selectionTracker.selectNote(note.id, itemView)
+            selectionTracker.selectNote(note.noteIdentifier.id, itemView)
         }
     }
 }

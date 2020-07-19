@@ -28,7 +28,7 @@ class RetrofitNoteApi(
             title = updatedNote.title,
             content = updatedNote.content
         )
-        noteService.updateNote(updatedNote.id, noteRequest)
+        noteService.updateNote(updatedNote.noteIdentifier.id, noteRequest)
     }
 
     override suspend fun deleteNotes(noteIds: List<Int>) {
