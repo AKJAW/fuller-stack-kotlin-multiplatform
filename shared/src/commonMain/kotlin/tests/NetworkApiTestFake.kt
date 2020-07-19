@@ -21,4 +21,8 @@ class NetworkApiTestFake : NoteApi {
     override suspend fun updateNote(updatedNote: Note) {
         TODO("Not yet implemented")
     }
+
+    override suspend fun deleteNotes(noteIds: List<Int>) {
+        TODO("Not yet implemented")
+    }
 }

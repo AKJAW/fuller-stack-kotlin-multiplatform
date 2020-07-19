@@ -1,15 +1,20 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
+import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.FragmentManager
 import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.screens.list.DeleteNotesConfirmDialog
 
+//TODO can this be tested?
 class NotesSelectionTracker(
-    private val onDestroyActionMode: () -> Unit,
-    private val onDeleteClicked: (List<Int>) -> Unit
-) : ActionMode.Callback {
+    private val fragmentManager: FragmentManager,
+    private val onActionModeDestroyed: () -> Unit,
+    private val onNoteChanged: (Int) -> Unit
+) : ActionMode.Callback, DeleteNotesConfirmDialog.DeleteNotesConfirmationListener {
 
     private var actionMode: ActionMode? = null
     private var selectedNoteIds: MutableList<Int> = mutableListOf() //TODO preserve on save instance state
@@ -27,15 +32,20 @@ class NotesSelectionTracker(
     override fun onDestroyActionMode(mode: ActionMode?) {
         selectedNoteIds.clear()
         actionMode = null
-        onDestroyActionMode()
+        onActionModeDestroyed()
+        Log.d("SelectedNotes", selectedNoteIds.toString())
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if(item?.itemId == R.id.delete_note) {
-            onDeleteClicked(selectedNoteIds)
+            val dialog = DeleteNotesConfirmDialog.newInstance(selectedNoteIds)
+            dialog.setPositiveClickListener(this)
+            dialog.show(fragmentManager, "DeleteNotes")
         }
         return true
     }
+
+    override fun onNotesDeleted() = exitActionMode()
 
     fun isSelectionModeEnabled(): Boolean = selectedNoteIds.isNotEmpty()
 
@@ -48,6 +58,8 @@ class NotesSelectionTracker(
             selectedNoteIds.add(noteId)
         }
         toggleActionMode(view)
+        onNoteChanged(noteId)
+        Log.d("SelectedNotes", selectedNoteIds.toString())
     }
 
     private fun toggleActionMode(view: View) {

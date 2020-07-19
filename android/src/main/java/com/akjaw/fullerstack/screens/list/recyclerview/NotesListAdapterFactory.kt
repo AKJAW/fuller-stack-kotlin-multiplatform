@@ -11,6 +11,6 @@ class NotesListAdapterFactory(
         fragmentManager: FragmentManager,
         onItemClicked: (Note) -> Unit
     ): NotesListAdapter {
-        return NotesListAdapter(fragmentManager, onItemClicked, patternProvider.getNotesListItemPattern())
+        return NotesListAdapter(fragmentManager, patternProvider.getNotesListItemPattern(), onItemClicked)
     }
 }

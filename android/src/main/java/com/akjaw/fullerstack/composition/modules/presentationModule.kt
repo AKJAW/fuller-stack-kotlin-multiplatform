@@ -17,7 +17,7 @@ val presentationModule = DI.Module("presentationModule") {
     bind() from singleton { NotesListAdapterFactory(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
     bind<ViewModel>(tag = NotesListViewModel::class.java.simpleName) with provider {
-        NotesListViewModel(instance())
+        NotesListViewModel(instance(), instance())
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {
         NoteEditorViewModel(instance(), instance(), instance())

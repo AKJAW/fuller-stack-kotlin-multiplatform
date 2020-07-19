@@ -11,23 +11,26 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
-import com.akjaw.fullerstack.screens.list.DeleteNoteConfirmDialog
 import com.soywiz.klock.DateFormat
 import model.Note
 
 class NotesListAdapter(
-    private val fragmentManager: FragmentManager,
-    private val onItemClicked: (Note) -> Unit,
-    private val dateFormat: DateFormat
+    fragmentManager: FragmentManager,
+    private val dateFormat: DateFormat,
+    private val onItemClicked: (Note) -> Unit
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
-    private val notesSelectionTracker = NotesSelectionTracker(::onDestroyActionMode, ::onDeleteClicked)
+    private val notesSelectionTracker = NotesSelectionTracker(
+        fragmentManager,
+        ::onActionModeDestroyed,
+        ::onNoteSelectionChanged
+    )
     private var notes: List<Note> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val rootView = inflater.inflate(R.layout.item_notes_list, parent, false)
-        return NoteViewHolder(rootView)
+        return NoteViewHolder(rootView, dateFormat, notesSelectionTracker, onItemClicked)
     }
 
     override fun getItemCount(): Int = notes.count()
@@ -35,40 +38,7 @@ class NotesListAdapter(
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
         val isSelected = notesSelectionTracker.isSelected(note.id)
-        holder.apply {
-            title.text = note.title
-            date.text = note.creationDate.format(dateFormat)
-            setBackgroundColor(isSelected)
-
-            noteContainer.setOnClickListener {
-                if(notesSelectionTracker.isSelectionModeEnabled()){
-                    selectNote(note, position)
-                } else {
-                    onItemClicked(note)
-                }
-            }
-
-            noteContainer.setOnLongClickListener {
-                selectNote(note, position)
-                true
-            }
-        }
-    }
-
-    private fun NoteViewHolder.setBackgroundColor(isSelected: Boolean) {
-        noteContainer.background.colorFilter = when {
-            isSelected -> {
-                val context = noteContainer.context
-                val color = ContextCompat.getColor(context, R.color.selectedNoteBackground)
-                PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-            }
-            else -> null
-        }
-    }
-
-    private fun NoteViewHolder.selectNote(note: Note, position: Int) {
-        notesSelectionTracker.selectNote(note.id, itemView)
-        notifyItemChanged(position)
+        holder.bind(note, isSelected)
     }
 
     fun setNotes(newNotes: List<Note>) {
@@ -78,15 +48,59 @@ class NotesListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun onDestroyActionMode() = notifyDataSetChanged()
-
-    private fun onDeleteClicked(noteIds: List<Int>) {
-        DeleteNoteConfirmDialog().show(fragmentManager, "DeleteNotes")
+    private fun onActionModeDestroyed() {
+        notifyDataSetChanged()
     }
 
-    class NoteViewHolder(rootView: View) : RecyclerView.ViewHolder(rootView) {
+    private fun onNoteSelectionChanged(noteId: Int) {
+        val positionOfNote = notes.indexOfFirst { it.id == noteId }
+        if(positionOfNote == -1) return
+        notifyItemChanged(positionOfNote)
+    }
+
+    class NoteViewHolder(
+        rootView: View,
+        private val dateFormat: DateFormat,
+        private val selectionTracker: NotesSelectionTracker,
+        private val onItemClicked: (Note) -> Unit
+    ) : RecyclerView.ViewHolder(rootView) {
         val noteContainer: View = rootView.findViewById(R.id.note_container)
         val title: TextView = rootView.findViewById(R.id.note_title)
         val date: TextView = rootView.findViewById(R.id.note_date)
+
+        fun bind(note: Note, isSelected: Boolean) {
+            title.text = note.title
+            date.text = note.creationDate.format(dateFormat)
+            setBackgroundColor(isSelected)
+
+            noteContainer.setOnClickListener {
+                if(selectionTracker.isSelectionModeEnabled()){
+                    selectNote(note)
+                } else {
+                    onItemClicked(note)
+                }
+            }
+
+            noteContainer.setOnLongClickListener {
+                selectNote(note)
+                true
+            }
+        }
+
+        private fun setBackgroundColor(isSelected: Boolean) {
+            noteContainer.background.colorFilter =
+                when {
+                    isSelected -> {
+                        val context = noteContainer.context
+                        val color = ContextCompat.getColor(context, R.color.selectedNoteBackground)
+                        PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                    }
+                    else -> null
+                }
+        }
+
+        private fun selectNote(note: Note) {
+            selectionTracker.selectNote(note.id, itemView)
+        }
     }
 }

@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import feature.list.DeleteNotes
 import feature.list.FetchNotes
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import model.Note
 
 internal class NotesListViewModel(
-    private val fetchNotes: FetchNotes
+    private val fetchNotes: FetchNotes,
+    private val deleteNotes: DeleteNotes
 ) : ViewModel() {
 
     internal sealed class NotesListState {
@@ -38,5 +40,9 @@ internal class NotesListViewModel(
                 }
             }
         }
+    }
+
+    fun deleteNotes(noteIds: List<Int>) = viewModelScope.launch {//TODO error handling
+        deleteNotes.executeAsync(noteIds)
     }
 }

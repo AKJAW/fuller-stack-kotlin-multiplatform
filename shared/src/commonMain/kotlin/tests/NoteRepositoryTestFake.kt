@@ -4,11 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.Note
 import network.NoteApi
-import network.NoteApiFake
 import repository.NoteRepository
 
 class NoteRepositoryTestFake : NoteRepository {
-    private val noteApi: NoteApi = NoteApiFake()
+    private val noteApi: NoteApi = NetworkApiTestFake() //TODO use this
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
     val notesList: List<Note>
         get() = notesMutableState.value
@@ -41,6 +40,11 @@ class NoteRepositoryTestFake : NoteRepository {
                 note
             }
         }
+        notesMutableState.value = newNotes
+    }
+
+    override suspend fun deleteNotes(noteIds: List<Int>) {
+        val newNotes = notesMutableState.value.filterNot { noteIds.contains(it.id) }
         notesMutableState.value = newNotes
     }
 
