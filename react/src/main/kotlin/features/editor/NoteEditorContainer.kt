@@ -3,6 +3,7 @@ package features.editor
 import composition.KodeinEntry
 import helpers.validation.NoteInputValidator
 import model.Note
+import model.NoteIdentifier
 import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
@@ -27,6 +28,7 @@ interface NoteEditorConnectedProps : RProps {
     var isUpdating: Boolean
     var addNote: (note: Note) -> Unit
     var updateNote: (note: Note) -> Unit
+    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -38,6 +40,7 @@ private interface StateProps : RProps {
 private interface DispatchProps : RProps {
     var addNote: (note: Note) -> Unit
     var updateNote: (note: Note) -> Unit
+    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -59,6 +62,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
             attrs.positiveActionCaption = getPositiveActionCaption()
             attrs.onPositiveActionClicked = ::onPositiveActionClicked
             attrs.closeEditor = props.closeEditor
+            attrs.onDeleteClicked = ::onDeleteClicked
         }
     }
 
@@ -87,6 +91,14 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
             props.addNote(newNote)
         }
     }
+
+    private fun onDeleteClicked() {
+        props.closeEditor()
+        val noteIdentifier = props.selectedNote?.noteIdentifier
+        if(noteIdentifier != null) {
+            props.deleteNotes(listOf(noteIdentifier))
+        }
+    }
 }
 
 val noteEditorContainer: RClass<RProps> =
@@ -99,5 +111,6 @@ val noteEditorContainer: RClass<RProps> =
             addNote = { note -> dispatch(NoteEditorSlice.addNote(note)) }
             updateNote = { note -> dispatch(NoteEditorSlice.updateNote(note)) }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
+            deleteNotes = { noteIdentifiers ->  dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
         }
     )(NoteEditorContainer::class.js.unsafeCast<RClass<NoteEditorConnectedProps>>())

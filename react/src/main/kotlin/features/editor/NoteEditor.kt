@@ -5,6 +5,7 @@ import com.ccfraser.muirwik.components.form.MFormControlVariant
 import com.ccfraser.muirwik.components.mTextField
 import com.ccfraser.muirwik.components.mTextFieldMultiLine
 import com.ccfraser.muirwik.components.targetInputValue
+import features.editor.more.editorMoreButton
 import kotlinx.css.Align
 import kotlinx.css.Display
 import kotlinx.css.JustifyContent
@@ -32,6 +33,7 @@ interface NoteEditorProps : RProps {
     var positiveActionCaption: String
     var onPositiveActionClicked: (title: String, content: String) -> Unit
     var closeEditor: () -> Unit
+    var onDeleteClicked: () -> Unit
 }
 
 @Suppress("MagicNumber")
@@ -71,7 +73,9 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
                     css {
                         display = if(props.isUpdating) Display.block else Display.none
                     }
-                    child(editorMoreButton)
+                    child(editorMoreButton) {
+                        attrs.onDeleteClicked = { props.onDeleteClicked() }
+                    }
                 }
             }
             mTextField(
