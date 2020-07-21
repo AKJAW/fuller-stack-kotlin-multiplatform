@@ -45,7 +45,7 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
         noteEditorViewModel.setNote(note)
 
         noteEditorViewModel.navigationLiveEvent.observe(this) {
-            context?.let { screenNavigator.goBack(it) }
+            screenNavigator.goBack()
         }
     }
 
@@ -67,7 +67,7 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
         toolbar.setNavigationIcon(R.drawable.ic_close_24dp)
         toolbar.setNavigationOnClickListener {
             hideKeyboard()
-            context?.let { screenNavigator.goBack(it) }
+            screenNavigator.goBack()
         }
         toolbar.setOnMenuItemClickListener {
             hideKeyboard()

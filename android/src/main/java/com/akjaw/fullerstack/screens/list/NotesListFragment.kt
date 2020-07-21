@@ -65,7 +65,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         fab = view.findViewById(R.id.floating_action_button)
 
         fab.setOnClickListener {
-            context?.let { screenNavigator.openAddNoteScreen(it) }
+            screenNavigator.openAddNoteScreen()
         }
 
         notesRecyclerView.apply {
@@ -94,7 +94,6 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     }
 
     private fun onNoteClicked(note: Note) {
-        val context = context ?: return
-        screenNavigator.openEditNoteScreen(context, note.toParcelable())
+        screenNavigator.openEditNoteScreen(note.toParcelable())
     }
 }
