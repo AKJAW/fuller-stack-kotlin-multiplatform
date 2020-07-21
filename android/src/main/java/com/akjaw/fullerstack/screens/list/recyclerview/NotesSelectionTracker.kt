@@ -9,16 +9,19 @@ import androidx.fragment.app.FragmentManager
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.list.DeleteNotesConfirmDialog
 import model.NoteIdentifier
+import model.NoteIdentifierMapper
 
 //TODO can this be tested?
 class NotesSelectionTracker(
+    initialSelectedNotes: List<NoteIdentifier>,
     private val fragmentManager: FragmentManager,
+    private val noteIdentifierMapper: NoteIdentifierMapper,
     private val onActionModeDestroyed: () -> Unit,
     private val onNoteChanged: (NoteIdentifier) -> Unit
 ) : ActionMode.Callback, DeleteNotesConfirmDialog.DeleteNotesConfirmationListener {
 
     private var actionMode: ActionMode? = null
-    private var selectedNoteIdentifiers: MutableList<NoteIdentifier> = mutableListOf() //TODO preserve on save instance state
+    private var selectedNoteIdentifiers: MutableList<NoteIdentifier> = initialSelectedNotes.toMutableList()
 
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         actionMode = mode
@@ -80,4 +83,6 @@ class NotesSelectionTracker(
     private fun exitActionMode() {
         actionMode?.finish()
     }
+
+    fun getSelectedNotes(): List<Int> = noteIdentifierMapper.toInt(selectedNoteIdentifiers)
 }

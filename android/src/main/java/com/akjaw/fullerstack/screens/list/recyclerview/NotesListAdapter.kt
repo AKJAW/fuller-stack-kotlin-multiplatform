@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
@@ -16,15 +15,14 @@ import model.Note
 import model.NoteIdentifier
 
 class NotesListAdapter(
-    fragmentManager: FragmentManager,
+    notesSelectionTrackerFactory: NotesSelectionTrackerFactory,
     private val dateFormat: DateFormat,
     private val onItemClicked: (Note) -> Unit
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
-    private val notesSelectionTracker = NotesSelectionTracker(
-        fragmentManager,
-        ::onActionModeDestroyed,
-        ::onNoteSelectionChanged
+    private val notesSelectionTracker = notesSelectionTrackerFactory.create(
+        onActionModeDestroyed = ::onActionModeDestroyed,
+        onNoteChanged = ::onNoteSelectionChanged
     )
     private var notes: List<Note> = listOf()
 
@@ -58,6 +56,8 @@ class NotesListAdapter(
         if(positionOfNote == -1) return
         notifyItemChanged(positionOfNote)
     }
+
+    fun getSelectedNoteIds(): List<Int> = notesSelectionTracker.getSelectedNotes()
 
     class NoteViewHolder(
         rootView: View,

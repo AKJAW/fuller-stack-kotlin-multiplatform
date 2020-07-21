@@ -23,6 +23,10 @@ import org.kodein.di.instance
 
 class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
+    companion object {
+        private const val SELECTED_NOTE_IDS = "SELECTED_NOTE_IDS"
+    }
+
     private lateinit var toolbar: Toolbar
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var fab: FloatingActionButton
@@ -37,8 +41,20 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        notesListAdapter = notesListAdapterFactory.create(parentFragmentManager,::onNoteClicked)
+        val ids = savedInstanceState?.getIntegerArrayList(SELECTED_NOTE_IDS)
+        notesListAdapter = notesListAdapterFactory.create(
+            activity = requireActivity(),//TODO inject
+            initialSelectedNotesIds = ids?.toList(),
+            onItemClicked = ::onNoteClicked
+        )
         viewModel.initializeNotes()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val selectedIds = notesListAdapter.getSelectedNoteIds()
+        outState.putIntegerArrayList(SELECTED_NOTE_IDS, ArrayList(selectedIds))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

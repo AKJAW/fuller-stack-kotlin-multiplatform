@@ -4,6 +4,7 @@ import model.Note
 import model.NoteIdentifier
 import network.NoteApi
 
+@Suppress("TooGenericExceptionThrown")
 class NetworkApiTestFake : NoteApi {
     var notes: List<Note> = listOf()
     var willFail = false

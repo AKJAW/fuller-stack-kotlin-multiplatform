@@ -14,7 +14,7 @@ import org.kodein.di.provider
 import org.kodein.di.singleton
 
 val presentationModule = DI.Module("presentationModule") {
-    bind() from singleton { NotesListAdapterFactory(instance()) }
+    bind() from singleton { NotesListAdapterFactory(instance(), instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
     bind<ViewModel>(tag = NotesListViewModel::class.java.simpleName) with provider {
         NotesListViewModel(instance(), instance())
