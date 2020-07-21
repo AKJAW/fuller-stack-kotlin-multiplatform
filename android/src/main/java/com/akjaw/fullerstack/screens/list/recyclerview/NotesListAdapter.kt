@@ -16,11 +16,13 @@ import model.NoteIdentifier
 
 class NotesListAdapter(
     notesSelectionTrackerFactory: NotesSelectionTrackerFactory,
+    initialSelectedNotes: List<NoteIdentifier>,
     private val dateFormat: DateFormat,
     private val onItemClicked: (Note) -> Unit
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
     private val notesSelectionTracker = notesSelectionTrackerFactory.create(
+        initialSelectedNotes = initialSelectedNotes,
         onActionModeDestroyed = ::onActionModeDestroyed,
         onNoteChanged = ::onNoteSelectionChanged
     )

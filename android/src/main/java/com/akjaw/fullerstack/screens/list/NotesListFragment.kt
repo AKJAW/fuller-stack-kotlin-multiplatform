@@ -43,7 +43,6 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
         val ids = savedInstanceState?.getIntegerArrayList(SELECTED_NOTE_IDS)
         notesListAdapter = notesListAdapterFactory.create(
-            activity = requireActivity(),//TODO inject
             initialSelectedNotesIds = ids?.toList(),
             onItemClicked = ::onNoteClicked
         )

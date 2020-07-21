@@ -5,11 +5,11 @@ import model.NoteIdentifier
 import model.NoteIdentifierMapper
 
 class NotesSelectionTrackerFactory(
-    private val activity: FragmentActivity, //TODO inject the fragment manager with scoped DI
-    private val initialSelectedNotes: List<NoteIdentifier>,
+    private val activity: FragmentActivity,
     private val noteIdentifierMapper: NoteIdentifierMapper
 ) {
     fun create(
+        initialSelectedNotes: List<NoteIdentifier>,
         onActionModeDestroyed: () -> Unit,
         onNoteChanged: (NoteIdentifier) -> Unit
     ): NotesSelectionTracker {
