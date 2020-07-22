@@ -19,21 +19,21 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
     companion object {
         private const val EXTRA_NOTES = "EXTRA_NOTES"
 
-        fun newInstance(noteIdentifiers: List<NoteIdentifier>): DeleteNotesConfirmDialog {
+        fun newInstance(
+            noteIdentifiers: List<NoteIdentifier>,
+            onNotesDeleted: () -> Unit
+        ): DeleteNotesConfirmDialog {
             return DeleteNotesConfirmDialog().apply {
                 val args = Bundle()
                 val intIds = noteIdentifiers.map { it.id }
                 args.putIntegerArrayList(EXTRA_NOTES, ArrayList(intIds))
                 arguments = args
+                this.onNotesDeleted = onNotesDeleted
             }
         }
     }
 
-    interface DeleteNotesConfirmationListener {
-        fun onNotesDeleted()
-    }
-
-    private var listener: DeleteNotesConfirmationListener? = null
+    private lateinit var onNotesDeleted: () -> Unit //TODO should this be nulled out
     private lateinit var noteIds: List<Int>
     override val di: DI by di()
 
@@ -56,21 +56,12 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
             .setPositiveButton("Yes") { dialog: DialogInterface?, id: Int ->
                 val noteIdentifiers = noteIds.map { NoteIdentifier(it) }
                 viewModel.deleteNotes(noteIdentifiers)
-                listener?.onNotesDeleted()
+                onNotesDeleted.invoke()
             }
             .setNegativeButton("Cancel") { dialog: DialogInterface?, id: Int ->
                 dialog?.dismiss()
             }
 
         return builder.create()
-    }
-
-    fun setPositiveClickListener(listener: DeleteNotesConfirmationListener) {
-        this.listener = listener
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        listener = null
     }
 }

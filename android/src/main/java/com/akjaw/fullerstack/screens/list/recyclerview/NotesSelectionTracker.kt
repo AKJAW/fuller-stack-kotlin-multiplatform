@@ -1,88 +1,66 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import android.util.Log
-import android.view.ActionMode
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import androidx.fragment.app.FragmentManager
-import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.list.DeleteNotesConfirmDialog
+import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
 import model.NoteIdentifier
 import model.NoteIdentifierMapper
 
-//TODO can this be tested?
 class NotesSelectionTracker(
     initialSelectedNotes: List<NoteIdentifier>,
-    private val fragmentManager: FragmentManager,
+    private val fragmentManager: FragmentManager, //TODO replace with an abstraction
     private val noteIdentifierMapper: NoteIdentifierMapper,
-    private val onActionModeDestroyed: () -> Unit,
+    private val notesListActionMode: NotesListActionMode,
     private val onNoteChanged: (NoteIdentifier) -> Unit
-) : ActionMode.Callback, DeleteNotesConfirmDialog.DeleteNotesConfirmationListener {
+) {
 
-    private var actionMode: ActionMode? = null
-    private var selectedNoteIdentifiers: MutableList<NoteIdentifier> = initialSelectedNotes.toMutableList()
-
-    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-        actionMode = mode
-        val inflater = mode?.menuInflater
-        inflater?.inflate(R.menu.note_list_selection, menu)
-        //TODO title
-        return true
-    }
-
-    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
-
-    override fun onDestroyActionMode(mode: ActionMode?) {
-        selectedNoteIdentifiers.clear()
-        actionMode = null
-        onActionModeDestroyed()
-        Log.d("SelectedNotes", selectedNoteIdentifiers.toString())
-    }
-
-    override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        if(item?.itemId == R.id.delete_note) {
-            val dialog = DeleteNotesConfirmDialog.newInstance(selectedNoteIdentifiers)
-            dialog.setPositiveClickListener(this)
-            dialog.show(fragmentManager, "DeleteNotes")
+    init {
+        notesListActionMode.initialize(
+            onDeleteClicked = ::openDeleteDialog,
+            onActionModeDestroyed = ::clearSelection
+        )
+        if(initialSelectedNotes.isNotEmpty()) {
+            notesListActionMode.startActionMode()
         }
-        return true
     }
 
-    override fun onNotesDeleted() = exitActionMode()
+    val selectedNoteIdentifiers: MutableList<NoteIdentifier> = initialSelectedNotes.toMutableList()
 
-    fun isSelectionModeEnabled(): Boolean = selectedNoteIdentifiers.isNotEmpty()
-
-    fun isSelected(noteIdentifier: NoteIdentifier): Boolean = selectedNoteIdentifiers.contains(noteIdentifier)
-
-    fun selectNote(noteIdentifier: NoteIdentifier, view: View) {
+    fun select(noteIdentifier: NoteIdentifier) {
         if(selectedNoteIdentifiers.contains(noteIdentifier)){
             selectedNoteIdentifiers.remove(noteIdentifier)
         } else {
             selectedNoteIdentifiers.add(noteIdentifier)
         }
-        toggleActionMode(view)
+
         onNoteChanged(noteIdentifier)
-        Log.d("SelectedNotes", selectedNoteIdentifiers.toString())
+        toggleActionMode()
     }
 
-    private fun toggleActionMode(view: View) {
+    private fun toggleActionMode() {
         if (selectedNoteIdentifiers.isNotEmpty()) {
-            startActionMode(view)
+            notesListActionMode.startActionMode()
         } else {
-            exitActionMode()
+            notesListActionMode.exitActionMode()
         }
     }
 
-    private fun startActionMode(noteContainer: View) {
-        if(actionMode == null) {
-            noteContainer.startActionMode(this)
+    fun isSelected(noteIdentifier: NoteIdentifier) = selectedNoteIdentifiers.contains(noteIdentifier)
+
+    fun getSelectedIds(): List<Int> {
+        return noteIdentifierMapper.toInt(selectedNoteIdentifiers)
+    }
+
+    fun isSelectionModeEnabled() = selectedNoteIdentifiers.isNotEmpty()
+
+    private fun openDeleteDialog() {
+        val dialog = DeleteNotesConfirmDialog.newInstance(selectedNoteIdentifiers) {
+            notesListActionMode.exitActionMode()
         }
+        dialog.show(fragmentManager, "DeleteNotes")
     }
 
-    private fun exitActionMode() {
-        actionMode?.finish()
+    private fun clearSelection() {
+        selectedNoteIdentifiers.clear()
     }
-
-    fun getSelectedNotes(): List<Int> = noteIdentifierMapper.toInt(selectedNoteIdentifiers)
 }

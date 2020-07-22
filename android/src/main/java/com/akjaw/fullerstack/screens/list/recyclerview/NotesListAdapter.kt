@@ -23,7 +23,6 @@ class NotesListAdapter(
 
     private val notesSelectionTracker = notesSelectionTrackerFactory.create(
         initialSelectedNotes = initialSelectedNotes,
-        onActionModeDestroyed = ::onActionModeDestroyed,
         onNoteChanged = ::onNoteSelectionChanged
     )
     private var notes: List<Note> = listOf()
@@ -49,17 +48,13 @@ class NotesListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun onActionModeDestroyed() {
-        notifyDataSetChanged()
-    }
-
     private fun onNoteSelectionChanged(noteIdentifier: NoteIdentifier) {
         val positionOfNote = notes.indexOfFirst { it.noteIdentifier == noteIdentifier }
         if(positionOfNote == -1) return
         notifyItemChanged(positionOfNote)
     }
 
-    fun getSelectedNoteIds(): List<Int> = notesSelectionTracker.getSelectedNotes()
+    fun getSelectedNoteIds(): List<Int> = notesSelectionTracker.getSelectedIds()
 
     class NoteViewHolder(
         rootView: View,
@@ -78,14 +73,14 @@ class NotesListAdapter(
 
             noteContainer.setOnClickListener {
                 if(selectionTracker.isSelectionModeEnabled()){
-                    selectNote(note)
+                    selectionTracker.select(note.noteIdentifier)
                 } else {
                     onItemClicked(note)
                 }
             }
 
             noteContainer.setOnLongClickListener {
-                selectNote(note)
+                selectionTracker.select(note.noteIdentifier)
                 true
             }
         }
@@ -100,10 +95,6 @@ class NotesListAdapter(
                     }
                     else -> null
                 }
-        }
-
-        private fun selectNote(note: Note) {
-            selectionTracker.selectNote(note.noteIdentifier, itemView)
         }
     }
 }
