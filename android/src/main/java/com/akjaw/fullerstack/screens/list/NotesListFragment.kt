@@ -15,6 +15,7 @@ import com.akjaw.fullerstack.screens.common.recyclerview.SpacingItemDecoration
 import com.akjaw.fullerstack.screens.common.toParcelable
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
+import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Note
 import org.kodein.di.direct
@@ -33,6 +34,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     private lateinit var notesRecyclerView: RecyclerView
     private lateinit var notesListAdapter: NotesListAdapter
     private val screenNavigator: ScreenNavigator by instance()
+    private val notesListActionMode: NotesListActionMode by instance()
     private val notesListAdapterFactory: NotesListAdapterFactory by instance()
     private val viewModel: NotesListViewModel by activityViewModels {
         di.direct.instance()
@@ -65,7 +67,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         fab = view.findViewById(R.id.floating_action_button)
 
         fab.setOnClickListener {
-            screenNavigator.openAddNoteScreen()
+            onFabClick()
         }
 
         notesRecyclerView.apply {
@@ -81,6 +83,11 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         }
     }
 
+    private fun onFabClick() {
+        notesListActionMode.exitActionMode()
+        screenNavigator.openAddNoteScreen()
+    }
+
     private fun render(viewState: NotesListViewModel.NotesListState?) {
         when (viewState) {
             NotesListViewModel.NotesListState.Loading -> loadingIndicator.visibility = View.VISIBLE
@@ -94,6 +101,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     }
 
     private fun onNoteClicked(note: Note) {
+        notesListActionMode.exitActionMode()
         screenNavigator.openEditNoteScreen(note.toParcelable())
     }
 }

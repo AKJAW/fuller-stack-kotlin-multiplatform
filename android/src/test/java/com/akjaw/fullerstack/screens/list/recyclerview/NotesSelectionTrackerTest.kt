@@ -20,6 +20,7 @@ internal class NotesSelectionTrackerTest {
         every { initialize(any(), any()) } answers {}
         every { startActionMode() } answers {}
         every { exitActionMode() } answers {}
+        every { setTitle(any()) } answers {}
     }
     private val onNoteChanged: (NoteIdentifier) -> Unit = mockk(relaxed = true)
     private lateinit var SUT: NotesSelectionTracker
@@ -72,6 +73,21 @@ internal class NotesSelectionTrackerTest {
             }
             verify(exactly = 1) {
                 onNoteChanged.invoke(NoteIdentifier(3))
+            }
+        }
+
+        @Test
+        fun `Selecting notes changes the action mode title`() {
+
+            SUT.select(NoteIdentifier(1))
+            SUT.select(NoteIdentifier(2))
+
+            verify(exactly = 1) {
+                notesListActionMode.setTitle("1")
+            }
+
+            verify(exactly = 1) {
+                notesListActionMode.setTitle("2")
             }
         }
 

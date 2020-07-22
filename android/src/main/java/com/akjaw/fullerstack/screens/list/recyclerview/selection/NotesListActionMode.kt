@@ -53,4 +53,8 @@ class NotesListActionMode(
     fun exitActionMode() {
         actionMode?.finish()
     }
+
+    fun setTitle(title: String) {
+        actionMode?.title = title
+    }
 }

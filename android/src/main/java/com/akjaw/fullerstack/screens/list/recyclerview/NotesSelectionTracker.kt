@@ -40,6 +40,8 @@ class NotesSelectionTracker(
     private fun toggleActionMode() {
         if (selectedNoteIdentifiers.isNotEmpty()) {
             notesListActionMode.startActionMode()
+            val numberOfSelectedNotes = selectedNoteIdentifiers.count()
+            notesListActionMode.setTitle(numberOfSelectedNotes.toString())
         } else {
             notesListActionMode.exitActionMode()
         }
