@@ -10,9 +10,11 @@ import io.ktor.routing.patch
 import io.ktor.routing.post
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
+import server.logger.ApiLogger
 import server.storage.NotesService
 
 fun Routing.notesRoute() {
+    val apiLogger: ApiLogger by di().instance()
     val notesService: NotesService by di().instance()
     val notesCallHelper: NotesCallHelper by di().instance()
 
@@ -22,7 +24,7 @@ fun Routing.notesRoute() {
 
     post("/notes") {
         val note = notesCallHelper.getNoteSchemaFromBody(call)
-        println(note)
+        apiLogger.log("Post notes", note.toString())
 
         if (note == null) {
             call.respond(HttpStatusCode.BadRequest)
@@ -35,6 +37,7 @@ fun Routing.notesRoute() {
 
     patch("/notes/{noteId}") {
         val note = notesCallHelper.getNoteWithId(call)
+        apiLogger.log("Patch notes", note.toString())
 
         if (note == null) {
             call.respond(HttpStatusCode.BadRequest)
@@ -51,6 +54,7 @@ fun Routing.notesRoute() {
 
     delete("/notes/{noteId}") {
         val noteId = call.parameters["noteId"]?.toIntOrNull()
+        apiLogger.log("Delete notes", noteId.toString())
 
         if (noteId == null) {
             call.respond(HttpStatusCode.BadRequest)

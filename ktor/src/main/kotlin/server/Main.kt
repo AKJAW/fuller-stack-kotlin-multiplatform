@@ -14,6 +14,7 @@ import org.kodein.di.bind
 import org.kodein.di.ktor.di
 import org.kodein.di.singleton
 import server.composition.databaseModule
+import server.logger.ApiLogger
 import server.routes.notes.NotesCallHelper
 import server.routes.notes.notesRoute
 import server.routes.rootRoute
@@ -34,6 +35,7 @@ fun Application.module() {
     di {
         import(databaseModule)
         bind() from singleton { NotesCallHelper() }
+        bind() from singleton { ApiLogger() }
     }
 
     install(Routing) {

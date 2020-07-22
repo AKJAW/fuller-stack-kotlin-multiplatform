@@ -10,5 +10,5 @@ import server.storage.NotesService
 
 val databaseModule = DI.Module("databaseModule") {
     bind<ExposedDatabase>() with singleton { DatabaseFactory().create() }
-    bind() from singleton { NotesService(instance()) }
+    bind() from singleton { NotesService(instance(), instance()) }
 }

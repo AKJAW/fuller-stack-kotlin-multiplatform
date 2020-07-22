@@ -7,9 +7,13 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
+import server.logger.ApiLogger
 import server.storage.model.NotesTable
 
-class NotesService(private val database: ExposedDatabase) {
+class NotesService(
+    private val database: ExposedDatabase,
+    private val apiLogger: ApiLogger
+) {
 
     suspend fun getNotes(): List<NoteSchema> = queryDatabase {
         NotesTable
@@ -31,7 +35,7 @@ class NotesService(private val database: ExposedDatabase) {
             it[content] = newNote.content
             it[creationDateTimestamp] = DateTime.nowUnixLong()
         }
-        println(id)
+        apiLogger.log("NoteService addNote", "new id: $id")
     }
 
     suspend fun updateNote(updatedNote: NoteSchema) = queryDatabase {
@@ -39,13 +43,13 @@ class NotesService(private val database: ExposedDatabase) {
             it[title] = updatedNote.title
             it[content] = updatedNote.content
         }
-        println(updatedAmount)
+        apiLogger.log("NoteService updateNote", "updatedAmount: $updatedAmount")
         return@queryDatabase updatedAmount > 0
     }
 
     suspend fun deleteNote(noteId: Int): Boolean = queryDatabase {
         val deletedAmount = NotesTable.deleteWhere { NotesTable.id eq noteId }
-        println(deletedAmount)
+        apiLogger.log("NoteService deleteNote", "deletedAmount: $deletedAmount")
         return@queryDatabase deletedAmount > 0
     }
 }
