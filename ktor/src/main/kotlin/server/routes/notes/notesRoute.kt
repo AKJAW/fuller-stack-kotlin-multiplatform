@@ -59,7 +59,7 @@ fun Routing.notesRoute() {
         apiLogger.log("Delete note with id", noteId.toString())
 
         if (noteId == null) {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "Note id is missing")
             return@delete
         }
 
@@ -78,7 +78,7 @@ fun Routing.notesRoute() {
         apiLogger.log("Delete notes", noteIdentifiers.toString())
 
         if (noteIdentifiers == null || noteIdentifiers.isEmpty()) {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "No note id provided")
             return@delete
         }
 
