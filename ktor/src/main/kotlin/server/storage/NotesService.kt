@@ -1,6 +1,7 @@
 package server.storage
 
 import com.soywiz.klock.DateTime
+import model.NoteIdentifier
 import model.schema.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.deleteWhere
@@ -47,8 +48,8 @@ class NotesService(
         return@queryDatabase updatedAmount > 0
     }
 
-    suspend fun deleteNote(noteId: Int): Boolean = queryDatabase {
-        val deletedAmount = NotesTable.deleteWhere { NotesTable.id eq noteId }
+    suspend fun deleteNote(identifier: NoteIdentifier): Boolean = queryDatabase {
+        val deletedAmount = NotesTable.deleteWhere { NotesTable.id eq identifier.id }
         apiLogger.log("NoteService deleteNote", "deletedAmount: $deletedAmount")
         return@queryDatabase deletedAmount > 0
     }

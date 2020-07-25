@@ -3,6 +3,7 @@ package server.routes.notes
 import io.ktor.application.ApplicationCall
 import io.ktor.request.receiveOrNull
 import kotlinx.serialization.json.JsonDecodingException
+import model.NoteIdentifier
 import model.schema.NoteSchema
 
 class NotesCallHelper {
@@ -16,6 +17,14 @@ class NotesCallHelper {
             null
         }
     }
+
+    suspend fun getNoteIdentifiersFromBody(call: ApplicationCall): List<NoteIdentifier>? =
+        try {
+            val ids: List<Int>? = call.receiveOrNull()
+            ids?.map { NoteIdentifier(it) }
+        } catch (e: JsonDecodingException) {
+            null
+        }
 
     suspend fun getNoteSchemaFromBody(call: ApplicationCall): NoteSchema? =
         try {

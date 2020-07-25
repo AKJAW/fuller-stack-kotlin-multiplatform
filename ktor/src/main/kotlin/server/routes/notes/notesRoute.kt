@@ -8,6 +8,7 @@ import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.patch
 import io.ktor.routing.post
+import model.NoteIdentifier
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import server.logger.ApiLogger
@@ -45,6 +46,7 @@ fun Routing.notesRoute() {
         }
 
         val wasUpdated = notesService.updateNote(note)
+
         if(wasUpdated){
             call.respond(HttpStatusCode.OK)
         } else {
@@ -54,15 +56,37 @@ fun Routing.notesRoute() {
 
     delete("/notes/{noteId}") {
         val noteId = call.parameters["noteId"]?.toIntOrNull()
-        apiLogger.log("Delete notes", noteId.toString())
+        apiLogger.log("Delete note with id", noteId.toString())
 
         if (noteId == null) {
             call.respond(HttpStatusCode.BadRequest)
             return@delete
         }
 
-        val wasDeleted = notesService.deleteNote(noteId)
+        val identifier = NoteIdentifier(noteId)
+        val wasDeleted = notesService.deleteNote(identifier)
+
         if(wasDeleted){
+            call.respond(HttpStatusCode.OK)
+        } else {
+            call.respond(HttpStatusCode.BadRequest)
+        }
+    }
+
+    delete("/notes") {
+        val noteIdentifiers = notesCallHelper.getNoteIdentifiersFromBody(call)
+        apiLogger.log("Delete notes", noteIdentifiers.toString())
+
+        if (noteIdentifiers == null || noteIdentifiers.isEmpty()) {
+            call.respond(HttpStatusCode.BadRequest)
+            return@delete
+        }
+
+        val wereAllNotesDeleted = noteIdentifiers.map { identifier ->
+            notesService.deleteNote(identifier)
+        }.all { it }
+
+        if(wereAllNotesDeleted){
             call.respond(HttpStatusCode.OK)
         } else {
             call.respond(HttpStatusCode.BadRequest)
