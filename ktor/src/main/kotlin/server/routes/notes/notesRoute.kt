@@ -28,7 +28,7 @@ fun Routing.notesRoute() {
         apiLogger.log("Post notes", note.toString())
 
         if (note == null) {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "Note doesn't have a correct format")
             return@post
         }
 
@@ -41,7 +41,7 @@ fun Routing.notesRoute() {
         apiLogger.log("Patch notes", note.toString())
 
         if (note == null) {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "Note doesn't have a correct format")
             return@patch
         }
 
@@ -50,7 +50,7 @@ fun Routing.notesRoute() {
         if(wasUpdated){
             call.respond(HttpStatusCode.OK)
         } else {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "Note with provided id ${note.id} not found")
         }
     }
 
@@ -69,7 +69,7 @@ fun Routing.notesRoute() {
         if(wasDeleted){
             call.respond(HttpStatusCode.OK)
         } else {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "Note with provided id $noteId not found")
         }
     }
 
@@ -89,7 +89,8 @@ fun Routing.notesRoute() {
         if(wereAllNotesDeleted){
             call.respond(HttpStatusCode.OK)
         } else {
-            call.respond(HttpStatusCode.BadRequest)
+            val ids = noteIdentifiers.map { it.id }
+            call.respond(HttpStatusCode.BadRequest, "Some notes with provided ids $ids not found")
         }
     }
 }
