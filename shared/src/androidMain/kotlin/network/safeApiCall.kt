@@ -10,7 +10,7 @@ actual suspend fun <T> safeApiCall(block: suspend () -> T): NetworkResponse<T> {
         NetworkResponse.Success(result)
     } catch (throwable: Throwable) {
         throwable.printStackTrace()
-        when(throwable) {
+        when (throwable) {
             is IOException -> NetworkResponse.NetworkError
             is HttpException -> NetworkResponse.ApiError
             else -> NetworkResponse.UnknownError

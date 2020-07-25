@@ -17,10 +17,11 @@ fun rThunk() =
         { store ->
             { next ->
                 { action ->
-                    if (action is RThunk)
+                    if (action is RThunk) {
                         action(store::dispatch, store::getState)
-                    else
+                    } else {
                         next(action)
+                    }
                 }
             }
         }

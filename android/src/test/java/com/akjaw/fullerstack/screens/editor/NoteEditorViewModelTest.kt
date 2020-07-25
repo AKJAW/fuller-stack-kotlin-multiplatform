@@ -27,7 +27,7 @@ internal class NoteEditorViewModelTest {
     private lateinit var SUT: NoteEditorViewModel
 
     @BeforeEach
-    fun setUp(){
+    fun setUp() {
         repositoryTestFake = NoteRepositoryTestFake()
         coroutineDispatcher = TestCoroutineDispatcher()
         val addNote = AddNote(coroutineDispatcher, repositoryTestFake)
@@ -39,7 +39,7 @@ internal class NoteEditorViewModelTest {
     inner class CreatingNote {
 
         @BeforeEach
-        fun setUp(){
+        fun setUp() {
             repositoryTestFake.setNotes(listOf())
         }
 
@@ -78,7 +78,7 @@ internal class NoteEditorViewModelTest {
         private val note = Note(NoteIdentifier(1), "title", "content")
 
         @BeforeEach
-        fun setUp(){
+        fun setUp() {
             SUT.setNote(note.toParcelable())
             repositoryTestFake.setNotes(listOf(note))
         }

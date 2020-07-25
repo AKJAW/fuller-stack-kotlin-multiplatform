@@ -51,7 +51,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         isTitleValid = true
     }
 
-    private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance<NoteInputValidator>()
+    private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance()
 
     override fun RBuilder.render() {
         child(noteEditor) {
@@ -95,7 +95,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
     private fun onDeleteClicked() {
         props.closeEditor()
         val noteIdentifier = props.selectedNote?.noteIdentifier
-        if(noteIdentifier != null) {
+        if (noteIdentifier != null) {
             props.deleteNotes(listOf(noteIdentifier))
         }
     }
@@ -111,6 +111,6 @@ val noteEditorContainer: RClass<RProps> =
             addNote = { note -> dispatch(NoteEditorSlice.addNote(note)) }
             updateNote = { note -> dispatch(NoteEditorSlice.updateNote(note)) }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
-            deleteNotes = { noteIdentifiers ->  dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
+            deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
         }
     )(NoteEditorContainer::class.js.unsafeCast<RClass<NoteEditorConnectedProps>>())

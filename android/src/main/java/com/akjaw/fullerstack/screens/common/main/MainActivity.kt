@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.common.mainactivity
+package com.akjaw.fullerstack.screens.common.main
 
 import android.os.Bundle
 import com.akjaw.fullerstack.android.R

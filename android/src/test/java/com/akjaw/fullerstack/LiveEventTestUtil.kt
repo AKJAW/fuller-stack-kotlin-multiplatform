@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.akjaw.fullerstack.screens.common.LiveEvent
 
-fun <T> LiveEvent<T>.testObserve() : () -> Boolean {
+fun <T> LiveEvent<T>.testObserve(): () -> Boolean {
     var wasCalled = false
 
     val owner = LifecycleOwner {

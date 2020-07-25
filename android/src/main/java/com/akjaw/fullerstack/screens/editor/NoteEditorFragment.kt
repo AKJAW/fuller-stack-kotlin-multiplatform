@@ -77,7 +77,6 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
         if (getNote() != null) {
             toolbar.title = getString(R.string.note_editor_toolbar_title_update)
             toolbar.inflateMenu(R.menu.note_editor_update)
-
         } else {
             toolbar.title = getString(R.string.note_editor_toolbar_title_add)
             toolbar.inflateMenu(R.menu.note_editor_add)
@@ -89,7 +88,7 @@ class NoteEditorFragment : BaseFragment(R.layout.layout_note_editor) {
     private fun render(noteEditorState: NoteEditorViewModel.NoteEditorState) {
         titleLayout.error = noteEditorState.titleError ?: ""
 
-        if(noteEditorState.note != null){
+        if (noteEditorState.note != null) {
             titleEditText.setText(noteEditorState.note.title)
             contentEditText.setText(noteEditorState.note.content)
         }

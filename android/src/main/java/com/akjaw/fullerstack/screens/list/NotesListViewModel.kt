@@ -26,7 +26,7 @@ internal class NotesListViewModel(
     val viewState: LiveData<NotesListState> = _viewState
 
     fun initializeNotes() = viewModelScope.launch {
-        if(viewState.value is NotesListState.ShowingList) return@launch
+        if (viewState.value is NotesListState.ShowingList) return@launch
 
         fetchNotes.executeAsync().collect(::handleFetchNotesResult)
     }
@@ -35,7 +35,7 @@ internal class NotesListViewModel(
         when (fetchNotesResult) {
             FetchNotes.Result.Loading -> _viewState.postValue(NotesListState.Loading)
             is FetchNotes.Result.Error -> _viewState.postValue(NotesListState.Error)
-            is FetchNotes.Result.Content -> viewModelScope.launch { //TODO exception handling
+            is FetchNotes.Result.Content -> viewModelScope.launch { // TODO exception handling
                 fetchNotesResult.notesFlow.collect {
                     _viewState.postValue(NotesListState.ShowingList(it))
                 }
@@ -43,7 +43,7 @@ internal class NotesListViewModel(
         }
     }
 
-    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = viewModelScope.launch {//TODO error handling
+    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = viewModelScope.launch { // TODO error handling
         deleteNotes.executeAsync(noteIdentifiers)
     }
 }

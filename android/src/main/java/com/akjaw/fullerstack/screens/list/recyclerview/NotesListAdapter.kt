@@ -50,7 +50,7 @@ class NotesListAdapter(
 
     private fun onNoteSelectionChanged(noteIdentifier: NoteIdentifier) {
         val positionOfNote = notes.indexOfFirst { it.noteIdentifier == noteIdentifier }
-        if(positionOfNote == -1) return
+        if (positionOfNote == -1) return
         notifyItemChanged(positionOfNote)
     }
 
@@ -72,7 +72,7 @@ class NotesListAdapter(
             setBackgroundColor(isSelected)
 
             noteContainer.setOnClickListener {
-                if(selectionTracker.isSelectionModeEnabled()){
+                if (selectionTracker.isSelectionModeEnabled()) {
                     selectionTracker.select(note.noteIdentifier)
                 } else {
                     onItemClicked(note)

@@ -71,7 +71,7 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
                 )
                 styledDiv {
                     css {
-                        display = if(props.isUpdating) Display.block else Display.none
+                        display = if (props.isUpdating) Display.block else Display.none
                     }
                     child(editorMoreButton) {
                         attrs.onDeleteClicked = { props.onDeleteClicked() }

@@ -9,7 +9,7 @@ import repository.NoteRepository
 
 @Suppress("TooGenericExceptionThrown")
 class NoteRepositoryTestFake : NoteRepository {
-    private val noteApi: NoteApi = NetworkApiTestFake() //TODO use this
+    private val noteApi: NoteApi = NetworkApiTestFake() // TODO use this
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
     val notesList: List<Note>
         get() = notesMutableState.value
@@ -17,8 +17,8 @@ class NoteRepositoryTestFake : NoteRepository {
     private var shouldNoteFlowThrow = false
 
     override suspend fun getNotes(): Flow<List<Note>> {
-        return if(shouldNoteFlowThrow){
-            throw RuntimeException() //TODO
+        return if (shouldNoteFlowThrow) {
+            throw RuntimeException() // TODO
         } else {
             notesMutableState
         }
@@ -36,7 +36,7 @@ class NoteRepositoryTestFake : NoteRepository {
 
     override suspend fun updateNote(updatedNote: Note) {
         val newNotes = notesMutableState.value.map { note ->
-            if(note.noteIdentifier == updatedNote.noteIdentifier) {
+            if (note.noteIdentifier == updatedNote.noteIdentifier) {
                 note.copy(title = updatedNote.title, content = updatedNote.content)
             } else {
                 note

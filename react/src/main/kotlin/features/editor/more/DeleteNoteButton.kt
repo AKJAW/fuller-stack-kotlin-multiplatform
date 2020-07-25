@@ -30,5 +30,3 @@ val deleteNoteButton = functionalComponent<DeleteNoteButtonProps> { props ->
         }
     }
 }
-
-

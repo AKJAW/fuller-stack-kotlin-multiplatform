@@ -11,7 +11,7 @@ class NotesCallHelper {
     suspend fun getNoteWithId(call: ApplicationCall): NoteSchema? {
         val noteId = call.parameters["noteId"]?.toIntOrNull() ?: return null
         val note = getNoteSchemaFromBody(call) ?: return null
-        return if(noteId >= 0) {
+        return if (noteId >= 0) {
             note.copy(id = noteId)
         } else {
             null

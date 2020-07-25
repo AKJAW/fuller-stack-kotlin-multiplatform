@@ -29,7 +29,7 @@ internal class NotesSelectionTrackerTest {
     inner class EmptyInitialSelection {
 
         @BeforeEach
-        fun setUp(){
+        fun setUp() {
             SUT = NotesSelectionTracker(
                 listOf(),
                 fragmentManager,
@@ -62,7 +62,6 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selecting notes calls the correct callback`() {
-
             SUT.select(NoteIdentifier(2))
             SUT.select(NoteIdentifier(2))
             SUT.select(NoteIdentifier(2))
@@ -78,7 +77,6 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selecting notes changes the action mode title`() {
-
             SUT.select(NoteIdentifier(1))
             SUT.select(NoteIdentifier(2))
 
@@ -93,7 +91,6 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selecting an initial note starts the action mode`() {
-
             SUT.select(NoteIdentifier(1))
 
             verify(exactly = 1) {
@@ -118,12 +115,12 @@ internal class NotesSelectionTrackerTest {
         @BeforeEach
         fun setUp() {
             SUT = NotesSelectionTracker(
-                    listOf(NoteIdentifier(1), NoteIdentifier(2)),
-                    fragmentManager,
-                    noteIdentifierMapper,
-                    notesListActionMode,
-                    onNoteChanged
-                )
+                listOf(NoteIdentifier(1), NoteIdentifier(2)),
+                fragmentManager,
+                noteIdentifierMapper,
+                notesListActionMode,
+                onNoteChanged
+            )
         }
 
         @Test
@@ -135,11 +132,9 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selected notes are initialized from the constructor`() {
-
             val selectedNotes = SUT.getSelectedIds()
 
             assertEquals(listOf(1, 2), selectedNotes)
         }
-
     }
 }

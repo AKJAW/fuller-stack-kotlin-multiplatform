@@ -23,6 +23,6 @@ class CustomApplication : Application(), DIAware {
 
         Timber.plant(HyperlinkedDebugTree())
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 }

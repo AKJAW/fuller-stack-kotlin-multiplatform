@@ -31,10 +31,14 @@ val editorMoreButton = functionalComponent<EditorMoreButtonProps> { props ->
     val (anchorEl, setAnchorEl) = useState<Node?>(null)
 
     styledDiv {
-        mIconButton("more_vert", size = MIconButtonSize.medium, onClick = { event: Event ->
-            setAnchorEl(event.currentTarget.asDynamic() as? Node)
-            setIsMenuShown(isMenuShown.not())
-        }) {
+        mIconButton(
+            iconName = "more_vert",
+            size = MIconButtonSize.medium,
+            onClick = { event: Event ->
+                setAnchorEl(event.currentTarget.asDynamic() as? Node)
+                setIsMenuShown(isMenuShown.not())
+            }
+        ) {
             css(EditorMoreButtonClasses.button)
         }
         mMenu(isMenuShown, anchorElement = anchorEl, onClose = { _, reason -> setIsMenuShown(false) }) {

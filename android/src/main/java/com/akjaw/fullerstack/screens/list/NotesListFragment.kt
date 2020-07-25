@@ -21,7 +21,6 @@ import model.Note
 import org.kodein.di.direct
 import org.kodein.di.instance
 
-
 class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
     companion object {
@@ -78,7 +77,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             addItemDecoration(SpacingItemDecoration(spacing.toInt()))
         }
 
-        viewModel.viewState.observe(viewLifecycleOwner){
+        viewModel.viewState.observe(viewLifecycleOwner) {
             render(it)
         }
     }

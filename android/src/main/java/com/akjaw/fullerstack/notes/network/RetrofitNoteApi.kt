@@ -33,7 +33,7 @@ class RetrofitNoteApi(
     }
 
     override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
-        noteIdentifiers.forEach { identifier ->//TODO make correct API endpoint
+        noteIdentifiers.forEach { identifier -> // TODO make correct API endpoint
             noteService.deleteNote(identifier.id)
         }
     }

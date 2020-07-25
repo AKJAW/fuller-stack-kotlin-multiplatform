@@ -18,8 +18,8 @@ class AddNoteThunk(private val scope: CoroutineScope, private val note: Note) : 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
             val wasAdded = addNote.executeAsync(note)
-            if(wasAdded.not()) {
-                //TODO
+            if (wasAdded.not()) {
+                // TODO
             }
         }
 

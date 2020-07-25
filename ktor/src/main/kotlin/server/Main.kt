@@ -53,6 +53,6 @@ fun Application.module() {
         header(HttpHeaders.AccessControlAllowHeaders)
         header(HttpHeaders.ContentType)
         header(HttpHeaders.AccessControlAllowOrigin)
-        host("*") //TODO change when react goes to production
+        host("*") // TODO change when react goes to production
     }
 }

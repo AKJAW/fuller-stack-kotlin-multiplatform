@@ -23,7 +23,7 @@ class NoteEditorViewModel(
         val note: ParcelableNote? = null,
         val titleError: String? = null
     )
-    //TODO event for navigation
+    // TODO event for navigation
     private val _viewState = MutableLiveData<NoteEditorState>(NoteEditorState())
     val viewState: LiveData<NoteEditorState> = _viewState
 
@@ -33,8 +33,8 @@ class NoteEditorViewModel(
         _viewState.value = viewState.value?.copy(note = note)
     }
 
-    fun onActionClicked(title: String, content: String){
-        if(noteInputValidator.isTitleValid(title).not()){
+    fun onActionClicked(title: String, content: String) {
+        if (noteInputValidator.isTitleValid(title).not()) {
             _viewState.value = viewState.value?.copy(titleError = "Title is invalid")
             return
         }
@@ -42,7 +42,7 @@ class NoteEditorViewModel(
         val stateNote = viewState.value?.note
         val note = Note(title = title, content = content)
 
-        if(stateNote?.id != null) {
+        if (stateNote?.id != null) {
             updateExistingNote(note.copy(noteIdentifier = NoteIdentifier(stateNote.id)))
         } else {
             addNewNote(note)
@@ -54,7 +54,7 @@ class NoteEditorViewModel(
     private fun addNewNote(newNote: Note) = viewModelScope.launch {
         val wasSuccessful = addNote.executeAsync(newNote)
 
-        if(wasSuccessful.not()){
+        if (wasSuccessful.not()) {
             // TODO the note should be flagged and a refresh icon should be shown
             // TODO move to a separate class which can be use by both platforms
         }
@@ -65,7 +65,7 @@ class NoteEditorViewModel(
 
         val wasSuccessful = updateNote.executeAsync(updatedNote)
 
-        if(wasSuccessful.not()){
+        if (wasSuccessful.not()) {
             // TODO the note should be flagged and a refresh icon should be shown
             // TODO move to a separate class which can be use by both platforms
         }

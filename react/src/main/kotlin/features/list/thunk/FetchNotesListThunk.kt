@@ -34,7 +34,7 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
     }
 
     private fun handleFetchNotesResult(dispatch: (RAction) -> WrapperAction, fetchNotesResult: FetchNotes.Result) {
-        when(fetchNotesResult) {
+        when (fetchNotesResult) {
             FetchNotes.Result.Loading -> dispatch(NotesListSlice.SetIsLoading(true))
             is FetchNotes.Result.Error -> TODO()
             is FetchNotes.Result.Content -> {
@@ -48,7 +48,7 @@ class FetchNotesListThunk(private val scope: CoroutineScope) : RThunk {
         dispatch: (RAction) -> WrapperAction,
         notesFlow: Flow<List<Note>>
     ) {
-        notesFlowJob = scope.launch { //TODO handle error
+        notesFlowJob = scope.launch { // TODO handle error
             notesFlow.collect { notes ->
                 val action = NotesListSlice.SetNotesList(notes.toTypedArray())
                 dispatch(action)

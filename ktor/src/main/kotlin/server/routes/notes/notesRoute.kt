@@ -47,7 +47,7 @@ fun Routing.notesRoute() {
 
         val wasUpdated = notesService.updateNote(note)
 
-        if(wasUpdated){
+        if (wasUpdated) {
             call.respond(HttpStatusCode.OK)
         } else {
             call.respond(HttpStatusCode.BadRequest, "Note with provided id ${note.id} not found")
@@ -66,7 +66,7 @@ fun Routing.notesRoute() {
         val identifier = NoteIdentifier(noteId)
         val wasDeleted = notesService.deleteNote(identifier)
 
-        if(wasDeleted){
+        if (wasDeleted) {
             call.respond(HttpStatusCode.OK)
         } else {
             call.respond(HttpStatusCode.BadRequest, "Note with provided id $noteId not found")
@@ -86,7 +86,7 @@ fun Routing.notesRoute() {
             notesService.deleteNote(identifier)
         }.all { it }
 
-        if(wereAllNotesDeleted){
+        if (wereAllNotesDeleted) {
             call.respond(HttpStatusCode.OK)
         } else {
             val ids = noteIdentifiers.map { it.id }

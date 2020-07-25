@@ -16,7 +16,8 @@ interface NoteService {
     @GET("notes")
     suspend fun getNotes(): List<NoteSchema>
 
-    @Headers("Content-Type: application/json") //TODO Is this needed
+    @Headers("Content-Type: application/json")
+    // TODO Is this needed
     @POST("notes")
     suspend fun addNote(@Body addNoteRequest: NoteRequest)
 
@@ -33,7 +34,7 @@ interface NoteService {
     )
 
     @DELETE("notes")
-    suspend fun deleteNotes( //TODO use
+    suspend fun deleteNotes( // TODO use
         @Body deleteNotesRequest: DeleteNotesRequest
     )
 }

@@ -5,12 +5,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 
-//TODO test memory leaks
+// TODO test memory leaks
 class LiveEvent<T> {
     private val observers = mutableMapOf<LifecycleOwner, (T) -> Unit>()
 
     fun observe(owner: LifecycleOwner, onChanged: (T) -> Unit) {
-        if(owner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
+        if (owner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
             return
         }
         LiveEventLifecycleObserver(owner)
@@ -20,7 +20,7 @@ class LiveEvent<T> {
     fun postValue(data: T) {
         observers.keys.forEach { owner ->
             val lifecycle = owner.lifecycle
-            if(lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 observers[owner]?.invoke(data)
             }
         }
@@ -38,4 +38,3 @@ class LiveEvent<T> {
         }
     }
 }
-

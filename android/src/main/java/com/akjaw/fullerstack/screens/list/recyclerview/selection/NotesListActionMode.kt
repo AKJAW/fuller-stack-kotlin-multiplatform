@@ -26,7 +26,7 @@ class NotesListActionMode(
         actionMode = mode
         val inflater = mode?.menuInflater
         inflater?.inflate(R.menu.note_list_selection, menu)
-        //TODO title
+        // TODO title
         return true
     }
 
@@ -38,14 +38,14 @@ class NotesListActionMode(
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        if(item?.itemId == R.id.delete_note) {
+        if (item?.itemId == R.id.delete_note) {
             onDeleteClicked()
         }
         return true
     }
 
     fun startActionMode() {
-        if(actionMode == null) {
+        if (actionMode == null) {
             fragmentActivity.startActionMode(this)
         }
     }

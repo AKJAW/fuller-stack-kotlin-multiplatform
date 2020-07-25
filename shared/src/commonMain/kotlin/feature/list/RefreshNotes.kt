@@ -11,7 +11,7 @@ class RefreshNotes(
     private val noteRepository: NoteRepository
 ) {
     @Suppress("TooGenericExceptionCaught")
-    suspend fun executeAsync(): Boolean = withContext(coroutineDispatcher) {//TODO failure?
+    suspend fun executeAsync(): Boolean = withContext(coroutineDispatcher) { // TODO failure?
 
         val result = safeApiCall { noteRepository.refreshNotes() }
 

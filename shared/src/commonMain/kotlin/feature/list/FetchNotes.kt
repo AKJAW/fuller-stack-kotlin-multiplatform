@@ -15,18 +15,18 @@ class FetchNotes(
     private val noteRepository: NoteRepository
 ) {
     sealed class Result {
-        object Loading: Result()
+        object Loading : Result()
         data class Error(val failure: Failure) : Result()
         data class Content(val notesFlow: Flow<List<Note>>) : Result()
     }
 
-    suspend fun executeAsync(): Flow<Result> = withContext(coroutineDispatcher){
+    suspend fun executeAsync(): Flow<Result> = withContext(coroutineDispatcher) {
         flow {
             emit(Result.Loading)
 
             val networkResponse = safeApiCall { noteRepository.getNotes() }
 
-            val result = when(networkResponse) {
+            val result = when (networkResponse) {
                 is NetworkResponse.Success -> Result.Content(networkResponse.result)
                 is NetworkResponse.ApiError -> Result.Error(Failure.ApiError)
                 else -> Result.Error(Failure.NetworkError)

@@ -8,7 +8,7 @@ import model.NoteIdentifierMapper
 
 class NotesSelectionTracker(
     initialSelectedNotes: List<NoteIdentifier>,
-    private val fragmentManager: FragmentManager, //TODO replace with an abstraction
+    private val fragmentManager: FragmentManager, // TODO replace with an abstraction
     private val noteIdentifierMapper: NoteIdentifierMapper,
     private val notesListActionMode: NotesListActionMode,
     private val onNoteChanged: (NoteIdentifier) -> Unit
@@ -19,7 +19,7 @@ class NotesSelectionTracker(
             onDeleteClicked = ::openDeleteDialog,
             onActionModeDestroyed = ::clearSelection
         )
-        if(initialSelectedNotes.isNotEmpty()) {
+        if (initialSelectedNotes.isNotEmpty()) {
             notesListActionMode.startActionMode()
         }
     }
@@ -27,7 +27,7 @@ class NotesSelectionTracker(
     val selectedNoteIdentifiers: MutableList<NoteIdentifier> = initialSelectedNotes.toMutableList()
 
     fun select(noteIdentifier: NoteIdentifier) {
-        if(selectedNoteIdentifiers.contains(noteIdentifier)){
+        if (selectedNoteIdentifiers.contains(noteIdentifier)) {
             selectedNoteIdentifiers.remove(noteIdentifier)
         } else {
             selectedNoteIdentifiers.add(noteIdentifier)

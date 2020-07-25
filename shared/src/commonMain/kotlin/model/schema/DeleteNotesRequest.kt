@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeleteNotesRequest(
-    val noteIds: List<Int>//TODO make a data class
+    val noteIds: List<Int> // TODO make a data class
 )
