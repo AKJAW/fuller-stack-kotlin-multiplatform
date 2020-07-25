@@ -42,6 +42,7 @@ object Versions {
     const val OKHTTP = "4.8.0"
     const val FRAGMENT_KTX = "1.2.5"
     const val LEAK_CANARY = "2.4"
+    const val TIMBER = "4.7.1"
 
     //android test
     const val ANDROIDX_TEST = "1.1.0"
@@ -136,6 +137,7 @@ object AndroidLibs {
     const val SIMPLE_STACK_EXTENSIONS = "com.github.Zhuinden:simple-stack-extensions:${Versions.SIMPLE_STACK_EXTENSIONS}"
 
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Versions.LEAK_CANARY}"
+    const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 }
 
 object AndroidTestingLibs {

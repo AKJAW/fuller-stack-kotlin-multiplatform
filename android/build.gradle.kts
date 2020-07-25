@@ -44,7 +44,9 @@ android {
 dependencies {
     implementation(project(":shared"))
 
+    // debugging
     debugImplementation(AndroidLibs.LEAK_CANARY)
+    implementation(AndroidLibs.TIMBER)
 
     // kotlin jdk
     implementation(AndroidLibs.KOTLIN_JDK)
