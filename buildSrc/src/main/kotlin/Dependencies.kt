@@ -41,6 +41,7 @@ object Versions {
     const val RETROFIT_KOTLINX_SERIALIZATION = "0.5.0"
     const val OKHTTP = "4.8.0"
     const val FRAGMENT_KTX = "1.2.5"
+    const val LEAK_CANARY = "2.4"
 
     //android test
     const val ANDROIDX_TEST = "1.1.0"
@@ -133,6 +134,8 @@ object AndroidLibs {
 
     const val SIMPLE_STACK = "com.github.Zhuinden:simple-stack:${Versions.SIMPLE_STACK}"
     const val SIMPLE_STACK_EXTENSIONS = "com.github.Zhuinden:simple-stack-extensions:${Versions.SIMPLE_STACK_EXTENSIONS}"
+
+    const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Versions.LEAK_CANARY}"
 }
 
 object AndroidTestingLibs {
