@@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     application
     kotlin("jvm")
-    kotlin("plugin.serialization")
     id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 

@@ -13,7 +13,7 @@ data class ParcelableNote(
 
 fun Note.toParcelable(): ParcelableNote { // TODO move to mapper
     return ParcelableNote(
-        id = this.id,
+        id = this.noteIdentifier.id,
         title = this.title,
         content = this.content
     )

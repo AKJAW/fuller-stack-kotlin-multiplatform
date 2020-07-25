@@ -1,17 +1,23 @@
 package feature.editor
 
-import base.usecase.Either
-import base.usecase.Failure
-import base.usecase.UseCaseAsync
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import model.Note
+import network.NetworkResponse
+import network.safeApiCall
 import repository.NoteRepository
 
 class UpdateNote(
+    private val coroutineDispatcher: CoroutineDispatcher,
     private val noteRepository: NoteRepository
-) : UseCaseAsync<Note, UseCaseAsync.None>() {
+) {
 
-    override suspend fun run(params: Note): Either<Failure, None> {
-        noteRepository.updateNote(params)
-        return Either.Right(None())
+    suspend fun executeAsync(note: Note): Boolean = withContext(coroutineDispatcher) {
+        val result = safeApiCall { noteRepository.updateNote(note) }
+
+        when (result) {
+            is NetworkResponse.Success -> true
+            else -> false
+        }
     }
 }

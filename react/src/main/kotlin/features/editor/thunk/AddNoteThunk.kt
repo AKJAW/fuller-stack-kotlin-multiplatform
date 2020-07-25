@@ -1,8 +1,5 @@
 package features.editor.thunk
 
-import base.usecase.Either
-import base.usecase.Failure
-import base.usecase.UseCaseAsync
 import composition.KodeinEntry
 import feature.editor.AddNote
 import kotlinx.coroutines.CoroutineScope
@@ -20,18 +17,12 @@ class AddNoteThunk(private val scope: CoroutineScope, private val note: Note) : 
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
-            addNote.executeAsync(
-                note
-            ) { result -> handleResult(dispatch, result) }
+            val wasAdded = addNote.executeAsync(note)
+            if (wasAdded.not()) {
+                // TODO
+            }
         }
 
         return nullAction
-    }
-
-    private fun handleResult(dispatch: (RAction) -> WrapperAction, result: Either<Failure, UseCaseAsync.None>) {
-        when (result) {
-            is Either.Left -> TODO()
-            is Either.Right -> { /* empty */ }
-        }
     }
 }

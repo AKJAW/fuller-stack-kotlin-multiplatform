@@ -1,40 +1,43 @@
 package com.akjaw.fullerstack.screens.list
 
-import base.usecase.Either
-import base.usecase.Failure
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
+import feature.list.DeleteNotes
 import feature.list.FetchNotes
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import model.Note
+import model.NoteIdentifier
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import tests.NoteRepositoryTestFake
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class NotesListViewModelTest {
 
     companion object {
         private val NOTES = listOf(
-            Note(id = 1, title = "first", content = "Hey"),
-            Note(id = 2, title = "second", content = "Hi")
+            Note(noteIdentifier = NoteIdentifier(1), title = "first", content = "Hey"),
+            Note(noteIdentifier = NoteIdentifier(2), title = "second", content = "Hi")
         )
     }
 
-    private val fetchNotes: FetchNotes = mockk()
-    private val notesListStateFlow = MutableStateFlow(NOTES)
+    private lateinit var repositoryTestFake: NoteRepositoryTestFake
+    private lateinit var fetchNotes: FetchNotes
+    private lateinit var deleteNotes: DeleteNotes
     private lateinit var SUT: NotesListViewModel
 
     @BeforeEach
     fun setUp() {
-        SUT = NotesListViewModel(fetchNotes)
+        repositoryTestFake = NoteRepositoryTestFake()
+        repositoryTestFake.setNotes(NOTES)
+        fetchNotes = FetchNotes(TestCoroutineDispatcher(), repositoryTestFake)
+        deleteNotes = DeleteNotes(TestCoroutineDispatcher(), repositoryTestFake)
+        SUT = NotesListViewModel(fetchNotes, deleteNotes)
     }
 
     @Test
@@ -42,7 +45,7 @@ internal class NotesListViewModelTest {
         Dispatchers.setMain(Dispatchers.Default)
         fetchNotesSuccess()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         assertEquals(NotesListState.Loading, viewState)
@@ -52,7 +55,7 @@ internal class NotesListViewModelTest {
     fun `successful fetch shows the notes list`() {
         fetchNotesSuccess()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         val expectedViewState = NotesListState.ShowingList(NOTES)
@@ -63,14 +66,14 @@ internal class NotesListViewModelTest {
     fun `notes list changes are shown in the view`() {
         fetchNotesSuccess()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         assertEquals(
             NotesListState.ShowingList(NOTES),
             SUT.viewState.getOrAwaitValue()
         )
 
-        notesListStateFlow.value = listOf()
+        repositoryTestFake.setNotes(listOf())
         assertEquals(
             NotesListState.ShowingList(listOf()),
             SUT.viewState.getOrAwaitValue()
@@ -81,21 +84,17 @@ internal class NotesListViewModelTest {
     fun `fetch error is shown in the view`() {
         fetchNotesFailure()
 
-        SUT.listenToNotesListChanges()
+        SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
         assertEquals(NotesListState.Error, viewState)
     }
 
     private fun fetchNotesSuccess() {
-        coEvery { fetchNotes.executeAsync(any(), any()) } answers {
-            secondArg<(Either<Failure, Flow<List<Note>>>) -> Unit>().invoke(Either.Right(notesListStateFlow))
-        }
+        repositoryTestFake.setNotes(NOTES)
     }
 
     private fun fetchNotesFailure() {
-        coEvery { fetchNotes.executeAsync(any(), any()) } answers {
-            secondArg<(Either<Failure, Flow<List<Note>>>) -> Unit>().invoke(Either.Left(Failure.ServerError))
-        }
+        repositoryTestFake.setNotesFlowError()
     }
 }

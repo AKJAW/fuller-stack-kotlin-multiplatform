@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="AppTheme.NoteItem">
         <attr name="noteTitleTextSize" format="dimension"/>
         <attr name="noteDateTextSize" format="dimension"/>
         <attr name="noteColorBadgeWidth" format="dimension"/>
     </declare-styleable>
+
 </resources>

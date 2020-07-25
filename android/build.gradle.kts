@@ -44,6 +44,10 @@ android {
 dependencies {
     implementation(project(":shared"))
 
+    // debugging
+    debugImplementation(AndroidLibs.LEAK_CANARY)
+    implementation(AndroidLibs.TIMBER)
+
     // kotlin jdk
     implementation(AndroidLibs.KOTLIN_JDK)
 
@@ -53,6 +57,7 @@ dependencies {
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
     implementation(AndroidLibs.LIFECYCLE_VIEWMODEL)
     implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
+    implementation(AndroidLibs.FRAGMENT_KTX)
 
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
@@ -63,6 +68,11 @@ dependencies {
 
     // network
     implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(AndroidLibs.OKHTTP)
+    implementation(AndroidLibs.OKHTTP_LOGGING_INTERCEPTOR)
+    implementation(AndroidLibs.RETROFIT)
+    implementation(AndroidLibs.RETROFIT_KOTLINX_SERIALIZATION)
+    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
 
     // date
     implementation(SharedLibs.KLOCK)

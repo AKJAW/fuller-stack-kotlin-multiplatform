@@ -1,14 +1,16 @@
 package features.editor
 
 import features.editor.thunk.AddNoteThunk
+import features.editor.thunk.DeleteNotesThunk
 import features.editor.thunk.UpdateNoteThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import model.Note
+import model.NoteIdentifier
 import redux.RAction
 import store.RThunk
 
-object NoteEditorSlice { // TODO make an interface?
+object NoteEditorSlice {
     data class State(
         val selectedNote: Note? = null,
         val isUpdating: Boolean = false
@@ -20,6 +22,8 @@ object NoteEditorSlice { // TODO make an interface?
 
     fun updateNote(note: Note): RThunk = UpdateNoteThunk(noteEditorScope, note)
 
+    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>): RThunk = DeleteNotesThunk(noteEditorScope, noteIdentifiers)
+
     data class OpenEditor(val note: Note?) : RAction
 
     class CloseEditor : RAction
@@ -27,7 +31,7 @@ object NoteEditorSlice { // TODO make an interface?
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is OpenEditor -> {
-                val note = action.note ?: Note(id = -1)
+                val note = action.note ?: Note(noteIdentifier = NoteIdentifier(-1))
                 state.copy(selectedNote = note, isUpdating = action.note != null)
             }
             is CloseEditor -> {

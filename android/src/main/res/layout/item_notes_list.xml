@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools"
-        android:theme="@style/AppTheme.NotesList"
+        android:theme="@style/AppTheme.NotesListItem"
 >
     <androidx.cardview.widget.CardView
             android:id="@+id/note_container"

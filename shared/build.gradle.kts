@@ -1,6 +1,5 @@
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization")
 }
 
 kotlin {
@@ -50,6 +49,7 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation(AndroidLibs.COROUTINES_ANDROID)
                 implementation(JVMLibs.SERIALIZATION_RUNTIME_JVM)
+                implementation(AndroidLibs.RETROFIT)
             }
         }
         val androidTest by getting {

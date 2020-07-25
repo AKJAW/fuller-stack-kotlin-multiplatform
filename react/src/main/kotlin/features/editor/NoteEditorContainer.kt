@@ -3,6 +3,7 @@ package features.editor
 import composition.KodeinEntry
 import helpers.validation.NoteInputValidator
 import model.Note
+import model.NoteIdentifier
 import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
@@ -27,6 +28,7 @@ interface NoteEditorConnectedProps : RProps {
     var isUpdating: Boolean
     var addNote: (note: Note) -> Unit
     var updateNote: (note: Note) -> Unit
+    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -38,6 +40,7 @@ private interface StateProps : RProps {
 private interface DispatchProps : RProps {
     var addNote: (note: Note) -> Unit
     var updateNote: (note: Note) -> Unit
+    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -48,16 +51,18 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         isTitleValid = true
     }
 
-    private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance<NoteInputValidator>()
+    private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance()
 
     override fun RBuilder.render() {
         child(noteEditor) {
             attrs.key = props.selectedNote.toString()
             attrs.selectedNote = props.selectedNote
+            attrs.isUpdating = props.isUpdating
             attrs.isTitleValid = state.isTitleValid
             attrs.positiveActionCaption = getPositiveActionCaption()
             attrs.onPositiveActionClicked = ::onPositiveActionClicked
             attrs.closeEditor = props.closeEditor
+            attrs.onDeleteClicked = ::onDeleteClicked
         }
     }
 
@@ -80,10 +85,18 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         console.log(props.isUpdating)
         console.log(selectedNote)
         if (props.isUpdating && selectedNote != null) {
-            val noteWithId = newNote.copy(id = selectedNote.id)
+            val noteWithId = newNote.copy(noteIdentifier = selectedNote.noteIdentifier)
             props.updateNote(noteWithId)
         } else {
             props.addNote(newNote)
+        }
+    }
+
+    private fun onDeleteClicked() {
+        props.closeEditor()
+        val noteIdentifier = props.selectedNote?.noteIdentifier
+        if (noteIdentifier != null) {
+            props.deleteNotes(listOf(noteIdentifier))
         }
     }
 }
@@ -98,5 +111,6 @@ val noteEditorContainer: RClass<RProps> =
             addNote = { note -> dispatch(NoteEditorSlice.addNote(note)) }
             updateNote = { note -> dispatch(NoteEditorSlice.updateNote(note)) }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
+            deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
         }
     )(NoteEditorContainer::class.js.unsafeCast<RClass<NoteEditorConnectedProps>>())

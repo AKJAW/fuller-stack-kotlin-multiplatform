@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="colorPrimary">#979A9C</color>
+    <color name="colorPrimaryDark">#101b22</color>
+    <color name="colorSecondary">#F8BBD0</color>
+    <color name="selectedNoteBackground">#919191</color>
 </resources>
