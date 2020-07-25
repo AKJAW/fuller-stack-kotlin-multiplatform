@@ -6,7 +6,6 @@ import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
-import io.ktor.client.request.url
 import model.Note
 import model.NoteIdentifier
 import model.schema.NoteRequest
@@ -26,8 +25,7 @@ class KtorClientNoteApi(
     }
 
     override suspend fun addNote(newNote: Note) {
-        client.post<Unit> {
-            url(apiUrl)
+        client.post<Unit>(apiUrl) {
             val request = NoteRequest(
                 title = newNote.title,
                 content = newNote.content
@@ -37,8 +35,7 @@ class KtorClientNoteApi(
     }
 
     override suspend fun updateNote(updatedNote: Note) {
-        client.patch<Unit> {
-            url("$apiUrl/${updatedNote.noteIdentifier.id}")
+        client.patch<Unit>("$apiUrl/${updatedNote.noteIdentifier.id}") {
             val request = NoteRequest(
                 title = updatedNote.title,
                 content = updatedNote.content
@@ -48,8 +45,13 @@ class KtorClientNoteApi(
     }
 
     override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
-        noteIdentifiers.forEach { identifier ->
-            client.delete("$apiUrl/${identifier.id}")
+        val ids = noteIdentifiers.map { it.id }
+        if (ids.count() == 1) {
+            client.delete<Unit>("$apiUrl/${ids.first()}")
+        } else {
+            client.delete<Unit>(apiUrl) {
+                body = json.write(ids)
+            }
         }
     }
 }

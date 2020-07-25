@@ -1,11 +1,11 @@
 package com.akjaw.fullerstack.notes.network
 
-import model.schema.DeleteNotesRequest
 import model.schema.NoteRequest
 import model.schema.NoteSchema
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -33,8 +33,8 @@ interface NoteService {
         @Path("id") id: Int
     )
 
-    @DELETE("notes")
-    suspend fun deleteNotes( // TODO use
-        @Body deleteNotesRequest: DeleteNotesRequest
+    @HTTP(method = "DELETE", path = "notes", hasBody = true)
+    suspend fun deleteNotes(
+        @Body noteIds: List<Int>
     )
 }

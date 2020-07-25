@@ -33,8 +33,11 @@ class RetrofitNoteApi(
     }
 
     override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
-        noteIdentifiers.forEach { identifier -> // TODO make correct API endpoint
-            noteService.deleteNote(identifier.id)
+        val ids = noteIdentifiers.map { it.id }
+        if (ids.count() == 1) {
+            noteService.deleteNote(ids.first())
+        } else {
+            noteService.deleteNotes(ids)
         }
     }
 }
