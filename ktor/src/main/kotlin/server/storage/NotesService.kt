@@ -25,7 +25,8 @@ class NotesService(
                     id = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
-                    creationDateTimestamp = row[NotesTable.creationDateTimestamp]
+                    lastModificationTimestamp = row[NotesTable.lastModificationDateTimestamp],
+                    creationTimestamp = row[NotesTable.creationDateTimestamp]
                 )
             }
     }
@@ -34,6 +35,7 @@ class NotesService(
         val id = NotesTable.insertAndGetId {
             it[title] = newNote.title
             it[content] = newNote.content
+            it[lastModificationDateTimestamp] = DateTime.nowUnixLong()
             it[creationDateTimestamp] = DateTime.nowUnixLong()
         }
         apiLogger.log("NoteService addNote", "new id: $id")
@@ -43,6 +45,7 @@ class NotesService(
         val updatedAmount = NotesTable.update({ NotesTable.id eq updatedNote.id }) {
             it[title] = updatedNote.title
             it[content] = updatedNote.content
+            it[lastModificationDateTimestamp] = DateTime.nowUnixLong()
         }
         apiLogger.log("NoteService updateNote", "updatedAmount: $updatedAmount")
         return@queryDatabase updatedAmount > 0

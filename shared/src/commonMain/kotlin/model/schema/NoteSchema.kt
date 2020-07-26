@@ -7,5 +7,6 @@ data class NoteSchema(
     val id: Int = -1,
     val title: String = "",
     val content: String = "",
-    val creationDateTimestamp: Long = 0
+    val lastModificationTimestamp: Long = 0,
+    val creationTimestamp: Long = 0
 )

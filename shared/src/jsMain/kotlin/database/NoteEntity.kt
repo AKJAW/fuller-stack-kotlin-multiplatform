@@ -1,7 +1,7 @@
 package database
 
 actual data class NoteEntity(
-    val id: Int,
+    val id: Int = -1,
     val noteId: Int,
     val title: String,
     val content: String,

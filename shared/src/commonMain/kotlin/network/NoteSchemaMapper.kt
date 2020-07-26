@@ -14,6 +14,7 @@ class NoteSchemaMapper {
             noteIdentifier = NoteIdentifier(note.id),
             title = note.title,
             content = note.content,
-            creationDate = DateTime(note.creationDateTimestamp)
+            lastModificationDate = DateTime(note.lastModificationTimestamp),
+            creationDate = DateTime(note.creationTimestamp)
         )
 }
