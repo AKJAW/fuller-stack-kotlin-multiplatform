@@ -4,18 +4,35 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import com.akjaw.fullerstack.helpers.logger.log
 import database.NoteDao
 import database.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RoomNoteDao : NoteDao {
+abstract class RoomNoteDao : NoteDao {
 
-    @Query("SELECT * FROM notes")
-    override fun getAllNotes(): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes ORDER BY creationTimestamp DESC")
+    abstract override fun getAllNotes(): Flow<List<NoteEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    override suspend fun insertNote(note: NoteEntity): Long //TODO When return is -1 then show a toast
+    @Transaction
+    override suspend fun addNote(note: NoteEntity): Int {
+        val lastPrimaryId = getLastPrimaryId() ?: -1
+        val noteId = lastPrimaryId + 1
+        noteId.log("addNote")
+        val noteWithCorrectId = note.copy(noteId = noteId)
+        noteWithCorrectId.log("addNote")
+        insertNote(noteWithCorrectId)
+
+        return noteId
+    }
+
+    @Query("SELECT id FROM notes ORDER BY id DESC LIMIT 1")
+    abstract suspend fun getLastPrimaryId(): Int?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertNote(note: NoteEntity): Long
 
     @Query(
         """
@@ -25,10 +42,8 @@ interface RoomNoteDao : NoteDao {
         lastModificationTimestamp = :lastModificationTimestamp
         WHERE noteId = :noteId
         """
-    )
-
-    //TODO maybe make it a private method which is called by the contract that takes in the entity
-    override suspend fun updateNote(
+    )//TODO maybe make it a private method which is called by the contract that takes in the entity
+    abstract override suspend fun updateNote(
         noteId: Int,
         title: String,
         content: String,
@@ -36,5 +51,5 @@ interface RoomNoteDao : NoteDao {
     )
 
     @Query("DELETE FROM notes WHERE noteId = :noteId")
-    override suspend fun deleteNote(noteId: Int)
+    abstract override suspend fun deleteNote(noteId: Int)
 }

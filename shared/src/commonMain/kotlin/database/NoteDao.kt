@@ -6,7 +6,7 @@ interface NoteDao {
 
     fun getAllNotes(): Flow<List<NoteEntity>>
 
-    suspend fun insertNote(note: NoteEntity): Long
+    suspend fun addNote(note: NoteEntity): Int
 
     suspend fun updateNote(
         noteId: Int,
