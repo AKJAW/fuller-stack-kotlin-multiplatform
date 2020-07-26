@@ -1,6 +1,3 @@
-import AndroidLibs.ROOM_COMPILER
-import AndroidLibs.ROOM_KTX
-import AndroidLibs.ROOM_RUNTIME
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -78,9 +75,9 @@ dependencies {
     implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
 
     // persistance
-    implementation(ROOM_RUNTIME)
-    kapt(ROOM_COMPILER)
-    implementation(ROOM_KTX)
+    implementation(AndroidLibs.ROOM_RUNTIME)
+    kapt(AndroidLibs.ROOM_COMPILER)
+    implementation(AndroidLibs.ROOM_KTX)
 
     // date
     implementation(SharedLibs.KLOCK)

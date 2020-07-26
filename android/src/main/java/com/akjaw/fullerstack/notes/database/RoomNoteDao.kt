@@ -4,16 +4,18 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import database.NoteDao
+import database.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface NoteDao {
+interface RoomNoteDao : NoteDao {
 
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): Flow<List<NoteEntity>>
+    override fun getAllNotes(): Flow<List<NoteEntity>>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertNote(note: NoteEntity): Long //TODO When return is -1 then show a toast
+    override suspend fun insertNote(note: NoteEntity): Long //TODO When return is -1 then show a toast
 
     @Query(
         """
@@ -24,7 +26,9 @@ interface NoteDao {
         WHERE noteId = :noteId
         """
     )
-    suspend fun updateNote(
+
+    //TODO maybe make it a private method which is called by the contract that takes in the entity
+    override suspend fun updateNote(
         noteId: Int,
         title: String,
         content: String,
@@ -32,5 +36,5 @@ interface NoteDao {
     )
 
     @Query("DELETE FROM notes WHERE noteId = :noteId")
-    suspend fun deleteNote(noteId: Int)
+    override suspend fun deleteNote(noteId: Int)
 }
