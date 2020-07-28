@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NoteSchema(
-    val id: Int = -1,
+    val apiId: Int = -1, //TODO rename?
     val title: String = "",
     val content: String = "",
     val lastModificationTimestamp: Long = 0,

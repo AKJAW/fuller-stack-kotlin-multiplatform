@@ -15,5 +15,12 @@ interface NoteDao {
         lastModificationTimestamp: Long
     )
 
+    suspend fun updateId(
+        localId: Int,
+        apiId: Int
+    )
+
+    suspend fun updateSyncFailed(localId: Int, hasSyncFailed: Boolean)
+
     suspend fun deleteNote(noteId: Int)
 }

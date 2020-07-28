@@ -12,7 +12,7 @@ class NotesCallHelper {
         val noteId = call.parameters["noteId"]?.toIntOrNull() ?: return null
         val note = getNoteSchemaFromBody(call) ?: return null
         return if (noteId >= 0) {
-            note.copy(id = noteId)
+            note.copy(apiId = noteId)
         } else {
             null
         }

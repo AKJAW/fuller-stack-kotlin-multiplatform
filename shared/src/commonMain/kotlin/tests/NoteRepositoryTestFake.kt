@@ -9,7 +9,7 @@ import repository.NoteRepository
 
 @Suppress("TooGenericExceptionThrown")
 class NoteRepositoryTestFake : NoteRepository {
-    private val noteApi: NoteApi = NetworkApiTestFake() // TODO use this
+    private val noteApi: NoteApi = NoteApiTestFake() // TODO use this
     private val notesMutableState: MutableStateFlow<List<Note>> = MutableStateFlow(listOf())
     val notesList: List<Note>
         get() = notesMutableState.value

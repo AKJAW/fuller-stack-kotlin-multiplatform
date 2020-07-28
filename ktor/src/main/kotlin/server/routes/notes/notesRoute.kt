@@ -50,7 +50,7 @@ fun Routing.notesRoute() {
         if (wasUpdated) {
             call.respond(HttpStatusCode.OK)
         } else {
-            call.respond(HttpStatusCode.BadRequest, "Note with provided id ${note.id} not found")
+            call.respond(HttpStatusCode.BadRequest, "Note with provided id ${note.apiId} not found")
         }
     }
 

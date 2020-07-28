@@ -1,10 +1,11 @@
 package database
 
 actual data class NoteEntity(
-    val id: Int = -1,
-    val noteId: Int,
-    val title: String,
-    val content: String,
-    val lastModificationTimestamp: Long,
-    val creationTimestamp: Long
+    actual val id: Int = -1,
+    actual val noteId: Int,
+    actual val title: String,
+    actual val content: String,
+    actual val lastModificationTimestamp: Long,
+    actual val creationTimestamp: Long,
+    actual val hasSyncFailed: Boolean = false
 )

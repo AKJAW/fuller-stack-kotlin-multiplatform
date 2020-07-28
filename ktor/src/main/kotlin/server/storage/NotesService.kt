@@ -22,7 +22,7 @@ class NotesService(
             .orderBy(NotesTable.creationDateTimestamp to SortOrder.DESC)
             .map { row ->
                 NoteSchema(
-                    id = row[NotesTable.id].value,
+                    apiId = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
                     lastModificationTimestamp = row[NotesTable.lastModificationDateTimestamp],
@@ -42,7 +42,7 @@ class NotesService(
     }
 
     suspend fun updateNote(updatedNote: NoteSchema) = queryDatabase {
-        val updatedAmount = NotesTable.update({ NotesTable.id eq updatedNote.id }) {
+        val updatedAmount = NotesTable.update({ NotesTable.id eq updatedNote.apiId }) {
             it[title] = updatedNote.title
             it[content] = updatedNote.content
             it[lastModificationDateTimestamp] = DateTime.nowUnixLong()
