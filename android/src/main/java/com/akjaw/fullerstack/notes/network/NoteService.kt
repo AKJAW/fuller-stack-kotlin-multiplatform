@@ -19,7 +19,7 @@ interface NoteService {
     @Headers("Content-Type: application/json")
     // TODO Is this needed
     @POST("notes")
-    suspend fun addNote(@Body addNoteRequest: NoteRequest)
+    suspend fun addNote(@Body addNoteRequest: NoteRequest): Int
 
     @Headers("Content-Type: application/json")
     @PATCH("notes/{id}")

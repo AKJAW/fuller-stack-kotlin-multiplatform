@@ -6,15 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akjaw.fullerstack.screens.common.LiveEvent
 import com.akjaw.fullerstack.screens.common.ParcelableNote
-import feature.editor.AddNote
+import feature.NewAddNote
 import feature.editor.UpdateNote
 import helpers.validation.NoteInputValidator
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.Note
 import model.NoteIdentifier
 
 class NoteEditorViewModel(
-    private val addNote: AddNote,
+    private val addNote: NewAddNote,
     private val updateNote: UpdateNote,
     private val noteInputValidator: NoteInputValidator
 ) : ViewModel() {
@@ -51,7 +52,7 @@ class NoteEditorViewModel(
         navigationLiveEvent.postValue(Unit)
     }
 
-    private fun addNewNote(newNote: Note) = viewModelScope.launch {
+    private fun addNewNote(newNote: Note) = GlobalScope.launch {
         val wasSuccessful = addNote.executeAsync(newNote)
 
         if (wasSuccessful.not()) {

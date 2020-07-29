@@ -3,6 +3,7 @@ package com.akjaw.fullerstack.notes.network
 import model.Note
 import model.NoteIdentifier
 import model.schema.NoteRequest
+import model.schema.NoteSchema
 import network.NoteApi
 import network.NoteSchemaMapper
 
@@ -16,12 +17,12 @@ class RetrofitNoteApi(
         return noteSchemaMapper.toNotes(schemas)
     }
 
-    override suspend fun addNote(newNote: Note) {
+    override suspend fun addNote(newNote: NoteSchema): Int {
         val noteRequest = NoteRequest(
             title = newNote.title,
             content = newNote.content
         )
-        noteService.addNote(noteRequest)
+        return noteService.addNote(noteRequest)
     }
 
     override suspend fun updateNote(updatedNote: Note) {

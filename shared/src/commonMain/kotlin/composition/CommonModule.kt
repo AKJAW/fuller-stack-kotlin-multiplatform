@@ -1,6 +1,8 @@
 package composition
 
 import base.CommonDispatchers
+import database.NoteEntityMapper
+import feature.NewAddNote
 import feature.editor.AddNote
 import feature.editor.UpdateNote
 import feature.list.DeleteNotes
@@ -24,12 +26,14 @@ import repository.NoteRepositoryImpl
 val common = DI.Module("Common") {
     bind() from singleton { NoteIdentifierMapper() }
     bind() from singleton { NoteSchemaMapper() }
-    bind<NoteRepository>() with singleton { NoteRepositoryImpl(instance()) }
+    bind() from singleton { NoteEntityMapper() }
+    bind<NoteRepository>() with singleton { NoteRepositoryImpl(instance(), instance(), instance()) }
     bind<CoroutineDispatcher>(tag = "BackgroundDispatcher") with singleton { CommonDispatchers.BackgroundDispatcher }
     bind() from singleton { FetchNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { RefreshNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { DeleteNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance()) }
+    bind() from singleton { NewAddNote(instance("BackgroundDispatcher"), instance(), instance(), instance(), instance()) }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { PatternProvider(instance()) }
     bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }
