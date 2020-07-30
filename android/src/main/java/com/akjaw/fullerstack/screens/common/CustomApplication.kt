@@ -15,9 +15,12 @@ import org.kodein.di.singleton
 import timber.log.Timber
 
 class CustomApplication : Application(), DIAware {
+    private val applicationScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
     override val di by DI.lazy {
         import(androidXModule(this@CustomApplication))
         bind<Context>("ApplicationContext") with singleton { this@CustomApplication.applicationContext }
+        bind<CoroutineScope>("ApplicationCoroutineScope") with singleton { this@CustomApplication.applicationScope }
         import(androidModule)
         import(databaseModule)
         import(networkModule)
@@ -31,4 +34,6 @@ class CustomApplication : Application(), DIAware {
 
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
+
+
 }

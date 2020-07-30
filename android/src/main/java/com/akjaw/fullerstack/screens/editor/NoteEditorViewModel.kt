@@ -3,18 +3,18 @@ package com.akjaw.fullerstack.screens.editor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.akjaw.fullerstack.screens.common.LiveEvent
 import com.akjaw.fullerstack.screens.common.ParcelableNote
 import feature.NewAddNote
 import feature.editor.UpdateNote
 import helpers.validation.NoteInputValidator
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import model.Note
 import model.NoteIdentifier
 
 class NoteEditorViewModel(
+    private val applicationScope: CoroutineScope,
     private val addNote: NewAddNote,
     private val updateNote: UpdateNote,
     private val noteInputValidator: NoteInputValidator
@@ -52,7 +52,7 @@ class NoteEditorViewModel(
         navigationLiveEvent.postValue(Unit)
     }
 
-    private fun addNewNote(newNote: Note) = GlobalScope.launch {
+    private fun addNewNote(newNote: Note) = applicationScope.launch {
         val wasSuccessful = addNote.executeAsync(newNote)
 
         if (wasSuccessful.not()) {
@@ -61,7 +61,7 @@ class NoteEditorViewModel(
         }
     }
 
-    private fun updateExistingNote(updatedNote: Note) = viewModelScope.launch {
+    private fun updateExistingNote(updatedNote: Note) = applicationScope.launch {
         require(updatedNote.noteIdentifier.id != -1)
 
         val wasSuccessful = updateNote.executeAsync(updatedNote)

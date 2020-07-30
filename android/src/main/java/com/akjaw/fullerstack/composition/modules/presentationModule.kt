@@ -24,6 +24,6 @@ val presentationModule = DI.Module("presentationModule") {
         NotesListViewModel(instance(), instance())
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {
-        NoteEditorViewModel(instance(), instance(), instance())
+        NoteEditorViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())
     }
 }
