@@ -20,6 +20,7 @@ class NoteSchemaMapper {
 
     fun toSchema(note: Note): NoteSchema =
         NoteSchema(
+            apiId = note.noteIdentifier.id,
             title = note.title,
             content = note.content,
             lastModificationTimestamp = note.lastModificationDate.unixMillisLong,

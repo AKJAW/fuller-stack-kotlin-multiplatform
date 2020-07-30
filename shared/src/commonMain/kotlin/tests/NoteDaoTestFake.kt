@@ -7,8 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class NoteDaoTestFake : NoteDao {
     private val notesMutableState: MutableStateFlow<List<NoteEntity>> = MutableStateFlow(listOf())
-    val notes: List<NoteEntity>
+    var notes: List<NoteEntity>
         get() = notesMutableState.value
+        set(value) {
+            notesMutableState.value = value
+        }
 
     override fun getAllNotes(): Flow<List<NoteEntity>> = notesMutableState
 
@@ -49,9 +52,9 @@ class NoteDaoTestFake : NoteDao {
         notesMutableState.value = newNotes
     }
 
-    override suspend fun updateSyncFailed(localId: Int, hasSyncFailed: Boolean) {
+    override suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean) {
         val newNotes = notes.map { note ->//TODO replace with mutable list
-            if(note.id == localId) {
+            if(note.noteId == noteId) {
                 note.copy(hasSyncFailed = hasSyncFailed)
             } else {
                 note

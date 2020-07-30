@@ -13,6 +13,8 @@ import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class AddNoteTest {
 
@@ -43,6 +45,25 @@ class AddNoteTest {
             noteSchemaMapper = noteSchemaMapper,
             noteApi = noteApiTestFake
         )
+    }
+
+    @JsName("TrueReturnedOnApiSuccess")
+    @Test
+    fun `When the API call is successful then return true`() = runTest {
+
+        val result = SUT.executeAsync(NOTE_TO_ADD)
+
+        assertTrue(result)
+    }
+
+    @JsName("FalseReturnedOnApiFail")
+    @Test
+    fun `When the API call fails then return false`() = runTest {
+        noteApiTestFake.willFail = true
+
+        val result = SUT.executeAsync(NOTE_TO_ADD)
+
+        assertFalse(result)
     }
 
     @JsName("AddsTheNoteToTheLocalDatabase")
@@ -85,7 +106,6 @@ class AddNoteTest {
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
 
-    //When a request fails then the entity has a property reflecting that
     @JsName("SyncFailedIsSet")
     @Test
     fun `When request fails then set sync failed in the local database`() = runTest {

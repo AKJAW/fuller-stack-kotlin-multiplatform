@@ -33,7 +33,9 @@ val common = DI.Module("Common") {
     bind() from singleton { RefreshNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { DeleteNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance()) }
-    bind() from singleton { NewAddNote(instance("BackgroundDispatcher"), instance(), instance(), instance(), instance()) }
+    bind() from singleton {
+        NewAddNote(instance("BackgroundDispatcher"), instance(), instance(), instance(), instance())
+    }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { PatternProvider(instance()) }
     bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }

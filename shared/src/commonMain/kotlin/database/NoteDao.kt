@@ -20,7 +20,7 @@ interface NoteDao {
         apiId: Int
     )
 
-    suspend fun updateSyncFailed(localId: Int, hasSyncFailed: Boolean)
+    suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean)
 
     suspend fun deleteNote(noteId: Int)
 }
