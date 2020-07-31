@@ -3,9 +3,12 @@ package com.akjaw.fullerstack.screens.editor
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.screens.common.toParcelable
 import com.akjaw.fullerstack.testObserve
+import com.soywiz.klock.DateTime
+import database.NoteEntity
 import database.NoteEntityMapper
 import feature.NewAddNote
-import feature.editor.UpdateNote
+import feature.NewUpdateNote
+import helpers.date.TimestampProvider
 import helpers.validation.NoteInputValidator
 import io.mockk.every
 import io.mockk.mockk
@@ -14,6 +17,7 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import model.Note
 import model.NoteIdentifier
+import model.schema.NoteSchema
 import network.NoteSchemaMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -22,17 +26,22 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import tests.NoteRepositoryTestFake
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class NoteEditorViewModelTest {
+
+    companion object {
+        private const val TIMESTAMP = 50L
+    }
 
     private val noteEntityMapper = NoteEntityMapper()
     private val noteSchemaMapper = NoteSchemaMapper()
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var repositoryTestFake: NoteRepositoryTestFake
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
+    private val timestampProvider: TimestampProvider = mockk {
+        every { now() } returns TIMESTAMP
+    }
     private val noteInputValidator: NoteInputValidator = mockk()
     private lateinit var SUT: NoteEditorViewModel
 
@@ -40,7 +49,6 @@ internal class NoteEditorViewModelTest {
     fun setUp() {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        repositoryTestFake = NoteRepositoryTestFake()
         coroutineDispatcher = TestCoroutineDispatcher()
         val addNote = NewAddNote(
             coroutineDispatcher = coroutineDispatcher,
@@ -48,7 +56,12 @@ internal class NoteEditorViewModelTest {
             noteDao = noteDaoTestFake,
             noteSchemaMapper = noteSchemaMapper,
             noteApi = noteApiTestFake)
-        val updateNote = UpdateNote(coroutineDispatcher, repositoryTestFake)
+        val updateNote = NewUpdateNote(
+            coroutineDispatcher = coroutineDispatcher,
+            timestampProvider = timestampProvider,
+            noteDao = noteDaoTestFake,
+            noteApi = noteApiTestFake
+        )
         SUT = NoteEditorViewModel(TestCoroutineScope(), addNote, updateNote, noteInputValidator)
     }
 
@@ -57,7 +70,8 @@ internal class NoteEditorViewModelTest {
 
         @BeforeEach
         fun setUp() {
-            repositoryTestFake.setNotes(listOf())
+            noteDaoTestFake.notes = mutableListOf()
+            noteApiTestFake.notes = mutableListOf()
         }
 
         @Test
@@ -66,7 +80,8 @@ internal class NoteEditorViewModelTest {
 
             SUT.onActionClicked("", "")
 
-            assertEquals(0, repositoryTestFake.notesList.count())
+            assertEquals(0, noteDaoTestFake.notes.count())
+            assertEquals(0, noteApiTestFake.notes.count())
         }
 
         @Test
@@ -93,12 +108,34 @@ internal class NoteEditorViewModelTest {
     @Nested
     inner class UpdatingNote {
 
-        private val note = Note(NoteIdentifier(1), "title", "content")
+        private val note = Note(
+            noteIdentifier = NoteIdentifier(1),
+            title = "title",
+            content = "content",
+            lastModificationDate = DateTime.fromUnix(0),
+            creationDate = DateTime.fromUnix(0)
+        )
+        private val entity = NoteEntity(
+            id = note.noteIdentifier.id,
+            noteId = note.noteIdentifier.id,
+            title = note.title,
+            content = note.content,
+            lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
+            creationTimestamp = note.creationDate.unixMillisLong
+        )
+        private val schema = NoteSchema(
+            apiId = note.noteIdentifier.id,
+            title = note.title,
+            content = note.content,
+            lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
+            creationTimestamp = note.creationDate.unixMillisLong
+        )
 
         @BeforeEach
         fun setUp() {
             SUT.setNote(note.toParcelable())
-            repositoryTestFake.setNotes(listOf(note))
+            noteDaoTestFake.notes = mutableListOf(entity)
+            noteApiTestFake.notes = mutableListOf(schema)
         }
 
         @Test
@@ -107,9 +144,8 @@ internal class NoteEditorViewModelTest {
 
             SUT.onActionClicked("", "")
 
-            val repositoryNote = repositoryTestFake.notesList.first()
-            assertEquals(note.title, repositoryNote.title)
-            assertEquals(note.content, repositoryNote.content)
+            assertEquals(entity, noteDaoTestFake.notes.first())
+            assertEquals(schema, noteApiTestFake.notes.first())
         }
 
         @Test
@@ -120,9 +156,13 @@ internal class NoteEditorViewModelTest {
 
             SUT.onActionClicked(updatedTitle, updatedContent)
 
-            val repositoryNote = repositoryTestFake.notesList.first()
-            assertEquals(updatedTitle, repositoryNote.title)
-            assertEquals(updatedContent, repositoryNote.content)
+            val updatedEntity = noteDaoTestFake.notes.first()
+            assertEquals(updatedTitle, updatedEntity.title)
+            assertEquals(updatedContent, updatedEntity.content)
+
+            val updatedSchema = noteApiTestFake.notes.first()
+            assertEquals(updatedTitle, updatedSchema.title)
+            assertEquals(updatedContent, updatedSchema.content)
         }
 
         @Test

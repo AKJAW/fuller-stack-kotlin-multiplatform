@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.akjaw.fullerstack.screens.common.LiveEvent
 import com.akjaw.fullerstack.screens.common.ParcelableNote
 import feature.NewAddNote
-import feature.editor.UpdateNote
+import feature.NewUpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import model.NoteIdentifier
 class NoteEditorViewModel(
     private val applicationScope: CoroutineScope,
     private val addNote: NewAddNote,
-    private val updateNote: UpdateNote,
+    private val updateNote: NewUpdateNote,
     private val noteInputValidator: NoteInputValidator
 ) : ViewModel() {
 
@@ -41,11 +41,15 @@ class NoteEditorViewModel(
         }
 
         val stateNote = viewState.value?.note
-        val note = Note(title = title, content = content)
 
         if (stateNote?.id != null) {
-            updateExistingNote(note.copy(noteIdentifier = NoteIdentifier(stateNote.id)))
+            updateExistingNote(
+                noteIdentifier = NoteIdentifier(stateNote.id),
+                title = title,
+                content = content
+            )
         } else {
+            val note = Note(title = title, content = content)
             addNewNote(note)
         }
 
@@ -61,10 +65,18 @@ class NoteEditorViewModel(
         }
     }
 
-    private fun updateExistingNote(updatedNote: Note) = applicationScope.launch {
-        require(updatedNote.noteIdentifier.id != -1)
+    private fun updateExistingNote(
+        noteIdentifier: NoteIdentifier,
+        title: String,
+        content: String
+    ) = applicationScope.launch {
+        require(noteIdentifier.id != -1)
 
-        val wasSuccessful = updateNote.executeAsync(updatedNote)
+        val wasSuccessful = updateNote.executeAsync(
+            noteIdentifier = noteIdentifier,
+            title = title,
+            content = content
+        )
 
         if (wasSuccessful.not()) {
             // TODO the note should be flagged and a refresh icon should be shown

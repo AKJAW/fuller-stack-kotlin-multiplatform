@@ -1,5 +1,6 @@
 package com.akjaw.fullerstack.notes.network
 
+import feature.UpdateNotePayload
 import model.Note
 import model.NoteIdentifier
 import model.schema.NoteRequest
@@ -25,12 +26,12 @@ class RetrofitNoteApi(
         return noteService.addNote(noteRequest)
     }
 
-    override suspend fun updateNote(updatedNote: Note) {
+    override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) {
         val noteRequest = NoteRequest(
-            title = updatedNote.title,
-            content = updatedNote.content
+            title = updatedNotePayload.title,
+            content = updatedNotePayload.content
         )
-        noteService.updateNote(updatedNote.noteIdentifier.id, noteRequest)
+        noteService.updateNote(updatedNotePayload.noteIdentifier.id, noteRequest)
     }
 
     override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
