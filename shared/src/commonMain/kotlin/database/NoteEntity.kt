@@ -8,4 +8,5 @@ expect class NoteEntity {
     val lastModificationTimestamp: Long
     val creationTimestamp: Long
     val hasSyncFailed: Boolean
+    val wasDeleted: Boolean
 }

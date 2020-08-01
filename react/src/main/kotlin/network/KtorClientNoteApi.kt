@@ -1,5 +1,6 @@
 package network
 
+import feature.UpdateNotePayload
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.delete
@@ -34,11 +35,11 @@ class KtorClientNoteApi(
         }
     }
 
-    override suspend fun updateNote(updatedNote: Note) {
-        client.patch<Unit>("$apiUrl/${updatedNote.noteIdentifier.id}") {
+    override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) {
+        client.patch<Unit>("$apiUrl/${updatedNotePayload.noteIdentifier.id}") {
             val request = NoteRequest(
-                title = updatedNote.title,
-                content = updatedNote.content
+                title = updatedNotePayload.title,
+                content = updatedNotePayload.content
             )
             body = json.write(request)
         }

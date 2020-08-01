@@ -27,8 +27,6 @@ class NoteApiTestFake : NoteApi {
     }
 
     override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) = runOrFail {
-        println(updatedNotePayload)
-        println(notes)
         val oldNote = notes.first { it.apiId == updatedNotePayload.noteIdentifier.id }
         val index = notes.indexOf(oldNote)
         notes.removeAt(index)
@@ -42,8 +40,11 @@ class NoteApiTestFake : NoteApi {
         notes.add(index, entity)
     }
 
-    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
-        TODO("Not yet implemented")
+    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = runOrFail {
+        val ids = noteIdentifiers.map { it.id }
+        notes = notes.filterNot { noteSchema ->
+            ids.contains(noteSchema.apiId)
+        }.toMutableList()
     }
 
     private fun <T> runOrFail(block: () -> T): T {

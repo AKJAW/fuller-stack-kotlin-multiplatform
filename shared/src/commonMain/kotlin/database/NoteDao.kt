@@ -22,5 +22,10 @@ interface NoteDao {
 
     suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean)
 
+    @Deprecated("Use deleteNotes")
     suspend fun deleteNote(noteId: Int)
+
+    suspend fun deleteNotes(noteIds: List<Int>)
+
+    suspend fun setWasDeleted(noteIds: List<Int>)
 }

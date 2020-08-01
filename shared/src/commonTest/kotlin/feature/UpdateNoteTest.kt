@@ -21,14 +21,14 @@ class UpdateNoteTest {
 
     companion object {
         private val date = DateTime.createAdjusted(2020, 7, 28)
-        val INITIAL_NOTE = Note(
+        private val INITIAL_NOTE = Note(
             noteIdentifier = NoteIdentifier(1),
             title = "title",
             content = "content",
             lastModificationDate = date,
             creationDate = date
         )
-        val INITIAL_ENTITY = NoteEntity(
+        private val INITIAL_ENTITY = NoteEntity(
             id = 0,
             noteId = INITIAL_NOTE.noteIdentifier.id,
             title = INITIAL_NOTE.title,
@@ -37,15 +37,15 @@ class UpdateNoteTest {
             creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong,
             hasSyncFailed = false
         )
-        val INITIAL_SCHEMA = NoteSchema(
+        private val INITIAL_SCHEMA = NoteSchema(
             apiId = INITIAL_NOTE.noteIdentifier.id,
             title = INITIAL_NOTE.title,
             content = INITIAL_NOTE.content,
             lastModificationTimestamp = INITIAL_NOTE.lastModificationDate.unixMillisLong,
             creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong
         )
-        const val UPDATED_TITLE = "Updated title"
-        const val UPDATED_CONTENT = "Updated content"
+        private const val UPDATED_TITLE = "Updated title"
+        private const val UPDATED_CONTENT = "Updated content"
     }
 
     private lateinit var timestampProvider: TimestampProviderFake
@@ -64,7 +64,7 @@ class UpdateNoteTest {
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
-        noteDaoTestFake.notes = listOf(INITIAL_ENTITY)
+        noteDaoTestFake.notes = mutableListOf(INITIAL_ENTITY)
         noteApiTestFake.notes = mutableListOf(INITIAL_SCHEMA)
 
     }

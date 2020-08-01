@@ -16,23 +16,23 @@ class NoteDaoTestFake : NoteDao {
     override fun getAllNotes(): Flow<List<NoteEntity>> = notesMutableState
 
     override suspend fun addNote(note: NoteEntity): Int {
-        val latestId = notesMutableState.value.maxBy { it.id }?.id ?: -1
+        val latestId = notes.maxBy { it.id }?.id ?: -1
         val newId = latestId + 1
 
         val newNote = note.copy(id = newId, noteId = newId)
-        notesMutableState.value = notesMutableState.value + newNote
+        notes = notes + newNote
 
         return newId
     }
 
     override suspend fun updateNote(noteId: Int, title: String, content: String, lastModificationTimestamp: Long) {
-        val noteToUpdate = notesMutableState.value.first { it.noteId == noteId }
+        val noteToUpdate = notes.first { it.noteId == noteId }
         val updatedNote = noteToUpdate.copy(
             title = title,
             content = content,
             lastModificationTimestamp = lastModificationTimestamp
         )
-        notesMutableState.value = notesMutableState.value.map { note -> //TODO replace with mutable list
+        notes = notes.map { note -> //TODO replace with mutable list
             if(note.noteId == noteId) {
                 updatedNote
             } else {
@@ -49,7 +49,7 @@ class NoteDaoTestFake : NoteDao {
                 note
             }
         }
-        notesMutableState.value = newNotes
+        notes = newNotes
     }
 
     override suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean) {
@@ -60,16 +60,27 @@ class NoteDaoTestFake : NoteDao {
                 note
             }
         }
-        notesMutableState.value = newNotes
+        notes = newNotes
     }
 
     override suspend fun deleteNote(noteId: Int) {
-        val newNotes = notesMutableState.value.filterNot { it.noteId == noteId }
-        notesMutableState.value = newNotes
+        val newNotes = notes.filterNot { it.noteId == noteId }
+        notes = newNotes
     }
 
     override suspend fun deleteNotes(noteIds: List<Int>) {
-        val newNotes = notesMutableState.value.filterNot { noteIds.contains(it.noteId) }
-        notesMutableState.value = newNotes
+        val newNotes = notes.filterNot { noteIds.contains(it.noteId) }
+        notes = newNotes
+    }
+
+    override suspend fun setWasDeleted(noteIds: List<Int>) {
+        val newNotes = notes.map { note ->
+            if(noteIds.contains(note.noteId)){
+                note.copy(wasDeleted = true)
+            } else {
+                note
+            }
+        }
+        notes = newNotes
     }
 }

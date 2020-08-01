@@ -11,5 +11,6 @@ actual data class NoteEntity(
     actual val content: String,
     actual val lastModificationTimestamp: Long,
     actual val creationTimestamp: Long,
-    actual val hasSyncFailed: Boolean = false
+    actual val hasSyncFailed: Boolean = false,
+    actual val wasDeleted: Boolean = false
 )

@@ -7,6 +7,7 @@ import network.NetworkResponse
 import network.safeApiCall
 import repository.NoteRepository
 
+@Deprecated("Use the new one")
 class DeleteNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteRepository: NoteRepository

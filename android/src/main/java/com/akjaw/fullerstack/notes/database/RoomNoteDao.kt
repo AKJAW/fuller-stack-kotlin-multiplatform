@@ -58,4 +58,7 @@ abstract class RoomNoteDao : NoteDao {
 
     @Query("DELETE FROM notes WHERE noteId = :noteId")
     abstract override suspend fun deleteNote(noteId: Int)
+
+    @Query("DELETE FROM notes WHERE noteId in (:noteIds)")
+    abstract override suspend fun deleteNotes(noteIds: List<Int>)
 }
