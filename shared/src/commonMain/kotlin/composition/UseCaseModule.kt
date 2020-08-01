@@ -1,6 +1,7 @@
 package composition
 
 import feature.NewAddNote
+import feature.NewDeleteNotes
 import feature.NewUpdateNote
 import feature.editor.AddNote
 import feature.editor.UpdateNote
@@ -16,6 +17,9 @@ val useCaseModule = DI.Module("UseCaseModule") {
     bind() from singleton { FetchNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { RefreshNotes(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { DeleteNotes(instance("BackgroundDispatcher"), instance()) }
+    bind() from singleton {
+        NewDeleteNotes(instance("BackgroundDispatcher"), instance(), instance())
+    }
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton {
         NewAddNote(instance("BackgroundDispatcher"), instance(), instance(), instance(), instance())

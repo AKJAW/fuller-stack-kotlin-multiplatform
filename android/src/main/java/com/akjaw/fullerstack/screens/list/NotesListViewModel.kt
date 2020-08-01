@@ -4,16 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import feature.list.DeleteNotes
+import feature.NewDeleteNotes
 import feature.list.FetchNotes
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import model.Note
 import model.NoteIdentifier
+import timber.log.Timber
 
 internal class NotesListViewModel(
+    private val applicationScope: CoroutineScope,
     private val fetchNotes: FetchNotes,
-    private val deleteNotes: DeleteNotes
+    private val deleteNotes: NewDeleteNotes
 ) : ViewModel() {
 
     internal sealed class NotesListState {
@@ -43,7 +46,10 @@ internal class NotesListViewModel(
         }
     }
 
-    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = viewModelScope.launch { // TODO error handling
-        deleteNotes.executeAsync(noteIdentifiers)
+    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = applicationScope.launch {
+        val wasDeleted = deleteNotes.executeAsync(noteIdentifiers)
+        if(wasDeleted.not()){
+            //TODO there was a problem with synchronization
+        }
     }
 }

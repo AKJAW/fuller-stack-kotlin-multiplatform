@@ -3,10 +3,11 @@ package com.akjaw.fullerstack.screens.list
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
-import feature.list.DeleteNotes
+import feature.NewDeleteNotes
 import feature.list.FetchNotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.setMain
 import model.Note
 import model.NoteIdentifier
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import tests.NoteApiTestFake
+import tests.NoteDaoTestFake
 import tests.NoteRepositoryTestFake
 
 @ExtendWith(InstantExecutorExtension::class)
@@ -26,18 +29,24 @@ internal class NotesListViewModelTest {
         )
     }
 
+
+    private lateinit var noteDaoTestFake: NoteDaoTestFake
+    private lateinit var noteApiTestFake: NoteApiTestFake
     private lateinit var repositoryTestFake: NoteRepositoryTestFake
     private lateinit var fetchNotes: FetchNotes
-    private lateinit var deleteNotes: DeleteNotes
+    private lateinit var deleteNotes: NewDeleteNotes
     private lateinit var SUT: NotesListViewModel
 
     @BeforeEach
     fun setUp() {
+        noteDaoTestFake = NoteDaoTestFake()
+        noteApiTestFake = NoteApiTestFake()
         repositoryTestFake = NoteRepositoryTestFake()
-        repositoryTestFake.setNotes(NOTES)
         fetchNotes = FetchNotes(TestCoroutineDispatcher(), repositoryTestFake)
-        deleteNotes = DeleteNotes(TestCoroutineDispatcher(), repositoryTestFake)
-        SUT = NotesListViewModel(fetchNotes, deleteNotes)
+        deleteNotes = NewDeleteNotes(TestCoroutineDispatcher(), noteDaoTestFake, noteApiTestFake)
+        SUT = NotesListViewModel(TestCoroutineScope(),  fetchNotes, deleteNotes)
+
+        repositoryTestFake.setNotes(NOTES)
     }
 
     @Test
