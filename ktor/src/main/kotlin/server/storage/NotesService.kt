@@ -1,6 +1,7 @@
 package server.storage
 
-import com.soywiz.klock.DateTime
+import feature.AddNotePayload
+import feature.UpdateNotePayload
 import model.NoteIdentifier
 import model.schema.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
@@ -31,21 +32,22 @@ class NotesService(
             }
     }
 
-    suspend fun addNote(newNote: NoteSchema) = queryDatabase {
+    suspend fun addNote(payload: AddNotePayload): Int = queryDatabase {
         val id = NotesTable.insertAndGetId {
-            it[title] = newNote.title
-            it[content] = newNote.content
-            it[lastModificationDateTimestamp] = DateTime.nowUnixLong()
-            it[creationDateTimestamp] = DateTime.nowUnixLong()
+            it[title] = payload.title
+            it[content] = payload.content
+            it[lastModificationDateTimestamp] = payload.currentTimestamp
+            it[creationDateTimestamp] = payload.currentTimestamp
         }
         apiLogger.log("NoteService addNote", "new id: $id")
+        return@queryDatabase id.value
     }
 
-    suspend fun updateNote(updatedNote: NoteSchema) = queryDatabase {
-        val updatedAmount = NotesTable.update({ NotesTable.id eq updatedNote.apiId }) {
-            it[title] = updatedNote.title
-            it[content] = updatedNote.content
-            it[lastModificationDateTimestamp] = DateTime.nowUnixLong()
+    suspend fun updateNote(payload: UpdateNotePayload) = queryDatabase {
+        val updatedAmount = NotesTable.update({ NotesTable.id eq payload.noteId }) {
+            it[title] = payload.title
+            it[content] = payload.content
+            it[lastModificationDateTimestamp] = payload.lastModificationTimestamp
         }
         apiLogger.log("NoteService updateNote", "updatedAmount: $updatedAmount")
         return@queryDatabase updatedAmount > 0

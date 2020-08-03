@@ -22,7 +22,7 @@ class RetrofitNoteApi(
     }
 
     override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) {
-        noteService.updateNote(updatedNotePayload.noteId, updatedNotePayload)
+        noteService.updateNote(updatedNotePayload)
     }
 
     override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {

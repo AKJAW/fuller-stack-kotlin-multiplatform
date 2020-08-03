@@ -1,5 +1,7 @@
 package server.routes.notes
 
+import feature.AddNotePayload
+import feature.UpdateNotePayload
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
@@ -20,37 +22,38 @@ fun Routing.notesRoute() {
     val notesCallHelper: NotesCallHelper by di().instance()
 
     get("/notes") {
-        call.respond(notesService.getNotes())
+        call.respond(HttpStatusCode.OK, notesService.getNotes())
     }
 
     post("/notes") {
-        val note = notesCallHelper.getNoteSchemaFromBody(call)
-        apiLogger.log("Post notes", note.toString())
+        val payload = notesCallHelper.getJsonData<AddNotePayload>(call)
+        apiLogger.log("Post notes", payload.toString())
 
-        if (note == null) {
+        if (payload == null) {
             call.respond(HttpStatusCode.BadRequest, "Note doesn't have a correct format")
             return@post
         }
 
-        notesService.addNote(note)
-        call.respond(HttpStatusCode.OK)
+        val addedId = notesService.addNote(payload)
+
+        call.respond(HttpStatusCode.OK, addedId)
     }
 
-    patch("/notes/{noteId}") {
-        val note = notesCallHelper.getNoteWithId(call)
-        apiLogger.log("Patch notes", note.toString())
+    patch("/notes") {
+        val payload = notesCallHelper.getJsonData<UpdateNotePayload>(call)
+        apiLogger.log("Patch notes", payload.toString())
 
-        if (note == null) {
+        if (payload == null) {
             call.respond(HttpStatusCode.BadRequest, "Note doesn't have a correct format")
             return@patch
         }
 
-        val wasUpdated = notesService.updateNote(note)
+        val wasUpdated = notesService.updateNote(payload)
 
         if (wasUpdated) {
             call.respond(HttpStatusCode.OK)
         } else {
-            call.respond(HttpStatusCode.BadRequest, "Note with provided id ${note.apiId} not found")
+            call.respond(HttpStatusCode.BadRequest, "Note with provided id ${payload.noteId} not found")
         }
     }
 

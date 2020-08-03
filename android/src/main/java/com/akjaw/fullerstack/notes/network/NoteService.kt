@@ -19,19 +19,12 @@ interface NoteService {
     @POST("notes")
     suspend fun addNote(@Body addNotePayload: AddNotePayload): Int
 
-    @PATCH("notes/{id}")
-    suspend fun updateNote(
-        @Path("id") id: Int,
-        @Body updateNoteRequest: UpdateNotePayload
-    )
+    @PATCH("notes")
+    suspend fun updateNote(@Body updateNoteRequest: UpdateNotePayload)
 
     @DELETE("notes/{id}")
-    suspend fun deleteNote(
-        @Path("id") id: Int
-    )
+    suspend fun deleteNote(@Path("id") id: Int)
 
     @HTTP(method = "DELETE", path = "notes", hasBody = true)
-    suspend fun deleteNotes(
-        @Body noteIds: List<Int>
-    )
+    suspend fun deleteNotes(@Body noteIds: List<Int>)
 }

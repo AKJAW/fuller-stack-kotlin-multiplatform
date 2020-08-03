@@ -28,21 +28,25 @@ class H2Database : ExposedDatabase {
                 it[title] = "Note 1"
                 it[content] = "Content of one"
                 it[creationDateTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[lastModificationDateTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
             }
             NotesTable.insert {
                 it[title] = "Note 2"
                 it[content] = "Content of two"
                 it[creationDateTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[lastModificationDateTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
             }
             NotesTable.insert {
                 it[title] = "Note 3"
                 it[content] = "Content of three"
                 it[creationDateTimestamp] = DateTime.createAdjusted(2020, 6, 5).unixMillisLong
+                it[lastModificationDateTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
             }
             NotesTable.insert {
                 it[title] = "Note 4"
                 it[content] = "Content of four"
                 it[creationDateTimestamp] = DateTime.createAdjusted(2020, 6, 7).unixMillisLong
+                it[lastModificationDateTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
             }
         }
     }
