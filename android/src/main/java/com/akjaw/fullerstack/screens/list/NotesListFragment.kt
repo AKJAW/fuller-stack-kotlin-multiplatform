@@ -89,13 +89,11 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
     private fun render(viewState: NotesListViewModel.NotesListState?) {
         when (viewState) {
-            NotesListViewModel.NotesListState.Loading -> loadingIndicator.visibility = View.VISIBLE
-            NotesListViewModel.NotesListState.Error -> TODO()
+            is NotesListViewModel.NotesListState.Loading -> loadingIndicator.visibility = View.VISIBLE
             is NotesListViewModel.NotesListState.ShowingList -> {
                 loadingIndicator.visibility = View.INVISIBLE
                 notesListAdapter.setNotes(viewState.notes)
             }
-            null -> TODO()
         }
     }
 

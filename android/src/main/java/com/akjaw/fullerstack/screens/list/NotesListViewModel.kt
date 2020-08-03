@@ -5,23 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import feature.NewDeleteNotes
-import feature.list.FetchNotes
+import feature.NewGetNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import model.Note
 import model.NoteIdentifier
-import timber.log.Timber
 
 internal class NotesListViewModel(
     private val applicationScope: CoroutineScope,
-    private val fetchNotes: FetchNotes,
+    private val getNotes: NewGetNotes,
     private val deleteNotes: NewDeleteNotes
 ) : ViewModel() {
 
     internal sealed class NotesListState {
         object Loading : NotesListState()
-        object Error : NotesListState()
         data class ShowingList(val notes: List<Note>) : NotesListState()
     }
 
@@ -31,18 +29,8 @@ internal class NotesListViewModel(
     fun initializeNotes() = viewModelScope.launch {
         if (viewState.value is NotesListState.ShowingList) return@launch
 
-        fetchNotes.executeAsync().collect(::handleFetchNotesResult)
-    }
-
-    private suspend fun handleFetchNotesResult(fetchNotesResult: FetchNotes.Result) {
-        when (fetchNotesResult) {
-            FetchNotes.Result.Loading -> _viewState.postValue(NotesListState.Loading)
-            is FetchNotes.Result.Error -> _viewState.postValue(NotesListState.Error)
-            is FetchNotes.Result.Content -> viewModelScope.launch { // TODO exception handling
-                fetchNotesResult.notesFlow.collect {
-                    _viewState.postValue(NotesListState.ShowingList(it))
-                }
-            }
+        getNotes.executeAsync().collect {
+            _viewState.postValue(NotesListState.ShowingList(it))
         }
     }
 

@@ -3,8 +3,9 @@ package com.akjaw.fullerstack.screens.list
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
+import database.NoteEntityMapper
 import feature.NewDeleteNotes
-import feature.list.FetchNotes
+import feature.NewGetNotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import tests.NoteRepositoryTestFake
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class NotesListViewModelTest {
@@ -29,30 +29,30 @@ internal class NotesListViewModelTest {
         )
     }
 
-
+    private val noteEntityMapper = NoteEntityMapper()
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var repositoryTestFake: NoteRepositoryTestFake
-    private lateinit var fetchNotes: FetchNotes
+    private lateinit var getNotes: NewGetNotes
     private lateinit var deleteNotes: NewDeleteNotes
     private lateinit var SUT: NotesListViewModel
+
+    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testCoroutineScope = TestCoroutineScope()
 
     @BeforeEach
     fun setUp() {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        repositoryTestFake = NoteRepositoryTestFake()
-        fetchNotes = FetchNotes(TestCoroutineDispatcher(), repositoryTestFake)
-        deleteNotes = NewDeleteNotes(TestCoroutineDispatcher(), noteDaoTestFake, noteApiTestFake)
-        SUT = NotesListViewModel(TestCoroutineScope(),  fetchNotes, deleteNotes)
+        getNotes = NewGetNotes(testCoroutineDispatcher, noteDaoTestFake, noteEntityMapper)
+        deleteNotes = NewDeleteNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
+        SUT = NotesListViewModel(testCoroutineScope, getNotes, deleteNotes)
 
-        repositoryTestFake.setNotes(NOTES)
+        noteDaoTestFake.initializeNoteEntities(NOTES)
     }
 
     @Test
     fun `fetching shows loading at the start`() {
         Dispatchers.setMain(Dispatchers.Default)
-        fetchNotesSuccess()
 
         SUT.initializeNotes()
 
@@ -62,7 +62,6 @@ internal class NotesListViewModelTest {
 
     @Test
     fun `successful fetch shows the notes list`() {
-        fetchNotesSuccess()
 
         SUT.initializeNotes()
 
@@ -73,7 +72,6 @@ internal class NotesListViewModelTest {
 
     @Test
     fun `notes list changes are shown in the view`() {
-        fetchNotesSuccess()
 
         SUT.initializeNotes()
 
@@ -82,28 +80,10 @@ internal class NotesListViewModelTest {
             SUT.viewState.getOrAwaitValue()
         )
 
-        repositoryTestFake.setNotes(listOf())
+        noteDaoTestFake.notes = listOf()
         assertEquals(
             NotesListState.ShowingList(listOf()),
             SUT.viewState.getOrAwaitValue()
         )
-    }
-
-    @Test
-    fun `fetch error is shown in the view`() {
-        fetchNotesFailure()
-
-        SUT.initializeNotes()
-
-        val viewState = SUT.viewState.getOrAwaitValue()
-        assertEquals(NotesListState.Error, viewState)
-    }
-
-    private fun fetchNotesSuccess() {
-        repositoryTestFake.setNotes(NOTES)
-    }
-
-    private fun fetchNotesFailure() {
-        repositoryTestFake.setNotesFlowError()
     }
 }

@@ -6,6 +6,7 @@ import network.NetworkResponse
 import network.safeApiCall
 import repository.NoteRepository
 
+@Deprecated("Not needed anymore")
 class RefreshNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteRepository: NoteRepository

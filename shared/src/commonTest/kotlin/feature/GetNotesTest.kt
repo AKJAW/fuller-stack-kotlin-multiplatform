@@ -28,11 +28,6 @@ class GetNotesTest {
             title = "second",
             content = "second"
         )
-        private val DELETED_NOTE = Note(
-            NoteIdentifier(3),
-            title = "second",
-            content = "second"
-        )
     }
 
     private val noteEntityMapper: NoteEntityMapper = NoteEntityMapper()
@@ -74,11 +69,4 @@ class GetNotesTest {
         assertEquals(1, flowNotes.count())
         assertEquals(FIRST_NOTE, flowNotes.first())
     }
-
-    //If API notes are different, then SyncUseCase is called?
-    //If any notes have syncFailed then API
-    //If any notes have wasDeleted then API
-    //When API fails then do something?
-
-
 }
