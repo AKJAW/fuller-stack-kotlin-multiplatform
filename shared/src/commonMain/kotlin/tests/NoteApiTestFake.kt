@@ -11,6 +11,18 @@ class NoteApiTestFake : NoteApi {
     var notes = mutableListOf<NoteSchema>()
     var willFail = false
 
+    fun initializeSchemas(notes: List<Note>) {
+        this.notes = notes.map { note ->
+            NoteSchema(
+                apiId = note.noteIdentifier.id,
+                title = note.title,
+                content = note.content,
+                lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
+                creationTimestamp = note.creationDate.unixMillisLong
+            )
+        }.toMutableList()
+    }
+
     override suspend fun getNotes(): List<Note> {
         TODO("Not yet implemented")
     }

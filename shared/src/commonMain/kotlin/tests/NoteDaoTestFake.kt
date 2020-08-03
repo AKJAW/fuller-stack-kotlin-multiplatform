@@ -4,14 +4,30 @@ import database.NoteDao
 import database.NoteEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import model.Note
 
 class NoteDaoTestFake : NoteDao {
-    private val notesMutableState: MutableStateFlow<List<NoteEntity>> = MutableStateFlow(listOf())
+    val notesMutableState: MutableStateFlow<List<NoteEntity>> = MutableStateFlow(listOf())
     var notes: List<NoteEntity>
         get() = notesMutableState.value
         set(value) {
             notesMutableState.value = value
         }
+
+    fun initializeNoteEntities(notes: List<Note>) {
+        this.notes = notes.map { note ->
+            NoteEntity(
+                id = note.noteIdentifier.id,
+                noteId = note.noteIdentifier.id,
+                title = note.title,
+                content = note.content,
+                lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
+                creationTimestamp = note.creationDate.unixMillisLong,
+                hasSyncFailed = false,
+                wasDeleted = false
+            )
+        }
+    }
 
     override fun getAllNotes(): Flow<List<NoteEntity>> = notesMutableState
 

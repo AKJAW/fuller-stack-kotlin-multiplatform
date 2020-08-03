@@ -10,6 +10,7 @@ import network.NetworkResponse
 import network.safeApiCall
 import repository.NoteRepository
 
+@Deprecated("Use the GetNotes")
 class FetchNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteRepository: NoteRepository

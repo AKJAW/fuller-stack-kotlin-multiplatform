@@ -83,13 +83,14 @@ class DeleteNotesTest {
 
     @JsName("wasDeletedSetToTrue")
     @Test
-    fun `the wasDeleted property is set to true if notes cant be deleted`() = runTest {
+    fun `When the API call fails then the entities remain in the local database with wasDeleted set to true`() = runTest {
         noteApiTestFake.willFail = true
 
         SUT.executeAsync(listOf(FIRST_NOTE.noteIdentifier, SECOND_NOTE.noteIdentifier))
 
         val wereAllDeleted = noteDaoTestFake.notes.all { it.wasDeleted }
         assertTrue(wereAllDeleted)
+        assertEquals(2, noteDaoTestFake.notes.count())
     }
 
     @JsName("NotesAreDeletedFromLocalDatabaseWhenApiSucceeds")
@@ -109,15 +110,4 @@ class DeleteNotesTest {
 
         assertEquals(0, noteApiTestFake.notes.count())
     }
-
-    @JsName("NotesAreNotDeletedFromDatabaseIfApiFailed")
-    @Test
-    fun `Notes are not deleted from the local database if API call failed`() = runTest {
-        noteApiTestFake.willFail = true
-
-        SUT.executeAsync(listOf(FIRST_NOTE.noteIdentifier, SECOND_NOTE.noteIdentifier))
-
-        assertEquals(2, noteDaoTestFake.notes.count())
-    }
-
 }

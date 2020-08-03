@@ -28,22 +28,6 @@ class UpdateNoteTest {
             lastModificationDate = date,
             creationDate = date
         )
-        private val INITIAL_ENTITY = NoteEntity(
-            id = 0,
-            noteId = INITIAL_NOTE.noteIdentifier.id,
-            title = INITIAL_NOTE.title,
-            content = INITIAL_NOTE.content,
-            lastModificationTimestamp = INITIAL_NOTE.lastModificationDate.unixMillisLong,
-            creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong,
-            hasSyncFailed = false
-        )
-        private val INITIAL_SCHEMA = NoteSchema(
-            apiId = INITIAL_NOTE.noteIdentifier.id,
-            title = INITIAL_NOTE.title,
-            content = INITIAL_NOTE.content,
-            lastModificationTimestamp = INITIAL_NOTE.lastModificationDate.unixMillisLong,
-            creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong
-        )
         private const val UPDATED_TITLE = "Updated title"
         private const val UPDATED_CONTENT = "Updated content"
     }
@@ -64,8 +48,8 @@ class UpdateNoteTest {
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
-        noteDaoTestFake.notes = mutableListOf(INITIAL_ENTITY)
-        noteApiTestFake.notes = mutableListOf(INITIAL_SCHEMA)
+        noteDaoTestFake.initializeNoteEntities(listOf(INITIAL_NOTE))
+        noteApiTestFake.initializeSchemas(listOf(INITIAL_NOTE))
 
     }
 
@@ -95,12 +79,14 @@ class UpdateNoteTest {
 
         SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
 
-        val expectedNote = INITIAL_ENTITY
-            .copy(
-                title = UPDATED_TITLE,
-                content = UPDATED_CONTENT,
-                lastModificationTimestamp = lastModificationTimestamp
-            )
+        val expectedNote = NoteEntity(
+            id = INITIAL_NOTE.noteIdentifier.id,
+            noteId = INITIAL_NOTE.noteIdentifier.id,
+            title = UPDATED_TITLE,
+            content = UPDATED_CONTENT,
+            lastModificationTimestamp = lastModificationTimestamp,
+            creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong
+        )
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
 
@@ -112,12 +98,13 @@ class UpdateNoteTest {
 
         SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
 
-        val expectedNote = INITIAL_SCHEMA
-            .copy(
-                title = UPDATED_TITLE,
-                content = UPDATED_CONTENT,
-                lastModificationTimestamp = lastModificationTimestamp
-            )
+        val expectedNote = NoteSchema(
+            apiId = INITIAL_NOTE.noteIdentifier.id,
+            title = UPDATED_TITLE,
+            content = UPDATED_CONTENT,
+            lastModificationTimestamp = lastModificationTimestamp,
+            creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong
+        )
         assertEquals(expectedNote, noteApiTestFake.notes.first())
     }
 
