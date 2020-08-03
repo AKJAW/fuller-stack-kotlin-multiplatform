@@ -1,6 +1,6 @@
 package features.list
 
-import features.list.thunk.FetchNotesListThunk
+import features.list.thunk.GetNotesListThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import model.Note
@@ -14,9 +14,9 @@ object NotesListSlice {
     )
 
     private val notesListScope = CoroutineScope(SupervisorJob())
-    private val fetchNotesListThunk = FetchNotesListThunk(notesListScope)
+    private val getNotesListThunk = GetNotesListThunk(notesListScope)
 
-    fun fetchNotesList(): RThunk = fetchNotesListThunk
+    fun getNotesList(): RThunk = getNotesListThunk
 
     class SetNotesList(val notesList: Array<Note>) : RAction
 
@@ -25,7 +25,7 @@ object NotesListSlice {
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is SetNotesList -> {
-                state.copy(notesList = action.notesList)
+                state.copy(notesList = action.notesList, isLoading = false)
             }
             is SetIsLoading -> {
                 state.copy(isLoading = action.isLoading)

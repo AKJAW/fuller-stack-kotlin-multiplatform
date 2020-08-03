@@ -1,5 +1,6 @@
 package network
 
+import feature.AddNotePayload
 import feature.UpdateNotePayload
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -9,7 +10,6 @@ import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import model.Note
 import model.NoteIdentifier
-import model.schema.NoteRequest
 import model.schema.NoteSchema
 
 class KtorClientNoteApi(
@@ -25,23 +25,15 @@ class KtorClientNoteApi(
         return noteSchemaMapper.toNotes(schemas)
     }
 
-    override suspend fun addNote(newNote: Note) {
-        client.post<Unit>(apiUrl) {
-            val request = NoteRequest(
-                title = newNote.title,
-                content = newNote.content
-            )
-            body = json.write(request)
+    override suspend fun addNote(addNotePayload: AddNotePayload): Int {
+        return client.post(apiUrl) {
+            body = json.write(addNotePayload)
         }
     }
 
     override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) {
-        client.patch<Unit>("$apiUrl/${updatedNotePayload.noteIdentifier.id}") {
-            val request = NoteRequest(
-                title = updatedNotePayload.title,
-                content = updatedNotePayload.content
-            )
-            body = json.write(request)
+        client.patch<Unit>(apiUrl) {
+            body = json.write(updatedNotePayload)
         }
     }
 
