@@ -1,7 +1,7 @@
 package features.editor.thunk
 
 import composition.KodeinEntry
-import feature.list.DeleteNotes
+import feature.NewDeleteNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import model.NoteIdentifier
@@ -13,7 +13,7 @@ import store.RThunk
 import store.nullAction
 
 class DeleteNotesThunk(private val scope: CoroutineScope, private val noteIdentifiers: List<NoteIdentifier>) : RThunk {
-    private val deleteNotes by KodeinEntry.di.instance<DeleteNotes>()
+    private val deleteNotes by KodeinEntry.di.instance<NewDeleteNotes>()
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
