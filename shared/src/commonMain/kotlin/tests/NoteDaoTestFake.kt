@@ -2,6 +2,8 @@ package tests
 
 import database.NoteDao
 import database.NoteEntity
+import feature.AddNotePayload
+import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.Note
@@ -31,25 +33,32 @@ class NoteDaoTestFake : NoteDao {
 
     override fun getAllNotes(): Flow<List<NoteEntity>> = notesMutableState
 
-    override suspend fun addNote(note: NoteEntity): Int {
+    override suspend fun addNote(addNotePayload: AddNotePayload): Int {
         val latestId = notes.maxBy { it.id }?.id ?: -1
         val newId = latestId + 1
 
-        val newNote = note.copy(id = newId, noteId = newId)
+        val newNote = NoteEntity(
+            id = newId,
+            noteId = newId,
+            title = addNotePayload.title,
+            content = addNotePayload.content,
+            lastModificationTimestamp = addNotePayload.currentTimestamp,
+            creationTimestamp = addNotePayload.currentTimestamp
+        )
         notes = notes + newNote
 
         return newId
     }
 
-    override suspend fun updateNote(noteId: Int, title: String, content: String, lastModificationTimestamp: Long) {
-        val noteToUpdate = notes.first { it.noteId == noteId }
+    override suspend fun updateNote(updateNotePayload: UpdateNotePayload) {
+        val noteToUpdate = notes.first { it.noteId == updateNotePayload.noteId }
         val updatedNote = noteToUpdate.copy(
-            title = title,
-            content = content,
-            lastModificationTimestamp = lastModificationTimestamp
+            title = updateNotePayload.title,
+            content = updateNotePayload.content,
+            lastModificationTimestamp = updateNotePayload.lastModificationTimestamp
         )
         notes = notes.map { note -> //TODO replace with mutable list
-            if(note.noteId == noteId) {
+            if(note.noteId == updateNotePayload.noteId) {
                 updatedNote
             } else {
                 note
@@ -57,7 +66,7 @@ class NoteDaoTestFake : NoteDao {
         }
     }
 
-    override suspend fun updateId(localId: Int, apiId: Int) {
+    override suspend fun updateNoteId(localId: Int, apiId: Int) {
         val newNotes = notes.map { note ->//TODO replace with mutable list
             if(note.id == localId) {
                 note.copy(noteId = apiId)

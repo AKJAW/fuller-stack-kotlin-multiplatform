@@ -1,21 +1,18 @@
 package database
 
+import feature.AddNotePayload
+import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
 
 interface NoteDao {
 
     fun getAllNotes(): Flow<List<NoteEntity>>
 
-    suspend fun addNote(note: NoteEntity): Int
+    suspend fun addNote(addNotePayload: AddNotePayload): Int
 
-    suspend fun updateNote(
-        noteId: Int,
-        title: String,
-        content: String,
-        lastModificationTimestamp: Long
-    )
+    suspend fun updateNote(updateNotePayload: UpdateNotePayload)
 
-    suspend fun updateId(
+    suspend fun updateNoteId(
         localId: Int,
         apiId: Int
     )

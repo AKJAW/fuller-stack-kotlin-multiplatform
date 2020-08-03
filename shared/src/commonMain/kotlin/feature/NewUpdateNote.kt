@@ -21,19 +21,14 @@ class NewUpdateNote(
         title: String,
         content: String
     ): Boolean = withContext(coroutineDispatcher) {
-        noteDao.updateNote(
+
+        val payload = UpdateNotePayload(
             noteId = noteIdentifier.id,
             title = title,
             content = content,
             lastModificationTimestamp = timestampProvider.now()
         )
-
-        val payload = UpdateNotePayload(
-            noteIdentifier = noteIdentifier,
-            title = title,
-            content = content,
-            lastModificationTimestamp = timestampProvider.now()
-        )
+        noteDao.updateNote(payload)
         val networkResponse = safeApiCall { noteApi.updateNote(payload) }
 
         when(networkResponse) {

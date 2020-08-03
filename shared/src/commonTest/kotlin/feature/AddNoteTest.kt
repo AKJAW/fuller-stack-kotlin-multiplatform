@@ -1,11 +1,11 @@
 package feature
 
 import base.CommonDispatchers
-import com.soywiz.klock.DateTime
-import database.NoteEntityMapper
+import database.NoteEntity
+import helpers.date.TimestampProviderFake
 import model.Note
+import model.NoteIdentifier
 import model.schema.NoteSchema
-import network.NoteSchemaMapper
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -19,31 +19,27 @@ import kotlin.test.assertTrue
 class AddNoteTest {
 
     companion object {
-        private val date = DateTime.createAdjusted(2020, 7, 28)
-        val NOTE_TO_ADD = Note(
-            title = "title",
-            content = "content",
-            creationDate = date,
-            lastModificationDate = date
-        )
+        private const val TIMESTAMP = 70L
+        private const val TITLE = "title"
+        private const val CONTENT = "content"
     }
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private val noteEntityMapper: NoteEntityMapper = NoteEntityMapper()
-    private val noteSchemaMapper: NoteSchemaMapper = NoteSchemaMapper()
+    private lateinit var timestampProviderFake: TimestampProviderFake
     private lateinit var SUT: NewAddNote
 
     @BeforeTest
     fun setUp() {
+        timestampProviderFake = TimestampProviderFake()
+        timestampProviderFake.timestamp = TIMESTAMP
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         SUT = NewAddNote(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
-            noteEntityMapper = noteEntityMapper,
             noteDao = noteDaoTestFake,
-            noteSchemaMapper = noteSchemaMapper,
-            noteApi = noteApiTestFake
+            noteApi = noteApiTestFake,
+            timestampProvider = timestampProviderFake
         )
     }
 
@@ -51,7 +47,7 @@ class AddNoteTest {
     @Test
     fun `When the API call is successful then return true`() = runTest {
 
-        val result = SUT.executeAsync(NOTE_TO_ADD)
+        val result = SUT.executeAsync(TITLE, CONTENT)
 
         assertTrue(result)
     }
@@ -61,7 +57,7 @@ class AddNoteTest {
     fun `When the API call fails then return false`() = runTest {
         noteApiTestFake.willFail = true
 
-        val result = SUT.executeAsync(NOTE_TO_ADD)
+        val result = SUT.executeAsync(TITLE, CONTENT)
 
         assertFalse(result)
     }
@@ -70,13 +66,16 @@ class AddNoteTest {
     @Test
     fun `Adds the note to the local database`() = runTest {
 
-        SUT.executeAsync(NOTE_TO_ADD)
+        SUT.executeAsync(TITLE, CONTENT)
 
-        val expectedNote = noteEntityMapper.toEntity(NOTE_TO_ADD)
-            .copy( //TODO should this test be concerned with the ids
-                id = 0,
-                noteId = 0
-            )
+        val expectedNote = NoteEntity(
+            id = 0,
+            noteId = 0,
+            title = TITLE,
+            content = CONTENT,
+            lastModificationTimestamp = TIMESTAMP,
+            creationTimestamp = TIMESTAMP
+        )
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
 
@@ -84,25 +83,36 @@ class AddNoteTest {
     @Test
     fun `Adds the note to the API`() = runTest {
 
-        SUT.executeAsync(NOTE_TO_ADD)
+        SUT.executeAsync(TITLE, CONTENT)
 
-        val expectedNote = noteSchemaMapper.toSchema(NOTE_TO_ADD)
-            .copy(apiId = 0)
+        val expectedNote = NoteSchema(
+            apiId = 0,
+            title = TITLE,
+            content = CONTENT,
+            lastModificationTimestamp = TIMESTAMP,
+            creationTimestamp = TIMESTAMP
+        )
         assertEquals(expectedNote, noteApiTestFake.notes.first())
     }
 
     @JsName("LocalDatabaseIdUpdated")
     @Test
     fun `Local database id is updated after successful API response`() = runTest {
-        noteApiTestFake.notes.addAll(listOf(NoteSchema(apiId = 0), NoteSchema(apiId = 1)))
+        noteApiTestFake.initializeSchemas(listOf(
+            Note(noteIdentifier = NoteIdentifier(0)),
+            Note(noteIdentifier = NoteIdentifier(1))
+        ))
 
-        SUT.executeAsync(NOTE_TO_ADD)
+        SUT.executeAsync(TITLE, CONTENT)
 
-        val expectedNote = noteEntityMapper.toEntity(NOTE_TO_ADD)
-            .copy(
-                id = 0,
-                noteId = 2
-            )
+        val expectedNote = NoteEntity(
+            id = 0,
+            noteId = 2,
+            title = TITLE,
+            content = CONTENT,
+            lastModificationTimestamp = TIMESTAMP,
+            creationTimestamp = TIMESTAMP
+        )
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
 
@@ -111,7 +121,7 @@ class AddNoteTest {
     fun `When request fails then set sync failed in the local database`() = runTest {
         noteApiTestFake.willFail = true
 
-        SUT.executeAsync(NOTE_TO_ADD)
+        SUT.executeAsync(TITLE, CONTENT)
 
         assertEquals(true, noteDaoTestFake.notes.first().hasSyncFailed)
     }

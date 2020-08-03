@@ -1,30 +1,30 @@
 package feature
 
 import database.NoteDao
-import database.NoteEntityMapper
+import helpers.date.TimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import model.Note
 import network.NetworkResponse
 import network.NoteApi
-import network.NoteSchemaMapper
 import network.safeApiCall
 
 class NewAddNote(
     private val coroutineDispatcher: CoroutineDispatcher,
-    private val noteEntityMapper: NoteEntityMapper,
     private val noteDao: NoteDao,
-    private val noteSchemaMapper: NoteSchemaMapper,
-    private val noteApi: NoteApi
+    private val noteApi: NoteApi,
+    private val timestampProvider: TimestampProvider
 ) {
 
-    suspend fun executeAsync(note: Note): Boolean = withContext(coroutineDispatcher) {
-        val localId = addToLocalDatabase(note)
-        val networkResponse = addToApi(note)
+    suspend fun executeAsync(title: String, content: String): Boolean = withContext(coroutineDispatcher) {
+        val payload = AddNotePayload(title = title, content = content, currentTimestamp = timestampProvider.now())
+        val localId = noteDao.addNote(payload)
+        val networkResponse = safeApiCall { noteApi.addNote(payload) }
 
         when (networkResponse) {
             is NetworkResponse.Success -> {
-                noteDao.updateId(localId, networkResponse.result)
+                if(localId != networkResponse.result) {
+                    noteDao.updateNoteId(localId, networkResponse.result)
+                }
                 true
             }
             else -> {
@@ -32,15 +32,5 @@ class NewAddNote(
                 false
             }
         }
-    }
-
-    private suspend fun addToLocalDatabase(note: Note): Int {
-        val entity = noteEntityMapper.toEntity(note)
-        return noteDao.addNote(entity)
-    }
-
-    private suspend fun addToApi(note: Note): NetworkResponse<Int> {
-        val schema = noteSchemaMapper.toSchema(note)
-        return safeApiCall { noteApi.addNote(schema) }
     }
 }

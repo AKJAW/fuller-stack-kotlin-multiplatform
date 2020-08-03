@@ -10,7 +10,6 @@ import feature.NewUpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import model.Note
 import model.NoteIdentifier
 
 class NoteEditorViewModel(
@@ -49,15 +48,17 @@ class NoteEditorViewModel(
                 content = content
             )
         } else {
-            val note = Note(title = title, content = content)
-            addNewNote(note)
+            addNewNote(title = title, content = content)
         }
 
         navigationLiveEvent.postValue(Unit)
     }
 
-    private fun addNewNote(newNote: Note) = applicationScope.launch {
-        val wasSuccessful = addNote.executeAsync(newNote)
+    private fun addNewNote(title: String, content: String) = applicationScope.launch {
+        val wasSuccessful = addNote.executeAsync(
+            title = title,
+            content = content
+        )
 
         if (wasSuccessful.not()) {
             // TODO the note should be flagged and a refresh icon should be shown

@@ -5,9 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.akjaw.fullerstack.helpers.logger.log
 import database.NoteDao
 import database.NoteEntity
+import feature.AddNotePayload
+import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,13 +18,17 @@ abstract class RoomNoteDao : NoteDao {
     abstract override fun getAllNotes(): Flow<List<NoteEntity>>
 
     @Transaction
-    override suspend fun addNote(note: NoteEntity): Int {
+    override suspend fun addNote(addNotePayload: AddNotePayload): Int {
         val lastPrimaryId = getLastPrimaryId() ?: -1
         val noteId = lastPrimaryId + 1
-        noteId.log("addNote")
-        val noteWithCorrectId = note.copy(noteId = noteId)
-        noteWithCorrectId.log("addNote")
-        insertNote(noteWithCorrectId)
+        val note = NoteEntity(
+            noteId = noteId,
+            title = addNotePayload.title,
+            content = addNotePayload.content,
+            lastModificationTimestamp = addNotePayload.currentTimestamp,
+            creationTimestamp = addNotePayload.currentTimestamp
+        )
+        insertNote(note)
 
         return noteId
     }
@@ -34,6 +39,16 @@ abstract class RoomNoteDao : NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertNote(note: NoteEntity): Long
 
+    @Transaction
+    override suspend fun updateNote(updateNotePayload: UpdateNotePayload) {
+        updateNote(
+            noteId = updateNotePayload.noteId,
+            title = updateNotePayload.title,
+            content = updateNotePayload.content,
+            lastModificationTimestamp = updateNotePayload.lastModificationTimestamp
+        )
+    }
+
     @Query(
         """
         UPDATE notes SET
@@ -42,8 +57,8 @@ abstract class RoomNoteDao : NoteDao {
         lastModificationTimestamp = :lastModificationTimestamp
         WHERE noteId = :noteId
         """
-    )//TODO maybe make it a private method which is called by the contract that takes in the entity
-    abstract override suspend fun updateNote(
+    )
+    abstract suspend fun updateNote(
         noteId: Int,
         title: String,
         content: String,
@@ -51,7 +66,7 @@ abstract class RoomNoteDao : NoteDao {
     )
 
     @Query("UPDATE notes SET noteId = :apiId WHERE id = :localId")
-    abstract override suspend fun updateId(localId: Int, apiId: Int)
+    abstract override suspend fun updateNoteId(localId: Int, apiId: Int)
 
     @Query("UPDATE notes SET hasSyncFailed = :hasSyncFailed WHERE noteId = :noteId")
     abstract override suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean)

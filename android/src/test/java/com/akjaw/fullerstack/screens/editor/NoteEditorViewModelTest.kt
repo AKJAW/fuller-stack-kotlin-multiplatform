@@ -55,7 +55,9 @@ internal class NoteEditorViewModelTest {
             noteEntityMapper = noteEntityMapper,
             noteDao = noteDaoTestFake,
             noteSchemaMapper = noteSchemaMapper,
-            noteApi = noteApiTestFake)
+            noteApi = noteApiTestFake,
+            timestampProvider = timestampProvider
+            )
         val updateNote = NewUpdateNote(
             coroutineDispatcher = coroutineDispatcher,
             timestampProvider = timestampProvider,
@@ -102,6 +104,18 @@ internal class NoteEditorViewModelTest {
             SUT.onActionClicked("Title", "Content")
 
             assertEquals(true, wasCalled())
+        }
+
+        @Test
+        fun `The correct timestamp is used`() {
+            every { noteInputValidator.isTitleValid(any()) } returns true
+
+            SUT.onActionClicked("Title", "Content")
+
+            assertEquals(TIMESTAMP, noteDaoTestFake.notes.first().creationTimestamp)
+            assertEquals(TIMESTAMP, noteDaoTestFake.notes.first().lastModificationTimestamp)
+            assertEquals(TIMESTAMP, noteApiTestFake.notes.first().creationTimestamp)
+            assertEquals(TIMESTAMP, noteApiTestFake.notes.first().lastModificationTimestamp)
         }
     }
 

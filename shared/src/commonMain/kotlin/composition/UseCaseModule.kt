@@ -22,7 +22,7 @@ val useCaseModule = DI.Module("UseCaseModule") {
     bind() from singleton { NewDeleteNotes(instance("BackgroundDispatcher"), instance(), instance()) }
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton {
-        NewAddNote(instance("BackgroundDispatcher"), instance(), instance(), instance(), instance())
+        NewAddNote(instance("BackgroundDispatcher"), instance(), instance(), instance())
     }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance()) }
     bind() from singleton { NewUpdateNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }

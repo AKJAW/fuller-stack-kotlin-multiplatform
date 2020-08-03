@@ -3,9 +3,8 @@ package feature
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UpdateNotePayload(
-    val noteId: Int,
+data class AddNotePayload(
     val title: String,
     val content: String,
-    val lastModificationTimestamp: Long
+    val currentTimestamp: Long
 )
