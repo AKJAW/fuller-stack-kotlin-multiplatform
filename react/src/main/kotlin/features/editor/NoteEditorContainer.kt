@@ -26,7 +26,7 @@ private interface NoteEditorState : RState {
 interface NoteEditorConnectedProps : RProps {
     var selectedNote: Note?
     var isUpdating: Boolean
-    var addNote: (note: Note) -> Unit
+    var addNote: (title: String, content: String) -> Unit
     var updateNote: (note: Note) -> Unit
     var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
@@ -38,7 +38,7 @@ private interface StateProps : RProps {
 }
 
 private interface DispatchProps : RProps {
-    var addNote: (note: Note) -> Unit
+    var addNote: (title: String, content: String) -> Unit
     var updateNote: (note: Note) -> Unit
     var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
@@ -88,7 +88,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
             val noteWithId = newNote.copy(noteIdentifier = selectedNote.noteIdentifier)
             props.updateNote(noteWithId)
         } else {
-            props.addNote(newNote)
+            props.addNote(title, content)
         }
     }
 
@@ -108,7 +108,7 @@ val noteEditorContainer: RClass<RProps> =
             isUpdating = state.noteEditorState.isUpdating
         },
         { dispatch, _ ->
-            addNote = { note -> dispatch(NoteEditorSlice.addNote(note)) }
+            addNote = { title: String, content: String -> dispatch(NoteEditorSlice.addNote(title, content)) }
             updateNote = { note -> dispatch(NoteEditorSlice.updateNote(note)) }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
             deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }

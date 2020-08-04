@@ -18,7 +18,8 @@ object NoteEditorSlice {
 
     private val noteEditorScope = CoroutineScope(SupervisorJob())
 
-    fun addNote(note: Note): RThunk = AddNoteThunk(noteEditorScope, note)
+    fun addNote(title: String, content: String): RThunk =
+        AddNoteThunk(scope = noteEditorScope, title = title, content = content)
 
     fun updateNote(note: Note): RThunk = UpdateNoteThunk(noteEditorScope, note)
 
