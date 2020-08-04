@@ -6,8 +6,8 @@ import com.akjaw.fullerstack.testObserve
 import com.soywiz.klock.DateTime
 import database.NoteEntity
 import database.NoteEntityMapper
-import feature.NewAddNote
-import feature.NewUpdateNote
+import feature.AddNote
+import feature.UpdateNote
 import helpers.date.TimestampProvider
 import helpers.validation.NoteInputValidator
 import io.mockk.every
@@ -50,15 +50,13 @@ internal class NoteEditorViewModelTest {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         coroutineDispatcher = TestCoroutineDispatcher()
-        val addNote = NewAddNote(
+        val addNote = AddNote(
             coroutineDispatcher = coroutineDispatcher,
-            noteEntityMapper = noteEntityMapper,
             noteDao = noteDaoTestFake,
-            noteSchemaMapper = noteSchemaMapper,
             noteApi = noteApiTestFake,
             timestampProvider = timestampProvider
             )
-        val updateNote = NewUpdateNote(
+        val updateNote = UpdateNote(
             coroutineDispatcher = coroutineDispatcher,
             timestampProvider = timestampProvider,
             noteDao = noteDaoTestFake,

@@ -1,7 +1,7 @@
 package features.list.thunk
 
 import composition.KodeinEntry
-import feature.NewGetNotes
+import feature.GetNotes
 import features.list.NotesListSlice
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -15,7 +15,7 @@ import store.RThunk
 import store.nullAction
 
 class GetNotesListThunk(private val scope: CoroutineScope) : RThunk {
-    private val getNotes by KodeinEntry.di.instance<NewGetNotes>()
+    private val getNotes by KodeinEntry.di.instance<GetNotes>()
     private var notesFlowJob: Job? = null
 
     // TODO should this be cancelled somewhere?

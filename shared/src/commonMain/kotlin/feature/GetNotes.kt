@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import model.Note
 
-class NewGetNotes(
+class GetNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,
     private val noteEntityMapper: NoteEntityMapper

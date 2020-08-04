@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.akjaw.fullerstack.screens.common.LiveEvent
 import com.akjaw.fullerstack.screens.common.ParcelableNote
-import feature.NewAddNote
-import feature.NewUpdateNote
+import feature.AddNote
+import feature.UpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,8 +14,8 @@ import model.NoteIdentifier
 
 class NoteEditorViewModel(
     private val applicationScope: CoroutineScope,
-    private val addNote: NewAddNote,
-    private val updateNote: NewUpdateNote,
+    private val addNote: AddNote,
+    private val updateNote: UpdateNote,
     private val noteInputValidator: NoteInputValidator
 ) : ViewModel() {
 

@@ -4,8 +4,8 @@ import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
 import database.NoteEntityMapper
-import feature.NewDeleteNotes
-import feature.NewGetNotes
+import feature.DeleteNotes
+import feature.GetNotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -32,8 +32,8 @@ internal class NotesListViewModelTest {
     private val noteEntityMapper = NoteEntityMapper()
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var getNotes: NewGetNotes
-    private lateinit var deleteNotes: NewDeleteNotes
+    private lateinit var getNotes: GetNotes
+    private lateinit var deleteNotes: DeleteNotes
     private lateinit var SUT: NotesListViewModel
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
@@ -43,8 +43,8 @@ internal class NotesListViewModelTest {
     fun setUp() {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        getNotes = NewGetNotes(testCoroutineDispatcher, noteDaoTestFake, noteEntityMapper)
-        deleteNotes = NewDeleteNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
+        getNotes = GetNotes(testCoroutineDispatcher, noteDaoTestFake, noteEntityMapper)
+        deleteNotes = DeleteNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
         SUT = NotesListViewModel(testCoroutineScope, getNotes, deleteNotes)
 
         noteDaoTestFake.initializeNoteEntities(NOTES)

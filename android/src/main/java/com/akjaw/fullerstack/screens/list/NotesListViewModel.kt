@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import feature.NewDeleteNotes
-import feature.NewGetNotes
+import feature.DeleteNotes
+import feature.GetNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -14,8 +14,8 @@ import model.NoteIdentifier
 
 internal class NotesListViewModel(
     private val applicationScope: CoroutineScope,
-    private val getNotes: NewGetNotes,
-    private val deleteNotes: NewDeleteNotes
+    private val getNotes: GetNotes,
+    private val deleteNotes: DeleteNotes
 ) : ViewModel() {
 
     internal sealed class NotesListState {

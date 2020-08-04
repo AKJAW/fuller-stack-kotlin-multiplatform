@@ -27,7 +27,7 @@ class AddNoteTest {
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
     private lateinit var timestampProviderFake: TimestampProviderFake
-    private lateinit var SUT: NewAddNote
+    private lateinit var SUT: AddNote
 
     @BeforeTest
     fun setUp() {
@@ -35,7 +35,7 @@ class AddNoteTest {
         timestampProviderFake.timestamp = TIMESTAMP
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        SUT = NewAddNote(
+        SUT = AddNote(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake,

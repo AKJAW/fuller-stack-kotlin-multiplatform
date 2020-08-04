@@ -9,7 +9,7 @@ import network.NetworkResponse
 import network.NoteApi
 import network.safeApiCall
 
-class NewUpdateNote(
+class UpdateNote(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val timestampProvider: TimestampProvider,
     private val noteDao: NoteDao,

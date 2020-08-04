@@ -48,13 +48,13 @@ class DeleteNotesTest {
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var SUT: NewDeleteNotes
+    private lateinit var SUT: DeleteNotes
 
     @BeforeTest
     fun setUp() {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        SUT = NewDeleteNotes(
+        SUT = DeleteNotes(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake

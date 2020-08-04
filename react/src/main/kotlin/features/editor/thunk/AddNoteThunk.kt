@@ -1,7 +1,7 @@
 package features.editor.thunk
 
 import composition.KodeinEntry
-import feature.NewAddNote
+import feature.AddNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
@@ -16,7 +16,7 @@ class AddNoteThunk(
     private val title: String,
     private val content: String
 ) : RThunk {
-    private val addNote by KodeinEntry.di.instance<NewAddNote>()
+    private val addNote by KodeinEntry.di.instance<AddNote>()
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {

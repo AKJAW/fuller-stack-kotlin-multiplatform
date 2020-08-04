@@ -1,7 +1,7 @@
 package features.editor.thunk
 
 import composition.KodeinEntry
-import feature.NewUpdateNote
+import feature.UpdateNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import model.NoteIdentifier
@@ -18,7 +18,7 @@ class UpdateNoteThunk(
     private val title: String,
     private val content: String
 ) : RThunk {
-    private val updateNote by KodeinEntry.di.instance<NewUpdateNote>()
+    private val updateNote by KodeinEntry.di.instance<UpdateNote>()
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {

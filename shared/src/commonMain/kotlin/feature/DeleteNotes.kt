@@ -8,7 +8,7 @@ import network.NetworkResponse
 import network.NoteApi
 import network.safeApiCall
 
-class NewDeleteNotes(
+class DeleteNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,
     private val noteApi: NoteApi

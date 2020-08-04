@@ -33,13 +33,13 @@ class GetNotesTest {
     private val noteEntityMapper: NoteEntityMapper = NoteEntityMapper()
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var SUT: NewGetNotes
+    private lateinit var SUT: GetNotes
 
     @BeforeTest
     fun setUp() {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        SUT = NewGetNotes(
+        SUT = GetNotes(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
             noteEntityMapper = noteEntityMapper
