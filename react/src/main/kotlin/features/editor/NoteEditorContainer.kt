@@ -27,7 +27,7 @@ interface NoteEditorConnectedProps : RProps {
     var selectedNote: Note?
     var isUpdating: Boolean
     var addNote: (title: String, content: String) -> Unit
-    var updateNote: (note: Note) -> Unit
+    var updateNote: (noteIdentifier: NoteIdentifier, title: String, content: String) -> Unit
     var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
@@ -39,7 +39,7 @@ private interface StateProps : RProps {
 
 private interface DispatchProps : RProps {
     var addNote: (title: String, content: String) -> Unit
-    var updateNote: (note: Note) -> Unit
+    var updateNote: (noteIdentifier: NoteIdentifier, title: String, content: String) -> Unit
     var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
@@ -80,13 +80,15 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         }
         setState { this.isTitleValid = true }
 
-        val newNote = Note(title = title, content = content)
         val selectedNote = props.selectedNote
         console.log(props.isUpdating)
         console.log(selectedNote)
         if (props.isUpdating && selectedNote != null) {
-            val noteWithId = newNote.copy(noteIdentifier = selectedNote.noteIdentifier)
-            props.updateNote(noteWithId)
+            props.updateNote(
+                selectedNote.noteIdentifier,
+                title,
+                content
+            )
         } else {
             props.addNote(title, content)
         }
@@ -109,7 +111,9 @@ val noteEditorContainer: RClass<RProps> =
         },
         { dispatch, _ ->
             addNote = { title: String, content: String -> dispatch(NoteEditorSlice.addNote(title, content)) }
-            updateNote = { note -> dispatch(NoteEditorSlice.updateNote(note)) }
+            updateNote = { noteIdentifier: NoteIdentifier, title: String, content: String ->
+                dispatch(NoteEditorSlice.updateNote(noteIdentifier, title, content))
+            }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
             deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
         }

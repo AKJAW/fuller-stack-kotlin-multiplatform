@@ -21,7 +21,12 @@ object NoteEditorSlice {
     fun addNote(title: String, content: String): RThunk =
         AddNoteThunk(scope = noteEditorScope, title = title, content = content)
 
-    fun updateNote(note: Note): RThunk = UpdateNoteThunk(noteEditorScope, note)
+    fun updateNote(
+        noteIdentifier: NoteIdentifier,
+        title: String,
+        content: String
+    ): RThunk =
+        UpdateNoteThunk(noteEditorScope, noteIdentifier, title, content)
 
     fun deleteNotes(noteIdentifiers: List<NoteIdentifier>): RThunk = DeleteNotesThunk(noteEditorScope, noteIdentifiers)
 
