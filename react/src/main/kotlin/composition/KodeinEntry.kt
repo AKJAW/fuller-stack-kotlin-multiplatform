@@ -28,7 +28,7 @@ object KodeinEntry : DIAware {
                 }
             }
         }
-        bind<NoteApi>() with singleton { KtorClientNoteApi(instance(), instance()) }
+        bind<NoteApi>() with singleton { KtorClientNoteApi(instance()) }
         bind<NoteDao>() with singleton {
             //TODO replace this after finishing the android implementation
             NoteDaoTestFake().apply {

@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class AddNotePayload(
     val title: String,
     val content: String,
-    val currentTimestamp: Long
+    val currentTimestamp: Long //TODO should creation timestamp also be added?
 )

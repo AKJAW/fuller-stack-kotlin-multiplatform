@@ -21,5 +21,5 @@ val networkModule = DI.Module("networkModule") {
             .build()
             .create(NoteService::class.java)
     }
-    bind<NoteApi>() with singleton { RetrofitNoteApi(instance(), instance()) }
+    bind<NoteApi>() with singleton { RetrofitNoteApi(instance()) }
 }

@@ -24,5 +24,5 @@ interface NoteDao {
 
     suspend fun deleteNotes(noteIds: List<Int>)
 
-    suspend fun setWasDeleted(noteIds: List<Int>)
+    suspend fun setWasDeleted(noteIds: List<Int>, wasDeleted: Boolean)
 }

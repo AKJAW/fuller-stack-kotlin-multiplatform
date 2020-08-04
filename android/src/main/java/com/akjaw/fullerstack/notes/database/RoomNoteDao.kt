@@ -77,6 +77,9 @@ abstract class RoomNoteDao : NoteDao {
     @Query("DELETE FROM notes WHERE noteId in (:noteIds)")
     abstract override suspend fun deleteNotes(noteIds: List<Int>)
 
-    @Query("UPDATE notes SET wasDeleted = 1 WHERE noteId in (:noteIds)")
-    abstract override suspend fun setWasDeleted(noteIds: List<Int>)
+    @Query("UPDATE notes SET wasDeleted = :wasDeleted WHERE noteId in (:noteIds)")
+    abstract override suspend fun setWasDeleted(
+        noteIds: List<Int>,
+        wasDeleted: Boolean
+    )
 }

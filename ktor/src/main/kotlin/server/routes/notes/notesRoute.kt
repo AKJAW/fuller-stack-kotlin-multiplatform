@@ -16,6 +16,7 @@ import org.kodein.di.ktor.di
 import server.logger.ApiLogger
 import server.storage.NotesService
 
+@Suppress("LongMethod")
 fun Routing.notesRoute() {
     val apiLogger: ApiLogger by di().instance()
     val notesService: NotesService by di().instance()

@@ -3,7 +3,6 @@ package tests
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import model.Note
-import model.NoteIdentifier
 import model.schema.NoteSchema
 import network.NoteApi
 
@@ -24,8 +23,8 @@ class NoteApiTestFake : NoteApi {
         }.toMutableList()
     }
 
-    override suspend fun getNotes(): List<Note> {
-        TODO("Not yet implemented")
+    override suspend fun getNotes(): List<NoteSchema> {
+        return notes
     }
 
     override suspend fun addNote(addNotePayload: AddNotePayload): Int = runOrFail {
@@ -59,8 +58,7 @@ class NoteApiTestFake : NoteApi {
         notes.add(index, entity)
     }
 
-    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = runOrFail {
-        val ids = noteIdentifiers.map { it.id }
+    override suspend fun deleteNotes(ids: List<Int>) = runOrFail {
         notes = notes.filterNot { noteSchema ->
             ids.contains(noteSchema.apiId)
         }.toMutableList()

@@ -98,10 +98,10 @@ class NoteDaoTestFake : NoteDao {
         notes = newNotes
     }
 
-    override suspend fun setWasDeleted(noteIds: List<Int>) {
+    override suspend fun setWasDeleted(noteIds: List<Int>, wasDeleted: Boolean) {
         val newNotes = notes.map { note ->
             if(noteIds.contains(note.noteId)){
-                note.copy(wasDeleted = true)
+                note.copy(wasDeleted = wasDeleted)
             } else {
                 note
             }

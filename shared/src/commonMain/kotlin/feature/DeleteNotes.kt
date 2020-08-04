@@ -16,8 +16,8 @@ class DeleteNotes(
 
     suspend fun executeAsync(noteIdentifiers: List<NoteIdentifier>): Boolean = withContext(coroutineDispatcher) {
         val ids = noteIdentifiers.map { it.id }
-        noteDao.setWasDeleted(ids)
-        val result = safeApiCall { noteApi.deleteNotes(noteIdentifiers) }
+        noteDao.setWasDeleted(ids, true)
+        val result = safeApiCall { noteApi.deleteNotes(ids) }
 
         when (result) {
             is NetworkResponse.Success -> {

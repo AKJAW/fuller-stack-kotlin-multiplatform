@@ -1,7 +1,6 @@
 package feature
 
 import base.CommonDispatchers
-import com.soywiz.klock.DateTime
 import database.NoteEntityMapper
 import kotlinx.coroutines.flow.first
 import model.Note
@@ -17,7 +16,6 @@ import kotlin.test.assertEquals
 class GetNotesTest {
 
     companion object {
-        private val date = DateTime.createAdjusted(2020, 8, 1)
         private val FIRST_NOTE = Note(
             NoteIdentifier(1),
             title = "first",
@@ -61,7 +59,7 @@ class GetNotesTest {
     @Test
     fun `Deleted notes are not returned`() = runTest {
         noteDaoTestFake.initializeNoteEntities(listOf(FIRST_NOTE, SECOND_NOTE))
-        noteDaoTestFake.setWasDeleted(listOf(SECOND_NOTE.noteIdentifier.id))
+        noteDaoTestFake.setWasDeleted(listOf(SECOND_NOTE.noteIdentifier.id), true)
 
         val flow = SUT.executeAsync()
 

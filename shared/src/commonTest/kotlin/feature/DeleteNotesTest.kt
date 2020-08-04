@@ -1,10 +1,8 @@
 package feature
 
 import base.CommonDispatchers
-import database.NoteEntity
 import model.Note
 import model.NoteIdentifier
-import model.schema.NoteSchema
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -18,32 +16,8 @@ import kotlin.test.assertTrue
 class DeleteNotesTest {
 
     companion object {
-        private const val FIRST_ID = 1
-        private val FIRST_NOTE = Note(noteIdentifier = NoteIdentifier(FIRST_ID), title = "first", content = "first")
-        private const val SECOND_ID = 2
-        private val SECOND_NOTE = Note(noteIdentifier = NoteIdentifier(SECOND_ID), title = "second", content = "second")
-
-        private val ENTITIES = listOf(
-            createEntity(FIRST_NOTE),
-            createEntity(SECOND_NOTE)
-        )
-
-        private val SCHEMAS = listOf(
-            NoteSchema(apiId = FIRST_ID, title = FIRST_NOTE.title, content = FIRST_NOTE.content),
-            NoteSchema(apiId = SECOND_ID, title = SECOND_NOTE.title, content = SECOND_NOTE.content)
-        )
-
-        private fun createEntity(note: Note): NoteEntity {
-            val timestamp = 0L
-            return NoteEntity(
-                id = note.noteIdentifier.id,
-                noteId = note.noteIdentifier.id,
-                title = note.title,
-                content = note.content,
-                lastModificationTimestamp = timestamp,
-                creationTimestamp = timestamp
-            )
-        }
+        private val FIRST_NOTE = Note(noteIdentifier = NoteIdentifier(1), title = "first", content = "first")
+        private val SECOND_NOTE = Note(noteIdentifier = NoteIdentifier(2), title = "second", content = "second")
     }
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
@@ -59,8 +33,8 @@ class DeleteNotesTest {
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
-        noteDaoTestFake.notes = ENTITIES.toMutableList()
-        noteApiTestFake.notes = SCHEMAS.toMutableList()
+        noteDaoTestFake.initializeNoteEntities(listOf(FIRST_NOTE, SECOND_NOTE))
+        noteApiTestFake.initializeSchemas(listOf(FIRST_NOTE, SECOND_NOTE))
     }
 
     @JsName("TrueReturnedOnApiSuccess")
