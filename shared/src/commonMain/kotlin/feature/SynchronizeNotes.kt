@@ -67,7 +67,7 @@ class SynchronizeNotes(
         }
 
         noteDao.deleteNotes(localNotesToBeDeleted)
-        noteApi.deleteNotes(apiNotesToBeDeleted)
+        safeApiCall { noteApi.deleteNotes(apiNotesToBeDeleted) }
         noteDao.setWasDeleted(localNotesToBeRestored, false)
     }
 
@@ -86,7 +86,7 @@ class SynchronizeNotes(
                     content = localNote.content,
                     currentTimestamp = localNote.creationTimestamp
                 )
-                noteApi.addNote(payload)
+                safeApiCall { noteApi.addNote(payload) }
             }
         }
     }
@@ -100,7 +100,7 @@ class SynchronizeNotes(
                 content = localNote.title,
                 lastModificationTimestamp = localNote.lastModificationTimestamp
             )
-            noteApi.updateNote(payload)
+            safeApiCall { noteApi.updateNote(payload) }
         } else {
             val payload = UpdateNotePayload(
                 noteId = apiNote.apiId,
