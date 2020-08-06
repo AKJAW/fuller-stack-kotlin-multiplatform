@@ -2,7 +2,7 @@ package com.akjaw.fullerstack.notes.network
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
-import model.schema.NoteSchema
+import network.NoteSchema
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

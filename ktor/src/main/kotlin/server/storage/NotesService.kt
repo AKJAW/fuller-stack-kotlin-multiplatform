@@ -3,7 +3,7 @@ package server.storage
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import model.NoteIdentifier
-import model.schema.NoteSchema
+import network.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId

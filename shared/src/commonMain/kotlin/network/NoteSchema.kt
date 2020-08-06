@@ -1,4 +1,4 @@
-package model.schema
+package network
 
 import kotlinx.serialization.Serializable
 

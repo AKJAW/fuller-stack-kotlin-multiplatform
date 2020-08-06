@@ -5,9 +5,9 @@ import database.NoteEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
-import model.schema.NoteSchema
 import network.NetworkResponse
 import network.NoteApi
+import network.NoteSchema
 import network.safeApiCall
 
 class SynchronizeNotes(

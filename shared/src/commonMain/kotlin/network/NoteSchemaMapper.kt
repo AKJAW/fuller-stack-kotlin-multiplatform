@@ -3,7 +3,6 @@ package network
 import com.soywiz.klock.DateTime
 import model.Note
 import model.NoteIdentifier
-import model.schema.NoteSchema
 
 class NoteSchemaMapper {
 

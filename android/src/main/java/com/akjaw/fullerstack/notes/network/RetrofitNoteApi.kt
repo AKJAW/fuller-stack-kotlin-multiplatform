@@ -2,8 +2,8 @@ package com.akjaw.fullerstack.notes.network
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
-import model.schema.NoteSchema
 import network.NoteApi
+import network.NoteSchema
 
 class RetrofitNoteApi(
     private val noteService: NoteService

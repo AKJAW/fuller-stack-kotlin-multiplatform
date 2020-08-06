@@ -17,7 +17,7 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import model.Note
 import model.NoteIdentifier
-import model.schema.NoteSchema
+import network.NoteSchema
 import network.NoteSchemaMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

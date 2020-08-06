@@ -2,7 +2,6 @@ package network
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
-import model.schema.NoteSchema
 
 interface NoteApi {
 

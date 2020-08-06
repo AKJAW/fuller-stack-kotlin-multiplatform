@@ -6,7 +6,7 @@ import com.soywiz.klock.days
 import database.NoteEntity
 import model.Note
 import model.NoteIdentifier
-import model.schema.NoteSchema
+import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -211,6 +211,6 @@ class SynchronizeNotesTest {
         title = title ?: this.title,
         content = content ?: this.content,
         lastModificationTimestamp = lastModificationTimestamp ?: this.lastModificationDate.unixMillisLong,
-        creationTimestamp = creationTimestamp  ?: this.creationDate.unixMillisLong
+        creationTimestamp = creationTimestamp ?: this.creationDate.unixMillisLong
     )
 }

@@ -3,8 +3,8 @@ package tests
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import model.Note
-import model.schema.NoteSchema
 import network.NoteApi
+import network.NoteSchema
 
 @Suppress("TooGenericExceptionThrown")
 class NoteApiTestFake : NoteApi {

@@ -8,7 +8,6 @@ import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
-import model.schema.NoteSchema
 
 class KtorClientNoteApi(
     private val client: HttpClient

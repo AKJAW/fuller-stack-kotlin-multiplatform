@@ -5,7 +5,7 @@ import database.NoteEntity
 import helpers.date.TimestampProviderFake
 import model.Note
 import model.NoteIdentifier
-import model.schema.NoteSchema
+import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
