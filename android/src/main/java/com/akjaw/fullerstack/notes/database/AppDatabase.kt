@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import database.NoteEntity
 
 @Suppress("MagicNumber")
-@Database(entities = [NoteEntity::class], version = 3)
+@Database(entities = [NoteEntity::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
         fun create(applicationContext: Context): AppDatabase {
