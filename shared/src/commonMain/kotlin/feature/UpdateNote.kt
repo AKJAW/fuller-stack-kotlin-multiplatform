@@ -4,6 +4,7 @@ import database.NoteDao
 import helpers.date.TimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import model.LastModificationTimestamp
 import model.NoteIdentifier
 import network.NetworkResponse
 import network.NoteApi
@@ -26,7 +27,7 @@ class UpdateNote(
             noteId = noteIdentifier.id,
             title = title,
             content = content,
-            lastModificationTimestamp = timestampProvider.now()
+            lastModificationTimestamp = LastModificationTimestamp(timestampProvider.now())
         )
         noteDao.updateNote(payload)
         val networkResponse = safeApiCall { noteApi.updateNote(payload) }

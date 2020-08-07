@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import database.NoteEntity
 
 @Suppress("MagicNumber")
 @Database(entities = [NoteEntity::class], version = 3, exportSchema = false)
+@TypeConverters(TimestampConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
         fun create(applicationContext: Context): AppDatabase {

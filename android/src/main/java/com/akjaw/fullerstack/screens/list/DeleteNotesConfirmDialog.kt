@@ -33,7 +33,7 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
         }
     }
 
-    private lateinit var onNotesDeleted: () -> Unit // TODO should this be nulled out
+    private lateinit var onNotesDeleted: () -> Unit // TODO should this be nulled out / is this kept on screen rotation
     private lateinit var noteIds: List<Int>
     override val di: DI by di()
 

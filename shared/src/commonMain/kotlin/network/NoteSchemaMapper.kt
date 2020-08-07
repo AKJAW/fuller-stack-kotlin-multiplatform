@@ -1,6 +1,8 @@
 package network
 
 import com.soywiz.klock.DateTime
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.Note
 import model.NoteIdentifier
 
@@ -13,8 +15,8 @@ class NoteSchemaMapper {
             noteIdentifier = NoteIdentifier(note.apiId),
             title = note.title,
             content = note.content,
-            lastModificationDate = DateTime(note.lastModificationTimestamp),
-            creationDate = DateTime(note.creationTimestamp)
+            lastModificationDate = DateTime(note.lastModificationTimestamp.unix),
+            creationDate = DateTime(note.creationTimestamp.unix)
         )
 
     fun toSchema(note: Note): NoteSchema =
@@ -22,7 +24,7 @@ class NoteSchemaMapper {
             apiId = note.noteIdentifier.id,
             title = note.title,
             content = note.content,
-            lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
-            creationTimestamp = note.creationDate.unixMillisLong
+            lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
+            creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong)
         )
 }

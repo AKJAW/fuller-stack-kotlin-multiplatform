@@ -6,6 +6,8 @@ import feature.AddNotePayload
 import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.Note
 
 class NoteDaoTestFake : NoteDao {
@@ -23,8 +25,8 @@ class NoteDaoTestFake : NoteDao {
                 noteId = note.noteIdentifier.id,
                 title = note.title,
                 content = note.content,
-                lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
-                creationTimestamp = note.creationDate.unixMillisLong,
+                lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
+                creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong),
                 hasSyncFailed = false,
                 wasDeleted = false
             )
@@ -42,8 +44,8 @@ class NoteDaoTestFake : NoteDao {
             noteId = newId,
             title = addNotePayload.title,
             content = addNotePayload.content,
-            lastModificationTimestamp = addNotePayload.currentTimestamp,
-            creationTimestamp = addNotePayload.currentTimestamp
+            lastModificationTimestamp = addNotePayload.lastModificationTimestamp,
+            creationTimestamp = addNotePayload.creationTimestamp
         )
         notes = notes + newNote
 

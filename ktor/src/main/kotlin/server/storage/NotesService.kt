@@ -2,6 +2,8 @@ package server.storage
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.NoteIdentifier
 import network.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
@@ -26,8 +28,8 @@ class NotesService(
                     apiId = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
-                    lastModificationTimestamp = row[NotesTable.lastModificationDateTimestamp],
-                    creationTimestamp = row[NotesTable.creationDateTimestamp]
+                    lastModificationTimestamp = LastModificationTimestamp(row[NotesTable.lastModificationDateTimestamp]),
+                    creationTimestamp = CreationTimestamp(row[NotesTable.creationDateTimestamp])
                 )
             }
     }
@@ -36,8 +38,8 @@ class NotesService(
         val id = NotesTable.insertAndGetId {
             it[title] = payload.title
             it[content] = payload.content
-            it[lastModificationDateTimestamp] = payload.currentTimestamp
-            it[creationDateTimestamp] = payload.currentTimestamp
+            it[lastModificationDateTimestamp] = payload.lastModificationTimestamp.unix
+            it[creationDateTimestamp] = payload.creationTimestamp.unix
         }
         apiLogger.log("NoteService addNote", "new id: $id")
         return@queryDatabase id.value
@@ -47,7 +49,7 @@ class NotesService(
         val updatedAmount = NotesTable.update({ NotesTable.id eq payload.noteId }) {
             it[title] = payload.title
             it[content] = payload.content
-            it[lastModificationDateTimestamp] = payload.lastModificationTimestamp
+            it[lastModificationDateTimestamp] = payload.lastModificationTimestamp.unix
         }
         apiLogger.log("NoteService updateNote", "updatedAmount: $updatedAmount")
         return@queryDatabase updatedAmount > 0

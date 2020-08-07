@@ -15,6 +15,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.Note
 import model.NoteIdentifier
 import network.NoteSchema
@@ -110,10 +112,10 @@ internal class NoteEditorViewModelTest {
 
             SUT.onActionClicked("Title", "Content")
 
-            assertEquals(TIMESTAMP, noteDaoTestFake.notes.first().creationTimestamp)
-            assertEquals(TIMESTAMP, noteDaoTestFake.notes.first().lastModificationTimestamp)
-            assertEquals(TIMESTAMP, noteApiTestFake.notes.first().creationTimestamp)
-            assertEquals(TIMESTAMP, noteApiTestFake.notes.first().lastModificationTimestamp)
+            assertEquals(CreationTimestamp(TIMESTAMP), noteDaoTestFake.notes.first().creationTimestamp)
+            assertEquals(LastModificationTimestamp(TIMESTAMP), noteDaoTestFake.notes.first().lastModificationTimestamp)
+            assertEquals(CreationTimestamp(TIMESTAMP), noteApiTestFake.notes.first().creationTimestamp)
+            assertEquals(LastModificationTimestamp(TIMESTAMP), noteApiTestFake.notes.first().lastModificationTimestamp)
         }
     }
 
@@ -132,15 +134,15 @@ internal class NoteEditorViewModelTest {
             noteId = note.noteIdentifier.id,
             title = note.title,
             content = note.content,
-            lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
-            creationTimestamp = note.creationDate.unixMillisLong
+            lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
+            creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong)
         )
         private val schema = NoteSchema(
             apiId = note.noteIdentifier.id,
             title = note.title,
             content = note.content,
-            lastModificationTimestamp = note.lastModificationDate.unixMillisLong,
-            creationTimestamp = note.creationDate.unixMillisLong
+            lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
+            creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong)
         )
 
         @BeforeEach

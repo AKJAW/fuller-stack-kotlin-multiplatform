@@ -5,6 +5,8 @@ import database.NoteEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import network.NetworkResponse
 import network.NoteApi
 import network.NoteSchema
@@ -58,7 +60,7 @@ class SynchronizeNotes(
             if(apiNote == null) {
                 localNotesToBeDeleted.add(localNote.noteId)
                 return@forEach
-            } else if (apiNote.lastModificationTimestamp <= localNote.lastModificationTimestamp) {
+            } else if (apiNote.lastModificationTimestamp.unix <= localNote.lastModificationTimestamp.unix) {
                 apiNotesToBeDeleted.add(apiNote.apiId)
                 localNotesToBeDeleted.add(localNote.noteId)
             } else {
@@ -84,7 +86,8 @@ class SynchronizeNotes(
                 val payload = AddNotePayload(
                     title = localNote.title,
                     content = localNote.content,
-                    currentTimestamp = localNote.creationTimestamp
+                    lastModificationTimestamp = LastModificationTimestamp(localNote.lastModificationTimestamp.unix),
+                    creationTimestamp = CreationTimestamp(localNote.creationTimestamp.unix)
                 )
                 safeApiCall { noteApi.addNote(payload) }
             }
@@ -92,7 +95,7 @@ class SynchronizeNotes(
     }
 
     private suspend fun handleNoteUpdate(localNote: NoteEntity, apiNote: NoteSchema) {
-        val isLocalMoreRecent = localNote.lastModificationTimestamp >= apiNote.lastModificationTimestamp
+        val isLocalMoreRecent = localNote.lastModificationTimestamp.unix >= apiNote.lastModificationTimestamp.unix
         if(isLocalMoreRecent) {
             val payload = UpdateNotePayload(
                 noteId = apiNote.apiId,
@@ -125,7 +128,8 @@ class SynchronizeNotes(
             val payload = AddNotePayload(
                 title = apiNote.title,
                 content = apiNote.content,
-                currentTimestamp = apiNote.creationTimestamp
+                lastModificationTimestamp = apiNote.lastModificationTimestamp,
+                creationTimestamp = apiNote.creationTimestamp
             )
             noteDao.addNote(payload)
         }

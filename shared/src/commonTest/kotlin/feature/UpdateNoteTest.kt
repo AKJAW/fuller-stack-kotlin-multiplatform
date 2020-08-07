@@ -4,6 +4,8 @@ import base.CommonDispatchers
 import com.soywiz.klock.DateTime
 import database.NoteEntity
 import helpers.date.TimestampProviderFake
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.Note
 import model.NoteIdentifier
 import network.NoteSchema
@@ -84,8 +86,8 @@ class UpdateNoteTest {
             noteId = INITIAL_NOTE.noteIdentifier.id,
             title = UPDATED_TITLE,
             content = UPDATED_CONTENT,
-            lastModificationTimestamp = lastModificationTimestamp,
-            creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong
+            lastModificationTimestamp = LastModificationTimestamp(lastModificationTimestamp),
+            creationTimestamp = CreationTimestamp(INITIAL_NOTE.creationDate.unixMillisLong)
         )
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
@@ -102,8 +104,8 @@ class UpdateNoteTest {
             apiId = INITIAL_NOTE.noteIdentifier.id,
             title = UPDATED_TITLE,
             content = UPDATED_CONTENT,
-            lastModificationTimestamp = lastModificationTimestamp,
-            creationTimestamp = INITIAL_NOTE.creationDate.unixMillisLong
+            lastModificationTimestamp = LastModificationTimestamp(lastModificationTimestamp),
+            creationTimestamp = CreationTimestamp(INITIAL_NOTE.creationDate.unixMillisLong)
         )
         assertEquals(expectedNote, noteApiTestFake.notes.first())
     }

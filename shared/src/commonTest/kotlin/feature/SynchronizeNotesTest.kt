@@ -4,6 +4,8 @@ import base.CommonDispatchers
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import database.NoteEntity
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.Note
 import model.NoteIdentifier
 import network.NoteSchema
@@ -103,8 +105,8 @@ class SynchronizeNotesTest {
         val addedNote = noteApiTestFake.notes[1]
         assertEquals(SECOND_NOTE.title, addedNote.title)
         assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationDate.unixMillisLong, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationDate.unixMillisLong, addedNote.lastModificationTimestamp)
+        assertEquals(CreationTimestamp(SECOND_NOTE.creationDate.unixMillisLong), addedNote.creationTimestamp)
+        assertEquals(LastModificationTimestamp(SECOND_NOTE.lastModificationDate.unixMillisLong), addedNote.lastModificationTimestamp)
     }
 
     @JsName("AddNewApiNotesToLocal")
@@ -124,8 +126,8 @@ class SynchronizeNotesTest {
         val addedNote = noteDaoTestFake.notes[1]
         assertEquals(SECOND_NOTE.title, addedNote.title)
         assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationDate.unixMillisLong, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationDate.unixMillisLong, addedNote.lastModificationTimestamp)
+        assertEquals(CreationTimestamp(SECOND_NOTE.creationDate.unixMillisLong), addedNote.creationTimestamp)
+        assertEquals(LastModificationTimestamp(SECOND_NOTE.lastModificationDate.unixMillisLong), addedNote.lastModificationTimestamp)
     }
 
     @JsName("WasDeletedAndRecentThenDeleteFromApi")
@@ -195,8 +197,8 @@ class SynchronizeNotesTest {
         noteId = this.noteIdentifier.id,
         title = title ?: this.title,
         content = content ?: this.content,
-        lastModificationTimestamp = lastModificationTimestamp ?: this.lastModificationDate.unixMillisLong,
-        creationTimestamp = creationTimestamp  ?: this.creationDate.unixMillisLong,
+        lastModificationTimestamp = if (lastModificationTimestamp != null) LastModificationTimestamp(lastModificationTimestamp) else LastModificationTimestamp(this.lastModificationDate.unixMillisLong),
+        creationTimestamp = if (creationTimestamp != null) CreationTimestamp(creationTimestamp) else CreationTimestamp(this.creationDate.unixMillisLong),
         hasSyncFailed = hasSyncFailed,
         wasDeleted = wasDeleted
     )
@@ -210,7 +212,7 @@ class SynchronizeNotesTest {
         apiId = this.noteIdentifier.id,
         title = title ?: this.title,
         content = content ?: this.content,
-        lastModificationTimestamp = lastModificationTimestamp ?: this.lastModificationDate.unixMillisLong,
-        creationTimestamp = creationTimestamp ?: this.creationDate.unixMillisLong
+        lastModificationTimestamp = if (lastModificationTimestamp != null) LastModificationTimestamp(lastModificationTimestamp) else LastModificationTimestamp(this.lastModificationDate.unixMillisLong),
+        creationTimestamp = if (creationTimestamp != null) CreationTimestamp(creationTimestamp) else CreationTimestamp(this.creationDate.unixMillisLong)
     )
 }

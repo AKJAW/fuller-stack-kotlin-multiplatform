@@ -10,6 +10,7 @@ import database.NoteEntity
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
+import model.LastModificationTimestamp
 
 @Dao
 abstract class RoomNoteDao : NoteDao {
@@ -25,8 +26,8 @@ abstract class RoomNoteDao : NoteDao {
             noteId = noteId,
             title = addNotePayload.title,
             content = addNotePayload.content,
-            lastModificationTimestamp = addNotePayload.currentTimestamp,
-            creationTimestamp = addNotePayload.currentTimestamp
+            lastModificationTimestamp = addNotePayload.lastModificationTimestamp,
+            creationTimestamp = addNotePayload.creationTimestamp
         )
         insertNote(note)
 
@@ -62,7 +63,7 @@ abstract class RoomNoteDao : NoteDao {
         noteId: Int,
         title: String,
         content: String,
-        lastModificationTimestamp: Long
+        lastModificationTimestamp: LastModificationTimestamp
     )
 
     @Query("UPDATE notes SET noteId = :apiId WHERE id = :localId")

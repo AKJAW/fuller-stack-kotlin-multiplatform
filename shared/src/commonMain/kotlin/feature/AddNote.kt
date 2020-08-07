@@ -4,6 +4,8 @@ import database.NoteDao
 import helpers.date.TimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import network.NetworkResponse
 import network.NoteApi
 import network.safeApiCall
@@ -16,7 +18,13 @@ class AddNote(
 ) {
 
     suspend fun executeAsync(title: String, content: String): Boolean = withContext(coroutineDispatcher) {
-        val payload = AddNotePayload(title = title, content = content, currentTimestamp = timestampProvider.now())
+        val currentTimestamp = timestampProvider.now()
+        val payload = AddNotePayload(
+            title = title,
+            content = content,
+            lastModificationTimestamp = LastModificationTimestamp(currentTimestamp),
+            creationTimestamp = CreationTimestamp(currentTimestamp)
+        )
         val localId = noteDao.addNote(payload)
         val networkResponse = safeApiCall { noteApi.addNote(payload) }
 
