@@ -1,5 +1,5 @@
 package helpers.date
 
-interface TimestampProvider {
+interface UnixTimestampProvider {
     fun now(): Long
 }

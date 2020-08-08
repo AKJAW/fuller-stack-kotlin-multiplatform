@@ -4,10 +4,9 @@ import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.screens.common.toParcelable
 import com.akjaw.fullerstack.testObserve
 import database.NoteEntity
-import database.NoteEntityMapper
 import feature.AddNote
 import feature.UpdateNote
-import helpers.date.TimestampProvider
+import helpers.date.UnixTimestampProvider
 import helpers.validation.NoteInputValidator
 import io.mockk.every
 import io.mockk.mockk
@@ -19,7 +18,6 @@ import model.LastModificationTimestamp
 import model.Note
 import model.NoteIdentifier
 import network.NoteSchema
-import network.NoteSchemaMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -35,12 +33,10 @@ internal class NoteEditorViewModelTest {
         private const val TIMESTAMP = 50L
     }
 
-    private val noteEntityMapper = NoteEntityMapper()
-    private val noteSchemaMapper = NoteSchemaMapper()
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
-    private val timestampProvider: TimestampProvider = mockk {
+    private val unixTimestampProvider: UnixTimestampProvider = mockk {
         every { now() } returns TIMESTAMP
     }
     private val noteInputValidator: NoteInputValidator = mockk()
@@ -55,11 +51,11 @@ internal class NoteEditorViewModelTest {
             coroutineDispatcher = coroutineDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake,
-            timestampProvider = timestampProvider
+            unixTimestampProvider = unixTimestampProvider
             )
         val updateNote = UpdateNote(
             coroutineDispatcher = coroutineDispatcher,
-            timestampProvider = timestampProvider,
+            unixTimestampProvider = unixTimestampProvider,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )

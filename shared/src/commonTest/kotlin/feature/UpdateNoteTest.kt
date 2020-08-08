@@ -3,7 +3,7 @@ package feature
 import base.CommonDispatchers
 import com.soywiz.klock.DateTime
 import database.NoteEntity
-import helpers.date.TimestampProviderFake
+import helpers.date.UnixTimestampProviderFake
 import model.CreationTimestamp
 import model.LastModificationTimestamp
 import model.Note
@@ -34,19 +34,19 @@ class UpdateNoteTest {
         private const val UPDATED_CONTENT = "Updated content"
     }
 
-    private lateinit var timestampProvider: TimestampProviderFake
+    private lateinit var unixTimestampProviderFake: UnixTimestampProviderFake
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
     private lateinit var SUT: UpdateNote
 
     @BeforeTest
     fun setUp() {
-        timestampProvider = TimestampProviderFake()
+        unixTimestampProviderFake = UnixTimestampProviderFake()
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         SUT = UpdateNote(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
-            timestampProvider = timestampProvider,
+            unixTimestampProvider = unixTimestampProviderFake,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
@@ -77,7 +77,7 @@ class UpdateNoteTest {
     @Test
     fun `Note is updated in the local database`() = runTest {
         val lastModificationTimestamp = 50L
-        timestampProvider.timestamp = lastModificationTimestamp
+        unixTimestampProviderFake.timestamp = lastModificationTimestamp
 
         SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
 
@@ -96,7 +96,7 @@ class UpdateNoteTest {
     @Test
     fun `Note is updated in the API`() = runTest {
         val lastModificationTimestamp = 50L
-        timestampProvider.timestamp = lastModificationTimestamp
+        unixTimestampProviderFake.timestamp = lastModificationTimestamp
 
         SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
 

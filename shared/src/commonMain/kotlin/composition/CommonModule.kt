@@ -2,9 +2,9 @@ package composition
 
 import base.CommonDispatchers
 import database.NoteEntityMapper
-import helpers.date.KlockTimestampProvider
+import helpers.date.KlockUnixTimestampProvider
 import helpers.date.PatternProvider
-import helpers.date.TimestampProvider
+import helpers.date.UnixTimestampProvider
 import helpers.validation.NoteEditorInputValidator
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,7 +22,7 @@ val common = DI.Module("Common") {
     bind() from singleton { NoteSchemaMapper() }
     bind() from singleton { NoteEntityMapper() }
     bind<CoroutineDispatcher>(tag = "BackgroundDispatcher") with singleton { CommonDispatchers.BackgroundDispatcher }
-    bind<TimestampProvider>() with singleton { KlockTimestampProvider() }
+    bind<UnixTimestampProvider>() with singleton { KlockUnixTimestampProvider() }
     bind() from singleton { PatternProvider(instance()) }
     bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }
     import(useCaseModule)

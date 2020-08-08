@@ -2,7 +2,7 @@ package feature
 
 import base.CommonDispatchers
 import database.NoteEntity
-import helpers.date.TimestampProviderFake
+import helpers.date.UnixTimestampProviderFake
 import model.CreationTimestamp
 import model.LastModificationTimestamp
 import model.Note
@@ -28,20 +28,20 @@ class AddNoteTest {
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var timestampProviderFake: TimestampProviderFake
+    private lateinit var unixTimestampProviderFake: UnixTimestampProviderFake
     private lateinit var SUT: AddNote
 
     @BeforeTest
     fun setUp() {
-        timestampProviderFake = TimestampProviderFake()
-        timestampProviderFake.timestamp = TIMESTAMP
+        unixTimestampProviderFake = UnixTimestampProviderFake()
+        unixTimestampProviderFake.timestamp = TIMESTAMP
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         SUT = AddNote(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake,
-            timestampProvider = timestampProviderFake
+            unixTimestampProvider = unixTimestampProviderFake
         )
     }
 

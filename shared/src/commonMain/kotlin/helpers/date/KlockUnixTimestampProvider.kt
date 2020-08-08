@@ -2,6 +2,6 @@ package helpers.date
 
 import com.soywiz.klock.DateTime
 
-class KlockTimestampProvider : TimestampProvider {
+class KlockUnixTimestampProvider : UnixTimestampProvider {
     override fun now(): Long = DateTime.nowUnixLong()
 }

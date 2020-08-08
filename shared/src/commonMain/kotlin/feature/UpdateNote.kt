@@ -1,7 +1,7 @@
 package feature
 
 import database.NoteDao
-import helpers.date.TimestampProvider
+import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import model.LastModificationTimestamp
@@ -12,7 +12,7 @@ import network.safeApiCall
 
 class UpdateNote(
     private val coroutineDispatcher: CoroutineDispatcher,
-    private val timestampProvider: TimestampProvider,
+    private val unixTimestampProvider: UnixTimestampProvider,
     private val noteDao: NoteDao,
     private val noteApi: NoteApi
 ) {
@@ -27,7 +27,7 @@ class UpdateNote(
             noteId = noteIdentifier.id,
             title = title,
             content = content,
-            lastModificationTimestamp = LastModificationTimestamp(timestampProvider.now())
+            lastModificationTimestamp = LastModificationTimestamp(unixTimestampProvider.now())
         )
         noteDao.updateNote(payload)
         val networkResponse = safeApiCall { noteApi.updateNote(payload) }

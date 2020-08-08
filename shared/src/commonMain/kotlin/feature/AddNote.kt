@@ -1,7 +1,7 @@
 package feature
 
 import database.NoteDao
-import helpers.date.TimestampProvider
+import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import model.CreationTimestamp
@@ -14,16 +14,16 @@ class AddNote(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,
     private val noteApi: NoteApi,
-    private val timestampProvider: TimestampProvider
+    private val unixTimestampProvider: UnixTimestampProvider
 ) {
 
     suspend fun executeAsync(title: String, content: String): Boolean = withContext(coroutineDispatcher) {
-        val currentTimestamp = timestampProvider.now()
+        val currentUnixTimestamp = unixTimestampProvider.now()
         val payload = AddNotePayload(
             title = title,
             content = content,
-            lastModificationTimestamp = LastModificationTimestamp(currentTimestamp),
-            creationTimestamp = CreationTimestamp(currentTimestamp)
+            lastModificationTimestamp = LastModificationTimestamp(currentUnixTimestamp),
+            creationTimestamp = CreationTimestamp(currentUnixTimestamp)
         )
         val localId = noteDao.addNote(payload)
         val networkResponse = safeApiCall { noteApi.addNote(payload) }
