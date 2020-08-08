@@ -3,6 +3,7 @@ package features.list
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemText
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.format
 import kotlinx.css.Align
 import kotlinx.css.Color
 import kotlinx.css.LinearDimension
@@ -63,7 +64,7 @@ val notesListItem = functionalComponent<NotesListItemProps> { props ->
                 css(NotesListItemClasses.noteTitle)
             }
             span {
-                + note.creationDate.format(props.dateFormat)
+                + props.dateFormat.format(note.creationTimestamp.unix)
             }
         }
     }

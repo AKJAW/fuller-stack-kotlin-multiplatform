@@ -25,16 +25,16 @@ class SynchronizeNotesTest {
             NoteIdentifier(1),
             title = "first",
             content = "first",
-            lastModificationDate = FIRST_NOTE_DATE,
-            creationDate = FIRST_NOTE_DATE
+            lastModificationTimestamp = LastModificationTimestamp(FIRST_NOTE_DATE.unixMillisLong),
+            creationTimestamp = CreationTimestamp(FIRST_NOTE_DATE.unixMillisLong)
         )
         private val SECOND_NOTE_DATE = DateTime.createAdjusted(2020, 8, 4)
         private val SECOND_NOTE = Note(
             NoteIdentifier(2),
             title = "second",
             content = "second",
-            lastModificationDate = SECOND_NOTE_DATE,
-            creationDate = SECOND_NOTE_DATE
+            lastModificationTimestamp = LastModificationTimestamp(SECOND_NOTE_DATE.unixMillisLong),
+            creationTimestamp = CreationTimestamp(SECOND_NOTE_DATE.unixMillisLong)
         )
     }
 
@@ -105,8 +105,8 @@ class SynchronizeNotesTest {
         val addedNote = noteApiTestFake.notes[1]
         assertEquals(SECOND_NOTE.title, addedNote.title)
         assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(CreationTimestamp(SECOND_NOTE.creationDate.unixMillisLong), addedNote.creationTimestamp)
-        assertEquals(LastModificationTimestamp(SECOND_NOTE.lastModificationDate.unixMillisLong), addedNote.lastModificationTimestamp)
+        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
+        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
     }
 
     @JsName("AddNewApiNotesToLocal")
@@ -126,8 +126,8 @@ class SynchronizeNotesTest {
         val addedNote = noteDaoTestFake.notes[1]
         assertEquals(SECOND_NOTE.title, addedNote.title)
         assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(CreationTimestamp(SECOND_NOTE.creationDate.unixMillisLong), addedNote.creationTimestamp)
-        assertEquals(LastModificationTimestamp(SECOND_NOTE.lastModificationDate.unixMillisLong), addedNote.lastModificationTimestamp)
+        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
+        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
     }
 
     @JsName("WasDeletedAndRecentThenDeleteFromApi")
@@ -197,8 +197,8 @@ class SynchronizeNotesTest {
         noteId = this.noteIdentifier.id,
         title = title ?: this.title,
         content = content ?: this.content,
-        lastModificationTimestamp = if (lastModificationTimestamp != null) LastModificationTimestamp(lastModificationTimestamp) else LastModificationTimestamp(this.lastModificationDate.unixMillisLong),
-        creationTimestamp = if (creationTimestamp != null) CreationTimestamp(creationTimestamp) else CreationTimestamp(this.creationDate.unixMillisLong),
+        lastModificationTimestamp = lastModificationTimestamp?.toLastModificationTimestamp() ?: this.lastModificationTimestamp,
+        creationTimestamp = creationTimestamp?.toCreationTimestamp() ?: this.creationTimestamp,
         hasSyncFailed = hasSyncFailed,
         wasDeleted = wasDeleted
     )
@@ -212,7 +212,11 @@ class SynchronizeNotesTest {
         apiId = this.noteIdentifier.id,
         title = title ?: this.title,
         content = content ?: this.content,
-        lastModificationTimestamp = if (lastModificationTimestamp != null) LastModificationTimestamp(lastModificationTimestamp) else LastModificationTimestamp(this.lastModificationDate.unixMillisLong),
-        creationTimestamp = if (creationTimestamp != null) CreationTimestamp(creationTimestamp) else CreationTimestamp(this.creationDate.unixMillisLong)
+        lastModificationTimestamp = lastModificationTimestamp?.toLastModificationTimestamp() ?: this.lastModificationTimestamp,
+        creationTimestamp = creationTimestamp?.toCreationTimestamp() ?: this.creationTimestamp
     )
+
+    private fun Long.toLastModificationTimestamp() = LastModificationTimestamp(this)
+
+    private fun Long.toCreationTimestamp() = CreationTimestamp(this)
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.format
 import model.Note
 import model.NoteIdentifier
 
@@ -68,7 +69,7 @@ class NotesListAdapter(
 
         fun bind(note: Note, isSelected: Boolean) {
             title.text = note.title
-            date.text = note.creationDate.format(dateFormat)
+            date.text = dateFormat.format(note.creationTimestamp.unix)
             setBackgroundColor(isSelected)
 
             noteContainer.setOnClickListener {

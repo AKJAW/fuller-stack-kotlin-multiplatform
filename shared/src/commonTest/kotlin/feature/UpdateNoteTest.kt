@@ -27,8 +27,8 @@ class UpdateNoteTest {
             noteIdentifier = NoteIdentifier(1),
             title = "title",
             content = "content",
-            lastModificationDate = date,
-            creationDate = date
+            lastModificationTimestamp = LastModificationTimestamp(date.unixMillisLong),
+            creationTimestamp = CreationTimestamp(date.unixMillisLong)
         )
         private const val UPDATED_TITLE = "Updated title"
         private const val UPDATED_CONTENT = "Updated content"
@@ -87,7 +87,7 @@ class UpdateNoteTest {
             title = UPDATED_TITLE,
             content = UPDATED_CONTENT,
             lastModificationTimestamp = LastModificationTimestamp(lastModificationTimestamp),
-            creationTimestamp = CreationTimestamp(INITIAL_NOTE.creationDate.unixMillisLong)
+            creationTimestamp = INITIAL_NOTE.creationTimestamp
         )
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
@@ -105,7 +105,7 @@ class UpdateNoteTest {
             title = UPDATED_TITLE,
             content = UPDATED_CONTENT,
             lastModificationTimestamp = LastModificationTimestamp(lastModificationTimestamp),
-            creationTimestamp = CreationTimestamp(INITIAL_NOTE.creationDate.unixMillisLong)
+            creationTimestamp = INITIAL_NOTE.creationTimestamp
         )
         assertEquals(expectedNote, noteApiTestFake.notes.first())
     }

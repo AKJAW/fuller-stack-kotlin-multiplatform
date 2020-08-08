@@ -2,8 +2,6 @@ package tests
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
-import model.CreationTimestamp
-import model.LastModificationTimestamp
 import model.Note
 import network.NoteApi
 import network.NoteSchema
@@ -19,8 +17,8 @@ class NoteApiTestFake : NoteApi {
                 apiId = note.noteIdentifier.id,
                 title = note.title,
                 content = note.content,
-                lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
-                creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong)
+                lastModificationTimestamp = note.lastModificationTimestamp,
+                creationTimestamp = note.creationTimestamp
             )
         }.toMutableList()
     }

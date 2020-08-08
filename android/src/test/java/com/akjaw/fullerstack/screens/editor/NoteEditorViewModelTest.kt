@@ -3,7 +3,6 @@ package com.akjaw.fullerstack.screens.editor
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.screens.common.toParcelable
 import com.akjaw.fullerstack.testObserve
-import com.soywiz.klock.DateTime
 import database.NoteEntity
 import database.NoteEntityMapper
 import feature.AddNote
@@ -126,23 +125,23 @@ internal class NoteEditorViewModelTest {
             noteIdentifier = NoteIdentifier(1),
             title = "title",
             content = "content",
-            lastModificationDate = DateTime.fromUnix(0),
-            creationDate = DateTime.fromUnix(0)
+            lastModificationTimestamp = LastModificationTimestamp(0),
+            creationTimestamp = CreationTimestamp(0)
         )
         private val entity = NoteEntity(
             id = note.noteIdentifier.id,
             noteId = note.noteIdentifier.id,
             title = note.title,
             content = note.content,
-            lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
-            creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong)
+            lastModificationTimestamp = note.lastModificationTimestamp,
+            creationTimestamp = note.creationTimestamp
         )
         private val schema = NoteSchema(
             apiId = note.noteIdentifier.id,
             title = note.title,
             content = note.content,
-            lastModificationTimestamp = LastModificationTimestamp(note.lastModificationDate.unixMillisLong),
-            creationTimestamp = CreationTimestamp(note.creationDate.unixMillisLong)
+            lastModificationTimestamp = note.lastModificationTimestamp,
+            creationTimestamp = note.creationTimestamp
         )
 
         @BeforeEach
