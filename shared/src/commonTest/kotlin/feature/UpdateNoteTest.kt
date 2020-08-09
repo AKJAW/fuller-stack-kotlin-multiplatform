@@ -58,7 +58,7 @@ class UpdateNoteTest {
     @JsName("TrueReturnedOnApiSuccess")
     @Test
     fun `When the API call is successful then return true`() = runTest {
-        val result = SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
+        val result = SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         assertTrue(result)
     }
@@ -68,7 +68,7 @@ class UpdateNoteTest {
     fun `When the API call fails then return false`() = runTest {
         noteApiTestFake.willFail = true
 
-        val result = SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
+        val result = SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         assertFalse(result)
     }
@@ -79,7 +79,7 @@ class UpdateNoteTest {
         val lastModificationTimestamp = 50L
         unixTimestampProviderFake.timestamp = lastModificationTimestamp
 
-        SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
+        SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         val expectedNote = NoteEntity(
             id = INITIAL_NOTE.noteIdentifier.id,
@@ -98,7 +98,7 @@ class UpdateNoteTest {
         val lastModificationTimestamp = 50L
         unixTimestampProviderFake.timestamp = lastModificationTimestamp
 
-        SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
+        SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         val expectedNote = NoteSchema(
             apiId = INITIAL_NOTE.noteIdentifier.id,
@@ -115,7 +115,7 @@ class UpdateNoteTest {
     fun `When API request fails then sync failed is set`() = runTest {
         noteApiTestFake.willFail = true
 
-        SUT.executeAsync(INITIAL_NOTE.noteIdentifier, UPDATED_TITLE, UPDATED_CONTENT)
+        SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         assertTrue(noteDaoTestFake.notes.first().hasSyncFailed)
     }

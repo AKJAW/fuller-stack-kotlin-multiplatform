@@ -36,7 +36,7 @@ class AddNote(
                 true
             }
             else -> {
-                noteDao.updateSyncFailed(localId, true)
+                noteDao.updateSyncFailed(payload.creationTimestamp, true)
                 false
             }
         }

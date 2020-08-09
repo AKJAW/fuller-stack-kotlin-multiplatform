@@ -5,6 +5,7 @@ import features.editor.thunk.DeleteNotesThunk
 import features.editor.thunk.UpdateNoteThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import model.CreationTimestamp
 import model.Note
 import model.NoteIdentifier
 import redux.RAction
@@ -22,11 +23,11 @@ object NoteEditorSlice {
         AddNoteThunk(scope = noteEditorScope, title = title, content = content)
 
     fun updateNote(
-        noteIdentifier: NoteIdentifier,
+        creationTimestamp: CreationTimestamp,
         title: String,
         content: String
     ): RThunk =
-        UpdateNoteThunk(noteEditorScope, noteIdentifier, title, content)
+        UpdateNoteThunk(noteEditorScope, creationTimestamp, title, content)
 
     fun deleteNotes(noteIdentifiers: List<NoteIdentifier>): RThunk = DeleteNotesThunk(noteEditorScope, noteIdentifiers)
 

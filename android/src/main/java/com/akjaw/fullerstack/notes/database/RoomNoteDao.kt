@@ -10,6 +10,7 @@ import database.NoteEntity
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
+import model.CreationTimestamp
 import model.LastModificationTimestamp
 
 @Dao
@@ -43,10 +44,10 @@ abstract class RoomNoteDao : NoteDao {
     @Transaction
     override suspend fun updateNote(updateNotePayload: UpdateNotePayload) {
         updateNote(
-            noteId = updateNotePayload.noteId,
             title = updateNotePayload.title,
             content = updateNotePayload.content,
-            lastModificationTimestamp = updateNotePayload.lastModificationTimestamp
+            lastModificationTimestamp = updateNotePayload.lastModificationTimestamp,
+            creationTimestamp = updateNotePayload.creationTimestamp
         )
     }
 
@@ -56,24 +57,21 @@ abstract class RoomNoteDao : NoteDao {
         title = :title, 
         content = :content, 
         lastModificationTimestamp = :lastModificationTimestamp
-        WHERE noteId = :noteId
+        WHERE creationTimestamp = :creationTimestamp
         """
     )
     abstract suspend fun updateNote(
-        noteId: Int,
         title: String,
         content: String,
-        lastModificationTimestamp: LastModificationTimestamp
+        lastModificationTimestamp: LastModificationTimestamp,
+        creationTimestamp: CreationTimestamp
     )
 
     @Query("UPDATE notes SET noteId = :apiId WHERE id = :localId")
     abstract override suspend fun updateNoteId(localId: Int, apiId: Int)
 
-    @Query("UPDATE notes SET hasSyncFailed = :hasSyncFailed WHERE noteId = :noteId")
-    abstract override suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean)
-
-    @Query("DELETE FROM notes WHERE noteId = :noteId")
-    abstract override suspend fun deleteNote(noteId: Int)
+    @Query("UPDATE notes SET hasSyncFailed = :hasSyncFailed WHERE creationTimestamp = :creationTimestamp")
+    abstract override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean)
 
     @Query("DELETE FROM notes WHERE noteId in (:noteIds)")
     abstract override suspend fun deleteNotes(noteIds: List<Int>)

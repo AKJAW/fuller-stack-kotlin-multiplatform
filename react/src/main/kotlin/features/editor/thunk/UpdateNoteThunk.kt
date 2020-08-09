@@ -4,7 +4,7 @@ import composition.KodeinEntry
 import feature.UpdateNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import model.NoteIdentifier
+import model.CreationTimestamp
 import org.kodein.di.instance
 import redux.RAction
 import redux.WrapperAction
@@ -14,7 +14,7 @@ import store.nullAction
 
 class UpdateNoteThunk(
     private val scope: CoroutineScope,
-    private val noteIdentifier: NoteIdentifier,
+    private val creationTimestamp: CreationTimestamp,
     private val title: String,
     private val content: String
 ) : RThunk {
@@ -23,7 +23,7 @@ class UpdateNoteThunk(
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
             val wasUpdated = updateNote.executeAsync(
-                noteIdentifier = noteIdentifier,
+                creationTimestamp = creationTimestamp,
                 title = title,
                 content = content
             )

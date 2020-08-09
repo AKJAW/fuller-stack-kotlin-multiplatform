@@ -6,6 +6,7 @@ import feature.AddNotePayload
 import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import model.CreationTimestamp
 import model.Note
 
 class NoteDaoTestFake : NoteDao {
@@ -51,14 +52,14 @@ class NoteDaoTestFake : NoteDao {
     }
 
     override suspend fun updateNote(updateNotePayload: UpdateNotePayload) {
-        val noteToUpdate = notes.first { it.noteId == updateNotePayload.noteId }
+        val noteToUpdate = notes.first { it.creationTimestamp == updateNotePayload.creationTimestamp }
         val updatedNote = noteToUpdate.copy(
             title = updateNotePayload.title,
             content = updateNotePayload.content,
             lastModificationTimestamp = updateNotePayload.lastModificationTimestamp
         )
         notes = notes.map { note -> //TODO replace with mutable list
-            if(note.noteId == updateNotePayload.noteId) {
+            if(note.creationTimestamp == updateNotePayload.creationTimestamp) {
                 updatedNote
             } else {
                 note
@@ -77,19 +78,14 @@ class NoteDaoTestFake : NoteDao {
         notes = newNotes
     }
 
-    override suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean) {
+    override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean) {
         val newNotes = notes.map { note ->//TODO replace with mutable list
-            if(note.noteId == noteId) {
+            if(note.creationTimestamp == creationTimestamp) {
                 note.copy(hasSyncFailed = hasSyncFailed)
             } else {
                 note
             }
         }
-        notes = newNotes
-    }
-
-    override suspend fun deleteNote(noteId: Int) {
-        val newNotes = notes.filterNot { it.noteId == noteId }
         notes = newNotes
     }
 

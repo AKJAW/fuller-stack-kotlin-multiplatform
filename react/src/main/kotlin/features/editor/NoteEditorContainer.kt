@@ -2,6 +2,7 @@ package features.editor
 
 import composition.KodeinEntry
 import helpers.validation.NoteInputValidator
+import model.CreationTimestamp
 import model.Note
 import model.NoteIdentifier
 import org.kodein.di.instance
@@ -27,7 +28,7 @@ interface NoteEditorConnectedProps : RProps {
     var selectedNote: Note?
     var isUpdating: Boolean
     var addNote: (title: String, content: String) -> Unit
-    var updateNote: (noteIdentifier: NoteIdentifier, title: String, content: String) -> Unit
+    var updateNote: (creationTimestamp: CreationTimestamp, title: String, content: String) -> Unit
     var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
@@ -39,7 +40,7 @@ private interface StateProps : RProps {
 
 private interface DispatchProps : RProps {
     var addNote: (title: String, content: String) -> Unit
-    var updateNote: (noteIdentifier: NoteIdentifier, title: String, content: String) -> Unit
+    var updateNote: (creationTimestamp: CreationTimestamp, title: String, content: String) -> Unit
     var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
     var closeEditor: () -> Unit
 }
@@ -85,7 +86,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         console.log(selectedNote)
         if (props.isUpdating && selectedNote != null) {
             props.updateNote(
-                selectedNote.noteIdentifier,
+                selectedNote.creationTimestamp,
                 title,
                 content
             )
@@ -111,8 +112,8 @@ val noteEditorContainer: RClass<RProps> =
         },
         { dispatch, _ ->
             addNote = { title: String, content: String -> dispatch(NoteEditorSlice.addNote(title, content)) }
-            updateNote = { noteIdentifier: NoteIdentifier, title: String, content: String ->
-                dispatch(NoteEditorSlice.updateNote(noteIdentifier, title, content))
+            updateNote = { creationTimestamp: CreationTimestamp, title: String, content: String ->
+                dispatch(NoteEditorSlice.updateNote(creationTimestamp, title, content))
             }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
             deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }

@@ -3,6 +3,7 @@ package database
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import kotlinx.coroutines.flow.Flow
+import model.CreationTimestamp
 
 interface NoteDao {
 
@@ -17,10 +18,7 @@ interface NoteDao {
         apiId: Int
     )
 
-    suspend fun updateSyncFailed(noteId: Int, hasSyncFailed: Boolean)
-
-    @Deprecated("Use deleteNotes")
-    suspend fun deleteNote(noteId: Int)
+    suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean)
 
     suspend fun deleteNotes(noteIds: List<Int>)
 

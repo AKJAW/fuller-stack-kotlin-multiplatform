@@ -45,15 +45,13 @@ class NoteApiTestFake : NoteApi {
     }
 
     override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) = runOrFail {
-        val oldNote = notes.first { it.apiId == updatedNotePayload.noteId }
+        val oldNote = notes.first { it.creationTimestamp == updatedNotePayload.creationTimestamp }
         val index = notes.indexOf(oldNote)
         notes.removeAt(index)
-        val entity = NoteSchema(
-            apiId = updatedNotePayload.noteId,
+        val entity = oldNote.copy(
             title = updatedNotePayload.title,
             content = updatedNotePayload.content,
-            lastModificationTimestamp = updatedNotePayload.lastModificationTimestamp,
-            creationTimestamp = oldNote.creationTimestamp
+            lastModificationTimestamp = updatedNotePayload.lastModificationTimestamp
         )
         notes.add(index, entity)
     }

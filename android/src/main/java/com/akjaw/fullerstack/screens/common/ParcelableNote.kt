@@ -6,14 +6,14 @@ import model.Note
 
 @Parcelize
 data class ParcelableNote(
-    val id: Int,
+    val creationUnixTimestamp: Long,
     val title: String,
     val content: String
 ) : Parcelable
 
-fun Note.toParcelable(): ParcelableNote { // TODO move to mapper
+fun Note.toParcelable(): ParcelableNote {
     return ParcelableNote(
-        id = this.noteIdentifier.id,
+        creationUnixTimestamp = this.creationTimestamp.unix,
         title = this.title,
         content = this.content
     )

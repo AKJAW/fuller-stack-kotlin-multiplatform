@@ -98,7 +98,6 @@ class SynchronizeNotes(
         val isLocalMoreRecent = localNote.lastModificationTimestamp.unix >= apiNote.lastModificationTimestamp.unix
         if(isLocalMoreRecent) {
             val payload = UpdateNotePayload(
-                noteId = apiNote.apiId,
                 title = localNote.title,
                 content = localNote.title,
                 lastModificationTimestamp = localNote.lastModificationTimestamp,
@@ -107,7 +106,6 @@ class SynchronizeNotes(
             safeApiCall { noteApi.updateNote(payload) }
         } else {
             val payload = UpdateNotePayload(
-                noteId = apiNote.apiId,
                 title = apiNote.title,
                 content = apiNote.title,
                 lastModificationTimestamp = apiNote.lastModificationTimestamp,

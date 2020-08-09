@@ -10,7 +10,7 @@ import feature.UpdateNote
 import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import model.NoteIdentifier
+import model.CreationTimestamp
 
 class NoteEditorViewModel(
     private val applicationScope: CoroutineScope,
@@ -41,9 +41,9 @@ class NoteEditorViewModel(
 
         val stateNote = viewState.value?.note
 
-        if (stateNote?.id != null) {
+        if (stateNote?.creationUnixTimestamp != null) {
             updateExistingNote(
-                noteIdentifier = NoteIdentifier(stateNote.id),
+                creationTimestamp = CreationTimestamp(stateNote.creationUnixTimestamp),
                 title = title,
                 content = content
             )
@@ -67,14 +67,12 @@ class NoteEditorViewModel(
     }
 
     private fun updateExistingNote(
-        noteIdentifier: NoteIdentifier,
+        creationTimestamp: CreationTimestamp,
         title: String,
         content: String
     ) = applicationScope.launch {
-        require(noteIdentifier.id != -1)
-
         val wasSuccessful = updateNote.executeAsync(
-            noteIdentifier = noteIdentifier,
+            creationTimestamp = creationTimestamp,
             title = title,
             content = content
         )
