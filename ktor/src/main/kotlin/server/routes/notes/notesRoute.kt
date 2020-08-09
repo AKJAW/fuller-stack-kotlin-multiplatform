@@ -10,7 +10,6 @@ import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.patch
 import io.ktor.routing.post
-import model.NoteIdentifier
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import server.logger.ApiLogger
@@ -54,47 +53,31 @@ fun Routing.notesRoute() {
         if (wasUpdated) {
             call.respond(HttpStatusCode.OK)
         } else {
-            call.respond(HttpStatusCode.BadRequest, "Note with provided id ${payload.noteId} not found")
-        }
-    }
-
-    delete("/notes/{noteId}") {
-        val noteId = call.parameters["noteId"]?.toIntOrNull()
-        apiLogger.log("Delete note with id", noteId.toString())
-
-        if (noteId == null) {
-            call.respond(HttpStatusCode.BadRequest, "Note id is missing")
-            return@delete
-        }
-
-        val identifier = NoteIdentifier(noteId)
-        val wasDeleted = notesService.deleteNote(identifier)
-
-        if (wasDeleted) {
-            call.respond(HttpStatusCode.OK)
-        } else {
-            call.respond(HttpStatusCode.BadRequest, "Note with provided id $noteId not found")
+            call.respond(
+                HttpStatusCode.BadRequest,
+                "Note with provided timestamp ${payload.creationTimestamp.unix} not found"
+            )
         }
     }
 
     delete("/notes") {
-        val noteIdentifiers = notesCallHelper.getNoteIdentifiersFromBody(call)
-        apiLogger.log("Delete notes", noteIdentifiers.toString())
+        val timestamps = notesCallHelper.getCreationTimestampsFromBody(call)
+        apiLogger.log("Delete notes", timestamps.toString())
 
-        if (noteIdentifiers == null || noteIdentifiers.isEmpty()) {
-            call.respond(HttpStatusCode.BadRequest, "No note id provided")
+        if (timestamps == null || timestamps.isEmpty()) {
+            call.respond(HttpStatusCode.BadRequest, "No note timestamps provided")
             return@delete
         }
 
-        val wereAllNotesDeleted = noteIdentifiers.map { identifier ->
-            notesService.deleteNote(identifier)
+        val wereAllNotesDeleted = timestamps.map { timestamp ->
+            notesService.deleteNote(timestamp)
         }.all { it }
 
         if (wereAllNotesDeleted) {
             call.respond(HttpStatusCode.OK)
         } else {
-            val ids = noteIdentifiers.map { it.id }
-            call.respond(HttpStatusCode.BadRequest, "Some notes with provided ids $ids not found")
+            val unixTimestamps = timestamps.map { it.unix }
+            call.respond(HttpStatusCode.BadRequest, "Some notes with provided timestamps $unixTimestamps not found")
         }
     }
 }

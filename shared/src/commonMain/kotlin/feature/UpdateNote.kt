@@ -23,11 +23,13 @@ class UpdateNote(
         content: String
     ): Boolean = withContext(coroutineDispatcher) {
 
+        val unixTimestamp = unixTimestampProvider.now()
         val payload = UpdateNotePayload(
             noteId = noteIdentifier.id,
             title = title,
             content = content,
-            lastModificationTimestamp = LastModificationTimestamp(unixTimestampProvider.now())
+            lastModificationTimestamp = LastModificationTimestamp(unixTimestamp),
+            creationTimestamp = TODO()
         )
         noteDao.updateNote(payload)
         val networkResponse = safeApiCall { noteApi.updateNote(payload) }

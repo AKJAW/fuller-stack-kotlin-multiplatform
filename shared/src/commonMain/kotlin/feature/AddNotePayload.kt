@@ -8,6 +8,6 @@ import model.LastModificationTimestamp
 data class AddNotePayload(
     val title: String,
     val content: String,
-    val creationTimestamp: CreationTimestamp,
-    val lastModificationTimestamp: LastModificationTimestamp
+    val lastModificationTimestamp: LastModificationTimestamp,
+    val creationTimestamp: CreationTimestamp
 )

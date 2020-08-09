@@ -101,7 +101,8 @@ class SynchronizeNotes(
                 noteId = apiNote.apiId,
                 title = localNote.title,
                 content = localNote.title,
-                lastModificationTimestamp = localNote.lastModificationTimestamp
+                lastModificationTimestamp = localNote.lastModificationTimestamp,
+                creationTimestamp = localNote.creationTimestamp
             )
             safeApiCall { noteApi.updateNote(payload) }
         } else {
@@ -109,7 +110,8 @@ class SynchronizeNotes(
                 noteId = apiNote.apiId,
                 title = apiNote.title,
                 content = apiNote.title,
-                lastModificationTimestamp = apiNote.lastModificationTimestamp
+                lastModificationTimestamp = apiNote.lastModificationTimestamp,
+                creationTimestamp = apiNote.creationTimestamp
             )
             noteDao.updateNote(payload)
         }

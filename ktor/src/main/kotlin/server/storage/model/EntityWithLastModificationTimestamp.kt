@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 
 class EntityWithLastModificationTimestamp(id: EntityID<Int>) : IntEntity(id) {
-    var lastModificationDateTimestamp by NotesTable.lastModificationDateTimestamp.transform(
+    var lastModificationTimestamp by NotesTable.lastModificationUnixTimestamp.transform(
         toColumn = { it.unix },
         toReal = { LastModificationTimestamp(it) }
     )

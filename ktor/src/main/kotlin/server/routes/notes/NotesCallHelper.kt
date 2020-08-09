@@ -4,14 +4,13 @@ import io.ktor.application.ApplicationCall
 import io.ktor.request.receiveOrNull
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonDecodingException
-import model.NoteIdentifier
+import model.CreationTimestamp
 
 class NotesCallHelper {
 
-    suspend fun getNoteIdentifiersFromBody(call: ApplicationCall): List<NoteIdentifier>? =
+    suspend fun getCreationTimestampsFromBody(call: ApplicationCall): List<CreationTimestamp>? =
         try {
-            val ids: List<Int>? = call.receiveOrNull()
-            ids?.map { NoteIdentifier(it) }
+            call.receiveOrNull()
         } catch (e: JsonDecodingException) {
             null
         }

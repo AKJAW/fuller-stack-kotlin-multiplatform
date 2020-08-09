@@ -5,11 +5,11 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 
-class CreationTimestampEntity(id: EntityID<Int>) : IntEntity(id) {
-    var creationDateTimestamp by NotesTable.creationDateTimestamp.transform(
+class EntityWithCreationTimestamp(id: EntityID<Int>) : IntEntity(id) {
+    var creationTimestamp by NotesTable.creationUnixTimestamp.transform(
         toColumn = { it.unix },
         toReal = { CreationTimestamp(it) }
     )
 
-    companion object : IntEntityClass<CreationTimestampEntity>(NotesTable, CreationTimestampEntity::class.java)
+    companion object : IntEntityClass<EntityWithCreationTimestamp>(NotesTable, EntityWithCreationTimestamp::class.java)
 }

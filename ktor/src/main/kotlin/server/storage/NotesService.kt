@@ -4,11 +4,10 @@ import feature.AddNotePayload
 import feature.UpdateNotePayload
 import model.CreationTimestamp
 import model.LastModificationTimestamp
-import model.NoteIdentifier
 import network.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import server.logger.ApiLogger
@@ -22,41 +21,43 @@ class NotesService(
     suspend fun getNotes(): List<NoteSchema> = queryDatabase {
         NotesTable
             .selectAll()
-            .orderBy(NotesTable.creationDateTimestamp to SortOrder.DESC)
+            .orderBy(NotesTable.creationUnixTimestamp to SortOrder.DESC)
             .map { row ->
                 NoteSchema(
                     apiId = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
-                    lastModificationTimestamp = LastModificationTimestamp(row[NotesTable.lastModificationDateTimestamp]),
-                    creationTimestamp = CreationTimestamp(row[NotesTable.creationDateTimestamp])
+                    lastModificationTimestamp = LastModificationTimestamp(row[NotesTable.lastModificationUnixTimestamp]),
+                    creationTimestamp = CreationTimestamp(row[NotesTable.creationUnixTimestamp])
                 )
             }
     }
 
-    suspend fun addNote(payload: AddNotePayload): Int = queryDatabase {
-        val id = NotesTable.insertAndGetId {
+    suspend fun addNote(payload: AddNotePayload): Unit = queryDatabase {
+        NotesTable.insert {
             it[title] = payload.title
             it[content] = payload.content
-            it[lastModificationDateTimestamp] = payload.lastModificationTimestamp.unix
-            it[creationDateTimestamp] = payload.creationTimestamp.unix
+            it[lastModificationUnixTimestamp] = payload.lastModificationTimestamp.unix
+            it[creationUnixTimestamp] = payload.creationTimestamp.unix
         }
-        apiLogger.log("NoteService addNote", "new id: $id")
-        return@queryDatabase id.value
+
+        return@queryDatabase
     }
 
-    suspend fun updateNote(payload: UpdateNotePayload) = queryDatabase {
-        val updatedAmount = NotesTable.update({ NotesTable.id eq payload.noteId }) {
+    suspend fun updateNote(payload: UpdateNotePayload): Boolean = queryDatabase {
+        val updatedAmount = NotesTable.update({
+            NotesTable.creationUnixTimestamp eq payload.creationTimestamp.unix
+        }) {
             it[title] = payload.title
             it[content] = payload.content
-            it[lastModificationDateTimestamp] = payload.lastModificationTimestamp.unix
+            it[lastModificationUnixTimestamp] = payload.lastModificationTimestamp.unix
         }
         apiLogger.log("NoteService updateNote", "updatedAmount: $updatedAmount")
         return@queryDatabase updatedAmount > 0
     }
 
-    suspend fun deleteNote(identifier: NoteIdentifier): Boolean = queryDatabase {
-        val deletedAmount = NotesTable.deleteWhere { NotesTable.id eq identifier.id }
+    suspend fun deleteNote(creationTimestamp: CreationTimestamp): Boolean = queryDatabase {
+        val deletedAmount = NotesTable.deleteWhere { NotesTable.creationUnixTimestamp eq creationTimestamp.unix }
         apiLogger.log("NoteService deleteNote", "deletedAmount: $deletedAmount")
         return@queryDatabase deletedAmount > 0
     }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akjaw.fullerstack.helpers.logger.log
 import feature.DeleteNotes
 import feature.GetNotes
 import feature.SynchronizeNotes
@@ -37,7 +36,6 @@ internal class NotesListViewModel(
         listenToNoteChanges(notesFlow)
 
         val res = synchronizeNotes.executeAsync()
-        res.log("Synchroniz")
     }
 
     private fun listenToNoteChanges(notesFlow: Flow<List<Note>>) = viewModelScope.launch {
