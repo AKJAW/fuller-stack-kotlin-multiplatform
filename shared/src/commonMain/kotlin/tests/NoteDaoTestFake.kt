@@ -78,14 +78,14 @@ class NoteDaoTestFake : NoteDao {
         notes = newNotes
     }
 
-    override suspend fun deleteNotes(noteIds: List<Int>) {
-        val newNotes = notes.filterNot { noteIds.contains(it.noteId) }
+    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
+        val newNotes = notes.filterNot { creationTimestamps.contains(it.creationTimestamp) }
         notes = newNotes
     }
 
-    override suspend fun setWasDeleted(noteIds: List<Int>, wasDeleted: Boolean) {
+    override suspend fun setWasDeleted(creationTimestamps: List<CreationTimestamp>, wasDeleted: Boolean) {
         val newNotes = notes.map { note ->
-            if(noteIds.contains(note.noteId)){
+            if(creationTimestamps.contains(note.creationTimestamp)){
                 note.copy(wasDeleted = wasDeleted)
             } else {
                 note

@@ -11,8 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import model.CreationTimestamp
 import model.Note
-import model.NoteIdentifier
 
 internal class NotesListViewModel(
     private val applicationScope: CoroutineScope,
@@ -44,8 +44,8 @@ internal class NotesListViewModel(
         }
     }
 
-    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) = applicationScope.launch {
-        val wasDeleted = deleteNotes.executeAsync(noteIdentifiers)
+    fun deleteNotes(creationTimestamps: List<CreationTimestamp>) = applicationScope.launch {
+        val wasDeleted = deleteNotes.executeAsync(creationTimestamps)
         if(wasDeleted.not()){
             //TODO there was a problem with synchronization
         }

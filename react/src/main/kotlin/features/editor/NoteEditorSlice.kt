@@ -29,7 +29,8 @@ object NoteEditorSlice {
     ): RThunk =
         UpdateNoteThunk(noteEditorScope, creationTimestamp, title, content)
 
-    fun deleteNotes(noteIdentifiers: List<NoteIdentifier>): RThunk = DeleteNotesThunk(noteEditorScope, noteIdentifiers)
+    fun deleteNotes(creationTimestamps: List<CreationTimestamp>): RThunk =
+        DeleteNotesThunk(noteEditorScope, creationTimestamps)
 
     data class OpenEditor(val note: Note?) : RAction
 

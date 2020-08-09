@@ -42,9 +42,9 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val ids = savedInstanceState?.getIntegerArrayList(SELECTED_NOTE_IDS)
+        val ids = savedInstanceState?.getLongArray(SELECTED_NOTE_IDS)
         notesListAdapter = notesListAdapterFactory.create(
-            initialSelectedNotesIds = ids?.toList(),
+            initialSelectedNotes = ids?.toList(),
             onItemClicked = ::onNoteClicked
         )
         viewModel.initializeNotes()
@@ -54,7 +54,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         super.onSaveInstanceState(outState)
 
         val selectedIds = notesListAdapter.getSelectedNoteIds()
-        outState.putIntegerArrayList(SELECTED_NOTE_IDS, ArrayList(selectedIds))
+        outState.putLongArray(SELECTED_NOTE_IDS, selectedIds.toLongArray())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

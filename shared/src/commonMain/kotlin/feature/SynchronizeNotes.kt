@@ -49,22 +49,22 @@ class SynchronizeNotes(
             return
         }
 
-        val localNotesToBeRestored = mutableListOf<Int>()
-        val localNotesToBeDeleted = mutableListOf<Int>()
-        val apiNotesToBeDeleted = mutableListOf<Int>()
+        val localNotesToBeRestored = mutableListOf<CreationTimestamp>()
+        val localNotesToBeDeleted = mutableListOf<CreationTimestamp>()
+        val apiNotesToBeDeleted = mutableListOf<CreationTimestamp>()
         deletedNotes.forEach { localNote ->
             val apiNote = apiNotes.find { apiNote ->
                 apiNote.creationTimestamp ==  localNote.creationTimestamp
             }
 
             if(apiNote == null) {
-                localNotesToBeDeleted.add(localNote.noteId)
+                localNotesToBeDeleted.add(localNote.creationTimestamp)
                 return@forEach
             } else if (apiNote.lastModificationTimestamp.unix <= localNote.lastModificationTimestamp.unix) {
-                apiNotesToBeDeleted.add(apiNote.apiId)
-                localNotesToBeDeleted.add(localNote.noteId)
+                apiNotesToBeDeleted.add(apiNote.creationTimestamp)
+                localNotesToBeDeleted.add(localNote.creationTimestamp)
             } else {
-                localNotesToBeRestored.add(localNote.noteId)
+                localNotesToBeRestored.add(localNote.creationTimestamp)
             }
         }
 

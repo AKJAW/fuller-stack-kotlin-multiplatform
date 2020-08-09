@@ -2,6 +2,7 @@ package tests
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
+import model.CreationTimestamp
 import model.Note
 import network.NoteApi
 import network.NoteSchema
@@ -56,9 +57,9 @@ class NoteApiTestFake : NoteApi {
         notes.add(index, entity)
     }
 
-    override suspend fun deleteNotes(ids: List<Int>) = runOrFail {
+    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) = runOrFail {
         notes = notes.filterNot { noteSchema ->
-            ids.contains(noteSchema.apiId)
+            creationTimestamps.contains(noteSchema.creationTimestamp)
         }.toMutableList()
     }
 

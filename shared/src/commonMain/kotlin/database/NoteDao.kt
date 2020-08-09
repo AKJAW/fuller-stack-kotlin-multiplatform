@@ -15,7 +15,7 @@ interface NoteDao {
 
     suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean)
 
-    suspend fun deleteNotes(noteIds: List<Int>)
+    suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>)
 
-    suspend fun setWasDeleted(noteIds: List<Int>, wasDeleted: Boolean)
+    suspend fun setWasDeleted(creationTimestamps: List<CreationTimestamp>, wasDeleted: Boolean)
 }

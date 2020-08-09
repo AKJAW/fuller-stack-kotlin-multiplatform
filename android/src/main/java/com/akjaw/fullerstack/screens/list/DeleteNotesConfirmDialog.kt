@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.akjaw.fullerstack.android.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import model.NoteIdentifier
+import model.CreationTimestamp
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -20,13 +20,13 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
         private const val EXTRA_NOTES = "EXTRA_NOTES"
 
         fun newInstance(
-            noteIdentifiers: List<NoteIdentifier>,
+            noteIdentifiers: List<CreationTimestamp>,
             onNotesDeleted: () -> Unit
         ): DeleteNotesConfirmDialog {
             return DeleteNotesConfirmDialog().apply {
                 val args = Bundle()
-                val intIds = noteIdentifiers.map { it.id }
-                args.putIntegerArrayList(EXTRA_NOTES, ArrayList(intIds))
+                val creationUnixTimestamps = noteIdentifiers.map { it.unix }
+                args.putLongArray(EXTRA_NOTES, creationUnixTimestamps.toLongArray())
                 arguments = args
                 this.onNotesDeleted = onNotesDeleted
             }
@@ -34,7 +34,7 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
     }
 
     private lateinit var onNotesDeleted: () -> Unit // TODO should this be nulled out / is this kept on screen rotation
-    private lateinit var noteIds: List<Int>
+    private lateinit var creationUnixTimestamps: List<Long>
     override val di: DI by di()
 
     private val viewModel: NotesListViewModel by activityViewModels {
@@ -44,7 +44,7 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        noteIds = arguments?.getIntegerArrayList(EXTRA_NOTES) ?: return dismiss()
+        creationUnixTimestamps = arguments?.getLongArray(EXTRA_NOTES)?.toList() ?: return dismiss()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -54,8 +54,8 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
         builder
             .setMessage("Are you sure you want to delete TODO plural notes")
             .setPositiveButton("Yes") { dialog: DialogInterface?, id: Int ->
-                val noteIdentifiers = noteIds.map { NoteIdentifier(it) }
-                viewModel.deleteNotes(noteIdentifiers)
+                val creationTimestamps = creationUnixTimestamps.map { CreationTimestamp(it) }
+                viewModel.deleteNotes(creationTimestamps)
                 onNotesDeleted.invoke()
             }
             .setNegativeButton("Cancel") { dialog: DialogInterface?, id: Int ->

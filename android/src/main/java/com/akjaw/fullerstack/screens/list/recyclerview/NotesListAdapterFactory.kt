@@ -1,23 +1,21 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
 import helpers.date.PatternProvider
+import model.CreationTimestamp
 import model.Note
-import model.NoteIdentifierMapper
 
 class NotesListAdapterFactory(
     private val patternProvider: PatternProvider,
-    private val noteIdentifierMapper: NoteIdentifierMapper,
     private val notesSelectionTrackerFactory: NotesSelectionTrackerFactory
 ) {
     fun create(
-        initialSelectedNotesIds: List<Int>?,
+        initialSelectedNotes: List<Long>?,
         onItemClicked: (Note) -> Unit
     ): NotesListAdapter {
-        val selectedIds = initialSelectedNotesIds ?: emptyList()
-        val selectedIdentifiers = noteIdentifierMapper.toIdentifiers(selectedIds)
+        val selectedNotes = initialSelectedNotes?.map { CreationTimestamp(it) } ?: emptyList()
 
         return NotesListAdapter(
-            initialSelectedNotes = selectedIdentifiers,
+            initialSelectedNotes = selectedNotes,
             notesSelectionTrackerFactory = notesSelectionTrackerFactory,
             dateFormat = patternProvider.getNotesListItemPattern(),
             onItemClicked = onItemClicked

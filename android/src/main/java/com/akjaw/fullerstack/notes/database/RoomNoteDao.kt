@@ -70,12 +70,12 @@ abstract class RoomNoteDao : NoteDao {
     @Query("UPDATE notes SET hasSyncFailed = :hasSyncFailed WHERE creationTimestamp = :creationTimestamp")
     abstract override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean)
 
-    @Query("DELETE FROM notes WHERE noteId in (:noteIds)")
-    abstract override suspend fun deleteNotes(noteIds: List<Int>)
+    @Query("DELETE FROM notes WHERE creationTimestamp in (:creationTimestamps)")
+    abstract override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>)
 
-    @Query("UPDATE notes SET wasDeleted = :wasDeleted WHERE noteId in (:noteIds)")
+    @Query("UPDATE notes SET wasDeleted = :wasDeleted WHERE creationTimestamp in (:creationTimestamps)")
     abstract override suspend fun setWasDeleted(
-        noteIds: List<Int>,
+        creationTimestamps: List<CreationTimestamp>,
         wasDeleted: Boolean
     )
 }

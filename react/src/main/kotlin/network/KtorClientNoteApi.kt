@@ -8,6 +8,7 @@ import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
+import model.CreationTimestamp
 
 class KtorClientNoteApi(
     private val client: HttpClient
@@ -32,9 +33,9 @@ class KtorClientNoteApi(
         }
     }
 
-    override suspend fun deleteNotes(ids: List<Int>) {
+    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
         client.delete<Unit>(apiUrl) {
-            body = json.write(ids)
+            body = json.write(creationTimestamps)
         }
     }
 }

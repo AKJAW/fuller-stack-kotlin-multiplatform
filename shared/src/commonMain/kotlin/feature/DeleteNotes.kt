@@ -3,7 +3,7 @@ package feature
 import database.NoteDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import model.NoteIdentifier
+import model.CreationTimestamp
 import network.NetworkResponse
 import network.NoteApi
 import network.safeApiCall
@@ -14,14 +14,13 @@ class DeleteNotes(
     private val noteApi: NoteApi
 ) {
 
-    suspend fun executeAsync(noteIdentifiers: List<NoteIdentifier>): Boolean = withContext(coroutineDispatcher) {
-        val ids = noteIdentifiers.map { it.id }
-        noteDao.setWasDeleted(ids, true)
-        val result = safeApiCall { noteApi.deleteNotes(ids) }
+    suspend fun executeAsync(creationTimestamps: List<CreationTimestamp>): Boolean = withContext(coroutineDispatcher) {
+        noteDao.setWasDeleted(creationTimestamps, true)
+        val result = safeApiCall { noteApi.deleteNotes(creationTimestamps) }
 
         when (result) {
             is NetworkResponse.Success -> {
-                noteDao.deleteNotes(ids)
+                noteDao.deleteNotes(creationTimestamps)
                 true
             }
             else -> false

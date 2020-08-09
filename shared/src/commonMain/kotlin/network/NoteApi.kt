@@ -2,6 +2,7 @@ package network
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
+import model.CreationTimestamp
 
 interface NoteApi {
 
@@ -11,5 +12,5 @@ interface NoteApi {
 
     suspend fun updateNote(updatedNotePayload: UpdateNotePayload)
 
-    suspend fun deleteNotes(ids: List<Int>)
+    suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>)
 }

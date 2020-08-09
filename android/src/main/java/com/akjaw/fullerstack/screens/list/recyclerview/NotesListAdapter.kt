@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.format
+import model.CreationTimestamp
 import model.Note
-import model.NoteIdentifier
 
 class NotesListAdapter(
     notesSelectionTrackerFactory: NotesSelectionTrackerFactory,
-    initialSelectedNotes: List<NoteIdentifier>,
+    initialSelectedNotes: List<CreationTimestamp>,
     private val dateFormat: DateFormat,
     private val onItemClicked: (Note) -> Unit
 ) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
@@ -38,7 +38,7 @@ class NotesListAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        val isSelected = notesSelectionTracker.isSelected(note.noteIdentifier)
+        val isSelected = notesSelectionTracker.isSelected(note.creationTimestamp)
         holder.bind(note, isSelected)
     }
 
@@ -49,13 +49,13 @@ class NotesListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun onNoteSelectionChanged(noteIdentifier: NoteIdentifier) {
-        val positionOfNote = notes.indexOfFirst { it.noteIdentifier == noteIdentifier }
+    private fun onNoteSelectionChanged(creationTimestamp: CreationTimestamp) {
+        val positionOfNote = notes.indexOfFirst { it.creationTimestamp == creationTimestamp }
         if (positionOfNote == -1) return
         notifyItemChanged(positionOfNote)
     }
 
-    fun getSelectedNoteIds(): List<Int> = notesSelectionTracker.getSelectedIds()
+    fun getSelectedNoteIds(): List<Long> = notesSelectionTracker.getSelectedNotes()
 
     class NoteViewHolder(
         rootView: View,
@@ -74,14 +74,14 @@ class NotesListAdapter(
 
             noteContainer.setOnClickListener {
                 if (selectionTracker.isSelectionModeEnabled()) {
-                    selectionTracker.select(note.noteIdentifier)
+                    selectionTracker.select(note.creationTimestamp)
                 } else {
                     onItemClicked(note)
                 }
             }
 
             noteContainer.setOnLongClickListener {
-                selectionTracker.select(note.noteIdentifier)
+                selectionTracker.select(note.creationTimestamp)
                 true
             }
         }

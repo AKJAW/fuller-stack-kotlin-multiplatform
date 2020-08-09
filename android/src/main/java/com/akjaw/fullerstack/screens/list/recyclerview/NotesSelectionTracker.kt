@@ -3,15 +3,13 @@ package com.akjaw.fullerstack.screens.list.recyclerview
 import androidx.fragment.app.FragmentManager
 import com.akjaw.fullerstack.screens.list.DeleteNotesConfirmDialog
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
-import model.NoteIdentifier
-import model.NoteIdentifierMapper
+import model.CreationTimestamp
 
 class NotesSelectionTracker(
-    initialSelectedNotes: List<NoteIdentifier>,
+    initialSelectedNotes: List<CreationTimestamp>,
     private val fragmentManager: FragmentManager, // TODO replace with an abstraction
-    private val noteIdentifierMapper: NoteIdentifierMapper,
     private val notesListActionMode: NotesListActionMode,
-    private val onNoteChanged: (NoteIdentifier) -> Unit
+    private val onNoteChanged: (CreationTimestamp) -> Unit
 ) {
 
     init {
@@ -24,45 +22,45 @@ class NotesSelectionTracker(
         }
     }
 
-    val selectedNoteIdentifiers: MutableList<NoteIdentifier> = initialSelectedNotes.toMutableList()
+    private val selectedCreationTimestamp: MutableList<CreationTimestamp> = initialSelectedNotes.toMutableList()
 
-    fun select(noteIdentifier: NoteIdentifier) {
-        if (selectedNoteIdentifiers.contains(noteIdentifier)) {
-            selectedNoteIdentifiers.remove(noteIdentifier)
+    fun select(creationTimestamp: CreationTimestamp) {
+        if (selectedCreationTimestamp.contains(creationTimestamp)) {
+            selectedCreationTimestamp.remove(creationTimestamp)
         } else {
-            selectedNoteIdentifiers.add(noteIdentifier)
+            selectedCreationTimestamp.add(creationTimestamp)
         }
 
-        onNoteChanged(noteIdentifier)
+        onNoteChanged(creationTimestamp)
         toggleActionMode()
     }
 
     private fun toggleActionMode() {
-        if (selectedNoteIdentifiers.isNotEmpty()) {
+        if (selectedCreationTimestamp.isNotEmpty()) {
             notesListActionMode.startActionMode()
-            val numberOfSelectedNotes = selectedNoteIdentifiers.count()
+            val numberOfSelectedNotes = selectedCreationTimestamp.count()
             notesListActionMode.setTitle(numberOfSelectedNotes.toString())
         } else {
             notesListActionMode.exitActionMode()
         }
     }
 
-    fun isSelected(noteIdentifier: NoteIdentifier) = selectedNoteIdentifiers.contains(noteIdentifier)
+    fun isSelected(creationTimestamp: CreationTimestamp) = selectedCreationTimestamp.contains(creationTimestamp)
 
-    fun getSelectedIds(): List<Int> {
-        return noteIdentifierMapper.toInt(selectedNoteIdentifiers)
+    fun getSelectedNotes(): List<Long> {
+        return selectedCreationTimestamp.map { it.unix }
     }
 
-    fun isSelectionModeEnabled() = selectedNoteIdentifiers.isNotEmpty()
+    fun isSelectionModeEnabled() = selectedCreationTimestamp.isNotEmpty()
 
     private fun openDeleteDialog() {
-        val dialog = DeleteNotesConfirmDialog.newInstance(selectedNoteIdentifiers) {
+        val dialog = DeleteNotesConfirmDialog.newInstance(selectedCreationTimestamp) {
             notesListActionMode.exitActionMode()
         }
         dialog.show(fragmentManager, "DeleteNotes")
     }
 
     private fun clearSelection() {
-        selectedNoteIdentifiers.clear()
+        selectedCreationTimestamp.clear()
     }
 }

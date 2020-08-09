@@ -4,7 +4,6 @@ import composition.KodeinEntry
 import helpers.validation.NoteInputValidator
 import model.CreationTimestamp
 import model.Note
-import model.NoteIdentifier
 import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
@@ -29,7 +28,7 @@ interface NoteEditorConnectedProps : RProps {
     var isUpdating: Boolean
     var addNote: (title: String, content: String) -> Unit
     var updateNote: (creationTimestamp: CreationTimestamp, title: String, content: String) -> Unit
-    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
+    var deleteNotes: (creationTimestamps: List<CreationTimestamp>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -41,7 +40,7 @@ private interface StateProps : RProps {
 private interface DispatchProps : RProps {
     var addNote: (title: String, content: String) -> Unit
     var updateNote: (creationTimestamp: CreationTimestamp, title: String, content: String) -> Unit
-    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
+    var deleteNotes: (creationTimestamps: List<CreationTimestamp>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -97,7 +96,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
 
     private fun onDeleteClicked() {
         props.closeEditor()
-        val noteIdentifier = props.selectedNote?.noteIdentifier
+        val noteIdentifier = props.selectedNote?.creationTimestamp
         if (noteIdentifier != null) {
             props.deleteNotes(listOf(noteIdentifier))
         }
@@ -116,6 +115,8 @@ val noteEditorContainer: RClass<RProps> =
                 dispatch(NoteEditorSlice.updateNote(creationTimestamp, title, content))
             }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
-            deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
+            deleteNotes = { creationTimestamps: List<CreationTimestamp> ->
+                dispatch(NoteEditorSlice.deleteNotes(creationTimestamps))
+            }
         }
     )(NoteEditorContainer::class.js.unsafeCast<RClass<NoteEditorConnectedProps>>())

@@ -2,6 +2,7 @@ package com.akjaw.fullerstack.notes.network
 
 import feature.AddNotePayload
 import feature.UpdateNotePayload
+import model.CreationTimestamp
 import network.NoteApi
 import network.NoteSchema
 
@@ -21,7 +22,7 @@ class RetrofitNoteApi(
         noteService.updateNote(updatedNotePayload)
     }
 
-    override suspend fun deleteNotes(ids: List<Int>) {
-        noteService.deleteNotes(ids)
+    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
+        noteService.deleteNotes(creationTimestamps)
     }
 }

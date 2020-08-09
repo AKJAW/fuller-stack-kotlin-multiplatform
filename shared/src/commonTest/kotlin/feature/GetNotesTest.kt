@@ -3,6 +3,8 @@ package feature
 import base.CommonDispatchers
 import database.NoteEntityMapper
 import kotlinx.coroutines.flow.first
+import model.CreationTimestamp
+import model.LastModificationTimestamp
 import model.Note
 import model.NoteIdentifier
 import runTest
@@ -19,12 +21,16 @@ class GetNotesTest {
         private val FIRST_NOTE = Note(
             NoteIdentifier(1),
             title = "first",
-            content = "first"
+            content = "first",
+            creationTimestamp = CreationTimestamp(1),
+            lastModificationTimestamp = LastModificationTimestamp(1)
         )
         private val SECOND_NOTE = Note(
             NoteIdentifier(2),
             title = "second",
-            content = "second"
+            content = "second",
+            creationTimestamp = CreationTimestamp(2),
+            lastModificationTimestamp = LastModificationTimestamp(2)
         )
     }
 
@@ -59,7 +65,7 @@ class GetNotesTest {
     @Test
     fun `Deleted notes are not returned`() = runTest {
         noteDaoTestFake.initializeNoteEntities(listOf(FIRST_NOTE, SECOND_NOTE))
-        noteDaoTestFake.setWasDeleted(listOf(SECOND_NOTE.noteIdentifier.id), true)
+        noteDaoTestFake.setWasDeleted(listOf(SECOND_NOTE.creationTimestamp), true)
 
         val flow = SUT.executeAsync()
 
