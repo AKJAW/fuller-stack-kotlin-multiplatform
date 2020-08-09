@@ -67,17 +67,6 @@ class NoteDaoTestFake : NoteDao {
         }
     }
 
-    override suspend fun updateNoteId(localId: Int, apiId: Int) {
-        val newNotes = notes.map { note ->//TODO replace with mutable list
-            if(note.id == localId) {
-                note.copy(noteId = apiId)
-            } else {
-                note
-            }
-        }
-        notes = newNotes
-    }
-
     override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean) {
         val newNotes = notes.map { note ->//TODO replace with mutable list
             if(note.creationTimestamp == creationTimestamp) {

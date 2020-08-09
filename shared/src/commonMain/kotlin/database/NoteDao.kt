@@ -13,11 +13,6 @@ interface NoteDao {
 
     suspend fun updateNote(updateNotePayload: UpdateNotePayload)
 
-    suspend fun updateNoteId(
-        localId: Int,
-        apiId: Int
-    )
-
     suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean)
 
     suspend fun deleteNotes(noteIds: List<Int>)

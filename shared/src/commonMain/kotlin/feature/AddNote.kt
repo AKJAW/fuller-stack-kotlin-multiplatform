@@ -25,14 +25,11 @@ class AddNote(
             lastModificationTimestamp = LastModificationTimestamp(currentUnixTimestamp),
             creationTimestamp = CreationTimestamp(currentUnixTimestamp)
         )
-        val localId = noteDao.addNote(payload)
+        noteDao.addNote(payload)
         val networkResponse = safeApiCall { noteApi.addNote(payload) }
 
         when (networkResponse) {
             is NetworkResponse.Success -> {
-                if(localId != networkResponse.result) {
-                    noteDao.updateNoteId(localId, networkResponse.result)
-                }
                 true
             }
             else -> {

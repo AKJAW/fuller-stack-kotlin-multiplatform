@@ -7,7 +7,7 @@ import model.LastModificationTimestamp
 import network.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import server.logger.ApiLogger
@@ -33,15 +33,15 @@ class NotesService(
             }
     }
 
-    suspend fun addNote(payload: AddNotePayload): Unit = queryDatabase {
-        NotesTable.insert {
+    suspend fun addNote(payload: AddNotePayload): Int = queryDatabase {
+        val addedId = NotesTable.insertAndGetId {
             it[title] = payload.title
             it[content] = payload.content
             it[lastModificationUnixTimestamp] = payload.lastModificationTimestamp.unix
             it[creationUnixTimestamp] = payload.creationTimestamp.unix
         }
 
-        return@queryDatabase
+        return@queryDatabase addedId.value
     }
 
     suspend fun updateNote(payload: UpdateNotePayload): Boolean = queryDatabase {

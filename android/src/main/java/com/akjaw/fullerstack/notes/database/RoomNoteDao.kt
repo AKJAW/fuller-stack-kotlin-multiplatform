@@ -67,9 +67,6 @@ abstract class RoomNoteDao : NoteDao {
         creationTimestamp: CreationTimestamp
     )
 
-    @Query("UPDATE notes SET noteId = :apiId WHERE id = :localId")
-    abstract override suspend fun updateNoteId(localId: Int, apiId: Int)
-
     @Query("UPDATE notes SET hasSyncFailed = :hasSyncFailed WHERE creationTimestamp = :creationTimestamp")
     abstract override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean)
 

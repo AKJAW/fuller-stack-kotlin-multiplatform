@@ -5,8 +5,6 @@ import database.NoteEntity
 import helpers.date.UnixTimestampProviderFake
 import model.CreationTimestamp
 import model.LastModificationTimestamp
-import model.Note
-import model.NoteIdentifier
 import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
@@ -95,27 +93,6 @@ class AddNoteTest {
             creationTimestamp = CreationTimestamp(TIMESTAMP)
         )
         assertEquals(expectedNote, noteApiTestFake.notes.first())
-    }
-
-    @JsName("LocalDatabaseIdUpdated")
-    @Test
-    fun `Local database id is updated after successful API response`() = runTest {
-        noteApiTestFake.initializeSchemas(listOf(
-            Note(noteIdentifier = NoteIdentifier(0)),
-            Note(noteIdentifier = NoteIdentifier(1))
-        ))
-
-        SUT.executeAsync(TITLE, CONTENT)
-
-        val expectedNote = NoteEntity(
-            id = 0,
-            noteId = 2,
-            title = TITLE,
-            content = CONTENT,
-            lastModificationTimestamp = LastModificationTimestamp(TIMESTAMP),
-            creationTimestamp = CreationTimestamp(TIMESTAMP)
-        )
-        assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
 
     @JsName("SyncFailedIsSet")
