@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import model.CreationTimestamp
 import model.Note
-import model.NoteIdentifier
 import redux.RAction
 import store.RThunk
 
@@ -39,7 +38,7 @@ object NoteEditorSlice {
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is OpenEditor -> {
-                val note = action.note ?: Note(noteIdentifier = NoteIdentifier(-1))
+                val note = action.note ?: Note()
                 state.copy(selectedNote = note, isUpdating = action.note != null)
             }
             is CloseEditor -> {

@@ -7,7 +7,6 @@ import database.NoteEntity
 import model.CreationTimestamp
 import model.LastModificationTimestamp
 import model.Note
-import model.NoteIdentifier
 import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
@@ -22,7 +21,6 @@ class SynchronizeNotesTest {
     companion object {
         private val FIRST_NOTE_DATE = DateTime.createAdjusted(2020, 8, 3)
         private val FIRST_NOTE = Note(
-            NoteIdentifier(1),
             title = "first",
             content = "first",
             lastModificationTimestamp = LastModificationTimestamp(FIRST_NOTE_DATE.unixMillisLong),
@@ -30,7 +28,6 @@ class SynchronizeNotesTest {
         )
         private val SECOND_NOTE_DATE = DateTime.createAdjusted(2020, 8, 4)
         private val SECOND_NOTE = Note(
-            NoteIdentifier(2),
             title = "second",
             content = "second",
             lastModificationTimestamp = LastModificationTimestamp(SECOND_NOTE_DATE.unixMillisLong),
@@ -193,8 +190,7 @@ class SynchronizeNotesTest {
         hasSyncFailed: Boolean = false,
         wasDeleted: Boolean = false
     ) = NoteEntity(
-        id = this.noteIdentifier.id,
-        noteId = this.noteIdentifier.id,
+        localId = -1,
         title = title ?: this.title,
         content = content ?: this.content,
         lastModificationTimestamp = lastModificationTimestamp?.toLastModificationTimestamp() ?: this.lastModificationTimestamp,
@@ -209,7 +205,7 @@ class SynchronizeNotesTest {
         lastModificationTimestamp: Long? = null,
         creationTimestamp: Long? = null
     ) = NoteSchema(
-        apiId = this.noteIdentifier.id,
+        apiId = -1,
         title = title ?: this.title,
         content = content ?: this.content,
         lastModificationTimestamp = lastModificationTimestamp?.toLastModificationTimestamp() ?: this.lastModificationTimestamp,

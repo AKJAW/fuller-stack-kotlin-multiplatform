@@ -13,7 +13,7 @@ class NotesDiffCallback(
     override fun getNewListSize(): Int = newList.count()
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].noteIdentifier.id == newList[newItemPosition].noteIdentifier.id
+        return oldList[oldItemPosition].creationTimestamp == newList[newItemPosition].creationTimestamp
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

@@ -7,7 +7,6 @@ import helpers.date.UnixTimestampProviderFake
 import model.CreationTimestamp
 import model.LastModificationTimestamp
 import model.Note
-import model.NoteIdentifier
 import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
@@ -24,7 +23,6 @@ class UpdateNoteTest {
     companion object {
         private val date = DateTime.createAdjusted(2020, 7, 28)
         private val INITIAL_NOTE = Note(
-            noteIdentifier = NoteIdentifier(1),
             title = "title",
             content = "content",
             lastModificationTimestamp = LastModificationTimestamp(date.unixMillisLong),
@@ -82,8 +80,7 @@ class UpdateNoteTest {
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         val expectedNote = NoteEntity(
-            id = INITIAL_NOTE.noteIdentifier.id,
-            noteId = INITIAL_NOTE.noteIdentifier.id,
+            localId = -1,
             title = UPDATED_TITLE,
             content = UPDATED_CONTENT,
             lastModificationTimestamp = LastModificationTimestamp(lastModificationTimestamp),
@@ -101,7 +98,7 @@ class UpdateNoteTest {
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         val expectedNote = NoteSchema(
-            apiId = INITIAL_NOTE.noteIdentifier.id,
+            apiId = -1,
             title = UPDATED_TITLE,
             content = UPDATED_CONTENT,
             lastModificationTimestamp = LastModificationTimestamp(lastModificationTimestamp),

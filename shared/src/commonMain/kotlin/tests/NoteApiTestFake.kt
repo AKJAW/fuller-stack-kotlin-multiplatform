@@ -15,7 +15,7 @@ class NoteApiTestFake : NoteApi {
     fun initializeSchemas(notes: List<Note>) {
         this.notes = notes.map { note ->
             NoteSchema(
-                apiId = note.noteIdentifier.id,
+                apiId = -1,
                 title = note.title,
                 content = note.content,
                 lastModificationTimestamp = note.lastModificationTimestamp,

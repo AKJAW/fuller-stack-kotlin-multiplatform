@@ -12,7 +12,6 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.setMain
 import model.Note
-import model.NoteIdentifier
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,8 +24,8 @@ internal class NotesListViewModelTest {
 
     companion object {
         private val NOTES = listOf(
-            Note(noteIdentifier = NoteIdentifier(1), title = "first", content = "Hey"),
-            Note(noteIdentifier = NoteIdentifier(2), title = "second", content = "Hi")
+            Note(title = "first", content = "Hey"),
+            Note(title = "second", content = "Hi")
         )
     }
 

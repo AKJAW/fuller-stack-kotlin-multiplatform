@@ -7,8 +7,7 @@ import model.LastModificationTimestamp
 
 @Entity(tableName = "notes")
 actual data class NoteEntity(
-    @PrimaryKey(autoGenerate = true) actual val id: Int = 0,
-    actual val noteId: Int,
+    @PrimaryKey(autoGenerate = true) actual val localId: Int = 0,
     actual val title: String,
     actual val content: String,
     actual val lastModificationTimestamp: LastModificationTimestamp,

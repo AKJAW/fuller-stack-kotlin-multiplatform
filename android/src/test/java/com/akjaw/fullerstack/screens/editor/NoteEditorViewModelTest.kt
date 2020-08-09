@@ -16,7 +16,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import model.CreationTimestamp
 import model.LastModificationTimestamp
 import model.Note
-import model.NoteIdentifier
 import network.NoteSchema
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -118,22 +117,20 @@ internal class NoteEditorViewModelTest {
     inner class UpdatingNote {
 
         private val note = Note(
-            noteIdentifier = NoteIdentifier(1),
             title = "title",
             content = "content",
             lastModificationTimestamp = LastModificationTimestamp(0),
             creationTimestamp = CreationTimestamp(0)
         )
         private val entity = NoteEntity(
-            id = note.noteIdentifier.id,
-            noteId = note.noteIdentifier.id,
+            localId = -1,
             title = note.title,
             content = note.content,
             lastModificationTimestamp = note.lastModificationTimestamp,
             creationTimestamp = note.creationTimestamp
         )
         private val schema = NoteSchema(
-            apiId = note.noteIdentifier.id,
+            apiId = -1,
             title = note.title,
             content = note.content,
             lastModificationTimestamp = note.lastModificationTimestamp,

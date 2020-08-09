@@ -20,8 +20,7 @@ class NoteDaoTestFake : NoteDao {
     fun initializeNoteEntities(notes: List<Note>) {
         this.notes = notes.map { note ->
             NoteEntity(
-                id = note.noteIdentifier.id,
-                noteId = note.noteIdentifier.id,
+                localId = -1,
                 title = note.title,
                 content = note.content,
                 lastModificationTimestamp = note.lastModificationTimestamp,
@@ -35,12 +34,11 @@ class NoteDaoTestFake : NoteDao {
     override fun getAllNotes(): Flow<List<NoteEntity>> = notesMutableState
 
     override suspend fun addNote(addNotePayload: AddNotePayload): Int {
-        val latestId = notes.maxBy { it.id }?.id ?: -1
+        val latestId = notes.maxBy { it.localId }?.localId ?: -1
         val newId = latestId + 1
 
         val newNote = NoteEntity(
-            id = newId,
-            noteId = newId,
+            localId = newId,
             title = addNotePayload.title,
             content = addNotePayload.content,
             lastModificationTimestamp = addNotePayload.lastModificationTimestamp,

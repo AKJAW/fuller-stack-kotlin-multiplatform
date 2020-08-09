@@ -21,22 +21,15 @@ abstract class RoomNoteDao : NoteDao {
 
     @Transaction
     override suspend fun addNote(addNotePayload: AddNotePayload): Int {
-        val lastPrimaryId = getLastPrimaryId() ?: -1
-        val noteId = lastPrimaryId + 1
         val note = NoteEntity(
-            noteId = noteId,
             title = addNotePayload.title,
             content = addNotePayload.content,
             lastModificationTimestamp = addNotePayload.lastModificationTimestamp,
             creationTimestamp = addNotePayload.creationTimestamp
         )
-        insertNote(note)
 
-        return noteId
+        return insertNote(note).toInt()
     }
-
-    @Query("SELECT id FROM notes ORDER BY id DESC LIMIT 1")
-    abstract suspend fun getLastPrimaryId(): Int?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertNote(note: NoteEntity): Long

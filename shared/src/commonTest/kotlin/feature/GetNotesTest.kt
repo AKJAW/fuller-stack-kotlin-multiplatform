@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.first
 import model.CreationTimestamp
 import model.LastModificationTimestamp
 import model.Note
-import model.NoteIdentifier
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -19,18 +18,16 @@ class GetNotesTest {
 
     companion object {
         private val FIRST_NOTE = Note(
-            NoteIdentifier(1),
             title = "first",
             content = "first",
-            creationTimestamp = CreationTimestamp(1),
-            lastModificationTimestamp = LastModificationTimestamp(1)
+            lastModificationTimestamp = LastModificationTimestamp(1),
+            creationTimestamp = CreationTimestamp(1)
         )
         private val SECOND_NOTE = Note(
-            NoteIdentifier(2),
             title = "second",
             content = "second",
-            creationTimestamp = CreationTimestamp(2),
-            lastModificationTimestamp = LastModificationTimestamp(2)
+            lastModificationTimestamp = LastModificationTimestamp(2),
+            creationTimestamp = CreationTimestamp(2)
         )
     }
 

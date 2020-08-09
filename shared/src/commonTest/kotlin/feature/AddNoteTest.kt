@@ -69,8 +69,7 @@ class AddNoteTest {
         SUT.executeAsync(TITLE, CONTENT)
 
         val expectedNote = NoteEntity(
-            id = 0,
-            noteId = 0,
+            localId = 0,
             title = TITLE,
             content = CONTENT,
             lastModificationTimestamp = LastModificationTimestamp(TIMESTAMP),
