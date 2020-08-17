@@ -1,11 +1,8 @@
-package feature
+package feature.synchronization
 
 import base.CommonDispatchers
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
-import feature.synchronization.SynchronizationUseCaseFactory
-import feature.synchronization.copyToEntity
-import feature.synchronization.copyToSchema
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -14,28 +11,47 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SynchronizeNotesTest {
+class SynchronizeAddedNotesTest {
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var synchronizationUseCaseFactory: SynchronizationUseCaseFactory
-    private lateinit var SUT: SynchronizeNotes
+    private lateinit var SUT: SynchronizeAddedNotes
 
     @BeforeTest
     fun setUp() {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        synchronizationUseCaseFactory = SynchronizationUseCaseFactory(
+        SUT = SynchronizeAddedNotes(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
-        SUT = synchronizationUseCaseFactory.createSynchronizeNotes()
     }
 
-    @JsName("AddNewApiNotesToLocal")
+    @JsName("DatabaseNewNotesAddToApi")
     @Test
-    fun `When API has new notes then add them to the API`() = runTest {
+    fun `When local database has new notes the add them to the api`() = runTest {
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity()
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema()
+        )
+
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+
+        assertEquals(2, noteApiTestFake.notes.count())
+        val addedNote = noteApiTestFake.notes[1]
+        assertEquals(SECOND_NOTE.title, addedNote.title)
+        assertEquals(SECOND_NOTE.content, addedNote.content)
+        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
+        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
+    }
+
+    @JsName("ApiNewNotesAddToDatabase")
+    @Test
+    fun `When API has new notes the add them locally`() = runTest {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity()
         )
@@ -44,9 +60,8 @@ class SynchronizeNotesTest {
             SECOND_NOTE.copyToSchema()
         )
 
-        SUT.executeAsync()
-
-        assertEquals(2, noteApiTestFake.notes.count())
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+        assertEquals(2, noteDaoTestFake.notes.count())
         val addedNote = noteDaoTestFake.notes[1]
         assertEquals(SECOND_NOTE.title, addedNote.title)
         assertEquals(SECOND_NOTE.content, addedNote.content)

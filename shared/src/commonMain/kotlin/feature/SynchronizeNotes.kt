@@ -1,22 +1,23 @@
 package feature
 
 import database.NoteDao
-import database.NoteEntity
+import feature.synchronization.SynchronizeAddedNotes
+import feature.synchronization.SynchronizeDeletedNotes
+import feature.synchronization.SynchronizeUpdatedNotes
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
-import model.CreationTimestamp
-import model.toCreationTimestamp
-import model.toLastModificationTimestamp
 import network.NetworkResponse
 import network.NoteApi
-import network.NoteSchema
 import network.safeApiCall
 
 class SynchronizeNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,
-    private val noteApi: NoteApi
+    private val noteApi: NoteApi,
+    private val synchronizeDeletedNotes: SynchronizeDeletedNotes,
+    private val synchronizeAddedNotes: SynchronizeAddedNotes,
+    private val synchronizeUpdatedNotes: SynchronizeUpdatedNotes
 ) {
 
     sealed class Result {
@@ -36,103 +37,10 @@ class SynchronizeNotes(
         }
 
         val apiNotes = networkResponse.result
-        checkWasDeleted(localNotes, apiNotes)
-        checkHasSyncFailed(localNotes, apiNotes)
-        checkIfApiHasNewerNotes(localNotes, apiNotes)
+        synchronizeDeletedNotes.executeAsync(localNotes, apiNotes)
+        synchronizeAddedNotes.executeAsync(localNotes, apiNotes)
+        synchronizeUpdatedNotes.executeAsync(localNotes, apiNotes)
 
         return@withContext Result.Success
-    }
-
-    private suspend fun checkWasDeleted(localNotes: List<NoteEntity>, apiNotes: List<NoteSchema>) {
-        val deletedNotes = localNotes.filter { it.wasDeleted }
-
-        if(deletedNotes.isEmpty()) {
-            return
-        }
-
-        val localNotesToBeRestored = mutableListOf<CreationTimestamp>()
-        val localNotesToBeDeleted = mutableListOf<CreationTimestamp>()
-        val apiNotesToBeDeleted = mutableListOf<CreationTimestamp>()
-        deletedNotes.forEach { localNote ->
-            val apiNote = apiNotes.find { apiNote ->
-                apiNote.creationTimestamp ==  localNote.creationTimestamp
-            }
-
-            if(apiNote == null) {
-                localNotesToBeDeleted.add(localNote.creationTimestamp)
-                return@forEach
-            } else if (apiNote.lastModificationTimestamp.unix <= localNote.lastModificationTimestamp.unix) {
-                apiNotesToBeDeleted.add(apiNote.creationTimestamp)
-                localNotesToBeDeleted.add(localNote.creationTimestamp)
-            } else {
-                localNotesToBeRestored.add(localNote.creationTimestamp)
-            }
-        }
-
-        noteDao.deleteNotes(localNotesToBeDeleted)
-        safeApiCall { noteApi.deleteNotes(apiNotesToBeDeleted) }
-        noteDao.setWasDeleted(localNotesToBeRestored, false)
-    }
-
-    private suspend fun checkHasSyncFailed(localNotes: List<NoteEntity>, apiNotes: List<NoteSchema>) {
-        val noteWithSyncFailed = localNotes.filter { it.hasSyncFailed }
-
-        noteWithSyncFailed.forEach { localNote ->
-            val apiNote = apiNotes.find { apiNote ->
-                apiNote.creationTimestamp == localNote.creationTimestamp
-            }
-            if(apiNote != null){
-                handleNoteUpdate(localNote, apiNote)
-            } else {
-                val payload = AddNotePayload(
-                    title = localNote.title,
-                    content = localNote.content,
-                    lastModificationTimestamp = localNote.lastModificationTimestamp.unix.toLastModificationTimestamp(),
-                    creationTimestamp = localNote.creationTimestamp.unix.toCreationTimestamp()
-                )
-                safeApiCall { noteApi.addNote(payload) }
-            }
-        }
-    }
-
-    private suspend fun handleNoteUpdate(localNote: NoteEntity, apiNote: NoteSchema) {
-        val isLocalMoreRecent = localNote.lastModificationTimestamp.unix >= apiNote.lastModificationTimestamp.unix
-        if(isLocalMoreRecent) {
-            val payload = UpdateNotePayload(
-                title = localNote.title,
-                content = localNote.title,
-                lastModificationTimestamp = localNote.lastModificationTimestamp,
-                creationTimestamp = localNote.creationTimestamp
-            )
-            safeApiCall { noteApi.updateNote(payload) }
-        } else {
-            val payload = UpdateNotePayload(
-                title = apiNote.title,
-                content = apiNote.title,
-                lastModificationTimestamp = apiNote.lastModificationTimestamp,
-                creationTimestamp = apiNote.creationTimestamp
-            )
-            noteDao.updateNote(payload)
-        }
-    }
-
-    private suspend fun checkIfApiHasNewerNotes(localNotes: List<NoteEntity>, apiNotes: List<NoteSchema>) {
-        if(apiNotes.count() <= localNotes.count()) {
-            return
-        }
-
-        val newApiNotes = apiNotes.filterNot { apiNote ->
-            localNotes.any { localNote -> apiNote.creationTimestamp == localNote.creationTimestamp }
-        }
-
-        newApiNotes.forEach { apiNote ->
-            val payload = AddNotePayload(
-                title = apiNote.title,
-                content = apiNote.content,
-                lastModificationTimestamp = apiNote.lastModificationTimestamp,
-                creationTimestamp = apiNote.creationTimestamp
-            )
-            noteDao.addNote(payload)
-        }
     }
 }
