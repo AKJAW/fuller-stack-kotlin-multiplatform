@@ -3,9 +3,9 @@ package feature
 import base.CommonDispatchers
 import database.NoteEntityMapper
 import kotlinx.coroutines.flow.first
-import model.CreationTimestamp
-import model.LastModificationTimestamp
 import model.Note
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -20,14 +20,14 @@ class GetNotesTest {
         private val FIRST_NOTE = Note(
             title = "first",
             content = "first",
-            lastModificationTimestamp = LastModificationTimestamp(1),
-            creationTimestamp = CreationTimestamp(1)
+            lastModificationTimestamp = 1L.toLastModificationTimestamp(),
+            creationTimestamp = 1L.toCreationTimestamp()
         )
         private val SECOND_NOTE = Note(
             title = "second",
             content = "second",
-            lastModificationTimestamp = LastModificationTimestamp(2),
-            creationTimestamp = CreationTimestamp(2)
+            lastModificationTimestamp = 2L.toLastModificationTimestamp(),
+            creationTimestamp = 2L.toCreationTimestamp()
         )
     }
 

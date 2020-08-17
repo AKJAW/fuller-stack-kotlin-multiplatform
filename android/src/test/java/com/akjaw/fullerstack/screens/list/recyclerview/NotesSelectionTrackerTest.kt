@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import model.CreationTimestamp
+import model.toCreationTimestamp
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -45,13 +46,13 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selecting notes toggles between selected and not selected`() {
-            SUT.select(CreationTimestamp(1))
-            SUT.select(CreationTimestamp(2))
-            SUT.select(CreationTimestamp(3))
+            SUT.select(1L.toCreationTimestamp())
+            SUT.select(2L.toCreationTimestamp())
+            SUT.select(3L.toCreationTimestamp())
 
-            SUT.select(CreationTimestamp(1))
-            SUT.select(CreationTimestamp(3))
-            SUT.select(CreationTimestamp(3))
+            SUT.select(1L.toCreationTimestamp())
+            SUT.select(3L.toCreationTimestamp())
+            SUT.select(3L.toCreationTimestamp())
 
             val selectedNotes = SUT.getSelectedNotes()
             assertEquals(listOf<Long>(2, 3), selectedNotes)
@@ -59,23 +60,23 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selecting notes calls the correct callback`() {
-            SUT.select(CreationTimestamp(2))
-            SUT.select(CreationTimestamp(2))
-            SUT.select(CreationTimestamp(2))
-            SUT.select(CreationTimestamp(3))
+            SUT.select(2L.toCreationTimestamp())
+            SUT.select(2L.toCreationTimestamp())
+            SUT.select(2L.toCreationTimestamp())
+            SUT.select(3L.toCreationTimestamp())
 
             verify(exactly = 3) {
-                onNoteChanged.invoke(CreationTimestamp(2))
+                onNoteChanged.invoke(2L.toCreationTimestamp())
             }
             verify(exactly = 1) {
-                onNoteChanged.invoke(CreationTimestamp(3))
+                onNoteChanged.invoke(3L.toCreationTimestamp())
             }
         }
 
         @Test
         fun `Selecting notes changes the action mode title`() {
-            SUT.select(CreationTimestamp(1))
-            SUT.select(CreationTimestamp(2))
+            SUT.select(1L.toCreationTimestamp())
+            SUT.select(2L.toCreationTimestamp())
 
             verify(exactly = 1) {
                 notesListActionMode.setTitle("1")
@@ -88,7 +89,7 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Selecting an initial note starts the action mode`() {
-            SUT.select(CreationTimestamp(1))
+            SUT.select(1L.toCreationTimestamp())
 
             verify(exactly = 1) {
                 notesListActionMode.startActionMode()
@@ -97,9 +98,9 @@ internal class NotesSelectionTrackerTest {
 
         @Test
         fun `Unselecting the last note exits the action mode`() {
-            SUT.select(CreationTimestamp(1))
+            SUT.select(1L.toCreationTimestamp())
 
-            SUT.select(CreationTimestamp(1))
+            SUT.select(1L.toCreationTimestamp())
 
             verify(exactly = 1) {
                 notesListActionMode.exitActionMode()
@@ -112,7 +113,7 @@ internal class NotesSelectionTrackerTest {
         @BeforeEach
         fun setUp() {
             SUT = NotesSelectionTracker(
-                listOf(CreationTimestamp(1), CreationTimestamp(2)),
+                listOf(1L.toCreationTimestamp(), 2L.toCreationTimestamp()),
                 fragmentManager,
                 notesListActionMode,
                 onNoteChanged

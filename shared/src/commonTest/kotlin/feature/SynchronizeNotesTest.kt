@@ -4,9 +4,9 @@ import base.CommonDispatchers
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import database.NoteEntity
-import model.CreationTimestamp
-import model.LastModificationTimestamp
 import model.Note
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
@@ -23,15 +23,15 @@ class SynchronizeNotesTest {
         private val FIRST_NOTE = Note(
             title = "first",
             content = "first",
-            lastModificationTimestamp = LastModificationTimestamp(FIRST_NOTE_DATE.unixMillisLong),
-            creationTimestamp = CreationTimestamp(FIRST_NOTE_DATE.unixMillisLong)
+            lastModificationTimestamp = FIRST_NOTE_DATE.unixMillisLong.toLastModificationTimestamp(),
+            creationTimestamp = FIRST_NOTE_DATE.unixMillisLong.toCreationTimestamp()
         )
         private val SECOND_NOTE_DATE = DateTime.createAdjusted(2020, 8, 4)
         private val SECOND_NOTE = Note(
             title = "second",
             content = "second",
-            lastModificationTimestamp = LastModificationTimestamp(SECOND_NOTE_DATE.unixMillisLong),
-            creationTimestamp = CreationTimestamp(SECOND_NOTE_DATE.unixMillisLong)
+            lastModificationTimestamp = SECOND_NOTE_DATE.unixMillisLong.toLastModificationTimestamp(),
+            creationTimestamp = SECOND_NOTE_DATE.unixMillisLong.toCreationTimestamp()
         )
     }
 
@@ -211,8 +211,4 @@ class SynchronizeNotesTest {
         lastModificationTimestamp = lastModificationTimestamp?.toLastModificationTimestamp() ?: this.lastModificationTimestamp,
         creationTimestamp = creationTimestamp?.toCreationTimestamp() ?: this.creationTimestamp
     )
-
-    private fun Long.toLastModificationTimestamp() = LastModificationTimestamp(this)
-
-    private fun Long.toCreationTimestamp() = CreationTimestamp(this)
 }

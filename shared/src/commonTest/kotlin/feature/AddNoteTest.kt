@@ -3,8 +3,8 @@ package feature
 import base.CommonDispatchers
 import database.NoteEntity
 import helpers.date.UnixTimestampProviderFake
-import model.CreationTimestamp
-import model.LastModificationTimestamp
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import network.NoteSchema
 import runTest
 import tests.NoteApiTestFake
@@ -72,8 +72,8 @@ class AddNoteTest {
             localId = 0,
             title = TITLE,
             content = CONTENT,
-            lastModificationTimestamp = LastModificationTimestamp(TIMESTAMP),
-            creationTimestamp = CreationTimestamp(TIMESTAMP)
+            lastModificationTimestamp = TIMESTAMP.toLastModificationTimestamp(),
+            creationTimestamp = TIMESTAMP.toCreationTimestamp()
         )
         assertEquals(expectedNote, noteDaoTestFake.notes.first())
     }
@@ -88,8 +88,8 @@ class AddNoteTest {
             apiId = 0,
             title = TITLE,
             content = CONTENT,
-            lastModificationTimestamp = LastModificationTimestamp(TIMESTAMP),
-            creationTimestamp = CreationTimestamp(TIMESTAMP)
+            lastModificationTimestamp = TIMESTAMP.toLastModificationTimestamp(),
+            creationTimestamp = TIMESTAMP.toCreationTimestamp()
         )
         assertEquals(expectedNote, noteApiTestFake.notes.first())
     }

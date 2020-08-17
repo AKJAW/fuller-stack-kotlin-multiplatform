@@ -6,7 +6,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import model.CreationTimestamp
-import model.LastModificationTimestamp
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import network.NetworkResponse
 import network.NoteApi
 import network.NoteSchema
@@ -86,8 +87,8 @@ class SynchronizeNotes(
                 val payload = AddNotePayload(
                     title = localNote.title,
                     content = localNote.content,
-                    lastModificationTimestamp = LastModificationTimestamp(localNote.lastModificationTimestamp.unix),
-                    creationTimestamp = CreationTimestamp(localNote.creationTimestamp.unix)
+                    lastModificationTimestamp = localNote.lastModificationTimestamp.unix.toLastModificationTimestamp(),
+                    creationTimestamp = localNote.creationTimestamp.unix.toCreationTimestamp()
                 )
                 safeApiCall { noteApi.addNote(payload) }
             }

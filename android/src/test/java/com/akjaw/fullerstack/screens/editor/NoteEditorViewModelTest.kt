@@ -13,9 +13,9 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
-import model.CreationTimestamp
-import model.LastModificationTimestamp
 import model.Note
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import network.NoteSchema
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -106,10 +106,10 @@ internal class NoteEditorViewModelTest {
 
             SUT.onActionClicked("Title", "Content")
 
-            assertEquals(CreationTimestamp(TIMESTAMP), noteDaoTestFake.notes.first().creationTimestamp)
-            assertEquals(LastModificationTimestamp(TIMESTAMP), noteDaoTestFake.notes.first().lastModificationTimestamp)
-            assertEquals(CreationTimestamp(TIMESTAMP), noteApiTestFake.notes.first().creationTimestamp)
-            assertEquals(LastModificationTimestamp(TIMESTAMP), noteApiTestFake.notes.first().lastModificationTimestamp)
+            assertEquals(TIMESTAMP.toCreationTimestamp(), noteDaoTestFake.notes.first().creationTimestamp)
+            assertEquals(TIMESTAMP.toLastModificationTimestamp(), noteDaoTestFake.notes.first().lastModificationTimestamp)
+            assertEquals(TIMESTAMP.toCreationTimestamp(), noteApiTestFake.notes.first().creationTimestamp)
+            assertEquals(TIMESTAMP.toLastModificationTimestamp(), noteApiTestFake.notes.first().lastModificationTimestamp)
         }
     }
 
@@ -119,8 +119,8 @@ internal class NoteEditorViewModelTest {
         private val note = Note(
             title = "title",
             content = "content",
-            lastModificationTimestamp = LastModificationTimestamp(0),
-            creationTimestamp = CreationTimestamp(0)
+            lastModificationTimestamp = 0L.toLastModificationTimestamp(),
+            creationTimestamp = 0L.toCreationTimestamp()
         )
         private val entity = NoteEntity(
             localId = -1,

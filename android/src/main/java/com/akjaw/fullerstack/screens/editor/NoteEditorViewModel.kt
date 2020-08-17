@@ -11,6 +11,7 @@ import helpers.validation.NoteInputValidator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import model.CreationTimestamp
+import model.toCreationTimestamp
 
 class NoteEditorViewModel(
     private val applicationScope: CoroutineScope,
@@ -43,7 +44,7 @@ class NoteEditorViewModel(
 
         if (stateNote?.creationUnixTimestamp != null) {
             updateExistingNote(
-                creationTimestamp = CreationTimestamp(stateNote.creationUnixTimestamp),
+                creationTimestamp = stateNote.creationUnixTimestamp.toCreationTimestamp(),
                 title = title,
                 content = content
             )

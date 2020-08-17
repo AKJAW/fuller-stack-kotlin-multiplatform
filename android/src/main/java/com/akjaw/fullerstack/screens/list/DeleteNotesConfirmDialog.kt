@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.akjaw.fullerstack.android.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import model.CreationTimestamp
+import model.toCreationTimestamp
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -54,7 +55,7 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
         builder
             .setMessage("Are you sure you want to delete TODO plural notes")
             .setPositiveButton("Yes") { dialog: DialogInterface?, id: Int ->
-                val creationTimestamps = creationUnixTimestamps.map { CreationTimestamp(it) }
+                val creationTimestamps = creationUnixTimestamps.map { it.toCreationTimestamp() }
                 viewModel.deleteNotes(creationTimestamps)
                 onNotesDeleted.invoke()
             }

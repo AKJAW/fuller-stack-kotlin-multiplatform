@@ -4,8 +4,8 @@ import database.NoteDao
 import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import model.CreationTimestamp
-import model.LastModificationTimestamp
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import network.NetworkResponse
 import network.NoteApi
 import network.safeApiCall
@@ -22,8 +22,8 @@ class AddNote(
         val payload = AddNotePayload(
             title = title,
             content = content,
-            lastModificationTimestamp = LastModificationTimestamp(currentUnixTimestamp),
-            creationTimestamp = CreationTimestamp(currentUnixTimestamp)
+            lastModificationTimestamp = currentUnixTimestamp.toLastModificationTimestamp(),
+            creationTimestamp = currentUnixTimestamp.toCreationTimestamp()
         )
         noteDao.addNote(payload)
         val networkResponse = safeApiCall { noteApi.addNote(payload) }

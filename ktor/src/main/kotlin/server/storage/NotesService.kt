@@ -3,7 +3,8 @@ package server.storage
 import feature.AddNotePayload
 import feature.UpdateNotePayload
 import model.CreationTimestamp
-import model.LastModificationTimestamp
+import model.toCreationTimestamp
+import model.toLastModificationTimestamp
 import network.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.deleteWhere
@@ -27,8 +28,8 @@ class NotesService(
                     apiId = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
-                    lastModificationTimestamp = LastModificationTimestamp(row[NotesTable.lastModificationUnixTimestamp]),
-                    creationTimestamp = CreationTimestamp(row[NotesTable.creationUnixTimestamp])
+                    lastModificationTimestamp = row[NotesTable.lastModificationUnixTimestamp].toLastModificationTimestamp(),
+                    creationTimestamp = row[NotesTable.creationUnixTimestamp].toCreationTimestamp()
                 )
             }
     }
