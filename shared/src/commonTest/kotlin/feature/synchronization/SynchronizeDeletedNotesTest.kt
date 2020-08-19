@@ -30,9 +30,9 @@ class SynchronizeDeletedNotesTest {
         )
     }
 
-    @JsName("WasDeletedAndRecentThenDeleteFromApi")
+    @JsName("LocalWasDeletedAndRecentThenDeleteFromApi")
     @Test
-    fun `wasDeleted true and last modification date the same then delete notes from Local and API`() = runTest {
+    fun `Local wasDeleted true and last modification date the same then delete notes from Local and API`() = runTest {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity(wasDeleted = true)
@@ -45,12 +45,12 @@ class SynchronizeDeletedNotesTest {
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
         assertEquals(1, noteDaoTestFake.notes.count())
-        assertEquals(1, noteApiTestFake.notes.count())
+        assertEquals(1, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
     }
 
-    @JsName("WasDeletedAndOlderThenDontDelete")
+    @JsName("LocalWasDeletedAndOlderThenDontDelete")
     @Test
-    fun `wasDeleted true and last modification date is older then dont delete notes`() = runTest {
+    fun `Local wasDeleted true and last modification date is older then dont delete notes`() = runTest {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity(wasDeleted = true)
@@ -67,21 +67,58 @@ class SynchronizeDeletedNotesTest {
         assertEquals(2, noteApiTestFake.notes.count())
     }
 
-    @JsName("WasDeletedAndOlderThenRestoreLocal")
+    @JsName("LocalWasDeletedAndOlderThenRevertLocal")
     @Test
-    fun `wasDeleted true and last modification date is older then revert wasDeleted`() = runTest {
-        val modificationTimestamp = SECOND_NOTE_DATE.plus(1.days).unixMillisLong
+    fun `Local wasDeleted true and last modification date is older then revert wasDeleted`() = runTest {
+        val newerModificationTimestamp = SECOND_NOTE_DATE.plus(1.days).unixMillisLong
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity(wasDeleted = true)
         )
         noteApiTestFake.notes = mutableListOf(
             FIRST_NOTE.copyToSchema(),
-            SECOND_NOTE.copyToSchema(lastModificationTimestamp = modificationTimestamp)
+            SECOND_NOTE.copyToSchema(lastModificationTimestamp = newerModificationTimestamp)
         )
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
         assertEquals(false, noteDaoTestFake.notes[1].wasDeleted)
+    }
+
+    @JsName("ApiWasDeletedAndRecentThenDeleteLocal")
+    @Test
+    fun `Api wasDeleted true and last modification date is the same then delete notes`() = runTest {
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity()
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema(),
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
+        )
+
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+
+        println(noteDaoTestFake.notes)
+        assertEquals(1, noteDaoTestFake.notes.count())
+        assertEquals(1, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
+    }
+
+    @JsName("ApiWasDeletedAndOlderThenRevertApi")
+    @Test
+    fun `Api wasDeleted true and last modification date is older then revert wasDeleted`() = runTest {
+        val newerModificationTimestamp = SECOND_NOTE_DATE.plus(1.days).unixMillisLong
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity(lastModificationTimestamp = newerModificationTimestamp)
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema(),
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
+        )
+
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+
+        assertEquals(false, noteApiTestFake.notes[1].wasDeleted)
     }
 }

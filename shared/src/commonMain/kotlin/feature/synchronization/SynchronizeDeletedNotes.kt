@@ -20,33 +20,50 @@ class SynchronizeDeletedNotes(
         localNotes: List<NoteEntity>,
         apiNotes: List<NoteSchema>
     ) = withContext(coroutineDispatcher) {
-        val deletedNotes = localNotes.filter { it.wasDeleted }
+        val deletedLocalNotes = localNotes.filter { it.wasDeleted }
+        val deletedApiNotes = apiNotes.filter { it.wasDeleted }
 
-        if(deletedNotes.isEmpty()) {
+        if(deletedLocalNotes.isEmpty() && deletedApiNotes.isEmpty()) {
             return@withContext
         }
 
-        val localNotesToBeRestored = mutableListOf<CreationTimestamp>()
-        val localNotesToBeDeleted = mutableListOf<CreationTimestamp>()
-        val apiNotesToBeDeleted = mutableListOf<CreationTimestamp>()
-        deletedNotes.forEach { localNote ->
+        val localNotesToBeRestored = mutableSetOf<CreationTimestamp>()
+        val localNotesToBeDeleted = mutableSetOf<CreationTimestamp>()
+        val apiNotesToBeRestored = mutableSetOf<CreationTimestamp>()
+        val apiNotesToBeDeleted = mutableSetOf<CreationTimestamp>()
+
+        deletedApiNotes.forEach { apiNote ->
+            val localNote = localNotes.find { localNote ->
+                apiNote.creationTimestamp ==  localNote.creationTimestamp
+            }
+
+            if(localNote == null) return@forEach
+
+            if(apiNote.lastModificationTimestamp.unix >= localNote.lastModificationTimestamp.unix) {
+                localNotesToBeDeleted.add(localNote.creationTimestamp)
+            } else {
+                apiNotesToBeRestored.add(localNote.creationTimestamp)
+            }
+        }
+
+        deletedLocalNotes.forEach { localNote ->
             val apiNote = apiNotes.find { apiNote ->
                 apiNote.creationTimestamp ==  localNote.creationTimestamp
             }
 
-            if(apiNote == null) {
-                localNotesToBeDeleted.add(localNote.creationTimestamp)
-                return@forEach
-            } else if (apiNote.lastModificationTimestamp.unix <= localNote.lastModificationTimestamp.unix) {
-                apiNotesToBeDeleted.add(apiNote.creationTimestamp)
-                localNotesToBeDeleted.add(localNote.creationTimestamp)
-            } else {
-                localNotesToBeRestored.add(localNote.creationTimestamp)
+            when {
+                apiNote == null -> localNotesToBeDeleted.add(localNote.creationTimestamp)
+                apiNote.lastModificationTimestamp.unix <= localNote.lastModificationTimestamp.unix -> {
+                    apiNotesToBeDeleted.add(localNote.creationTimestamp)
+                    localNotesToBeDeleted.add(localNote.creationTimestamp)
+                }
+                else -> localNotesToBeRestored.add(localNote.creationTimestamp)
             }
         }
 
-        noteDao.deleteNotes(localNotesToBeDeleted)
-        safeApiCall { noteApi.deleteNotes(apiNotesToBeDeleted) }
-        noteDao.setWasDeleted(localNotesToBeRestored, false)
+        if( localNotesToBeDeleted.count() > 0) noteDao.deleteNotes(localNotesToBeDeleted.toList())
+        if (apiNotesToBeDeleted.count() > 0) safeApiCall { noteApi.deleteNotes(apiNotesToBeDeleted.toList()) }
+        if (localNotesToBeRestored.count() > 0) noteDao.setWasDeleted(localNotesToBeRestored.toList(), false)
+        if (apiNotesToBeRestored.count() > 0) safeApiCall { noteApi.restoreNotes(apiNotesToBeRestored.toList()) }
     }
 }

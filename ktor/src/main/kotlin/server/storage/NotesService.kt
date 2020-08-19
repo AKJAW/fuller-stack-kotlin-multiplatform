@@ -1,13 +1,12 @@
 package server.storage
 
 import feature.AddNotePayload
+import feature.DeleteNotePayload
 import feature.UpdateNotePayload
-import model.CreationTimestamp
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
 import network.NoteSchema
 import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
@@ -29,7 +28,8 @@ class NotesService(
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
                     lastModificationTimestamp = row[NotesTable.lastModificationUnixTimestamp].toLastModificationTimestamp(),
-                    creationTimestamp = row[NotesTable.creationUnixTimestamp].toCreationTimestamp()
+                    creationTimestamp = row[NotesTable.creationUnixTimestamp].toCreationTimestamp(),
+                    wasDeleted = row[NotesTable.wasDeleted]
                 )
             }
     }
@@ -40,6 +40,7 @@ class NotesService(
             it[content] = payload.content
             it[lastModificationUnixTimestamp] = payload.lastModificationTimestamp.unix
             it[creationUnixTimestamp] = payload.creationTimestamp.unix
+            it[wasDeleted] = false
         }
 
         return@queryDatabase addedId.value
@@ -57,8 +58,12 @@ class NotesService(
         return@queryDatabase updatedAmount > 0
     }
 
-    suspend fun deleteNote(creationTimestamp: CreationTimestamp): Boolean = queryDatabase {
-        val deletedAmount = NotesTable.deleteWhere { NotesTable.creationUnixTimestamp eq creationTimestamp.unix }
+    suspend fun deleteNote(deleteNotePayload: DeleteNotePayload): Boolean = queryDatabase {
+        val deletedAmount = NotesTable.update({
+            NotesTable.creationUnixTimestamp eq deleteNotePayload.creationTimestamp.unix
+        }) {
+            it[wasDeleted] = deleteNotePayload.wasDeleted
+        }
         apiLogger.log("NoteService deleteNote", "deletedAmount: $deletedAmount")
         return@queryDatabase deletedAmount > 0
     }

@@ -58,8 +58,23 @@ class NoteApiTestFake : NoteApi {
     }
 
     override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) = runOrFail {
-        notes = notes.filterNot { noteSchema ->
-            creationTimestamps.contains(noteSchema.creationTimestamp)
+        notes = notes.setWasDeleted(creationTimestamps, true)
+    }
+
+    override suspend fun restoreNotes(creationTimestamps: List<CreationTimestamp>) {
+        notes = notes.setWasDeleted(creationTimestamps, false)
+    }
+
+    private fun MutableList<NoteSchema>.setWasDeleted(
+        creationTimestamps: List<CreationTimestamp>,
+        wasDeleted: Boolean
+    ): MutableList<NoteSchema> {
+        return this.map { noteSchema ->
+            if (creationTimestamps.contains(noteSchema.creationTimestamp)) {
+                noteSchema.copy(wasDeleted = wasDeleted)
+            } else {
+                noteSchema
+            }
         }.toMutableList()
     }
 

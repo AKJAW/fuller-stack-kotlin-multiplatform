@@ -8,4 +8,5 @@ object NotesTable : IntIdTable("Notes") {
     val content = varchar("content", 10485760)
     val lastModificationUnixTimestamp = long("lastModificationUnixTimestamp")
     val creationUnixTimestamp = long("creationUnixTimestamp")
+    val wasDeleted = bool("wasDeleted")
 }

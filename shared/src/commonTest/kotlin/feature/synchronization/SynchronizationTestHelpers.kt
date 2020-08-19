@@ -82,11 +82,13 @@ fun Note.copyToSchema(
     title: String? = null,
     content: String? = null,
     lastModificationTimestamp: Long? = null,
-    creationTimestamp: Long? = null
+    creationTimestamp: Long? = null,
+    wasDeleted: Boolean = false
 ) = NoteSchema(
     apiId = -1,
     title = title ?: this.title,
     content = content ?: this.content,
     lastModificationTimestamp = lastModificationTimestamp?.toLastModificationTimestamp() ?: this.lastModificationTimestamp,
-    creationTimestamp = creationTimestamp?.toCreationTimestamp() ?: this.creationTimestamp
+    creationTimestamp = creationTimestamp?.toCreationTimestamp() ?: this.creationTimestamp,
+    wasDeleted = wasDeleted
 )

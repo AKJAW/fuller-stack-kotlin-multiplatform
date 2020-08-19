@@ -13,4 +13,6 @@ interface NoteApi {
     suspend fun updateNote(updatedNotePayload: UpdateNotePayload)
 
     suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>)
+
+    suspend fun restoreNotes(creationTimestamps: List<CreationTimestamp>)
 }

@@ -29,24 +29,28 @@ class H2Database : ExposedDatabase {
                 it[content] = "Content of one"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
                 it[lastModificationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[wasDeleted] = false
             }
             NotesTable.insert {
                 it[title] = "Note 2"
                 it[content] = "Content of two"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
                 it[lastModificationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[wasDeleted] = false
             }
             NotesTable.insert {
                 it[title] = "Note 3"
                 it[content] = "Content of three"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 5).unixMillisLong
                 it[lastModificationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[wasDeleted] = false
             }
             NotesTable.insert {
                 it[title] = "Note 4"
                 it[content] = "Content of four"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 7).unixMillisLong
                 it[lastModificationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[wasDeleted] = false
             }
         }
     }

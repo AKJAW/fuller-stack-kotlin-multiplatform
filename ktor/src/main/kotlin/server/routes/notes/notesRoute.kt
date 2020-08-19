@@ -1,6 +1,7 @@
 package server.routes.notes
 
 import feature.AddNotePayload
+import feature.DeleteNotePayload
 import feature.UpdateNotePayload
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -61,23 +62,25 @@ fun Routing.notesRoute() {
     }
 
     delete("/notes") {
-        val timestamps = notesCallHelper.getCreationTimestampsFromBody(call)
-        apiLogger.log("Delete notes", timestamps.toString())
+        val deleteNotesPayloads = notesCallHelper.getJsonData<List<DeleteNotePayload>>(call)
+        apiLogger.log("Delete notes", deleteNotesPayloads.toString())
 
-        if (timestamps == null || timestamps.isEmpty()) {
-            call.respond(HttpStatusCode.BadRequest, "No note timestamps provided")
+        if (deleteNotesPayloads == null || deleteNotesPayloads.isEmpty()) {
+            call.respond(HttpStatusCode.BadRequest, "No delete note payloads provided")
             return@delete
         }
 
-        val wereAllNotesDeleted = timestamps.map { timestamp ->
-            notesService.deleteNote(timestamp)
+        val wereAllNotesDeleted = deleteNotesPayloads.map { payload ->
+            notesService.deleteNote(payload)
         }.all { it }
 
         if (wereAllNotesDeleted) {
             call.respond(HttpStatusCode.OK)
         } else {
-            val unixTimestamps = timestamps.map { it.unix }
-            call.respond(HttpStatusCode.BadRequest, "Some notes with provided timestamps $unixTimestamps not found")
+            call.respond(
+                HttpStatusCode.BadRequest,
+                "Some notes with provided payload $deleteNotesPayloads not found"
+            )
         }
     }
 }

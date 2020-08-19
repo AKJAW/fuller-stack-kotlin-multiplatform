@@ -33,24 +33,55 @@ class SynchronizeNotesTest {
         SUT = synchronizationUseCaseFactory.createSynchronizeNotes()
     }
 
-    @JsName("AddNewApiNotesToLocal")
+    @JsName("DeletedApiNotesNotAddedLocally")
     @Test
-    fun `When API has new notes then add them to the API`() = runTest {
+    fun `Deleted api notes are not added to the local database`() = runTest {
         noteDaoTestFake.notes = listOf(
-            FIRST_NOTE.copyToEntity()
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity()
         )
         noteApiTestFake.notes = mutableListOf(
             FIRST_NOTE.copyToSchema(),
-            SECOND_NOTE.copyToSchema()
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
+        )
+
+        SUT.executeAsync()
+
+        assertEquals(1, noteDaoTestFake.notes.count())
+     }
+
+    @JsName("DeletedApiNotesNotAddedToApi")
+    @Test
+    fun `Deleted api notes are not added to the api`() = runTest {
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity()
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema(),
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
         )
 
         SUT.executeAsync()
 
         assertEquals(2, noteApiTestFake.notes.count())
-        val addedNote = noteDaoTestFake.notes[1]
-        assertEquals(SECOND_NOTE.title, addedNote.title)
-        assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
     }
+
+    @JsName("DeletedApiNotesNotUpdatedLocally")
+    @Test
+    fun `Deleted api notes are not updated in the local database`() = runTest {
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity(title = "new")
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema(),
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
+        )
+
+        SUT.executeAsync()
+
+        assertEquals(1, noteDaoTestFake.notes.count())
+    }
+
 }

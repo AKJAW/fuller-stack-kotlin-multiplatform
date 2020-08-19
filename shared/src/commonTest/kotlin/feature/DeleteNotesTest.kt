@@ -93,6 +93,6 @@ class DeleteNotesTest {
 
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        assertEquals(0, noteApiTestFake.notes.count())
+        assertEquals(0, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
     }
 }

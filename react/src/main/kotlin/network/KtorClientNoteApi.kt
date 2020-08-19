@@ -1,6 +1,7 @@
 package network
 
 import feature.AddNotePayload
+import feature.DeleteNotePayload
 import feature.UpdateNotePayload
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -35,7 +36,22 @@ class KtorClientNoteApi(
 
     override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
         client.delete<Unit>(apiUrl) {
-            body = json.write(creationTimestamps)
+            body = json.write(creationTimestamps.createDeleteNotePayloads(wasDeleted = true))
+        }
+    }
+
+    override suspend fun restoreNotes(creationTimestamps: List<CreationTimestamp>) {
+        client.delete<Unit>(apiUrl) {
+            body = json.write(creationTimestamps.createDeleteNotePayloads(wasDeleted = false))
+        }
+    }
+
+    private fun List<CreationTimestamp>.createDeleteNotePayloads(wasDeleted: Boolean): List<DeleteNotePayload> {
+        return this.map { creationTimestamp ->
+            DeleteNotePayload(
+                creationTimestamp = creationTimestamp,
+                wasDeleted = wasDeleted
+            )
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.akjaw.fullerstack.notes.network
 
 import feature.AddNotePayload
+import feature.DeleteNotePayload
 import feature.UpdateNotePayload
-import model.CreationTimestamp
 import network.NoteSchema
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,5 +22,5 @@ interface NoteService {
     suspend fun updateNote(@Body updateNoteRequest: UpdateNotePayload)
 
     @HTTP(method = "DELETE", path = "notes", hasBody = true)
-    suspend fun deleteNotes(@Body creationTimestamps: List<CreationTimestamp>)
+    suspend fun deleteNotes(@Body deleteNotePayloads: List<DeleteNotePayload>)
 }
