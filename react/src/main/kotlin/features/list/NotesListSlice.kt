@@ -1,7 +1,9 @@
 package features.list
 
-import features.list.thunk.GetNotesListThunk
+import features.list.thunk.GetNotesThunk
+import features.list.thunk.SynchronizeNotesThunk
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import model.Note
 import redux.RAction
@@ -14,9 +16,12 @@ object NotesListSlice {
     )
 
     private val notesListScope = CoroutineScope(SupervisorJob())
-    private val getNotesListThunk = GetNotesListThunk(notesListScope)
+    private val getNotesListThunk = GetNotesThunk(notesListScope)
+    private val synchronizeNotesThunk = SynchronizeNotesThunk(GlobalScope)
 
     fun getNotesList(): RThunk = getNotesListThunk
+
+    fun synchronizeNotes(): RThunk = synchronizeNotesThunk
 
     class SetNotesList(val notesList: Array<Note>) : RAction
 

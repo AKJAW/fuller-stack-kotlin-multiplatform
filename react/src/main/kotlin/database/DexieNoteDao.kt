@@ -4,7 +4,9 @@ import database.dukat.Transaction
 import database.dukat.delete
 import feature.AddNotePayload
 import feature.UpdateNotePayload
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +17,10 @@ import model.toLastModificationTimestamp
 import kotlin.js.json
 
 class DexieNoteDao : NoteDao {
-    private val notesFlow: MutableStateFlow<List<NoteEntity>> = MutableStateFlow(listOf())
+    private val deferredNotesStateFlow: Deferred<MutableStateFlow<List<NoteEntity>>> = GlobalScope.async {
+        val notes = DexieDatabase.noteTable.toArray().await().map(::toDomainEntity)
+        MutableStateFlow(notes)
+    }
 
     init {
         updateNotesFlow()
@@ -25,18 +30,20 @@ class DexieNoteDao : NoteDao {
         }
     }
 
-    override fun getAllNotes(): Flow<List<NoteEntity>> { //TODO sort by creation date
-        return notesFlow
+    override suspend fun getAllNotes(): Flow<List<NoteEntity>> { //TODO sort by creation date
+        return getNotesStateFlow()
     }
 
     private fun updateNotesFlow() {
         GlobalScope.launch {
             val notes = DexieDatabase.noteTable.toArray().await()
             console.log(notes)
-            notesFlow.value = notes.toList().map(::toDomainEntity)
-            console.log(notesFlow.value)
+            getNotesStateFlow().value = notes.map(::toDomainEntity)
+            console.log(getNotesStateFlow().value)
         }
     }
+
+    private suspend fun getNotesStateFlow(): MutableStateFlow<List<NoteEntity>> = deferredNotesStateFlow.await()
 
     private fun toDomainEntity(dexieNoteEntity: DexieNoteEntity): NoteEntity {
         return NoteEntity(
@@ -89,9 +96,10 @@ class DexieNoteDao : NoteDao {
     }
 
     override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
+        val stringTimestamps = creationTimestamps.map { it.unix.convertTimestamp() }
         DexieDatabase.noteTable
             .where("creationTimestamp")
-            .anyOf(creationTimestamps.map { it.unix.convertTimestamp() })
+            .anyOf(stringTimestamps.toTypedArray())
             .delete().then {
                 console.log(it)
             }
@@ -99,7 +107,6 @@ class DexieNoteDao : NoteDao {
 
     override suspend fun setWasDeleted(creationTimestamps: List<CreationTimestamp>, wasDeleted: Boolean) {
         val stringTimestamps = creationTimestamps.map { it.unix.convertTimestamp() }
-        console.log(stringTimestamps.toTypedArray())
         DexieDatabase.noteTable
             .where("creationTimestamp")
             .anyOf(stringTimestamps.toTypedArray())

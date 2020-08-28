@@ -21,6 +21,7 @@ interface NotesListConnectedProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
     var getNotesList: () -> Unit
+    var synchronizeNotes: () -> Unit
     var openEditor: (note: Note?) -> Unit
 }
 
@@ -31,6 +32,7 @@ private interface StateProps : RProps {
 
 private interface DispatchProps : RProps {
     var getNotesList: () -> Unit
+    var synchronizeNotes: () -> Unit
     var openEditor: (note: Note?) -> Unit
 }
 
@@ -40,6 +42,7 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
 
     override fun componentDidMount() {
         props.getNotesList()
+        props.synchronizeNotes()
     }
 
     override fun RBuilder.render() {
@@ -60,6 +63,7 @@ val notesListContainer: RClass<RProps> =
         },
         { dispatch, _ ->
             getNotesList = { dispatch(NotesListSlice.getNotesList()) }
+            synchronizeNotes = { dispatch(NotesListSlice.synchronizeNotes()) }
             openEditor = { note -> dispatch(NoteEditorSlice.OpenEditor(note)) }
         }
     )(NotesListContainer::class.js.unsafeCast<RClass<NotesListConnectedProps>>())

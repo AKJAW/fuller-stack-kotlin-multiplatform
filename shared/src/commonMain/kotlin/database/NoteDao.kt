@@ -7,7 +7,7 @@ import model.CreationTimestamp
 
 interface NoteDao {
 
-    fun getAllNotes(): Flow<List<NoteEntity>>
+    suspend fun getAllNotes(): Flow<List<NoteEntity>>
 
     suspend fun addNote(addNotePayload: AddNotePayload): Int
 

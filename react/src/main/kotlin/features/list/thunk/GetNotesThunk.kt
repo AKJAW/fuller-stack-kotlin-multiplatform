@@ -14,7 +14,7 @@ import store.AppState
 import store.RThunk
 import store.nullAction
 
-class GetNotesListThunk(private val scope: CoroutineScope) : RThunk {
+class GetNotesThunk(private val scope: CoroutineScope) : RThunk {
     private val getNotes by KodeinEntry.di.instance<GetNotes>()
     private var notesFlowJob: Job? = null
 
@@ -29,6 +29,6 @@ class GetNotesListThunk(private val scope: CoroutineScope) : RThunk {
             }
         }
 
-        return nullAction // TODO is this necessary
+        return nullAction
     }
 }
