@@ -18,8 +18,7 @@ import kotlin.js.json
 
 class DexieNoteDao : NoteDao {
     private val deferredNotesStateFlow: Deferred<MutableStateFlow<List<NoteEntity>>> = GlobalScope.async {
-        val notes = DexieDatabase.noteTable.toArray().await().map(::toDomainEntity)
-        MutableStateFlow(notes)
+        MutableStateFlow(DexieDatabase.getNotes())
     }
 
     init {
@@ -36,14 +35,21 @@ class DexieNoteDao : NoteDao {
 
     private fun updateNotesFlow() {
         GlobalScope.launch {
-            val notes = DexieDatabase.noteTable.toArray().await()
-            console.log(notes)
-            getNotesStateFlow().value = notes.map(::toDomainEntity)
+            getNotesStateFlow().value = DexieDatabase.getNotes()
             console.log(getNotesStateFlow().value)
         }
     }
 
-    private suspend fun getNotesStateFlow(): MutableStateFlow<List<NoteEntity>> = deferredNotesStateFlow.await()
+    private suspend fun DexieDatabase.getNotes(): List<NoteEntity> =
+        noteTable
+        .orderBy("creationTimestamp")
+        .reverse()
+        .toArray()
+        .await()
+        .map(::toDomainEntity)
+            .also {
+                console.log(it)
+            }
 
     private fun toDomainEntity(dexieNoteEntity: DexieNoteEntity): NoteEntity {
         return NoteEntity(
@@ -60,6 +66,8 @@ class DexieNoteDao : NoteDao {
             wasDeleted = dexieNoteEntity.wasDeleted
         )
     }
+
+    private suspend fun getNotesStateFlow(): MutableStateFlow<List<NoteEntity>> = deferredNotesStateFlow.await()
 
     override suspend fun addNote(addNotePayload: AddNotePayload): Int {
         val note = DexieNoteEntity(

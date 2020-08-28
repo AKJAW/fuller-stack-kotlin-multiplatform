@@ -84,4 +84,20 @@ class SynchronizeNotesTest {
         assertEquals(1, noteDaoTestFake.notes.count())
     }
 
+    @JsName("DeletedApiNotesAreNotReAddedLocally")
+    @Test
+    fun `Deleted api notes which were deleted locally are not re-added`() = runTest {
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity()
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema(),
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
+        )
+
+        SUT.executeAsync()
+
+        assertEquals(1, noteDaoTestFake.notes.count())
+    }
+
 }

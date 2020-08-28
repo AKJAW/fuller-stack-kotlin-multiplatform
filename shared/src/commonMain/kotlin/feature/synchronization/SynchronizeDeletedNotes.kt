@@ -9,7 +9,6 @@ import network.NoteApi
 import network.NoteSchema
 import network.safeApiCall
 
-//TODO add synchronization of API deleted notes
 class SynchronizeDeletedNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,

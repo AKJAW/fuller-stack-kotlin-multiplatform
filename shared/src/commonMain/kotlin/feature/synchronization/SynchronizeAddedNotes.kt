@@ -25,7 +25,10 @@ class SynchronizeAddedNotes(
             apiNotes.none { apiNote -> apiNote.creationTimestamp == localNote.creationTimestamp }
         }
         val newApiNotes = apiNotes.filter { apiNote ->
-            localNotes.none { localNote -> localNote.creationTimestamp == apiNote.creationTimestamp }
+            val isNew = localNotes.none { localNote ->
+                localNote.creationTimestamp == apiNote.creationTimestamp
+            }
+            isNew && apiNote.wasDeleted.not()
         }
 
         newLocalNotes.forEach { localNote ->
