@@ -3,8 +3,10 @@ package feature.synchronization
 import base.CommonDispatchers
 import com.soywiz.klock.days
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
+import feature.synchronization.SynchronizationTestData.FIRST_NOTE_DATE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE_DATE
+import helpers.date.UnixTimestampProviderFake
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -17,6 +19,7 @@ class SynchronizeDeletedNotesTest {
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
+    private val timestampProviderFake = UnixTimestampProviderFake()
     private lateinit var SUT: SynchronizeDeletedNotes
 
     @BeforeTest
@@ -25,6 +28,7 @@ class SynchronizeDeletedNotesTest {
         noteApiTestFake = NoteApiTestFake()
         SUT = SynchronizeDeletedNotes(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
+            timestampProvider = timestampProviderFake,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
@@ -85,10 +89,10 @@ class SynchronizeDeletedNotesTest {
         assertEquals(false, noteDaoTestFake.notes[1].wasDeleted)
     }
 
-    @JsName("LocalWasDeletedAndOlderThenRevertLocal")
+    @JsName("LocalWasDeletedAndOlderThenUpdateLocalLastModification")
     @Test
     fun `Local wasDeleted true and last modification date is older then set last modification as in the API`() = runTest {
-        val firstNewerModificationTimestamp = SECOND_NOTE_DATE.plus(1.days).unixMillisLong
+        val firstNewerModificationTimestamp = FIRST_NOTE_DATE.plus(1.days).unixMillisLong
         val secondNewerModificationTimestamp = SECOND_NOTE_DATE.plus(5.days).unixMillisLong
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(wasDeleted = true),
@@ -140,5 +144,26 @@ class SynchronizeDeletedNotesTest {
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
         assertEquals(false, noteApiTestFake.notes[1].wasDeleted)
+    }
+
+
+    @JsName("ApiWasDeletedAndOlderThenUpdateApiLastModification")
+    @Test
+    fun `Api wasDeleted true and last modification date is older then update last modification`() = runTest {
+        val firstNewerModificationTimestamp = SECOND_NOTE_DATE.plus(1.days).unixMillisLong
+        val secondNewerModificationTimestamp = SECOND_NOTE_DATE.plus(5.days).unixMillisLong
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(lastModificationTimestamp = firstNewerModificationTimestamp),
+            SECOND_NOTE.copyToEntity(lastModificationTimestamp = secondNewerModificationTimestamp)
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema(wasDeleted = true),
+            SECOND_NOTE.copyToSchema(wasDeleted = true)
+        )
+
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+
+        assertEquals(firstNewerModificationTimestamp, noteApiTestFake.notes[0].lastModificationTimestamp.unix)
+        assertEquals(secondNewerModificationTimestamp, noteApiTestFake.notes[1].lastModificationTimestamp.unix)
     }
 }

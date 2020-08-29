@@ -4,6 +4,7 @@ import com.soywiz.klock.DateTime
 import database.NoteDao
 import database.NoteEntity
 import feature.SynchronizeNotes
+import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import model.Note
 import model.toCreationTimestamp
@@ -14,7 +15,8 @@ import network.NoteSchema
 internal class SynchronizationUseCaseFactory(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,
-    private val noteApi: NoteApi
+    private val noteApi: NoteApi,
+    private val timestampProvider: UnixTimestampProvider
 ) {
     fun createSynchronizeNotes(): SynchronizeNotes = SynchronizeNotes(
         coroutineDispatcher = coroutineDispatcher,
@@ -28,7 +30,8 @@ internal class SynchronizationUseCaseFactory(
     fun createSynchronizeDeletedNotes(): SynchronizeDeletedNotes = SynchronizeDeletedNotes(
         coroutineDispatcher = coroutineDispatcher,
         noteDao = noteDao,
-        noteApi = noteApi
+        noteApi = noteApi,
+        timestampProvider = timestampProvider
     )
 
     fun createSynchronizeAddedNotes(): SynchronizeAddedNotes = SynchronizeAddedNotes(

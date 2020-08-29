@@ -10,6 +10,9 @@ import feature.SynchronizeNotes
 import feature.synchronization.SynchronizeAddedNotes
 import feature.synchronization.SynchronizeDeletedNotes
 import feature.synchronization.SynchronizeUpdatedNotes
+import helpers.date.UnixTimestampProvider
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -35,6 +38,9 @@ internal class NotesListViewModelTest {
     private val noteEntityMapper = NoteEntityMapper()
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
+    private val unixTimestampProvider: UnixTimestampProvider = mockk {
+        every { now() } returns 50L
+    }
     private lateinit var getNotes: GetNotes
     private lateinit var deleteNotes: DeleteNotes
     private lateinit var synchronizeNotes: SynchronizeNotes
@@ -48,12 +54,12 @@ internal class NotesListViewModelTest {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         getNotes = GetNotes(testCoroutineDispatcher, noteDaoTestFake, noteEntityMapper)
-        deleteNotes = DeleteNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
+        deleteNotes = DeleteNotes(testCoroutineDispatcher, unixTimestampProvider, noteDaoTestFake, noteApiTestFake)
         synchronizeNotes = SynchronizeNotes(
             coroutineDispatcher = testCoroutineDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake,
-            synchronizeDeletedNotes = SynchronizeDeletedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake),
+            synchronizeDeletedNotes = SynchronizeDeletedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake, unixTimestampProvider),
             synchronizeAddedNotes = SynchronizeAddedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake),
             synchronizeUpdatedNotes = SynchronizeUpdatedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
         )

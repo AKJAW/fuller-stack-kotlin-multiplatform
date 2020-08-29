@@ -99,6 +99,18 @@ class DeleteNotesTest {
         assertEquals(0, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
     }
 
+    @JsName("DeletedApiLastModificationUpdated")
+    @Test
+    fun `Deleted API notes have update lastModificationTimestamp`() = runTest {
+        timestampProviderFake.timestamp = 100L
+
+        SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
+
+        val deletedNotes = noteApiTestFake.notes.filter { it.wasDeleted }
+        assertEquals(100L, deletedNotes[0].lastModificationTimestamp.unix)
+        assertEquals(100L, deletedNotes[1].lastModificationTimestamp.unix)
+    }
+
     @JsName("localLastModificationTimestampUpdated")
     @Test
     fun `When the API call fails then the entities remain in the local database with an updated lastModificationTimestamp`() = runTest {

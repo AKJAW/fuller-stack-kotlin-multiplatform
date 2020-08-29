@@ -6,6 +6,7 @@ import feature.synchronization.SynchronizationTestData.SECOND_NOTE
 import feature.synchronization.SynchronizationUseCaseFactory
 import feature.synchronization.copyToEntity
 import feature.synchronization.copyToSchema
+import helpers.date.UnixTimestampProviderFake
 import runTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
@@ -18,6 +19,7 @@ class SynchronizeNotesTest {
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
+    private val timestampProviderFake = UnixTimestampProviderFake()
     private lateinit var synchronizationUseCaseFactory: SynchronizationUseCaseFactory
     private lateinit var SUT: SynchronizeNotes
 
@@ -28,7 +30,8 @@ class SynchronizeNotesTest {
         synchronizationUseCaseFactory = SynchronizationUseCaseFactory(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
-            noteApi = noteApiTestFake
+            noteApi = noteApiTestFake,
+            timestampProvider = timestampProviderFake
         )
         SUT = synchronizationUseCaseFactory.createSynchronizeNotes()
     }

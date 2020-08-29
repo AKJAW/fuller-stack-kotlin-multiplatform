@@ -4,6 +4,7 @@ import feature.AddNotePayload
 import feature.DeleteNotePayload
 import feature.UpdateNotePayload
 import model.CreationTimestamp
+import model.toLastModificationTimestamp
 import network.NoteApi
 import network.NoteSchema
 
@@ -23,21 +24,37 @@ class RetrofitNoteApi(
         noteService.updateNote(updatedNotePayload)
     }
 
-    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
-        val payloads = creationTimestamps.createDeleteNotePayloads(wasDeleted = true)
+    override suspend fun deleteNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
+        val payloads = creationTimestamps.createDeleteNotePayloads(
+            wasDeleted = true,
+            lastModificationTimestamp = lastModificationTimestamp
+        )
         noteService.deleteNotes(payloads)
     }
 
-    override suspend fun restoreNotes(creationTimestamps: List<CreationTimestamp>) {
-        val payloads = creationTimestamps.createDeleteNotePayloads(wasDeleted = false)
+    override suspend fun restoreNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
+        val payloads = creationTimestamps.createDeleteNotePayloads(
+            wasDeleted = false,
+            lastModificationTimestamp = lastModificationTimestamp
+        )
         noteService.deleteNotes(payloads)
     }
 
-    private fun List<CreationTimestamp>.createDeleteNotePayloads(wasDeleted: Boolean): List<DeleteNotePayload> {
+    private fun List<CreationTimestamp>.createDeleteNotePayloads(
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
+    ): List<DeleteNotePayload> {
         return this.map { creationTimestamp ->
             DeleteNotePayload(
                 creationTimestamp = creationTimestamp,
-                wasDeleted = wasDeleted
+                wasDeleted = wasDeleted,
+                lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp()
             )
         }
     }

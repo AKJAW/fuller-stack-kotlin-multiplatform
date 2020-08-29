@@ -19,7 +19,7 @@ class DeleteNotes(
     suspend fun executeAsync(creationTimestamps: List<CreationTimestamp>): Boolean = withContext(coroutineDispatcher) {
         val timestamp = timestampProvider.now()
         noteDao.setWasDeleted(creationTimestamps, true, timestamp)
-        val result = safeApiCall { noteApi.deleteNotes(creationTimestamps) }
+        val result = safeApiCall { noteApi.deleteNotes(creationTimestamps, timestamp) }
 
         when (result) {
             is NetworkResponse.Success -> {

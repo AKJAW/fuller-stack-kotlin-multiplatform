@@ -4,6 +4,7 @@ import feature.AddNotePayload
 import feature.UpdateNotePayload
 import model.CreationTimestamp
 import model.Note
+import model.toLastModificationTimestamp
 import network.NoteApi
 import network.NoteSchema
 
@@ -57,21 +58,31 @@ class NoteApiTestFake : NoteApi {
         notes.add(index, entity)
     }
 
-    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) = runOrFail {
-        notes = notes.setWasDeleted(creationTimestamps, true)
+    override suspend fun deleteNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) = runOrFail {
+        notes = notes.setWasDeleted(creationTimestamps, true, lastModificationTimestamp)
     }
 
-    override suspend fun restoreNotes(creationTimestamps: List<CreationTimestamp>) {
-        notes = notes.setWasDeleted(creationTimestamps, false)
+    override suspend fun restoreNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
+        notes = notes.setWasDeleted(creationTimestamps, false, lastModificationTimestamp)
     }
 
     private fun MutableList<NoteSchema>.setWasDeleted(
         creationTimestamps: List<CreationTimestamp>,
-        wasDeleted: Boolean
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
     ): MutableList<NoteSchema> {
         return this.map { noteSchema ->
             if (creationTimestamps.contains(noteSchema.creationTimestamp)) {
-                noteSchema.copy(wasDeleted = wasDeleted)
+                noteSchema.copy(
+                    wasDeleted = wasDeleted,
+                    lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp()
+                )
             } else {
                 noteSchema
             }

@@ -10,6 +10,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import model.CreationTimestamp
+import model.toLastModificationTimestamp
 
 class KtorClientNoteApi(
     private val client: HttpClient
@@ -34,23 +35,39 @@ class KtorClientNoteApi(
         }
     }
 
-    override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>) {
+    override suspend fun deleteNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
         client.delete<Unit>(apiUrl) {
-            body = json.write(creationTimestamps.createDeleteNotePayloads(wasDeleted = true))
+            body = json.write(creationTimestamps.createDeleteNotePayloads(
+                wasDeleted = true,
+                lastModificationTimestamp = lastModificationTimestamp
+            ))
         }
     }
 
-    override suspend fun restoreNotes(creationTimestamps: List<CreationTimestamp>) {
+    override suspend fun restoreNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
         client.delete<Unit>(apiUrl) {
-            body = json.write(creationTimestamps.createDeleteNotePayloads(wasDeleted = false))
+            body = json.write(creationTimestamps.createDeleteNotePayloads(
+                wasDeleted = false,
+                lastModificationTimestamp = lastModificationTimestamp
+            ))
         }
     }
 
-    private fun List<CreationTimestamp>.createDeleteNotePayloads(wasDeleted: Boolean): List<DeleteNotePayload> {
+    private fun List<CreationTimestamp>.createDeleteNotePayloads(
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
+    ): List<DeleteNotePayload> {
         return this.map { creationTimestamp ->
             DeleteNotePayload(
                 creationTimestamp = creationTimestamp,
-                wasDeleted = wasDeleted
+                wasDeleted = wasDeleted,
+                lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp()
             )
         }
     }

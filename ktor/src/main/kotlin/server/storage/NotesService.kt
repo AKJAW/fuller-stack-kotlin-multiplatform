@@ -63,6 +63,7 @@ class NotesService(
             NotesTable.creationUnixTimestamp eq deleteNotePayload.creationTimestamp.unix
         }) {
             it[wasDeleted] = deleteNotePayload.wasDeleted
+            it[lastModificationUnixTimestamp] = deleteNotePayload.lastModificationTimestamp.unix
         }
         apiLogger.log("NoteService deleteNote", "deletedAmount: $deletedAmount")
         return@queryDatabase deletedAmount > 0
