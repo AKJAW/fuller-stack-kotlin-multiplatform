@@ -17,26 +17,33 @@ import model.toLastModificationTimestamp
 import kotlin.js.json
 
 class DexieNoteDao : NoteDao {
-    private val deferredNotesStateFlow: Deferred<MutableStateFlow<List<NoteEntity>>> = GlobalScope.async {
-        MutableStateFlow(DexieDatabase.getNotes())
+
+    private val deferredNotesStateFlow: Deferred<List<NoteEntity>> = GlobalScope.async {
+        DexieDatabase.getNotes()
     }
 
-    init {
-        updateNotesFlow()
+    private lateinit var notesStateFlow: MutableStateFlow<List<NoteEntity>>
+
+    var isInitialized: Boolean = false
+        private set
+
+    suspend fun initialize() {
+        notesStateFlow = MutableStateFlow(deferredNotesStateFlow.await())
         DexieDatabase.db.on("changes") { changes: Transaction ->
             console.log(changes)
             updateNotesFlow()
         }
+        isInitialized = true
     }
 
-    override suspend fun getAllNotes(): Flow<List<NoteEntity>> { //TODO sort by creation date
-        return getNotesStateFlow()
+    override fun getAllNotes(): Flow<List<NoteEntity>> {
+        return notesStateFlow
     }
 
     private fun updateNotesFlow() {
         GlobalScope.launch {
-            getNotesStateFlow().value = DexieDatabase.getNotes()
-            console.log(getNotesStateFlow().value)
+            notesStateFlow.value = DexieDatabase.getNotes()
+            console.log(notesStateFlow.value)
         }
     }
 
@@ -66,8 +73,6 @@ class DexieNoteDao : NoteDao {
             wasDeleted = dexieNoteEntity.wasDeleted
         )
     }
-
-    private suspend fun getNotesStateFlow(): MutableStateFlow<List<NoteEntity>> = deferredNotesStateFlow.await()
 
     override suspend fun addNote(addNotePayload: AddNotePayload): Int {
         val note = DexieNoteEntity(

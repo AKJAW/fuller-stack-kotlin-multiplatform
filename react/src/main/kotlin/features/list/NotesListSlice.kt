@@ -1,11 +1,15 @@
 package features.list
 
+import composition.KodeinEntry
+import database.DexieNoteDao
 import features.list.thunk.GetNotesThunk
 import features.list.thunk.SynchronizeNotesThunk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import model.Note
+import org.kodein.di.instance
 import redux.RAction
 import store.RThunk
 
@@ -15,9 +19,18 @@ object NotesListSlice {
         val isLoading: Boolean = true
     )
 
+    private val dexieNoteDao by KodeinEntry.di.instance<DexieNoteDao>()
+
+
     private val notesListScope = CoroutineScope(SupervisorJob())
-    private val getNotesListThunk = GetNotesThunk(notesListScope)
-    private val synchronizeNotesThunk = SynchronizeNotesThunk(GlobalScope)
+    private val getNotesListThunk = GetNotesThunk(notesListScope, dexieNoteDao)
+    private val synchronizeNotesThunk = SynchronizeNotesThunk(GlobalScope, dexieNoteDao)
+
+    init {
+        notesListScope.launch {
+            dexieNoteDao.initialize()
+        }
+    }
 
     fun getNotesList(): RThunk = getNotesListThunk
 

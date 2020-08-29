@@ -28,8 +28,7 @@ object KodeinEntry : DIAware {
             }
         }
         bind<NoteApi>() with singleton { KtorClientNoteApi(instance()) }
-        bind<NoteDao>() with singleton {
-            DexieNoteDao()
-        }
+        bind() from singleton { DexieNoteDao() }
+        bind<NoteDao>() with singleton { instance<DexieNoteDao>() }
     }
 }

@@ -17,7 +17,7 @@ import model.LastModificationTimestamp
 abstract class RoomNoteDao : NoteDao {
 
     @Query("SELECT * FROM notes ORDER BY creationTimestamp DESC")
-    abstract override suspend fun getAllNotes(): Flow<List<NoteEntity>>
+    abstract override fun getAllNotes(): Flow<List<NoteEntity>>
 
     @Transaction
     override suspend fun addNote(addNotePayload: AddNotePayload): Int {
