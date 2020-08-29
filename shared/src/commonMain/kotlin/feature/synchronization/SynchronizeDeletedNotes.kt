@@ -5,6 +5,7 @@ import database.NoteEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import model.CreationTimestamp
+import model.LastModificationTimestamp
 import network.NoteApi
 import network.NoteSchema
 import network.safeApiCall
@@ -14,6 +15,11 @@ class SynchronizeDeletedNotes(
     private val noteDao: NoteDao,
     private val noteApi: NoteApi
 ) {
+
+    private data class LocalNoteToBeRestored(
+        val creationTimestamp: CreationTimestamp,
+        val lastModificationTimestamp: LastModificationTimestamp
+    )
 
     suspend fun executeAsync(
         localNotes: List<NoteEntity>,
@@ -26,7 +32,7 @@ class SynchronizeDeletedNotes(
             return@withContext
         }
 
-        val localNotesToBeRestored = mutableSetOf<CreationTimestamp>()
+        val localNotesToBeRestored = mutableSetOf<LocalNoteToBeRestored>()
         val localNotesToBeDeleted = mutableSetOf<CreationTimestamp>()
         val apiNotesToBeRestored = mutableSetOf<CreationTimestamp>()
         val apiNotesToBeDeleted = mutableSetOf<CreationTimestamp>()
@@ -56,13 +62,27 @@ class SynchronizeDeletedNotes(
                     apiNotesToBeDeleted.add(localNote.creationTimestamp)
                     localNotesToBeDeleted.add(localNote.creationTimestamp)
                 }
-                else -> localNotesToBeRestored.add(localNote.creationTimestamp)
+                else -> {
+                    val restoredNote = LocalNoteToBeRestored(
+                        creationTimestamp = apiNote.creationTimestamp,
+                        lastModificationTimestamp = apiNote.lastModificationTimestamp
+                    )
+                    localNotesToBeRestored.add(restoredNote)
+                }
             }
         }
 
         if( localNotesToBeDeleted.count() > 0) noteDao.deleteNotes(localNotesToBeDeleted.toList())
         if (apiNotesToBeDeleted.count() > 0) safeApiCall { noteApi.deleteNotes(apiNotesToBeDeleted.toList()) }
-        if (localNotesToBeRestored.count() > 0) noteDao.setWasDeleted(localNotesToBeRestored.toList(), false)
+        if (localNotesToBeRestored.count() > 0) {
+            localNotesToBeRestored.forEach { noteToBeRestored ->
+                noteDao.setWasDeleted(
+                    creationTimestamps = listOf(noteToBeRestored.creationTimestamp),
+                    wasDeleted = false,
+                    lastModificationTimestamp = noteToBeRestored.lastModificationTimestamp.unix
+                )
+            }
+        }
         if (apiNotesToBeRestored.count() > 0) safeApiCall { noteApi.restoreNotes(apiNotesToBeRestored.toList()) }
     }
 }

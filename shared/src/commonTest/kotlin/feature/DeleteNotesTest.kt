@@ -1,6 +1,7 @@
 package feature
 
 import base.CommonDispatchers
+import helpers.date.UnixTimestampProviderFake
 import model.Note
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
@@ -33,6 +34,7 @@ class DeleteNotesTest {
 
     private lateinit var noteDaoTestFake: NoteDaoTestFake
     private lateinit var noteApiTestFake: NoteApiTestFake
+    private val timestampProviderFake = UnixTimestampProviderFake()
     private lateinit var SUT: DeleteNotes
 
     @BeforeTest
@@ -41,6 +43,7 @@ class DeleteNotesTest {
         noteApiTestFake = NoteApiTestFake()
         SUT = DeleteNotes(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
+            timestampProvider = timestampProviderFake,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake
         )
@@ -94,5 +97,17 @@ class DeleteNotesTest {
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
         assertEquals(0, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
+    }
+
+    @JsName("localLastModificationTimestampUpdated")
+    @Test
+    fun `When the API call fails then the entities remain in the local database with an updated lastModificationTimestamp`() = runTest {
+        noteApiTestFake.willFail = true
+        timestampProviderFake.timestamp = 100L
+
+        SUT.executeAsync(listOf(SECOND_NOTE.creationTimestamp))
+
+        assertEquals(1L, noteDaoTestFake.notes[0].lastModificationTimestamp.unix)
+        assertEquals(100L, noteDaoTestFake.notes[1].lastModificationTimestamp.unix)
     }
 }

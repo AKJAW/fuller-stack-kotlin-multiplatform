@@ -15,7 +15,7 @@ import org.kodein.di.singleton
 
 val useCaseModule = DI.Module("UseCaseModule") {
     bind() from singleton { GetNotes(instance("BackgroundDispatcher"), instance(), instance()) }
-    bind() from singleton { DeleteNotes(instance("BackgroundDispatcher"), instance(), instance()) }
+    bind() from singleton { DeleteNotes(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton { SynchronizeDeletedNotes(instance("BackgroundDispatcher"), instance(), instance()) }

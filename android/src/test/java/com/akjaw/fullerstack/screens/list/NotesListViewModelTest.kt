@@ -7,6 +7,9 @@ import database.NoteEntityMapper
 import feature.DeleteNotes
 import feature.GetNotes
 import feature.SynchronizeNotes
+import feature.synchronization.SynchronizeAddedNotes
+import feature.synchronization.SynchronizeDeletedNotes
+import feature.synchronization.SynchronizeUpdatedNotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -46,7 +49,14 @@ internal class NotesListViewModelTest {
         noteApiTestFake = NoteApiTestFake()
         getNotes = GetNotes(testCoroutineDispatcher, noteDaoTestFake, noteEntityMapper)
         deleteNotes = DeleteNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
-        synchronizeNotes = SynchronizeNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
+        synchronizeNotes = SynchronizeNotes(
+            coroutineDispatcher = testCoroutineDispatcher,
+            noteDao = noteDaoTestFake,
+            noteApi = noteApiTestFake,
+            synchronizeDeletedNotes = SynchronizeDeletedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake),
+            synchronizeAddedNotes = SynchronizeAddedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake),
+            synchronizeUpdatedNotes = SynchronizeUpdatedNotes(testCoroutineDispatcher, noteDaoTestFake, noteApiTestFake)
+        )
         SUT = NotesListViewModel(testCoroutineScope, getNotes, deleteNotes, synchronizeNotes)
 
         noteDaoTestFake.initializeNoteEntities(NOTES)

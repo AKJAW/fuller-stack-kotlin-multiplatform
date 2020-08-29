@@ -17,5 +17,9 @@ interface NoteDao {
 
     suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>)
 
-    suspend fun setWasDeleted(creationTimestamps: List<CreationTimestamp>, wasDeleted: Boolean)
+    suspend fun setWasDeleted(
+        creationTimestamps: List<CreationTimestamp>,
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
+    )
 }

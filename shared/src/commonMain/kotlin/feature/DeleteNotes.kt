@@ -1,6 +1,7 @@
 package feature
 
 import database.NoteDao
+import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import model.CreationTimestamp
@@ -10,12 +11,14 @@ import network.safeApiCall
 
 class DeleteNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
+    private val timestampProvider: UnixTimestampProvider,
     private val noteDao: NoteDao,
     private val noteApi: NoteApi
 ) {
 
     suspend fun executeAsync(creationTimestamps: List<CreationTimestamp>): Boolean = withContext(coroutineDispatcher) {
-        noteDao.setWasDeleted(creationTimestamps, true)
+        val timestamp = timestampProvider.now()
+        noteDao.setWasDeleted(creationTimestamps, true, timestamp)
         val result = safeApiCall { noteApi.deleteNotes(creationTimestamps) }
 
         when (result) {

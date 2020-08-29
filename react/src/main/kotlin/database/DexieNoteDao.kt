@@ -118,12 +118,19 @@ class DexieNoteDao : NoteDao {
             }
     }
 
-    override suspend fun setWasDeleted(creationTimestamps: List<CreationTimestamp>, wasDeleted: Boolean) {
+    override suspend fun setWasDeleted(
+        creationTimestamps: List<CreationTimestamp>,
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
+    ) {
         val stringTimestamps = creationTimestamps.map { it.unix.convertTimestamp() }
         DexieDatabase.noteTable
             .where("creationTimestamp")
             .anyOf(stringTimestamps.toTypedArray())
-            .modify(json("wasDeleted" to wasDeleted))
+            .modify(json(
+                "wasDeleted" to wasDeleted,
+                "lastModificationTimestamp" to lastModificationTimestamp.convertTimestamp()
+            ))
     }
 
     private fun Long.convertTimestamp(): String = this.toString()

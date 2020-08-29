@@ -62,7 +62,7 @@ class GetNotesTest {
     @Test
     fun `Deleted notes are not returned`() = runTest {
         noteDaoTestFake.initializeNoteEntities(listOf(FIRST_NOTE, SECOND_NOTE))
-        noteDaoTestFake.setWasDeleted(listOf(SECOND_NOTE.creationTimestamp), true)
+        noteDaoTestFake.setWasDeleted(listOf(SECOND_NOTE.creationTimestamp), true, 0L)
 
         val flow = SUT.executeAsync()
 

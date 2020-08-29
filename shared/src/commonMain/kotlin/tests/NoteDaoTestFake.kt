@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import model.CreationTimestamp
 import model.Note
+import model.toLastModificationTimestamp
 
 class NoteDaoTestFake : NoteDao {
     val notesMutableState: MutableStateFlow<List<NoteEntity>> = MutableStateFlow(listOf())
@@ -81,10 +82,14 @@ class NoteDaoTestFake : NoteDao {
         notes = newNotes
     }
 
-    override suspend fun setWasDeleted(creationTimestamps: List<CreationTimestamp>, wasDeleted: Boolean) {
+    override suspend fun setWasDeleted(
+        creationTimestamps: List<CreationTimestamp>,
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
+    ) {
         val newNotes = notes.map { note ->
             if(creationTimestamps.contains(note.creationTimestamp)){
-                note.copy(wasDeleted = wasDeleted)
+                note.copy(wasDeleted = wasDeleted, lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp())
             } else {
                 note
             }
