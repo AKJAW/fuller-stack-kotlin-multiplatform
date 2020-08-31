@@ -20,7 +20,7 @@ import redux.WrapperAction
 import store.AppState
 
 private interface NoteEditorState : RState {
-    var isTitleValid: Boolean
+    var titleError: String?
 }
 
 interface NoteEditorConnectedProps : RProps {
@@ -48,7 +48,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
     RComponent<NoteEditorConnectedProps, NoteEditorState>(props) {
 
     override fun NoteEditorState.init(props: NoteEditorConnectedProps) {
-        isTitleValid = true
+        titleError = null
     }
 
     private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance()
@@ -58,7 +58,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
             attrs.key = props.selectedNote.toString()
             attrs.selectedNote = props.selectedNote
             attrs.isUpdating = props.isUpdating
-            attrs.isTitleValid = state.isTitleValid
+            attrs.titleError = state.titleError
             attrs.positiveActionCaption = getPositiveActionCaption()
             attrs.onPositiveActionClicked = ::onPositiveActionClicked
             attrs.closeEditor = props.closeEditor
@@ -73,12 +73,12 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         }
 
     fun onPositiveActionClicked(title: String, content: String) {
-        val isTitleValid = noteInputValidator.isTitleValid(title)
-        if (!isTitleValid) {
-            setState { this.isTitleValid = false }
+        val validationResult = noteInputValidator.isTitleValid(title)
+        if (validationResult is NoteInputValidator.ValidationResult.Invalid) {
+            setState { this.titleError = validationResult.errorMessage }
             return
         }
-        setState { this.isTitleValid = true }
+        setState { this.titleError = null }
 
         val selectedNote = props.selectedNote
         console.log(props.isUpdating)

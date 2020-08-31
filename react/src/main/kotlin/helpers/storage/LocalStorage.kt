@@ -1,13 +1,14 @@
 package helpers.storage
 
-// TODO implement using browser local storage
+import kotlin.browser.window
+
 class LocalStorage : Storage {
 
     override fun getString(key: String): String? {
-        return null
+        return window.localStorage.getItem(key)
     }
 
     override fun setString(key: String, value: String) {
-        /* TODO */
+        window.localStorage.setItem(key, value)
     }
 }

@@ -35,8 +35,9 @@ class NoteEditorViewModel(
     }
 
     fun onActionClicked(title: String, content: String) {
-        if (noteInputValidator.isTitleValid(title).not()) {
-            _viewState.value = viewState.value?.copy(titleError = "Title is invalid")
+        val validationResult = noteInputValidator.isTitleValid(title)
+        if (validationResult is NoteInputValidator.ValidationResult.Invalid) {
+            _viewState.value = viewState.value?.copy(titleError = validationResult.errorMessage)
             return
         }
 

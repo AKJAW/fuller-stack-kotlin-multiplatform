@@ -3,7 +3,7 @@ package helpers.validation
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class NoteEditorInputValidatorTest {
 
@@ -21,7 +21,7 @@ class NoteEditorInputValidatorTest {
 
         val result = SUT.isTitleValid(title)
 
-        assertEquals(result, false)
+        assertTrue(result is NoteInputValidator.ValidationResult.Invalid)
     }
 
     @JsName("BlankTitleIsInvalid")
@@ -31,7 +31,7 @@ class NoteEditorInputValidatorTest {
 
         val result = SUT.isTitleValid(title)
 
-        assertEquals(result, false)
+        assertTrue(result is NoteInputValidator.ValidationResult.Invalid)
     }
 
     @JsName("ATitleWithLengthBetween1and30IsValid")
@@ -41,6 +41,6 @@ class NoteEditorInputValidatorTest {
 
         val result = SUT.isTitleValid(title)
 
-        assertEquals(result, true)
+        assertTrue(result is NoteInputValidator.ValidationResult.Valid)
     }
 }

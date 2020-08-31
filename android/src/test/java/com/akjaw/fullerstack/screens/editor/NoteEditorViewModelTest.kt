@@ -8,6 +8,8 @@ import feature.AddNote
 import feature.UpdateNote
 import helpers.date.UnixTimestampProvider
 import helpers.validation.NoteInputValidator
+import helpers.validation.NoteInputValidator.ValidationResult.Invalid
+import helpers.validation.NoteInputValidator.ValidationResult.Valid
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -72,7 +74,7 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `If the note title is incorrect then the note is not added`() {
-            every { noteInputValidator.isTitleValid(any()) } returns false
+            validatorError()
 
             SUT.onActionClicked("", "")
 
@@ -82,7 +84,7 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `If the note title is correct then the note is added`() = runBlockingTest {
-            every { noteInputValidator.isTitleValid(any()) } returns true
+            validatorSuccess()
 
             SUT.onActionClicked("Title", "Content")
 
@@ -92,7 +94,7 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `After the note is added a navigation event is set`() {
-            every { noteInputValidator.isTitleValid(any()) } returns true
+            validatorSuccess()
             val wasCalled = SUT.navigationLiveEvent.testObserve()
 
             SUT.onActionClicked("Title", "Content")
@@ -102,7 +104,7 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `The correct timestamp is used`() {
-            every { noteInputValidator.isTitleValid(any()) } returns true
+            validatorSuccess()
 
             SUT.onActionClicked("Title", "Content")
 
@@ -146,7 +148,7 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `If the note title is incorrect then the note is not updated`() {
-            every { noteInputValidator.isTitleValid(any()) } returns false
+            validatorError()
 
             SUT.onActionClicked("", "")
 
@@ -156,7 +158,7 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `If the note title is correct then the note is updated`() {
-            every { noteInputValidator.isTitleValid(any()) } returns true
+            validatorSuccess()
             val updatedTitle = "Changed title"
             val updatedContent = "Changed content"
 
@@ -173,12 +175,20 @@ internal class NoteEditorViewModelTest {
 
         @Test
         fun `After the note is updated a navigation event is set`() {
-            every { noteInputValidator.isTitleValid(any()) } returns true
+            validatorSuccess()
             val wasCalled = SUT.navigationLiveEvent.testObserve()
 
             SUT.onActionClicked("Title", "Content")
 
             assertEquals(true, wasCalled())
         }
+    }
+
+    private fun validatorSuccess() {
+        every { noteInputValidator.isTitleValid(any()) } returns Valid
+    }
+
+    private fun validatorError() {
+        every { noteInputValidator.isTitleValid(any()) } returns Invalid("error")
     }
 }
