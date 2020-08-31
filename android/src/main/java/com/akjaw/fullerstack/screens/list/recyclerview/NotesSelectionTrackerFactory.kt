@@ -10,7 +10,7 @@ class NotesSelectionTrackerFactory(
 ) {
     fun create(
         initialSelectedNotes: List<CreationTimestamp>,
-        onNoteChanged: (CreationTimestamp) -> Unit
+        onNoteChanged: (List<CreationTimestamp>) -> Unit
     ): NotesSelectionTracker {
         return NotesSelectionTracker(
             initialSelectedNotes = initialSelectedNotes,

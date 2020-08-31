@@ -26,7 +26,6 @@ class NotesListActionMode(
         actionMode = mode
         val inflater = mode?.menuInflater
         inflater?.inflate(R.menu.note_list_selection, menu)
-        // TODO title
         return true
     }
 

@@ -21,7 +21,7 @@ internal class NotesSelectionTrackerTest {
         every { exitActionMode() } answers {}
         every { setTitle(any()) } answers {}
     }
-    private val onNoteChanged: (CreationTimestamp) -> Unit = mockk(relaxed = true)
+    private val onNoteChanged: (List<CreationTimestamp>) -> Unit = mockk(relaxed = true)
     private lateinit var SUT: NotesSelectionTracker
 
     @Nested
@@ -66,10 +66,10 @@ internal class NotesSelectionTrackerTest {
             SUT.select(3L.toCreationTimestamp())
 
             verify(exactly = 3) {
-                onNoteChanged.invoke(2L.toCreationTimestamp())
+                onNoteChanged.invoke(listOf(2L.toCreationTimestamp()))
             }
             verify(exactly = 1) {
-                onNoteChanged.invoke(3L.toCreationTimestamp())
+                onNoteChanged.invoke(listOf(3L.toCreationTimestamp()))
             }
         }
 

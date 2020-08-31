@@ -9,7 +9,7 @@ class NotesSelectionTracker(
     initialSelectedNotes: List<CreationTimestamp>,
     private val fragmentManager: FragmentManager, // TODO replace with an abstraction
     private val notesListActionMode: NotesListActionMode,
-    private val onNoteChanged: (CreationTimestamp) -> Unit
+    private val onNoteChanged: (List<CreationTimestamp>) -> Unit
 ) {
 
     init {
@@ -31,7 +31,7 @@ class NotesSelectionTracker(
             selectedCreationTimestamp.add(creationTimestamp)
         }
 
-        onNoteChanged(creationTimestamp)
+        onNoteChanged(listOf(creationTimestamp))
         toggleActionMode()
     }
 
@@ -61,6 +61,8 @@ class NotesSelectionTracker(
     }
 
     private fun clearSelection() {
+        val selectedNotes = selectedCreationTimestamp.toList()
         selectedCreationTimestamp.clear()
+        onNoteChanged(selectedNotes)
     }
 }

@@ -51,11 +51,13 @@ class NotesListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun onNoteSelectionChanged(creationTimestamp: CreationTimestamp) {
-        val positionOfNote = notes.indexOfFirst { it.creationTimestamp == creationTimestamp }
-        if (positionOfNote == -1) return
-        notifyItemChanged(positionOfNote)
-    }
+    private fun onNoteSelectionChanged(creationTimestamps: List<CreationTimestamp>) =
+        creationTimestamps.forEach { creationTimestamp ->
+            val positionOfNote = notes.indexOfFirst { it.creationTimestamp == creationTimestamp }
+            if (positionOfNote > -1) {
+                notifyItemChanged(positionOfNote)
+            }
+        }
 
     fun getSelectedNoteIds(): List<Long> = notesSelectionTracker.getSelectedNotes()
 
