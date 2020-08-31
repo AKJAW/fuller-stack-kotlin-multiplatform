@@ -5,8 +5,10 @@ import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.akjaw.fullerstack.android.R
@@ -66,10 +68,12 @@ class NotesListAdapter(
         val noteContainer: View = rootView.findViewById(R.id.note_container)
         val title: TextView = rootView.findViewById(R.id.note_title)
         val date: TextView = rootView.findViewById(R.id.note_date)
+        val noteSyncFailed: ImageView = rootView.findViewById(R.id.note_sync_failed)
 
         fun bind(note: Note, isSelected: Boolean) {
             title.text = note.title
             date.text = dateFormat.format(note.creationTimestamp.unix)
+            noteSyncFailed.isVisible = note.hasSyncFailed
             setBackgroundColor(isSelected)
 
             noteContainer.setOnClickListener {

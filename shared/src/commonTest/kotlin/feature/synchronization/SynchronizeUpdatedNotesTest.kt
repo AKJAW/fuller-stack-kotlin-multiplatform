@@ -45,6 +45,25 @@ class SynchronizeUpdatedNotesTest {
         assertEquals("changed", noteApiTestFake.notes[1].title)
     }
 
+    @JsName("LocalNewerThenUpdateHasSyncFailed")
+    @Test
+    fun `After note is updated in the API hasSyncFailed is updated`() = runTest {
+        val modificationTimestamp = SynchronizationTestData.SECOND_NOTE_DATE.plus(1.days).unixMillisLong
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity(
+                title = "changed",
+                lastModificationTimestamp = modificationTimestamp,
+                hasSyncFailed = true
+            )
+        )
+        noteApiTestFake.notes = mutableListOf(FIRST_NOTE.copyToSchema(), SECOND_NOTE.copyToSchema())
+
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+
+        assertEquals(false, noteDaoTestFake.notes[1].hasSyncFailed)
+    }
+
     @JsName("ApiNewerThenUpdateLocal")
     @Test
     fun `API is more recent then update local database`() = runTest {

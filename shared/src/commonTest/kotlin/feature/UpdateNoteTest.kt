@@ -117,4 +117,15 @@ class UpdateNoteTest {
         assertTrue(noteDaoTestFake.notes.first().hasSyncFailed)
     }
 
+    @JsName("SyncFailedSetOnApiSuccess")
+    @Test
+    fun `When API request succeeds then hasSyncFailed is updated`() = runTest {
+        noteDaoTestFake.initializeNoteEntities(listOf(INITIAL_NOTE.copy(hasSyncFailed = true)))
+        noteApiTestFake.initializeSchemas(listOf(INITIAL_NOTE))
+
+        SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
+
+        println(noteDaoTestFake.notes)
+        assertEquals(false, noteDaoTestFake.notes.first().hasSyncFailed)
+    }
 }

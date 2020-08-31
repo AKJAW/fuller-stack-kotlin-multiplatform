@@ -5,6 +5,7 @@
     <string name="note_list_add_note">Add a note</string>
     <string name="note_color_badge_content_description">Note color badge</string>
     <string name="note_list_toolbar_title_delete">Delete</string>
+    <string name="note_failed_to_synchronize">Note failed to synchronize</string>
 
     <string name="note_editor_action_add">Add</string>
     <string name="note_editor_action_update">Update</string>

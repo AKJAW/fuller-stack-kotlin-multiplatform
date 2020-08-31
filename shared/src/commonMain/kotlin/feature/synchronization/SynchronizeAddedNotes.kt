@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
+import network.NetworkResponse
 import network.NoteApi
 import network.NoteSchema
 import network.safeApiCall
@@ -38,7 +39,11 @@ class SynchronizeAddedNotes(
                 lastModificationTimestamp = localNote.lastModificationTimestamp.unix.toLastModificationTimestamp(),
                 creationTimestamp = localNote.creationTimestamp.unix.toCreationTimestamp()
             )
-            safeApiCall { noteApi.addNote(payload) }
+
+            val response = safeApiCall { noteApi.addNote(payload) }
+            if(response is NetworkResponse.Success) {
+                noteDao.updateSyncFailed(payload.creationTimestamp, false)
+            }
         }
 
         newApiNotes.forEach { apiNote ->

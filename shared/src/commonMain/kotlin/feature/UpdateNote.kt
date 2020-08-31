@@ -34,7 +34,10 @@ class UpdateNote(
         val networkResponse = safeApiCall { noteApi.updateNote(payload) }
 
         when(networkResponse) {
-            is NetworkResponse.Success -> true
+            is NetworkResponse.Success -> {
+                noteDao.updateSyncFailed(payload.creationTimestamp, false)
+                true
+            }
             else -> {
                 noteDao.updateSyncFailed(payload.creationTimestamp, true)
                 false

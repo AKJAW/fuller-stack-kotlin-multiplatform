@@ -24,7 +24,7 @@ class NoteEditorViewModel(
         val note: ParcelableNote? = null,
         val titleError: String? = null
     )
-    // TODO event for navigation
+
     private val _viewState = MutableLiveData<NoteEditorState>(NoteEditorState())
     val viewState: LiveData<NoteEditorState> = _viewState
 

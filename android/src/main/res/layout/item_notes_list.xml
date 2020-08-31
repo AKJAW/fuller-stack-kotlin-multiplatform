@@ -38,6 +38,15 @@
                     android:layout_weight="1"
                     android:textSize="?attr/noteTitleTextSize"
                     tools:text="Note 1Note 1Note 1Note 1Note 1Note 1"/>
+            <ImageView
+                    android:id="@+id/note_sync_failed"
+                    android:contentDescription="@string/note_failed_to_synchronize"
+                    android:layout_width="18dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_cached_24dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
             <TextView
                     android:id="@+id/note_date"
                     style="@style/NotesListItemTitle"

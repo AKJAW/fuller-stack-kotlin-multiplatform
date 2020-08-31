@@ -49,6 +49,22 @@ class SynchronizeAddedNotesTest {
         assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
     }
 
+    @JsName("DatabaseNewNotesApiSuccessUpdateHasSyncFailed")
+    @Test
+    fun `When local database has new notes after adding them to API hasSyncFailed is set to false`() = runTest {
+        noteDaoTestFake.notes = listOf(
+            FIRST_NOTE.copyToEntity(),
+            SECOND_NOTE.copyToEntity(hasSyncFailed = true)
+        )
+        noteApiTestFake.notes = mutableListOf(
+            FIRST_NOTE.copyToSchema()
+        )
+
+        SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
+
+        assertEquals(false, noteDaoTestFake.notes[1].hasSyncFailed)
+    }
+
     @JsName("ApiNewNotesAddToDatabase")
     @Test
     fun `When API has new notes the add them locally`() = runTest {

@@ -26,7 +26,7 @@ class NoteDaoTestFake : NoteDao {
                 content = note.content,
                 lastModificationTimestamp = note.lastModificationTimestamp,
                 creationTimestamp = note.creationTimestamp,
-                hasSyncFailed = false,
+                hasSyncFailed = note.hasSyncFailed,
                 wasDeleted = false
             )
         }

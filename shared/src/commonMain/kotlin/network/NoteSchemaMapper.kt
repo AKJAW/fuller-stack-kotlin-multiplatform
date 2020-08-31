@@ -11,6 +11,7 @@ class NoteSchemaMapper {
             title = note.title,
             content = note.content,
             lastModificationTimestamp = note.lastModificationTimestamp,
-            creationTimestamp = note.creationTimestamp
+            creationTimestamp = note.creationTimestamp,
+            hasSyncFailed = false
         )
 }
