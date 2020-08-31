@@ -45,9 +45,6 @@ internal class NotesListViewModel(
     }
 
     fun deleteNotes(creationTimestamps: List<CreationTimestamp>) = applicationScope.launch {
-        val wasDeleted = deleteNotes.executeAsync(creationTimestamps)
-        if(wasDeleted.not()){
-            //TODO there was a problem with synchronization
-        }
+        deleteNotes.executeAsync(creationTimestamps)
     }
 }

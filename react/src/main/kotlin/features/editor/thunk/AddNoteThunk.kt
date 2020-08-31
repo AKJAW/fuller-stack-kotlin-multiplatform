@@ -20,10 +20,7 @@ class AddNoteThunk(
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
-            val wasAdded = addNote.executeAsync(title, content)
-            if (wasAdded.not()) {
-                // TODO
-            }
+            addNote.executeAsync(title, content)
         }
 
         return nullAction

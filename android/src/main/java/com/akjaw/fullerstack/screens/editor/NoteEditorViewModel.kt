@@ -56,15 +56,10 @@ class NoteEditorViewModel(
     }
 
     private fun addNewNote(title: String, content: String) = applicationScope.launch {
-        val wasSuccessful = addNote.executeAsync(
+        addNote.executeAsync(
             title = title,
             content = content
         )
-
-        if (wasSuccessful.not()) {
-            // TODO the note should be flagged and a refresh icon should be shown
-            // TODO move to a separate class which can be use by both platforms
-        }
     }
 
     private fun updateExistingNote(
@@ -72,15 +67,10 @@ class NoteEditorViewModel(
         title: String,
         content: String
     ) = applicationScope.launch {
-        val wasSuccessful = updateNote.executeAsync(
+        updateNote.executeAsync(
             creationTimestamp = creationTimestamp,
             title = title,
             content = content
         )
-
-        if (wasSuccessful.not()) {
-            // TODO the note should be flagged and a refresh icon should be shown
-            // TODO move to a separate class which can be use by both platforms
-        }
     }
 }

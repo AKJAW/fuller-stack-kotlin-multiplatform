@@ -25,7 +25,7 @@ class SynchronizeNotesThunk(
             while (dexieNoteDao.isInitialized.not()) {
                 delay(100)
             }
-            synchronizeNotes.executeAsync() //TODO do something with the result
+            synchronizeNotes.executeAsync()
         }
 
         return nullAction

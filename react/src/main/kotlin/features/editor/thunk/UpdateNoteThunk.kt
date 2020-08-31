@@ -22,14 +22,11 @@ class UpdateNoteThunk(
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
         scope.launch {
-            val wasUpdated = updateNote.executeAsync(
+            updateNote.executeAsync(
                 creationTimestamp = creationTimestamp,
                 title = title,
                 content = content
             )
-            if (wasUpdated.not()) {
-                // TODO
-            }
         }
         return nullAction
     }
