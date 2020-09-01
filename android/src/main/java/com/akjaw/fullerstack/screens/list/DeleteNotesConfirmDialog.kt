@@ -14,11 +14,13 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.direct
 import org.kodein.di.instance
+import java.io.Serializable
 
 class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
 
     companion object {
         private const val EXTRA_NOTES = "EXTRA_NOTES"
+        private const val ON_NOTES_DELETED = "ON_NOTES_DELETED"
 
         fun newInstance(
             noteIdentifiers: List<CreationTimestamp>,
@@ -28,23 +30,29 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
                 val args = Bundle()
                 val creationUnixTimestamps = noteIdentifiers.map { it.unix }
                 args.putLongArray(EXTRA_NOTES, creationUnixTimestamps.toLongArray())
+                args.putSerializable(ON_NOTES_DELETED, onNotesDeleted as Serializable)
                 arguments = args
-                this.onNotesDeleted = onNotesDeleted
             }
         }
     }
 
-    private lateinit var onNotesDeleted: () -> Unit // TODO should this be nulled out / is this kept on screen rotation
+    private lateinit var onNotesDeleted: () -> Unit
     private lateinit var creationUnixTimestamps: List<Long>
     override val di: DI by di()
-
     private val viewModel: NotesListViewModel by activityViewModels {
         di.direct.instance()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("ON_NOTES_DELETED", onNotesDeleted as Serializable)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        @Suppress("UNCHECKED_CAST")
+        onNotesDeleted = arguments?.getSerializable(ON_NOTES_DELETED) as? () -> Unit ?: return dismiss()
         creationUnixTimestamps = arguments?.getLongArray(EXTRA_NOTES)?.toList() ?: return dismiss()
     }
 
@@ -52,14 +60,19 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
         val activity = activity ?: throw IllegalStateException("Activity is null")
 
         val builder = MaterialAlertDialogBuilder(activity, R.style.AppTheme_AlertDialogTheme)
+        val message = resources.getQuantityString(
+                R.plurals.delete_notes_dialog_message,
+            creationUnixTimestamps.count(),
+            creationUnixTimestamps.count()
+        )
         builder
-            .setMessage("Are you sure you want to delete TODO plural notes")
-            .setPositiveButton("Yes") { dialog: DialogInterface?, id: Int ->
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.delete_notes_dialog_confirm)) { dialog: DialogInterface?, id: Int ->
                 val creationTimestamps = creationUnixTimestamps.map { it.toCreationTimestamp() }
                 viewModel.deleteNotes(creationTimestamps)
                 onNotesDeleted.invoke()
             }
-            .setNegativeButton("Cancel") { dialog: DialogInterface?, id: Int ->
+            .setNegativeButton(getString(R.string.delete_notes_dialog_cancel)) { dialog: DialogInterface?, id: Int ->
                 dialog?.dismiss()
             }
 

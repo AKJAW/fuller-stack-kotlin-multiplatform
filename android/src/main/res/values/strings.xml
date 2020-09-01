@@ -18,4 +18,10 @@
     <string name="note_editor_hint_title">Title</string>
     <string name="note_editor_hint_content">Content</string>
 
+    <plurals name="delete_notes_dialog_message">
+        <item quantity="one">Are you sure you want to delete %d note?</item>
+        <item quantity="other">Are you sure you want to delete %d notes?</item>
+    </plurals>
+    <string name="delete_notes_dialog_confirm">Yes</string>
+    <string name="delete_notes_dialog_cancel">Cancel</string>
 </resources>
