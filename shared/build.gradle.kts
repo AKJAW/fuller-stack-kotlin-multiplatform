@@ -66,6 +66,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                implementation(ReactLibs.KTOR_CLIENT_JS)
                 implementation(ReactLibs.COROUTINES_JS)
                 implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
             }

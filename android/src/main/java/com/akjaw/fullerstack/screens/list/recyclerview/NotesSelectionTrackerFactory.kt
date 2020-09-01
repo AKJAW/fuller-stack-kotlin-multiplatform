@@ -1,11 +1,11 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import androidx.fragment.app.FragmentActivity
+import com.akjaw.fullerstack.screens.common.navigation.DialogManager
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
 import model.CreationTimestamp
 
 class NotesSelectionTrackerFactory(
-    private val activity: FragmentActivity,
+    private val dialogManager: DialogManager,
     private val notesListActionMode: NotesListActionMode
 ) {
     fun create(
@@ -14,7 +14,7 @@ class NotesSelectionTrackerFactory(
     ): NotesSelectionTracker {
         return NotesSelectionTracker(
             initialSelectedNotes = initialSelectedNotes,
-            fragmentManager = activity.supportFragmentManager,
+            dialogManager = dialogManager,
             notesListActionMode = notesListActionMode,
             onNoteChanged = onNoteChanged
         )

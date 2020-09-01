@@ -1,13 +1,12 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import androidx.fragment.app.FragmentManager
-import com.akjaw.fullerstack.screens.list.DeleteNotesConfirmDialog
+import com.akjaw.fullerstack.screens.common.navigation.DialogManager
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
 import model.CreationTimestamp
 
 class NotesSelectionTracker(
     initialSelectedNotes: List<CreationTimestamp>,
-    private val fragmentManager: FragmentManager, // TODO replace with an abstraction
+    private val dialogManager: DialogManager,
     private val notesListActionMode: NotesListActionMode,
     private val onNoteChanged: (List<CreationTimestamp>) -> Unit
 ) {
@@ -54,10 +53,9 @@ class NotesSelectionTracker(
     fun isSelectionModeEnabled() = selectedCreationTimestamp.isNotEmpty()
 
     private fun openDeleteDialog() {
-        val dialog = DeleteNotesConfirmDialog.newInstance(selectedCreationTimestamp) {
+        dialogManager.showDeleteNotesConfirmDialog(selectedCreationTimestamp) {
             notesListActionMode.exitActionMode()
         }
-        dialog.show(fragmentManager, "DeleteNotes")
     }
 
     private fun clearSelection() {
