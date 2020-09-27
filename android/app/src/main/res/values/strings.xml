@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android</string>
+    <string name="app_name">Fuller stack</string>
 
     <string name="notes_list_toolbar_title">Notes</string>
     <string name="note_list_add_note">Add a note</string>
