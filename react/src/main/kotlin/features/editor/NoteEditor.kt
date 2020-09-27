@@ -29,7 +29,7 @@ import styled.styledDiv
 interface NoteEditorProps : RProps {
     var selectedNote: Note?
     var isUpdating: Boolean
-    var isTitleValid: Boolean
+    var titleError: String?
     var positiveActionCaption: String
     var onPositiveActionClicked: (title: String, content: String) -> Unit
     var closeEditor: () -> Unit
@@ -82,7 +82,8 @@ val noteEditor = functionalComponent<NoteEditorProps> { props ->
                 label = "Title",
                 value = title,
                 variant = MFormControlVariant.outlined,
-                error = props.isTitleValid.not(),
+                error = props.titleError != null,
+                helperText = props.titleError,
                 onChange = { event -> setTitle(event.targetInputValue) }
             ) {
                 css(Classes.titleTextField)

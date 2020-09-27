@@ -11,7 +11,7 @@ jobs:
     - uses: eskatos/gradle-command-action@v1
       with:
         gradle-version: 6.1.1
-        arguments: :android:build
+        arguments: :android:app:assemble
 
   build-ktor:
     runs-on: ubuntu-latest

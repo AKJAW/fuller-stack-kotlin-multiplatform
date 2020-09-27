@@ -1,5 +1,7 @@
 package composition
 
+import database.DexieNoteDao
+import database.NoteDao
 import helpers.storage.LocalStorage
 import helpers.storage.Storage
 import io.ktor.client.HttpClient
@@ -25,6 +27,8 @@ object KodeinEntry : DIAware {
                 }
             }
         }
-        bind<NoteApi>() with singleton { KtorClientNoteApi(instance(), instance()) }
+        bind<NoteApi>() with singleton { KtorClientNoteApi(instance()) }
+        bind() from singleton { DexieNoteDao() }
+        bind<NoteDao>() with singleton { instance<DexieNoteDao>() }
     }
 }

@@ -50,6 +50,8 @@ kotlin {
                 implementation(AndroidLibs.COROUTINES_ANDROID)
                 implementation(JVMLibs.SERIALIZATION_RUNTIME_JVM)
                 implementation(AndroidLibs.RETROFIT)
+                implementation(AndroidLibs.ROOM_RUNTIME)
+                implementation(AndroidLibs.ROOM_KTX)
             }
         }
         val androidTest by getting {
@@ -64,6 +66,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                implementation(ReactLibs.KTOR_CLIENT_JS)
                 implementation(ReactLibs.COROUTINES_JS)
                 implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
             }

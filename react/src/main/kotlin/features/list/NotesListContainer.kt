@@ -20,7 +20,8 @@ import store.AppState
 interface NotesListConnectedProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
-    var fetchNotesList: () -> Unit
+    var getNotesList: () -> Unit
+    var synchronizeNotes: () -> Unit
     var openEditor: (note: Note?) -> Unit
 }
 
@@ -30,7 +31,8 @@ private interface StateProps : RProps {
 }
 
 private interface DispatchProps : RProps {
-    var fetchNotesList: () -> Unit
+    var getNotesList: () -> Unit
+    var synchronizeNotes: () -> Unit
     var openEditor: (note: Note?) -> Unit
 }
 
@@ -39,7 +41,8 @@ private class NotesListContainer(props: NotesListConnectedProps) : RComponent<No
     val dateFormat = patternProvider.getNotesListItemPattern()
 
     override fun componentDidMount() {
-        props.fetchNotesList()
+        props.getNotesList()
+        props.synchronizeNotes()
     }
 
     override fun RBuilder.render() {
@@ -59,7 +62,8 @@ val notesListContainer: RClass<RProps> =
             isLoading = state.notesListState.isLoading
         },
         { dispatch, _ ->
-            fetchNotesList = { dispatch(NotesListSlice.fetchNotesList()) }
+            getNotesList = { dispatch(NotesListSlice.getNotesList()) }
+            synchronizeNotes = { dispatch(NotesListSlice.synchronizeNotes()) }
             openEditor = { note -> dispatch(NoteEditorSlice.OpenEditor(note)) }
         }
     )(NotesListContainer::class.js.unsafeCast<RClass<NotesListConnectedProps>>())

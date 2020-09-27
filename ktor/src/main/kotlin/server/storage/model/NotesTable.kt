@@ -6,5 +6,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 object NotesTable : IntIdTable("Notes") {
     val title = varchar("title", 255)
     val content = varchar("content", 10485760)
-    val creationDateTimestamp = long("creationDateTimestamp")
+    val lastModificationUnixTimestamp = long("lastModificationUnixTimestamp")
+    val creationUnixTimestamp = long("creationUnixTimestamp")
+    val wasDeleted = bool("wasDeleted")
 }

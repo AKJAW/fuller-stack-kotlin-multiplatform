@@ -1,15 +1,24 @@
 package network
 
-import model.Note
-import model.NoteIdentifier
+import feature.AddNotePayload
+import feature.UpdateNotePayload
+import model.CreationTimestamp
 
 interface NoteApi {
 
-    suspend fun getNotes(): List<Note>
+    suspend fun getNotes(): List<NoteSchema>
 
-    suspend fun addNote(newNote: Note)
+    suspend fun addNote(addNotePayload: AddNotePayload): Int
 
-    suspend fun updateNote(updatedNote: Note)
+    suspend fun updateNote(updatedNotePayload: UpdateNotePayload)
 
-    suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>)
+    suspend fun deleteNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    )
+
+    suspend fun restoreNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    )
 }

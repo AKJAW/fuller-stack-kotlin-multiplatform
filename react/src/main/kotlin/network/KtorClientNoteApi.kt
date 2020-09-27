@@ -1,57 +1,78 @@
 package network
 
+import feature.AddNotePayload
+import feature.DeleteNotePayload
+import feature.UpdateNotePayload
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
-import model.Note
-import model.NoteIdentifier
-import model.schema.NoteRequest
-import model.schema.NoteSchema
+import model.CreationTimestamp
+import model.toLastModificationTimestamp
 
 class KtorClientNoteApi(
-    private val client: HttpClient,
-    private val noteSchemaMapper: NoteSchemaMapper
+    private val client: HttpClient
 ) : NoteApi {
 
     val apiUrl = "https://fuller-stack-ktor.herokuapp.com/notes"
     val json = KotlinxSerializer()
 
-    override suspend fun getNotes(): List<Note> {
-        val schemas: List<NoteSchema> = client.get(apiUrl)
-        return noteSchemaMapper.toNotes(schemas)
+    override suspend fun getNotes(): List<NoteSchema> {
+        return client.get(apiUrl)
     }
 
-    override suspend fun addNote(newNote: Note) {
-        client.post<Unit>(apiUrl) {
-            val request = NoteRequest(
-                title = newNote.title,
-                content = newNote.content
-            )
-            body = json.write(request)
+    override suspend fun addNote(addNotePayload: AddNotePayload): Int {
+        return client.post(apiUrl) {
+            body = json.write(addNotePayload)
         }
     }
 
-    override suspend fun updateNote(updatedNote: Note) {
-        client.patch<Unit>("$apiUrl/${updatedNote.noteIdentifier.id}") {
-            val request = NoteRequest(
-                title = updatedNote.title,
-                content = updatedNote.content
-            )
-            body = json.write(request)
+    override suspend fun updateNote(updatedNotePayload: UpdateNotePayload) {
+        client.patch<Unit>(apiUrl) {
+            body = json.write(updatedNotePayload)
         }
     }
 
-    override suspend fun deleteNotes(noteIdentifiers: List<NoteIdentifier>) {
-        val ids = noteIdentifiers.map { it.id }
-        if (ids.count() == 1) {
-            client.delete<Unit>("$apiUrl/${ids.first()}")
-        } else {
-            client.delete<Unit>(apiUrl) {
-                body = json.write(ids)
-            }
+    override suspend fun deleteNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
+        client.delete<Unit>(apiUrl) {
+            body = json.write(
+                creationTimestamps.createDeleteNotePayloads(
+                    wasDeleted = true,
+                    lastModificationTimestamp = lastModificationTimestamp
+                )
+            )
+        }
+    }
+
+    override suspend fun restoreNotes(
+        creationTimestamps: List<CreationTimestamp>,
+        lastModificationTimestamp: Long
+    ) {
+        client.delete<Unit>(apiUrl) {
+            body = json.write(
+                creationTimestamps.createDeleteNotePayloads(
+                    wasDeleted = false,
+                    lastModificationTimestamp = lastModificationTimestamp
+                )
+            )
+        }
+    }
+
+    private fun List<CreationTimestamp>.createDeleteNotePayloads(
+        wasDeleted: Boolean,
+        lastModificationTimestamp: Long
+    ): List<DeleteNotePayload> {
+        return this.map { creationTimestamp ->
+            DeleteNotePayload(
+                creationTimestamp = creationTimestamp,
+                wasDeleted = wasDeleted,
+                lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp()
+            )
         }
     }
 }

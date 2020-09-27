@@ -83,6 +83,7 @@ complexity:
     threshold: 60
   LongParameterList:
     active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jsTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     functionThreshold: 6
     constructorThreshold: 7
     ignoreDefaultParameters: false
@@ -103,7 +104,7 @@ complexity:
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jsTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     thresholdInFiles: 11
     thresholdInClasses: 11
     thresholdInInterfaces: 11
@@ -326,7 +327,7 @@ naming:
   active: true
   ClassNaming:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     classPattern: '[A-Z$][a-zA-Z0-9$]*'
   ConstructorParameterNaming:
     active: true
@@ -353,13 +354,13 @@ naming:
     minimumFunctionNameLength: 3
   FunctionNaming:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     functionPattern: '^([a-z$][a-zA-Z$0-9]*)|(`.*`)$'
     excludeClassPattern: '$^'
     ignoreOverridden: true
   FunctionParameterNaming:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     parameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
     ignoreOverridden: true
@@ -399,7 +400,7 @@ naming:
     minimumVariableNameLength: 1
   VariableNaming:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jsTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt']
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jsTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     variablePattern: '[a-z][A-Za-z0-9]*'
     privateVariablePattern: '(_)?[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
@@ -534,6 +535,7 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 120
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jsTest/**', '**/*.Test.kt', '**/*.Spec.kt', '**/*.Spek.kt', "**/dukat/**"]
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
@@ -545,6 +547,7 @@ style:
     active: false
   NewLineAtEndOfFile:
     active: true
+    excludes: ['**/dukat/**']
   NoTabs:
     active: false
   OptionalAbstractKeyword:

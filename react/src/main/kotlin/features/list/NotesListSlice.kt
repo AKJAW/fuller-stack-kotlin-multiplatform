@@ -1,9 +1,15 @@
 package features.list
 
-import features.list.thunk.FetchNotesListThunk
+import composition.KodeinEntry
+import database.DexieNoteDao
+import features.list.thunk.GetNotesThunk
+import features.list.thunk.SynchronizeNotesThunk
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import model.Note
+import org.kodein.di.instance
 import redux.RAction
 import store.RThunk
 
@@ -13,10 +19,21 @@ object NotesListSlice {
         val isLoading: Boolean = true
     )
 
-    private val notesListScope = CoroutineScope(SupervisorJob())
-    private val fetchNotesListThunk = FetchNotesListThunk(notesListScope)
+    private val dexieNoteDao by KodeinEntry.di.instance<DexieNoteDao>()
 
-    fun fetchNotesList(): RThunk = fetchNotesListThunk
+    private val notesListScope = CoroutineScope(SupervisorJob())
+    private val getNotesListThunk = GetNotesThunk(notesListScope, dexieNoteDao)
+    private val synchronizeNotesThunk = SynchronizeNotesThunk(GlobalScope, dexieNoteDao)
+
+    init {
+        notesListScope.launch {
+            dexieNoteDao.initialize()
+        }
+    }
+
+    fun getNotesList(): RThunk = getNotesListThunk
+
+    fun synchronizeNotes(): RThunk = synchronizeNotesThunk
 
     class SetNotesList(val notesList: Array<Note>) : RAction
 
@@ -25,7 +42,7 @@ object NotesListSlice {
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is SetNotesList -> {
-                state.copy(notesList = action.notesList)
+                state.copy(notesList = action.notesList, isLoading = false)
             }
             is SetIsLoading -> {
                 state.copy(isLoading = action.isLoading)

@@ -3,8 +3,9 @@ package model
 import com.soywiz.klock.DateTime
 
 data class Note(
-    val noteIdentifier: NoteIdentifier = NoteIdentifier(-1),
     val title: String = "",
     val content: String = "",
-    val creationDate: DateTime = DateTime.now()
+    val lastModificationTimestamp: LastModificationTimestamp = DateTime.nowUnixLong().toLastModificationTimestamp(),
+    val creationTimestamp: CreationTimestamp = DateTime.nowUnixLong().toCreationTimestamp(),
+    val hasSyncFailed: Boolean = false
 )

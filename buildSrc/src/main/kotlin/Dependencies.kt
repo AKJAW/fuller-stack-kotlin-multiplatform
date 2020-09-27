@@ -43,6 +43,7 @@ object Versions {
     const val FRAGMENT_KTX = "1.2.5"
     const val LEAK_CANARY = "2.4"
     const val TIMBER = "4.7.1"
+    const val ROOM = "2.2.5"
 
     //android test
     const val ANDROIDX_TEST = "1.1.0"
@@ -132,6 +133,11 @@ object AndroidLibs {
     const val RETROFIT_KOTLINX_SERIALIZATION = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.RETROFIT_KOTLINX_SERIALIZATION}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
     const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}"
+
+    const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
+    const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
+    const val ROOM_KTX = "androidx.room:room-ktx:${Versions.ROOM}"
+
 
     const val SIMPLE_STACK = "com.github.Zhuinden:simple-stack:${Versions.SIMPLE_STACK}"
     const val SIMPLE_STACK_EXTENSIONS = "com.github.Zhuinden:simple-stack-extensions:${Versions.SIMPLE_STACK_EXTENSIONS}"

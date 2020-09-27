@@ -2,13 +2,16 @@ package features.list
 
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemText
+import com.ccfraser.muirwik.components.mIcon
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.format
 import kotlinx.css.Align
 import kotlinx.css.Color
 import kotlinx.css.LinearDimension
 import kotlinx.css.alignSelf
 import kotlinx.css.backgroundColor
 import kotlinx.css.boxShadow
+import kotlinx.css.fontSize
 import kotlinx.css.margin
 import kotlinx.css.marginRight
 import kotlinx.css.padding
@@ -41,6 +44,10 @@ private object NotesListItemClasses : StyleSheet("NoteList", isStatic = true) {
     val noteTitle by css {
         padding = "3px"
     }
+    val syncFailedIcon by css {
+        fontSize = LinearDimension("20px")
+        marginRight = LinearDimension("5px")
+    }
     val colorBadge by css {
         width = LinearDimension("5px")
         alignSelf = Align.stretch
@@ -62,8 +69,13 @@ val notesListItem = functionalComponent<NotesListItemProps> { props ->
             mListItemText(note.title) {
                 css(NotesListItemClasses.noteTitle)
             }
+            if (note.hasSyncFailed) {
+                mIcon("cached") {
+                    css(NotesListItemClasses.syncFailedIcon)
+                }
+            }
             span {
-                + note.creationDate.format(props.dateFormat)
+                + props.dateFormat.format(note.creationTimestamp.unix)
             }
         }
     }

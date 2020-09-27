@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Fuller stack</string>
+
+    <string name="notes_list_toolbar_title">Notes</string>
+    <string name="note_list_add_note">Add a note</string>
+    <string name="note_color_badge_content_description">Note color badge</string>
+    <string name="note_list_toolbar_title_delete">Delete</string>
+    <string name="note_failed_to_synchronize">Note failed to synchronize</string>
+
+    <string name="note_editor_action_add">Add</string>
+    <string name="note_editor_action_update">Update</string>
+    <string name="note_editor_toolbar_title_add">Add a note</string>
+    <string name="note_editor_toolbar_title_update">Update a note</string>
+    <string name="note_editor_success_add">Note added</string>
+    <string name="note_editor_failure_add">Syncing with cloud failed</string>
+    <string name="note_editor_error_empty_title">Title cannot be empty</string>
+    <string name="note_editor_error_title_too_long">Title is too long</string>
+    <string name="note_editor_hint_title">Title</string>
+    <string name="note_editor_hint_content">Content</string>
+
+    <plurals name="delete_notes_dialog_message">
+        <item quantity="one">Are you sure you want to delete %d note?</item>
+        <item quantity="other">Are you sure you want to delete %d notes?</item>
+    </plurals>
+    <string name="delete_notes_dialog_confirm">Yes</string>
+    <string name="delete_notes_dialog_cancel">Cancel</string>
+</resources>

@@ -2,8 +2,8 @@ package features.editor
 
 import composition.KodeinEntry
 import helpers.validation.NoteInputValidator
+import model.CreationTimestamp
 import model.Note
-import model.NoteIdentifier
 import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
@@ -20,15 +20,15 @@ import redux.WrapperAction
 import store.AppState
 
 private interface NoteEditorState : RState {
-    var isTitleValid: Boolean
+    var titleError: String?
 }
 
 interface NoteEditorConnectedProps : RProps {
     var selectedNote: Note?
     var isUpdating: Boolean
-    var addNote: (note: Note) -> Unit
-    var updateNote: (note: Note) -> Unit
-    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
+    var addNote: (title: String, content: String) -> Unit
+    var updateNote: (creationTimestamp: CreationTimestamp, title: String, content: String) -> Unit
+    var deleteNotes: (creationTimestamps: List<CreationTimestamp>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -38,9 +38,9 @@ private interface StateProps : RProps {
 }
 
 private interface DispatchProps : RProps {
-    var addNote: (note: Note) -> Unit
-    var updateNote: (note: Note) -> Unit
-    var deleteNotes: (noteIdentifiers: List<NoteIdentifier>) -> Unit
+    var addNote: (title: String, content: String) -> Unit
+    var updateNote: (creationTimestamp: CreationTimestamp, title: String, content: String) -> Unit
+    var deleteNotes: (creationTimestamps: List<CreationTimestamp>) -> Unit
     var closeEditor: () -> Unit
 }
 
@@ -48,7 +48,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
     RComponent<NoteEditorConnectedProps, NoteEditorState>(props) {
 
     override fun NoteEditorState.init(props: NoteEditorConnectedProps) {
-        isTitleValid = true
+        titleError = null
     }
 
     private val noteInputValidator: NoteInputValidator by KodeinEntry.di.instance()
@@ -58,7 +58,7 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
             attrs.key = props.selectedNote.toString()
             attrs.selectedNote = props.selectedNote
             attrs.isUpdating = props.isUpdating
-            attrs.isTitleValid = state.isTitleValid
+            attrs.titleError = state.titleError
             attrs.positiveActionCaption = getPositiveActionCaption()
             attrs.onPositiveActionClicked = ::onPositiveActionClicked
             attrs.closeEditor = props.closeEditor
@@ -73,28 +73,30 @@ private class NoteEditorContainer(props: NoteEditorConnectedProps) :
         }
 
     fun onPositiveActionClicked(title: String, content: String) {
-        val isTitleValid = noteInputValidator.isTitleValid(title)
-        if (!isTitleValid) {
-            setState { this.isTitleValid = false }
+        val validationResult = noteInputValidator.isTitleValid(title)
+        if (validationResult is NoteInputValidator.ValidationResult.Invalid) {
+            setState { this.titleError = validationResult.errorMessage }
             return
         }
-        setState { this.isTitleValid = true }
+        setState { this.titleError = null }
 
-        val newNote = Note(title = title, content = content)
         val selectedNote = props.selectedNote
         console.log(props.isUpdating)
         console.log(selectedNote)
         if (props.isUpdating && selectedNote != null) {
-            val noteWithId = newNote.copy(noteIdentifier = selectedNote.noteIdentifier)
-            props.updateNote(noteWithId)
+            props.updateNote(
+                selectedNote.creationTimestamp,
+                title,
+                content
+            )
         } else {
-            props.addNote(newNote)
+            props.addNote(title, content)
         }
     }
 
     private fun onDeleteClicked() {
         props.closeEditor()
-        val noteIdentifier = props.selectedNote?.noteIdentifier
+        val noteIdentifier = props.selectedNote?.creationTimestamp
         if (noteIdentifier != null) {
             props.deleteNotes(listOf(noteIdentifier))
         }
@@ -108,9 +110,13 @@ val noteEditorContainer: RClass<RProps> =
             isUpdating = state.noteEditorState.isUpdating
         },
         { dispatch, _ ->
-            addNote = { note -> dispatch(NoteEditorSlice.addNote(note)) }
-            updateNote = { note -> dispatch(NoteEditorSlice.updateNote(note)) }
+            addNote = { title: String, content: String -> dispatch(NoteEditorSlice.addNote(title, content)) }
+            updateNote = { creationTimestamp: CreationTimestamp, title: String, content: String ->
+                dispatch(NoteEditorSlice.updateNote(creationTimestamp, title, content))
+            }
             closeEditor = { dispatch(NoteEditorSlice.CloseEditor()) }
-            deleteNotes = { noteIdentifiers -> dispatch(NoteEditorSlice.deleteNotes(noteIdentifiers)) }
+            deleteNotes = { creationTimestamps: List<CreationTimestamp> ->
+                dispatch(NoteEditorSlice.deleteNotes(creationTimestamps))
+            }
         }
     )(NoteEditorContainer::class.js.unsafeCast<RClass<NoteEditorConnectedProps>>())
