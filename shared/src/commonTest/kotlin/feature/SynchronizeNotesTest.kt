@@ -51,7 +51,7 @@ class SynchronizeNotesTest {
         SUT.executeAsync()
 
         assertEquals(1, noteDaoTestFake.notes.count())
-     }
+    }
 
     @JsName("DeletedApiNotesNotAddedToApi")
     @Test
@@ -102,5 +102,4 @@ class SynchronizeNotesTest {
 
         assertEquals(1, noteDaoTestFake.notes.count())
     }
-
 }

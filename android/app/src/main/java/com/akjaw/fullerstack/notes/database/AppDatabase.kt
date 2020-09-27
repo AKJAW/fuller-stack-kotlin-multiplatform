@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
                 applicationContext,
                 AppDatabase::class.java,
                 "fuller-stack"
-            ).addMigrations(object : Migration(2, 3){
+            ).addMigrations(object : Migration(2, 3) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL("ALTER TABLE notes ADD wasDeleted INTEGER DEFAULT 0 NOT NULL")
                 }

@@ -1,6 +1,6 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import androidx.fragment.app.FragmentManager
+import com.akjaw.fullerstack.screens.common.navigation.DialogManager
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
 import io.mockk.every
 import io.mockk.mockk
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 internal class NotesSelectionTrackerTest {
 
-    private val fragmentManager: FragmentManager = mockk(relaxed = true)
+    private val dialogManager: DialogManager = mockk(relaxed = true)
     private val notesListActionMode: NotesListActionMode = mockk {
         every { initialize(any(), any()) } answers {}
         every { startActionMode() } answers {}
@@ -31,7 +31,7 @@ internal class NotesSelectionTrackerTest {
         fun setUp() {
             SUT = NotesSelectionTracker(
                 listOf(),
-                fragmentManager,
+                dialogManager,
                 notesListActionMode,
                 onNoteChanged
             )
@@ -114,7 +114,7 @@ internal class NotesSelectionTrackerTest {
         fun setUp() {
             SUT = NotesSelectionTracker(
                 listOf(1L.toCreationTimestamp(), 2L.toCreationTimestamp()),
-                fragmentManager,
+                dialogManager,
                 notesListActionMode,
                 onNoteChanged
             )

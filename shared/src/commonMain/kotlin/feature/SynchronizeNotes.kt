@@ -27,12 +27,12 @@ class SynchronizeNotes(
 
     suspend fun executeAsync(): Result = withContext(coroutineDispatcher) {
         val localNotes = noteDao.getAllNotes().firstOrNull()
-        if(localNotes == null) {
+        if (localNotes == null) {
             return@withContext Result.SynchronizationFailed
         }
 
         val networkResponse = safeApiCall { noteApi.getNotes() }
-        if(networkResponse !is NetworkResponse.Success){
+        if (networkResponse !is NetworkResponse.Success) {
             return@withContext Result.SynchronizationFailed
         }
 

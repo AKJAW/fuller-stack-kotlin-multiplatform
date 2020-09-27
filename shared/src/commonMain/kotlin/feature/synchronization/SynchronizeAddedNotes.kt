@@ -41,7 +41,7 @@ class SynchronizeAddedNotes(
             )
 
             val response = safeApiCall { noteApi.addNote(payload) }
-            if(response is NetworkResponse.Success) {
+            if (response is NetworkResponse.Success) {
                 noteDao.updateSyncFailed(payload.creationTimestamp, false)
             }
         }

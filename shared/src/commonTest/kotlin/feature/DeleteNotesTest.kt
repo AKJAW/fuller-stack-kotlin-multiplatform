@@ -84,7 +84,6 @@ class DeleteNotesTest {
     @JsName("NotesAreDeletedFromLocalDatabaseWhenApiSucceeds")
     @Test
     fun `Notes are deleted from the local database when API call succeeds`() = runTest {
-
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
         assertEquals(0, noteDaoTestFake.notes.count())
@@ -93,7 +92,6 @@ class DeleteNotesTest {
     @JsName("NotesAreDeletedFromAPI")
     @Test
     fun `Notes are deleted from the API`() = runTest {
-
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
         assertEquals(0, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())

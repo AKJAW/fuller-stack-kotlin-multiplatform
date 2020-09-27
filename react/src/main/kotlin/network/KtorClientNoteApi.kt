@@ -40,10 +40,12 @@ class KtorClientNoteApi(
         lastModificationTimestamp: Long
     ) {
         client.delete<Unit>(apiUrl) {
-            body = json.write(creationTimestamps.createDeleteNotePayloads(
-                wasDeleted = true,
-                lastModificationTimestamp = lastModificationTimestamp
-            ))
+            body = json.write(
+                creationTimestamps.createDeleteNotePayloads(
+                    wasDeleted = true,
+                    lastModificationTimestamp = lastModificationTimestamp
+                )
+            )
         }
     }
 
@@ -52,10 +54,12 @@ class KtorClientNoteApi(
         lastModificationTimestamp: Long
     ) {
         client.delete<Unit>(apiUrl) {
-            body = json.write(creationTimestamps.createDeleteNotePayloads(
-                wasDeleted = false,
-                lastModificationTimestamp = lastModificationTimestamp
-            ))
+            body = json.write(
+                creationTimestamps.createDeleteNotePayloads(
+                    wasDeleted = false,
+                    lastModificationTimestamp = lastModificationTimestamp
+                )
+            )
         }
     }
 

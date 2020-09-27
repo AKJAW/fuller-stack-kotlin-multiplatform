@@ -66,12 +66,14 @@ abstract class RoomNoteDao : NoteDao {
     @Query("DELETE FROM notes WHERE creationTimestamp in (:creationTimestamps)")
     abstract override suspend fun deleteNotes(creationTimestamps: List<CreationTimestamp>)
 
-    @Query("""
+    @Query(
+        """
         UPDATE notes SET 
         wasDeleted = :wasDeleted ,
         lastModificationTimestamp = :lastModificationTimestamp
         WHERE creationTimestamp in (:creationTimestamps)
-        """)
+        """
+    )
     abstract override suspend fun setWasDeleted(
         creationTimestamps: List<CreationTimestamp>,
         wasDeleted: Boolean,

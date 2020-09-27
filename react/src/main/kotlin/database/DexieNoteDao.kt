@@ -49,11 +49,11 @@ class DexieNoteDao : NoteDao {
 
     private suspend fun DexieDatabase.getNotes(): List<NoteEntity> =
         noteTable
-        .orderBy("creationTimestamp")
-        .reverse()
-        .toArray()
-        .await()
-        .map(::toDomainEntity)
+            .orderBy("creationTimestamp")
+            .reverse()
+            .toArray()
+            .await()
+            .map(::toDomainEntity)
             .also {
                 console.log(it)
             }
@@ -94,11 +94,13 @@ class DexieNoteDao : NoteDao {
         DexieDatabase.noteTable
             .where("creationTimestamp")
             .equals(updateNotePayload.creationTimestamp.unix.convertTimestamp())
-            .modify(json(
-                "title" to updateNotePayload.title,
-                "content" to updateNotePayload.content,
-                "lastModificationTimestamp" to updateNotePayload.lastModificationTimestamp.unix.convertTimestamp()
-            ))
+            .modify(
+                json(
+                    "title" to updateNotePayload.title,
+                    "content" to updateNotePayload.content,
+                    "lastModificationTimestamp" to updateNotePayload.lastModificationTimestamp.unix.convertTimestamp()
+                )
+            )
     }
 
     override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean) {
@@ -127,10 +129,12 @@ class DexieNoteDao : NoteDao {
         DexieDatabase.noteTable
             .where("creationTimestamp")
             .anyOf(stringTimestamps.toTypedArray())
-            .modify(json(
-                "wasDeleted" to wasDeleted,
-                "lastModificationTimestamp" to lastModificationTimestamp.convertTimestamp()
-            ))
+            .modify(
+                json(
+                    "wasDeleted" to wasDeleted,
+                    "lastModificationTimestamp" to lastModificationTimestamp.convertTimestamp()
+                )
+            )
     }
 
     private fun Long.convertTimestamp(): String = this.toString()
@@ -138,5 +142,4 @@ class DexieNoteDao : NoteDao {
     private fun String.convertTimestamp(): Long = this.toLong()
 
     private fun deleteObjectProperty(jsObject: dynamic, key: String) = delete(jsObject[key])
-
 }

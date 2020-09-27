@@ -33,7 +33,7 @@ external interface DexieOptions {
 }
 
 external interface DexieConstructor {
-    fun new(databaseName: String, options: DexieOptions?) : DexieInterface
+    fun new(databaseName: String, options: DexieOptions?): DexieInterface
     var prototype: DexieInterface
     var addons: Array<(db: DexieInterface) -> Unit>
     var version: Number

@@ -146,7 +146,6 @@ class SynchronizeDeletedNotesTest {
         assertEquals(false, noteApiTestFake.notes[1].wasDeleted)
     }
 
-
     @JsName("ApiWasDeletedAndOlderThenUpdateApiLastModification")
     @Test
     fun `Api wasDeleted true and last modification date is older then update last modification`() = runTest {

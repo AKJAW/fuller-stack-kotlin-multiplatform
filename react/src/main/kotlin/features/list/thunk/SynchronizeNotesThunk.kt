@@ -20,7 +20,6 @@ class SynchronizeNotesThunk(
     private val synchronizeNotes by KodeinEntry.di.instance<SynchronizeNotes>()
 
     override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
-
         scope.launch {
             while (dexieNoteDao.isInitialized.not()) {
                 delay(100)

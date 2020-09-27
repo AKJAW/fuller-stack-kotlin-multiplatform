@@ -30,7 +30,7 @@ class SynchronizeDeletedNotes(
         val deletedLocalNotes = localNotes.filter { it.wasDeleted }
         val deletedApiNotes = apiNotes.filter { it.wasDeleted }
 
-        if(deletedLocalNotes.isEmpty() && deletedApiNotes.isEmpty()) {
+        if (deletedLocalNotes.isEmpty() && deletedApiNotes.isEmpty()) {
             return@withContext
         }
 
@@ -41,12 +41,12 @@ class SynchronizeDeletedNotes(
 
         deletedApiNotes.forEach { apiNote ->
             val localNote = localNotes.find { localNote ->
-                apiNote.creationTimestamp ==  localNote.creationTimestamp
+                apiNote.creationTimestamp == localNote.creationTimestamp
             }
 
-            if(localNote == null) return@forEach
+            if (localNote == null) return@forEach
 
-            if(apiNote.lastModificationTimestamp.unix >= localNote.lastModificationTimestamp.unix) {
+            if (apiNote.lastModificationTimestamp.unix >= localNote.lastModificationTimestamp.unix) {
                 localNotesToBeDeleted.add(localNote.creationTimestamp)
             } else {
                 val noteToBeRestored = NoteToBeRestored(
@@ -59,7 +59,7 @@ class SynchronizeDeletedNotes(
 
         deletedLocalNotes.forEach { localNote ->
             val apiNote = apiNotes.find { apiNote ->
-                apiNote.creationTimestamp ==  localNote.creationTimestamp
+                apiNote.creationTimestamp == localNote.creationTimestamp
             }
 
             when {
@@ -78,7 +78,7 @@ class SynchronizeDeletedNotes(
             }
         }
 
-        if( localNotesToBeDeleted.count() > 0) noteDao.deleteNotes(localNotesToBeDeleted.toList())
+        if (localNotesToBeDeleted.count() > 0) noteDao.deleteNotes(localNotesToBeDeleted.toList())
         if (apiNotesToBeDeleted.count() > 0) safeApiCall {
             noteApi.deleteNotes(apiNotesToBeDeleted.toList(), timestampProvider.now())
         }
@@ -91,7 +91,7 @@ class SynchronizeDeletedNotes(
                 )
             }
         }
-        if (apiNotesToBeRestored.count() > 0) { //TODO refactor the request to be a single one instead of multiple
+        if (apiNotesToBeRestored.count() > 0) { // TODO refactor the request to be a single one instead of multiple
             apiNotesToBeRestored.forEach { noteToBeRestored ->
                 safeApiCall {
                     noteApi.restoreNotes(

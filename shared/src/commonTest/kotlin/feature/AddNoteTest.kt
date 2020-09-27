@@ -46,7 +46,6 @@ class AddNoteTest {
     @JsName("TrueReturnedOnApiSuccess")
     @Test
     fun `When the API call is successful then return true`() = runTest {
-
         val result = SUT.executeAsync(TITLE, CONTENT)
 
         assertTrue(result)
@@ -65,7 +64,6 @@ class AddNoteTest {
     @JsName("AddsTheNoteToTheLocalDatabase")
     @Test
     fun `Adds the note to the local database`() = runTest {
-
         SUT.executeAsync(TITLE, CONTENT)
 
         val expectedNote = NoteEntity(
@@ -81,7 +79,6 @@ class AddNoteTest {
     @JsName("AddsTheNoteToTheAPI")
     @Test
     fun `Adds the note to the API`() = runTest {
-
         SUT.executeAsync(TITLE, CONTENT)
 
         val expectedNote = NoteSchema(
@@ -103,5 +100,4 @@ class AddNoteTest {
 
         assertEquals(true, noteDaoTestFake.notes.first().hasSyncFailed)
     }
-
 }

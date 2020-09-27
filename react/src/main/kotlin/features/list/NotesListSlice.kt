@@ -21,7 +21,6 @@ object NotesListSlice {
 
     private val dexieNoteDao by KodeinEntry.di.instance<DexieNoteDao>()
 
-
     private val notesListScope = CoroutineScope(SupervisorJob())
     private val getNotesListThunk = GetNotesThunk(notesListScope, dexieNoteDao)
     private val synchronizeNotesThunk = SynchronizeNotesThunk(GlobalScope, dexieNoteDao)

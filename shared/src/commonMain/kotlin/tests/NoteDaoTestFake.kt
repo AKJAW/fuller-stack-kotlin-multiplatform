@@ -58,7 +58,7 @@ class NoteDaoTestFake : NoteDao {
             lastModificationTimestamp = updateNotePayload.lastModificationTimestamp
         )
         notes = notes.map { note ->
-            if(note.creationTimestamp == updateNotePayload.creationTimestamp) {
+            if (note.creationTimestamp == updateNotePayload.creationTimestamp) {
                 updatedNote
             } else {
                 note
@@ -68,7 +68,7 @@ class NoteDaoTestFake : NoteDao {
 
     override suspend fun updateSyncFailed(creationTimestamp: CreationTimestamp, hasSyncFailed: Boolean) {
         val newNotes = notes.map { note ->
-            if(note.creationTimestamp == creationTimestamp) {
+            if (note.creationTimestamp == creationTimestamp) {
                 note.copy(hasSyncFailed = hasSyncFailed)
             } else {
                 note
@@ -88,7 +88,7 @@ class NoteDaoTestFake : NoteDao {
         lastModificationTimestamp: Long
     ) {
         val newNotes = notes.map { note ->
-            if(creationTimestamps.contains(note.creationTimestamp)){
+            if (creationTimestamps.contains(note.creationTimestamp)) {
                 note.copy(wasDeleted = wasDeleted, lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp())
             } else {
                 note

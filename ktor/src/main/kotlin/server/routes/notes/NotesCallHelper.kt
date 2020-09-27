@@ -15,7 +15,7 @@ class NotesCallHelper {
             null
         }
 
-    suspend inline fun <reified T: Any> getJsonData(call: ApplicationCall): T? =
+    suspend inline fun <reified T : Any> getJsonData(call: ApplicationCall): T? =
         try {
             call.receiveOrNull()
         } catch (e: SerializationException) {

@@ -80,7 +80,6 @@ internal class NotesListViewModelTest {
 
     @Test
     fun `successful fetch shows the notes list`() {
-
         SUT.initializeNotes()
 
         val viewState = SUT.viewState.getOrAwaitValue()
@@ -90,7 +89,6 @@ internal class NotesListViewModelTest {
 
     @Test
     fun `notes list changes are shown in the view`() {
-
         SUT.initializeNotes()
 
         assertEquals(

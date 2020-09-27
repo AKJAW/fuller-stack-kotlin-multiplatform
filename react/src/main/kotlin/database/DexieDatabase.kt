@@ -15,6 +15,3 @@ object DexieDatabase {
     }
     val noteTable: DexieIndex.Table<DexieNoteEntity, Int> = db.table(tableName)
 }
-
-
-

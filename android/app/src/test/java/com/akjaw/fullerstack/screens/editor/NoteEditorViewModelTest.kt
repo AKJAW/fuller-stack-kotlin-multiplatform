@@ -53,7 +53,7 @@ internal class NoteEditorViewModelTest {
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake,
             unixTimestampProvider = unixTimestampProvider
-            )
+        )
         val updateNote = UpdateNote(
             coroutineDispatcher = coroutineDispatcher,
             unixTimestampProvider = unixTimestampProvider,

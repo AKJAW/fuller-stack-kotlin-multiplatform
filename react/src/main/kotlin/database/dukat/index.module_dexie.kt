@@ -1,4 +1,4 @@
-//@file:JsModule("dexie")
+// @file:JsModule("dexie")
 
 package database.dukat
 

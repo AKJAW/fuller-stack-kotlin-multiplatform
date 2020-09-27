@@ -22,7 +22,6 @@ class UpdateNote(
         title: String,
         content: String
     ): Boolean = withContext(coroutineDispatcher) {
-
         val unixTimestamp = unixTimestampProvider.now()
         val payload = UpdateNotePayload(
             title = title,
@@ -33,7 +32,7 @@ class UpdateNote(
         noteDao.updateNote(payload)
         val networkResponse = safeApiCall { noteApi.updateNote(payload) }
 
-        when(networkResponse) {
+        when (networkResponse) {
             is NetworkResponse.Success -> {
                 noteDao.updateSyncFailed(payload.creationTimestamp, false)
                 true

@@ -61,7 +61,7 @@ class DeleteNotesConfirmDialog : DialogFragment(), DIAware {
 
         val builder = MaterialAlertDialogBuilder(activity, R.style.AppTheme_AlertDialogTheme)
         val message = resources.getQuantityString(
-                R.plurals.delete_notes_dialog_message,
+            R.plurals.delete_notes_dialog_message,
             creationUnixTimestamps.count(),
             creationUnixTimestamps.count()
         )

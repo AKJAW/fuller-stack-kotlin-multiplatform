@@ -50,7 +50,6 @@ class UpdateNoteTest {
         )
         noteDaoTestFake.initializeNoteEntities(listOf(INITIAL_NOTE))
         noteApiTestFake.initializeSchemas(listOf(INITIAL_NOTE))
-
     }
 
     @JsName("TrueReturnedOnApiSuccess")
