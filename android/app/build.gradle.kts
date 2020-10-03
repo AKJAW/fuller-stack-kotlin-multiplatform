@@ -21,8 +21,8 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = mapOf("auth0Domain" to "", "auth0Scheme" to "") //TODO try to find a way to remove this from the main module
     }
-
     buildTypes {
         getByName("debug") {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
@@ -33,8 +33,8 @@ android {
         }
     }
     compileOptions {
-        setSourceCompatibility(JavaVersion.VERSION_1_8)
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
         exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    api(project(":android:authentication"))
 
     // debugging
     debugImplementation(AndroidLibs.LEAK_CANARY)
