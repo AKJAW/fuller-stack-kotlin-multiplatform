@@ -1,11 +1,10 @@
 package com.akjaw.fullerstack.authentication.presentation
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.akjaw.fullerstack.authentication.R
-import com.auth0.android.Auth0
-import com.auth0.android.authentication.storage.SecureCredentialsManager
+import com.akjaw.fullerstack.authentication.UserAuthenticationManager
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -17,13 +16,17 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
         extend(customApplication.di)
     }
 
-    private val auth0: Auth0 by instance()
-    private val credentialsManager: SecureCredentialsManager by instance()
+    private lateinit var authenticationButton: Button
+
+    private val userAuthenticationManager: UserAuthenticationManager by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
 
-        Log.d("Auth has creds", credentialsManager.hasValidCredentials().toString())
+        authenticationButton = findViewById(R.id.authentication_button)
+        authenticationButton.setOnClickListener {
+            userAuthenticationManager.authenticateUser(this)
+        }
     }
 }

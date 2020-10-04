@@ -13,7 +13,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        manifestPlaceholders = mapOf("auth0Domain" to "@string/com_auth0_domain", "auth0Scheme" to "https")
+        manifestPlaceholders = mapOf(
+            "auth0Domain" to "@string/com_auth0_domain",
+            "auth0Scheme" to "@string/com_auth0_schema"
+        )
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()

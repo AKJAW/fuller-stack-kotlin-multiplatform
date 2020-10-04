@@ -6,10 +6,16 @@ import com.akjaw.fullerstack.authentication.AuthenticationLauncher
 import com.akjaw.fullerstack.authentication.UserAuthenticationManager
 import org.kodein.di.DI
 import org.kodein.di.bind
+import org.kodein.di.instance
 import org.kodein.di.singleton
 
 val authenticationModule = DI.Module("authenticationModule") {
-    bind<UserAuthenticationManager>() with singleton { Auth0UserAuthenticationManager() }
+    bind<UserAuthenticationManager>() with singleton {
+        Auth0UserAuthenticationManager(
+            auth0 = instance(),
+            credentialsManager = instance()
+        )
+    }
     bind<AuthenticationLauncher>() with singleton { ActivityAuthenticationLauncher() }
     import(auth0Module)
 }
