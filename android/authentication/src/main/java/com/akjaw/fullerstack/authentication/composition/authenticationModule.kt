@@ -11,4 +11,5 @@ import org.kodein.di.singleton
 val authenticationModule = DI.Module("authenticationModule") {
     bind<UserAuthenticationManager>() with singleton { Auth0UserAuthenticationManager() }
     bind<AuthenticationLauncher>() with singleton { ActivityAuthenticationLauncher() }
+    import(auth0Module)
 }

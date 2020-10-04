@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="com_auth0_client_id">wz8gsvjVZ0xAWJ5unVuVvv1yiSSze596</string>
+    <string name="com_auth0_domain">fuller-stack.eu.auth0.com</string>
+
+    <string name="auth_reason">In order to use this app you have to be authenticated</string>
+    <string name="auth_button">Sign in</string>
+</resources>

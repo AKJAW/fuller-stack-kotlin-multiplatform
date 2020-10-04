@@ -16,6 +16,7 @@ android {
     compileSdkVersion(Versions.COMPILE_SDK_VERSION)
 
     defaultConfig {
+        applicationId = "com.akjaw.fullerstack"
         minSdkVersion(Versions.MIN_SDK_VERSION)
         targetSdkVersion(Versions.TARGET_SDK_VERSION)
         versionCode = 1

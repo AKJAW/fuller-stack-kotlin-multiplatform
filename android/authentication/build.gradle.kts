@@ -13,7 +13,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        manifestPlaceholders = mapOf("auth0Domain" to "FAKEDOMAIN", "auth0Scheme" to "demo")
+        manifestPlaceholders = mapOf("auth0Domain" to "@string/com_auth0_domain", "auth0Scheme" to "https")
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
@@ -30,6 +30,7 @@ dependencies {
     implementation(AndroidLibs.APP_COMPAT)
     implementation(AndroidLibs.MATERIAL)
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
+    implementation(AndroidLibs.LIFECYCLE_EXTENSTIONS)
 
     implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
