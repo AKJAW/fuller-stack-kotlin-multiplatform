@@ -7,4 +7,5 @@
 
     <string name="auth_reason">In order to use this app you have to be authenticated</string>
     <string name="auth_button">Sign in</string>
+    <string name="try_again_later">The was an error during authentication, please try again later</string>
 </resources>

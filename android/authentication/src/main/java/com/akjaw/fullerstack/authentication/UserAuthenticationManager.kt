@@ -9,7 +9,7 @@ interface UserAuthenticationManager {
 
     fun isUserAuthenticated(): Boolean
 
-    fun authenticateUser(activity: Activity, doOnComplete: (AuthenticationResult) -> Unit)
+    suspend fun authenticateUser(activity: Activity): AuthenticationResult
 
     suspend fun getUserProfile(): UserProfile?
 

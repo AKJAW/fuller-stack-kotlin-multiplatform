@@ -33,6 +33,7 @@ dependencies {
     implementation(AndroidLibs.APP_COMPAT)
     implementation(AndroidLibs.MATERIAL)
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
+    implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
     implementation(AndroidLibs.LIFECYCLE_EXTENSTIONS)
 
     implementation(AndroidLibs.COROUTINES_ANDROID)

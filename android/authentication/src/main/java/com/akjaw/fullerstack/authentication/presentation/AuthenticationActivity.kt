@@ -2,10 +2,13 @@ package com.akjaw.fullerstack.authentication.presentation
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.akjaw.fullerstack.authentication.R
 import com.akjaw.fullerstack.authentication.UserAuthenticationManager
 import com.akjaw.fullerstack.authentication.model.AuthenticationResult
+import com.akjaw.fullerstack.authentication.navigation.AfterAuthenticationLauncher
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -20,6 +23,7 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
     private lateinit var authenticationButton: Button
 
     private val userAuthenticationManager: UserAuthenticationManager by instance()
+    private val afterAuthenticationLauncher: AfterAuthenticationLauncher by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +31,22 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
 
         authenticationButton = findViewById(R.id.authentication_button)
         authenticationButton.setOnClickListener {
-            userAuthenticationManager.authenticateUser(this) { result ->
-                if (result == AuthenticationResult.SUCCESS) {
-                    //OPEN main activity
-                } else {
-                    //Show error
-                }
+            onAuthenticationClicked()
+        }
+    }
+
+    private fun onAuthenticationClicked() {
+        lifecycleScope.launchWhenResumed {
+            val activity = this@AuthenticationActivity
+            val result = userAuthenticationManager.authenticateUser(activity)
+            if (result == AuthenticationResult.SUCCESS) {
+                afterAuthenticationLauncher.launch(activity)
+            } else {
+                Toast.makeText(
+                    activity,
+                    getString(R.string.try_again_later),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

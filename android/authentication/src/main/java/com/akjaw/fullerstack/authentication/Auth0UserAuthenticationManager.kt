@@ -13,6 +13,7 @@ import com.auth0.android.callback.BaseCallback
 import com.auth0.android.provider.AuthCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import com.auth0.android.result.UserProfile as Auth0UserProfile
@@ -29,18 +30,20 @@ internal class Auth0UserAuthenticationManager(
         return credentialsManager.hasValidCredentials()
     }
 
-    override fun authenticateUser(activity: Activity, doOnComplete: (AuthenticationResult) -> Unit) {
+    override suspend fun authenticateUser(activity: Activity): AuthenticationResult {
         val schema: String = activity.getString(R.string.com_auth0_schema)
         val apiIdentifier: String = activity.getString(R.string.api_identifier)
-        return WebAuthProvider
-            .login(auth0)
-            .withScheme(schema)
-            .withAudience(apiIdentifier)
-            .withScope("openid profile email offline_access")
-            .start(
-                activity,
-                createAuthCallback(doOnComplete)
-            )
+        return suspendCoroutine { continuation ->
+            WebAuthProvider
+                .login(auth0)
+                .withScheme(schema)
+                .withAudience(apiIdentifier)
+                .withScope("openid profile email offline_access")
+                .start(
+                    activity,
+                    createAuthCallback(continuation)
+                )
+        }
     }
 
     override suspend fun getUserProfile(): UserProfile? = suspendCoroutine { continuation ->
@@ -72,24 +75,25 @@ internal class Auth0UserAuthenticationManager(
             })
     }
 
-    private fun createAuthCallback(doOnComplete: (AuthenticationResult) -> Unit) = object : AuthCallback {
-        override fun onSuccess(credentials: Credentials) {
-            Log.d("Auth", "authCallback succes $credentials")
-            this@Auth0UserAuthenticationManager.credentials = credentials
-            credentialsManager.saveCredentials(credentials)
-            doOnComplete(AuthenticationResult.SUCCESS)
-        }
+    private fun createAuthCallback(continuation: Continuation<AuthenticationResult>) =
+        object : AuthCallback {
+            override fun onSuccess(credentials: Credentials) {
+                Log.d("Auth", "authCallback succes $credentials")
+                this@Auth0UserAuthenticationManager.credentials = credentials
+                credentialsManager.saveCredentials(credentials)
+                continuation.resume(AuthenticationResult.SUCCESS)
+            }
 
-        override fun onFailure(dialog: Dialog) {
-            Log.d("Auth", "authCallback failure dialog")
-            //TODO will this cause a main thread crash
-            dialog.show()
-            doOnComplete(AuthenticationResult.FAILURE)
-        }
+            override fun onFailure(dialog: Dialog) {
+                Log.d("Auth", "authCallback failure dialog")
+                //TODO will this cause a main thread crash
+                dialog.show()
+                continuation.resume(AuthenticationResult.FAILURE)
+            }
 
-        override fun onFailure(exception: AuthenticationException?) {
-            Log.d("Auth", "authCallback failure $exception")
-            doOnComplete(AuthenticationResult.FAILURE)
+            override fun onFailure(exception: AuthenticationException?) {
+                Log.d("Auth", "authCallback failure $exception")
+                continuation.resume(AuthenticationResult.FAILURE)
+            }
         }
-    }
 }
