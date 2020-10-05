@@ -13,7 +13,8 @@ val authenticationModule = DI.Module("authenticationModule") {
     bind<UserAuthenticationManager>() with singleton {
         Auth0UserAuthenticationManager(
             auth0 = instance(),
-            credentialsManager = instance()
+            credentialsManager = instance(),
+            authenticationAPIClient = instance()
         )
     }
     bind<AuthenticationLauncher>() with singleton { ActivityAuthenticationLauncher() }

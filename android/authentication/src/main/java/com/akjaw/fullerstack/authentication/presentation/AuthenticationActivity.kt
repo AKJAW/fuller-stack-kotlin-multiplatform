@@ -5,6 +5,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.akjaw.fullerstack.authentication.R
 import com.akjaw.fullerstack.authentication.UserAuthenticationManager
+import com.akjaw.fullerstack.authentication.model.AuthenticationResult
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -26,7 +27,13 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
 
         authenticationButton = findViewById(R.id.authentication_button)
         authenticationButton.setOnClickListener {
-            userAuthenticationManager.authenticateUser(this)
+            userAuthenticationManager.authenticateUser(this) { result ->
+                if (result == AuthenticationResult.SUCCESS) {
+                    //OPEN main activity
+                } else {
+                    //Show error
+                }
+            }
         }
     }
 }

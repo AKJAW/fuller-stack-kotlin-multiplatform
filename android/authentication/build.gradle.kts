@@ -35,6 +35,8 @@ dependencies {
     implementation(AndroidLibs.CONSTRAINT_LAYOUT)
     implementation(AndroidLibs.LIFECYCLE_EXTENSTIONS)
 
+    implementation(AndroidLibs.COROUTINES_ANDROID)
+
     implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
