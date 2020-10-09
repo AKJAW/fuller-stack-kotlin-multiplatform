@@ -2,10 +2,12 @@ package com.akjaw.fullerstack.screens.splash
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.authentication.AuthenticationLauncher
 import com.akjaw.fullerstack.authentication.UserAuthenticationManager
 import com.akjaw.fullerstack.authentication.navigation.AfterAuthenticationLauncher
+import com.akjaw.fullerstack.authentication.token.TokenProvider
 import com.akjaw.fullerstack.screens.common.FullerStackApp
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -20,6 +22,7 @@ class SplashActivity : AppCompatActivity(), DIAware {
 
     private val userAuthenticationManager: UserAuthenticationManager by instance()
     private val authenticationLauncher: AuthenticationLauncher by instance()
+    private val tokenProvider: TokenProvider by instance()
     private val afterAuthenticationLauncher: AfterAuthenticationLauncher by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +30,14 @@ class SplashActivity : AppCompatActivity(), DIAware {
         super.onCreate(savedInstanceState)
 
         if (userAuthenticationManager.isUserAuthenticated()) {
-            afterAuthenticationLauncher.launch(this)
+            lifecycleScope.launchWhenResumed {
+                tokenProvider.initializeToken()
+                afterAuthenticationLauncher.launch(this@SplashActivity)
+                finish()
+            }
         } else {
             authenticationLauncher.showAuthenticationScreen(this)
+            finish()
         }
-        finish()
     }
 }

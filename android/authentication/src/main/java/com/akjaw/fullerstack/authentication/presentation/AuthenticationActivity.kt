@@ -9,6 +9,7 @@ import com.akjaw.fullerstack.authentication.R
 import com.akjaw.fullerstack.authentication.UserAuthenticationManager
 import com.akjaw.fullerstack.authentication.model.AuthenticationResult
 import com.akjaw.fullerstack.authentication.navigation.AfterAuthenticationLauncher
+import com.akjaw.fullerstack.authentication.token.TokenProvider
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
@@ -24,6 +25,7 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
 
     private val userAuthenticationManager: UserAuthenticationManager by instance()
     private val afterAuthenticationLauncher: AfterAuthenticationLauncher by instance()
+    private val tokenProvider: TokenProvider by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +42,7 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
             val activity = this@AuthenticationActivity
             val result = userAuthenticationManager.authenticateUser(activity)
             if (result == AuthenticationResult.SUCCESS) {
+                tokenProvider.initializeToken()
                 afterAuthenticationLauncher.launch(activity)
             } else {
                 Toast.makeText(

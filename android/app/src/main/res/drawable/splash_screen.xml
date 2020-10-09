@@ -7,7 +7,6 @@
         <bitmap
                 android:src="@drawable/placeholder"
                 android:gravity="center"
-
         />
     </item>
 </layer-list>

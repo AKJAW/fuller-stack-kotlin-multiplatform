@@ -23,7 +23,7 @@ internal class Auth0UserAuthenticationManager(
     private val credentialsManager: SecureCredentialsManager,
     private val authenticationAPIClient: AuthenticationAPIClient
 ) : UserAuthenticationManager {
-    private var credentials: Credentials? = null
+    private var credentials: Credentials? = null //Can this be invalid?
     private var userProfile: UserProfile? = null
 
     override fun isUserAuthenticated(): Boolean {
@@ -46,6 +46,7 @@ internal class Auth0UserAuthenticationManager(
         }
     }
 
+    //TODO move this method out?
     override suspend fun getUserProfile(): UserProfile? = suspendCoroutine { continuation ->
         if (userProfile != null) {
             continuation.resume(userProfile)

@@ -4,6 +4,7 @@ import com.akjaw.fullerstack.authentication.ActivityAuthenticationLauncher
 import com.akjaw.fullerstack.authentication.Auth0UserAuthenticationManager
 import com.akjaw.fullerstack.authentication.AuthenticationLauncher
 import com.akjaw.fullerstack.authentication.UserAuthenticationManager
+import com.akjaw.fullerstack.authentication.token.TokenProvider
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -18,5 +19,6 @@ val authenticationModule = DI.Module("authenticationModule") {
         )
     }
     bind<AuthenticationLauncher>() with singleton { ActivityAuthenticationLauncher() }
+    bind() from singleton { TokenProvider(instance()) }
     import(auth0Module)
 }
