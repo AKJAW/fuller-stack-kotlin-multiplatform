@@ -6,7 +6,7 @@ import feature.UpdateNotePayload
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.routing.Routing
+import io.ktor.routing.Route
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.patch
@@ -17,7 +17,7 @@ import server.logger.ApiLogger
 import server.storage.NotesService
 
 @Suppress("LongMethod")
-fun Routing.notesRoute() {
+fun Route.notesRoute() {
     val apiLogger: ApiLogger by di().instance()
     val notesService: NotesService by di().instance()
     val notesCallHelper: NotesCallHelper by di().instance()
