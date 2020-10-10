@@ -25,13 +25,15 @@ class H2Database : ExposedDatabase {
         transaction {
             createMissingTablesAndColumns(NotesTable)
             NotesTable.insert {
+                it[userId] = "LrviSpxuDVsE0263vbgcvRPycCgvxPlB@clients"
                 it[title] = "Note 1"
                 it[content] = "Content of one"
-                it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
-                it[lastModificationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
+                it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 1).unixMillisLong
+                it[lastModificationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 1).unixMillisLong
                 it[wasDeleted] = false
             }
             NotesTable.insert {
+                it[userId] = "LrviSpxuDVsE0263vbgcvRPycCgvxPlB@clients"
                 it[title] = "Note 2"
                 it[content] = "Content of two"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong
@@ -39,6 +41,7 @@ class H2Database : ExposedDatabase {
                 it[wasDeleted] = false
             }
             NotesTable.insert {
+                it[userId] = "2"
                 it[title] = "Note 3"
                 it[content] = "Content of three"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 5).unixMillisLong
@@ -46,6 +49,7 @@ class H2Database : ExposedDatabase {
                 it[wasDeleted] = false
             }
             NotesTable.insert {
+                it[userId] = "2"
                 it[title] = "Note 4"
                 it[content] = "Content of four"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 7).unixMillisLong
