@@ -61,4 +61,4 @@ external interface Table<T, TKey> {
 }
 
 external interface Table__0 :
-    Table<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>
+    Table<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>

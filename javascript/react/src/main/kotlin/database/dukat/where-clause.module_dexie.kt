@@ -24,8 +24,8 @@ external interface `T$16` {
 external interface WhereClause<T, TKey> {
     fun above(key: Any): Collection<T, TKey>
     fun aboveOrEqual(key: Any): Collection<T, TKey>
-    fun anyOf(keys: Array<dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>): Collection<T, TKey>
-    fun anyOf(vararg keys: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */): Collection<T, TKey>
+    fun anyOf(keys: Array<dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>): Collection<T, TKey>
+    fun anyOf(vararg keys: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */): Collection<T, TKey>
     fun anyOfIgnoreCase(keys: Array<String>): Collection<T, TKey>
     fun anyOfIgnoreCase(vararg keys: String): Collection<T, TKey>
     fun below(key: Any): Collection<T, TKey>
@@ -47,7 +47,7 @@ external interface WhereClause<T, TKey> {
     fun startsWithIgnoreCase(key: String): Collection<T, TKey>
     fun startsWithAnyOfIgnoreCase(prefixes: Array<String>): Collection<T, TKey>
     fun startsWithAnyOfIgnoreCase(vararg prefixes: String): Collection<T, TKey>
-    fun noneOf(keys: Array<dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>): Collection<T, TKey>
+    fun noneOf(keys: Array<dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>): Collection<T, TKey>
     fun notEqual(key: String): Collection<T, TKey>
     fun notEqual(key: Number): Collection<T, TKey>
     fun notEqual(key: Date): Collection<T, TKey>
@@ -59,4 +59,4 @@ external interface WhereClause<T, TKey> {
 }
 
 external interface WhereClause__0 :
-    WhereClause<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>
+    WhereClause<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>

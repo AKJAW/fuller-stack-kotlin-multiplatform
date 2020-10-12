@@ -6,7 +6,7 @@ import kotlin.js.Json
 import kotlin.js.Promise
 
 external interface `T$17`<TKey> {
-    var key: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */
+    var key: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */
         get() = definedExternally
         set(value) = definedExternally
     var primaryKey: TKey
@@ -23,9 +23,9 @@ external interface Collection<T, TKey> {
     fun <R> count(thenShortcut: ThenShortcut<Number, R>): Promise<R>
     fun distinct(): Collection<T, TKey>
     fun each(callback: (obj: T, cursor: `T$17`<TKey>) -> Any): Promise<Unit>
-    fun eachKey(callback: (key: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */, cursor: `T$17`<TKey>) -> Any): Promise<Unit>
+    fun eachKey(callback: (key: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */, cursor: `T$17`<TKey>) -> Any): Promise<Unit>
     fun eachPrimaryKey(callback: (key: TKey, cursor: `T$17`<TKey>) -> Any): Promise<Unit>
-    fun eachUniqueKey(callback: (key: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */, cursor: `T$17`<TKey>) -> Any): Promise<Unit>
+    fun eachUniqueKey(callback: (key: dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */, cursor: `T$17`<TKey>) -> Any): Promise<Unit>
     fun filter(filter: (x: T) -> Boolean): Collection<T, TKey>
     fun first(): Promise<T?>
     fun <R> first(thenShortcut: ThenShortcut<T?, R>): Promise<R>
@@ -53,4 +53,4 @@ external interface Collection<T, TKey> {
 }
 
 external interface Collection__0 :
-    Collection<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>
+    Collection<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>

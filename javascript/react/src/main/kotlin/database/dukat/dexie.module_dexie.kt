@@ -6,9 +6,9 @@ import kotlin.js.Promise
 
 external interface `T$2` {
     @nativeGetter
-    operator fun get(name: String): Table<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>?
+    operator fun get(name: String): Table<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>?
     @nativeSetter
-    operator fun set(name: String, value: Table<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | database.dukat.IndexableTypeArrayReadonly */>)
+    operator fun set(name: String, value: Table<Any, dynamic /* String | Number | Date | ArrayBuffer | ArrayBufferView | DataView | Array<Array<Unit>> | IndexableTypeArrayReadonly */>)
 }
 
 external interface `T$3` {
@@ -80,6 +80,6 @@ external interface DexieInterface : Database {
     var version: `T$7`
     var transaction: `T$8`
     var collection: `T$9`
-//    interface database.dukat.Table<T, Key> : _Table<T, Key>
-//    interface database.dukat.Collection<T, Key> : _Collection<T, Key>
+//    interface Table<T, Key> : _Table<T, Key>
+//    interface Collection<T, Key> : _Collection<T, Key>
 }
