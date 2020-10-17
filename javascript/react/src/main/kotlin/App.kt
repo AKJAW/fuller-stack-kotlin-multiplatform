@@ -11,16 +11,19 @@ import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
+import react.child
 
 class App : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
         mContainer(maxWidth = Breakpoint.lg) {
-            mGridContainer(spacing = MGridSpacing.spacing2) {
-                mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
-                    notesListContainer { }
-                }
-                mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
-                    noteEditorContainer { }
+            child(authenticationWrapper) {
+                mGridContainer(spacing = MGridSpacing.spacing2) {
+                    mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
+                        notesListContainer { }
+                    }
+                    mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
+                        noteEditorContainer { }
+                    }
                 }
             }
         }

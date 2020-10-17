@@ -4,6 +4,7 @@ import react.dom.render
 import react.redux.provider
 import store.myStore
 import kotlin.browser.document
+import kotlin.browser.window
 
 fun main() {
     render(document.getElementById("root")) {
@@ -11,10 +12,18 @@ fun main() {
         provider(myStore) {
             mStylesProvider("jss-insertion-point") {
                 mThemeProvider {
-                    child(App::class) {}
+                    Auth0Provider {
+                        attrs.domain = AuthenticationConfig.domain
+                        attrs.clientId = AuthenticationConfig.clientId
+                        attrs.audience = AuthenticationConfig.audience
+                        attrs.redirectUri = window.location.origin
+                        attrs.onRedirectCallback = { }
+
+                        child(App::class) {}
+                    }
                 }
             }
         }
-//        }
+//    }
     }
 }
