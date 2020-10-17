@@ -89,7 +89,10 @@ class NoteDaoTestFake : NoteDao {
     ) {
         val newNotes = notes.map { note ->
             if (creationTimestamps.contains(note.creationTimestamp)) {
-                note.copy(wasDeleted = wasDeleted, lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp())
+                note.copy(
+                    wasDeleted = wasDeleted,
+                    lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp()
+                )
             } else {
                 note
             }

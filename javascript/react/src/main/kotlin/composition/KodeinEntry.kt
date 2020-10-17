@@ -1,6 +1,6 @@
 package composition
 
-import database.DexieNoteDao
+import DexieNoteDao
 import database.NoteDao
 import helpers.storage.LocalStorage
 import helpers.storage.Storage

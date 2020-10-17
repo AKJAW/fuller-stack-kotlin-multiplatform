@@ -17,6 +17,7 @@ interface Auth0ProviderProps : RProps {
 }
 
 val UseAuth0: () -> Auth0ContextInterface = Auth0Module.useAuth0
+//TODO clean up unneeded dukat generated classes
 
 // fun RBuilder.auth0Provider(
 //    domain: String,

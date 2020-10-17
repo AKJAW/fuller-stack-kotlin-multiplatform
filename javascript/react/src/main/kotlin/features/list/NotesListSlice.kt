@@ -1,7 +1,7 @@
 package features.list
 
+import DexieNoteDao
 import composition.KodeinEntry
-import database.DexieNoteDao
 import features.list.thunk.GetNotesThunk
 import features.list.thunk.SynchronizeNotesThunk
 import kotlinx.coroutines.CoroutineScope

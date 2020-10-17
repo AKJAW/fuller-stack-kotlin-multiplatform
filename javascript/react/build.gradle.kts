@@ -11,6 +11,7 @@ repositories {
 dependencies {
     implementation(project(":shared"))
     implementation(project(":javascript:spa-authentication"))
+    implementation(project(":javascript:spa-persistance"))
 
     implementation(kotlin("stdlib-js"))
 
