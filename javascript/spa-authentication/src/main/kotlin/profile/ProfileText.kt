@@ -16,7 +16,7 @@ interface ProfileTextProps: RProps {
 }
 
 @Suppress("MagicNumber")
-private object ProfileTextClasses : StyleSheet("UserProfile", isStatic = true) {
+private object ProfileTextClasses : StyleSheet("ProfileText", isStatic = true) {
     val label by css {
         color = Color("#8e8e8e")
     }

@@ -39,7 +39,7 @@ private object NotesListItemClasses : StyleSheet("NoteList", isStatic = true) {
         boxShadow += BoxShadow(false, 0.px, 1.px, 3.px, 0.px, rgba(0, 0, 0, 0.12))
         boxShadow += BoxShadow(false, 0.px, 1.px, 2.px, 0.px, rgba(0, 0, 0, 0.24))
         margin = "5px 0"
-        padding = "0px 8px 0 0"
+        padding = "0px 8px 0 0 !important"
     }
     val noteTitle by css {
         padding = "3px"

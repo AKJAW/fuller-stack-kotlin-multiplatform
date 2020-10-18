@@ -19,7 +19,7 @@ interface EditorMoreButtonProps : RProps {
     var onDeleteClicked: () -> Unit
 }
 
-private object EditorMoreButtonClasses : StyleSheet("NoteEditor", isStatic = true) {
+private object EditorMoreButtonClasses : StyleSheet("EditorMoreButton", isStatic = true) {
     val button by css {
         padding(LinearDimension("0"))
     }

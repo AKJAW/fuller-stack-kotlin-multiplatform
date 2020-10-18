@@ -12,6 +12,7 @@ import kotlinx.css.JustifyContent
 import kotlinx.css.LinearDimension
 import kotlinx.css.alignItems
 import kotlinx.css.display
+import kotlinx.css.height
 import kotlinx.css.justifyContent
 import kotlinx.css.marginRight
 import kotlinx.css.minHeight
@@ -42,6 +43,7 @@ private object Classes : StyleSheet("NoteEditor", isStatic = true) {
         minHeight = LinearDimension("400px")
     }
     val actions by css {
+        height = LinearDimension("38px")
         display = Display.flex
         justifyContent = JustifyContent.spaceBetween
         alignItems = Align.center

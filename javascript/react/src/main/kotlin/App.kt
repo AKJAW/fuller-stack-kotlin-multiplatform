@@ -14,11 +14,12 @@ import react.router.dom.switch
 
 class App : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
-        mContainer(maxWidth = Breakpoint.lg) {
-            child(authenticationWrapper) {
-                browserRouter {
-                    switch {
-                        //TODO redirect 404 to root
+        child(authenticationWrapper) {
+            browserRouter {
+                child(appBar)
+                mContainer(maxWidth = Breakpoint.lg) {
+                switch {
+                    //TODO redirect 404 to root
                         route("/", exact = true) {
                             child(homePage)
                         }

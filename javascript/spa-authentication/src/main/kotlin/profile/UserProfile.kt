@@ -36,18 +36,22 @@ private object UserProfileClasses : StyleSheet("UserProfile", isStatic = true) {
         textAlign = TextAlign.center
     }
     val avatarContainer by css {
-        marginBottom = LinearDimension("50px")
-        children {
-            width = LinearDimension("100px")
-            height = LinearDimension("100px")
-            margin(LinearDimension.auto)
+        specific {
+            marginBottom = LinearDimension("50px")
+            children {
+                width = LinearDimension("100px")
+                height = LinearDimension("100px")
+                margin(LinearDimension.auto)
+            }
         }
     }
     val logOutButton by css {
-        marginTop = LinearDimension("50px")
-        fontSize = LinearDimension("20px")
-        borderColor = Color("#ff4c4c")
-        color = Color("#ff4c4c")
+        specific {
+            marginTop = LinearDimension("50px")
+            fontSize = LinearDimension("20px")
+            borderColor = Color("#ff4c4c")
+            color = Color("#ff4c4c")
+        }
     }
 }
 
