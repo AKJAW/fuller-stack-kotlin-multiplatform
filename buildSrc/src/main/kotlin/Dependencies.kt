@@ -14,6 +14,7 @@ object Versions {
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
     const val REACT = "16.13.1"
+    const val REACT_ROUTER = "5.1.2"
     const val REDUX = "4.0.0"
     const val REACT_REDUX = "5.0.7"
     const val MUIRWIK = "0.5.1"
@@ -84,6 +85,7 @@ object JVMTestingLibs {
 object ReactLibs {
     const val HTML_JS = "org.jetbrains.kotlinx:kotlinx-html-js:${Versions.KOTLINX_HTML_JS}"
     const val REACT = "org.jetbrains:kotlin-react:${Versions.REACT}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT_ROUTER = "org.jetbrains:kotlin-react-router-dom:${Versions.REACT_ROUTER}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
     const val REDUX = "org.jetbrains:kotlin-redux:${Versions.REDUX}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
     const val REACT_REDUX = "org.jetbrains:kotlin-react-redux:${Versions.REACT_REDUX}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
     const val REACT_DOM = "org.jetbrains:kotlin-react-dom:${Versions.REACT}-pre.104-kotlin-${PluginsVersions.KOTLIN}"

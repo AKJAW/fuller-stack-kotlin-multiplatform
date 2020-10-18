@@ -18,6 +18,7 @@ dependencies {
     // Kotlin wrappers
     implementation(ReactLibs.HTML_JS)
     implementation(ReactLibs.REACT)
+    implementation(ReactLibs.REACT_ROUTER)
     implementation(ReactLibs.REDUX)
     implementation(ReactLibs.REACT_REDUX)
     implementation(ReactLibs.REACT_DOM)
@@ -49,6 +50,7 @@ kotlin {
     sourceSets["main"].dependencies {
         implementation(npm("react", Versions.REACT))
         implementation(npm("react-dom", Versions.REACT))
+        implementation(npm("react-router-dom", Versions.REACT_ROUTER))
 
         implementation(npm("styled-components"))
         implementation(npm("inline-style-prefixer"))
