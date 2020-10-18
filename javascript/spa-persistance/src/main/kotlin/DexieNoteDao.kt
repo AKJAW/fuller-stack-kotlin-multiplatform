@@ -16,6 +16,7 @@ import model.toCreationTimestamp
 import model.toLastModificationTimestamp
 import kotlin.js.json
 
+@Suppress("TooManyFunctions")
 class DexieNoteDao : NoteDao {
 
     private val deferredNotesStateFlow: Deferred<List<NoteEntity>> = GlobalScope.async {

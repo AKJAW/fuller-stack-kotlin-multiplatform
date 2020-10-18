@@ -3,7 +3,11 @@
     "RETURN_TYPE_MISMATCH_ON_OVERRIDE", "CONFLICTING_OVERLOADS"
 )
 
-typealias User = Any
+interface User {
+    val name: String?
+    val email: String?
+    val picture: String?
+}
 
 external interface AuthState {
     var error: Error?

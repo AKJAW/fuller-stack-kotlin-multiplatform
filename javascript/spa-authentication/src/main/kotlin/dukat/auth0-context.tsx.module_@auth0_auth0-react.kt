@@ -12,5 +12,5 @@ external interface Auth0ContextInterface : AuthState {
     var getIdTokenClaims: (options: GetIdTokenClaimsOptions) -> Promise<IdToken>
     var loginWithRedirect: (options: RedirectLoginOptions?) -> Promise<Unit>
     var loginWithPopup: (options: PopupLoginOptions, config: PopupConfigOptions) -> Promise<Unit>
-    var logout: (options: LogoutOptions) -> Unit
+    var logout: (options: LogoutOptions?) -> Unit
 }
