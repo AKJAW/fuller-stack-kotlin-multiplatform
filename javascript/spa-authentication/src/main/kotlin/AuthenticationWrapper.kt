@@ -8,9 +8,15 @@ import kotlinx.css.marginTop
 import kotlinx.css.textAlign
 import react.RProps
 import react.functionalComponent
+import react.useEffect
+import react.useState
 import styled.StyleSheet
 import styled.css
 import styled.styledDiv
+
+interface AuthenticationWrapperProps: RProps {
+    var tokenProvider: TokenProvider
+}
 
 private object AuthenticationWrapperClasses : StyleSheet("AuthenticationWrapper", isStatic = true) {
     val authContainer by css {
@@ -19,12 +25,28 @@ private object AuthenticationWrapperClasses : StyleSheet("AuthenticationWrapper"
     }
 }
 
-val authenticationWrapper = functionalComponent<RProps> { props ->
+val authenticationWrapper = functionalComponent<AuthenticationWrapperProps> { props ->
 
-    val useAuth0 = UseAuth0()
+    val (isTokenSet, setIsTokenSet) = useState(false)
+    val useAuth0 = useAuth0()
+    val tokenProvider = props.tokenProvider
+
+    useEffect(listOf(useAuth0.isAuthenticated)) {
+        console.log("isAuth changed", useAuth0.isAuthenticated)
+        if (useAuth0.isAuthenticated) {
+            useAuth0.getAccessTokenSilently(EMPTY_GET_TOKEN_SILENTLY_OPTIONS).then { token ->
+                tokenProvider.initializeToken(token)
+                setIsTokenSet(true)
+            }
+        } else {
+            tokenProvider.revokeToken()
+            setIsTokenSet(false)
+        }
+    }
+
     console.log(useAuth0)
     when {
-        useAuth0.isLoading -> {
+        useAuth0.isLoading || isTokenSet.not() -> {
             styledDiv {
                 css(AuthenticationWrapperClasses.authContainer)
                 mCircularProgress()

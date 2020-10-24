@@ -151,11 +151,9 @@ external interface GetTokenSilentlyOptions {
     var timeoutInSeconds: Number?
         get() = definedExternally
         set(value) = definedExternally
-    @nativeGetter
-    operator fun get(key: String): Any?
-    @nativeSetter
-    operator fun set(key: String, value: Any)
 }
+
+val EMPTY_GET_TOKEN_SILENTLY_OPTIONS = object : GetTokenSilentlyOptions { }
 
 external interface GetTokenWithPopupOptions : PopupLoginOptions
 

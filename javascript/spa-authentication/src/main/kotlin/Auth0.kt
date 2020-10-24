@@ -16,7 +16,7 @@ interface Auth0ProviderProps : RProps {
     var onRedirectCallback: (appState: AppState) -> Unit
 }
 
-val UseAuth0: () -> Auth0ContextInterface = Auth0Module.useAuth0
+val useAuth0: () -> Auth0ContextInterface = Auth0Module.useAuth0
 //TODO clean up unneeded dukat generated classes
 
 // fun RBuilder.auth0Provider(

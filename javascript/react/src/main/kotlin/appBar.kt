@@ -50,7 +50,7 @@ private object AppBarClasses : StyleSheet("AppBar", isStatic = true) {
 }
 
 val appBar = functionalComponent<RProps> {
-    val user = UseAuth0().user
+    val user = useAuth0().user
     mAppBar(position = MAppBarPosition.static) {
         css(AppBarClasses.root)
         mContainer(maxWidth = Breakpoint.lg) {

@@ -19,7 +19,7 @@ object Versions {
     const val REACT_REDUX = "5.0.7"
     const val MUIRWIK = "0.5.1"
     const val NPM_METRIAL_UI = "^4.9.14"
-    const val AUTH0 = "^1.0.0"
+    const val AUTH0 = "1.1.0"
 
     //ktor
     const val KTOR = "1.3.2"

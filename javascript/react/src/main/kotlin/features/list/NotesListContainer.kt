@@ -31,8 +31,8 @@ private interface StateProps : RProps {
 }
 
 private interface DispatchProps : RProps {
-    var getNotesList: () -> Unit
-    var synchronizeNotes: () -> Unit
+    var getNotesList: (accessToken: String) -> Unit
+    var synchronizeNotes: (accessToken: String) -> Unit
     var openEditor: (note: Note?) -> Unit
 }
 

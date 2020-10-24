@@ -78,6 +78,7 @@ fun Application.module() {
         header(HttpHeaders.AccessControlAllowHeaders)
         header(HttpHeaders.ContentType)
         header(HttpHeaders.AccessControlAllowOrigin)
+        header(HttpHeaders.Authorization)
         host("*") // TODO change when react goes to production
     }
 }

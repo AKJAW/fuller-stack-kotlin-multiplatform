@@ -1,7 +1,6 @@
 package profile
 
 import LogoutOptions
-import UseAuth0
 import com.ccfraser.muirwik.components.MGridAlignItems
 import com.ccfraser.muirwik.components.MGridJustify
 import com.ccfraser.muirwik.components.MGridSize
@@ -27,6 +26,7 @@ import react.child
 import react.functionalComponent
 import styled.StyleSheet
 import styled.css
+import useAuth0
 import kotlin.browser.window
 
 @Suppress("MagicNumber")
@@ -56,7 +56,7 @@ private object UserProfileClasses : StyleSheet("UserProfile", isStatic = true) {
 }
 
 val userProfile = functionalComponent<RProps> {
-    val useAuth0 = UseAuth0()
+    val useAuth0 = useAuth0()
     val user = useAuth0.user
 
     val logOutOptions = object : LogoutOptions {
