@@ -1,12 +1,14 @@
 package com.akjaw.fullerstack.screens.common.navigation.keys
 
-import androidx.fragment.app.Fragment
 import com.akjaw.fullerstack.screens.common.ParcelableNote
+import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.editor.NoteEditorFragment
-import com.zhuinden.simplestackextensions.fragments.DefaultFragmentKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class NoteEditorScreen(private val note: ParcelableNote? = null) : DefaultFragmentKey() {
-    override fun instantiateFragment(): Fragment = NoteEditorFragment.newInstance(note)
+class NoteEditorScreen(private val note: ParcelableNote? = null) : MultiStackFragmentKey() {
+
+    override fun getKeyIdentifier(): String = RootFragments.HOME.name
+
+    override fun instantiateFragment(): BaseFragment = NoteEditorFragment.newInstance(note)
 }
