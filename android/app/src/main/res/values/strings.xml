@@ -24,4 +24,8 @@
     </plurals>
     <string name="delete_notes_dialog_confirm">Yes</string>
     <string name="delete_notes_dialog_cancel">Cancel</string>
+
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_profile">Profile</string>
+    <string name="bottom_nav_settings">Settings</string>
 </resources>

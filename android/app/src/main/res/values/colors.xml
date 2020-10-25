@@ -6,4 +6,7 @@
 
     <color name="selectedNoteBackground">#DFDFDF</color>
     <color name="deleteDialogColorPrimary">#587287</color>
+
+    <color name="bottomNavigationNormal">#919191</color>
+    <color name="bottomNavigationSelected">#3A3A3A</color>
 </resources>

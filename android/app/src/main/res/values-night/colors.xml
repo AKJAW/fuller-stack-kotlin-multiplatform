@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#101b22</color>
     <color name="colorSecondary">#F8BBD0</color>
     <color name="selectedNoteBackground">#919191</color>
+
+    <color name="bottomNavigationNormal">#636363</color>
+    <color name="bottomNavigationSelected">#FFFFFF</color>
 </resources>
