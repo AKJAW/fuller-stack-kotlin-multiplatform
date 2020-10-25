@@ -1,0 +1,24 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test-android:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: eskatos/gradle-command-action@v1
+      with:
+        gradle-version: 6.1.1
+        arguments: :android:test
+
+  test-shared:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          gradle-version: 6.1.1
+          arguments: :ktor:build

@@ -1,6 +1,7 @@
 # Fuller stack
 ![](https://github.com/AKJAW/fuller-stack-kotlin-multiplatform/workflows/Build%20all%20platforms/badge.svg)
 ![](https://github.com/AKJAW/fuller-stack-kotlin-multiplatform/workflows/Static%20code%20analysis/badge.svg)
+![](https://github.com/AKJAW/fuller-stack-kotlin-multiplatform/workflows/Tests/badge.svg)
 
 ### Ktor server
 The gradle command for running the ktor server:
