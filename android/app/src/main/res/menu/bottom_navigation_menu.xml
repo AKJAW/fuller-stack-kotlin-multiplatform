@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/home"
+            android:enabled="true"
+            android:icon="@drawable/ic_add_24dp"
+            android:title="Home"
+    />
+    <item
+            android:id="@+id/profile"
+            android:enabled="true"
+            android:icon="@drawable/ic_cached_24dp"
+            android:title="Profile"
+    />
+    <item
+            android:id="@+id/settings"
+            android:enabled="true"
+            android:icon="@drawable/ic_close_24dp"
+            android:title="Settings"
+    />
+</menu>
