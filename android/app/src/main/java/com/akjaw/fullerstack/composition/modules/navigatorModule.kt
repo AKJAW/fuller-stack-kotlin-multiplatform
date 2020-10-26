@@ -1,6 +1,7 @@
 package com.akjaw.fullerstack.composition.modules
 
 import androidx.fragment.app.FragmentActivity
+import com.akjaw.fullerstack.screens.common.main.BottomNavigationHelper
 import com.akjaw.fullerstack.screens.common.navigation.DialogManager
 import com.akjaw.fullerstack.screens.common.navigation.FragmentDialogManager
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
@@ -16,4 +17,5 @@ val navigatorModule = DI.Module("navigatorModule") {
         val fragmentActivity = instance<FragmentActivity>("FragmentActivity")
         FragmentDialogManager(fragmentActivity.supportFragmentManager)
     }
+    bind<BottomNavigationHelper>() with singleton { BottomNavigationHelper(instance()) }
 }

@@ -16,7 +16,7 @@ import org.kodein.di.provider
 import org.kodein.di.singleton
 
 val presentationModule = DI.Module("presentationModule") {
-    bind() from singleton { NotesListActionMode(instance("FragmentActivity")) }
+    bind() from singleton { NotesListActionMode(instance("FragmentActivity"), instance()) }
     bind() from singleton { NotesSelectionTrackerFactory(instance(), instance()) }
     bind() from singleton { NotesListAdapterFactory(instance(), instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
