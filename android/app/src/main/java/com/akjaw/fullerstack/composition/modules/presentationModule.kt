@@ -28,6 +28,6 @@ val presentationModule = DI.Module("presentationModule") {
         NoteEditorViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())
     }
     bind<ViewModel>(tag = ProfileViewModel::class.java.simpleName) with provider {
-        ProfileViewModel(instance())
+        ProfileViewModel(instance(), instance())
     }
 }

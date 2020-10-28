@@ -22,6 +22,7 @@ class TokenProvider(
 
     fun getToken(): AccessToken? = accessToken
 
+    //TODO handle failure case
     suspend fun initializeToken(): Result = suspendCoroutine { continuation ->
         credentialsManager.getCredentials(object :BaseCallback<Credentials, CredentialsManagerException> {
 

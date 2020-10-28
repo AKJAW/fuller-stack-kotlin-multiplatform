@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.akjaw.fullerstack.authentication.R
-import com.akjaw.fullerstack.authentication.UserAuthenticationManager
+import com.akjaw.fullerstack.authentication.UserAuthenticator
 import com.akjaw.fullerstack.authentication.model.AuthenticationResult
 import com.akjaw.fullerstack.authentication.navigation.AfterAuthenticationLauncher
 import com.akjaw.fullerstack.authentication.token.TokenProvider
@@ -23,7 +23,7 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
 
     private lateinit var authenticationButton: Button
 
-    private val userAuthenticationManager: UserAuthenticationManager by instance()
+    private val userAuthenticator: UserAuthenticator by instance()
     private val afterAuthenticationLauncher: AfterAuthenticationLauncher by instance()
     private val tokenProvider: TokenProvider by instance()
 
@@ -40,7 +40,7 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
     private fun onAuthenticationClicked() {
         lifecycleScope.launchWhenResumed {
             val activity = this@AuthenticationActivity
-            val result = userAuthenticationManager.authenticateUser(activity)
+            val result = userAuthenticator.signInUser(activity)
             if (result == AuthenticationResult.SUCCESS) {
                 tokenProvider.initializeToken()
                 afterAuthenticationLauncher.launch(activity)
