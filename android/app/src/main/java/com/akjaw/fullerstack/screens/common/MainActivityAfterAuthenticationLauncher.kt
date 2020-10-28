@@ -10,5 +10,6 @@ class MainActivityAfterAuthenticationLauncher: AfterAuthenticationLauncher {
     override fun launch(activity: Activity) {
         val intent = Intent(activity, MainActivity::class.java)
         activity.startActivity(intent)
+        activity.finish()
     }
 }

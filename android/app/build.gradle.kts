@@ -64,6 +64,9 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
     implementation(AndroidLibs.FRAGMENT_KTX)
 
+    // ui
+    implementation(AndroidLibs.COIL)
+
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)

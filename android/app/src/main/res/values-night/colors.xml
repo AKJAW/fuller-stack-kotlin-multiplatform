@@ -7,4 +7,6 @@
 
     <color name="bottomNavigationNormal">#636363</color>
     <color name="bottomNavigationSelected">#FFFFFF</color>
+
+    <color name="profileBackground">#587287</color>
 </resources>

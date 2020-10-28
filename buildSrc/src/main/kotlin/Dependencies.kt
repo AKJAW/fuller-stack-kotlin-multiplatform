@@ -131,6 +131,8 @@ object AndroidLibs {
     const val LIFECYCLE_EXTENSTIONS =  "androidx.lifecycle:lifecycle-extensions:${Versions.LIFECYCLE}"
     const val FRAGMENT_KTX =  "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
 
+    const val COIL = "io.coil-kt:coil:1.0.0"
+
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
 
     const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"

@@ -9,4 +9,6 @@
 
     <color name="bottomNavigationNormal">#919191</color>
     <color name="bottomNavigationSelected">#3A3A3A</color>
+
+    <color name="profileBackground">@color/colorPrimary</color>
 </resources>
