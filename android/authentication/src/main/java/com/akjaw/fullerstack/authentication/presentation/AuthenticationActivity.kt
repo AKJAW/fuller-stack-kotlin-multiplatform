@@ -4,21 +4,27 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.akjaw.fullerstack.authentication.R
 import com.akjaw.fullerstack.authentication.UserAuthenticator
+import com.akjaw.fullerstack.authentication.composition.activityScopedAuthenticationModule
 import com.akjaw.fullerstack.authentication.model.AuthenticationResult
 import com.akjaw.fullerstack.authentication.navigation.AfterAuthenticationLauncher
 import com.akjaw.fullerstack.authentication.token.TokenProvider
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.bind
 import org.kodein.di.instance
+import org.kodein.di.singleton
 
 class AuthenticationActivity : AppCompatActivity(), DIAware {
 
     override val di: DI by DI.lazy {
         val customApplication = application as DIAware
         extend(customApplication.di)
+        bind<FragmentActivity>() with singleton { this@AuthenticationActivity }
+        import(activityScopedAuthenticationModule)
     }
 
     private lateinit var authenticationButton: Button
@@ -40,8 +46,9 @@ class AuthenticationActivity : AppCompatActivity(), DIAware {
     private fun onAuthenticationClicked() {
         lifecycleScope.launchWhenResumed {
             val activity = this@AuthenticationActivity
-            val result = userAuthenticator.signInUser(activity)
+            val result = userAuthenticator.signInUser()
             if (result == AuthenticationResult.SUCCESS) {
+                //TODO hide Button, show loading
                 tokenProvider.initializeToken()
                 afterAuthenticationLauncher.launch(activity)
             } else {

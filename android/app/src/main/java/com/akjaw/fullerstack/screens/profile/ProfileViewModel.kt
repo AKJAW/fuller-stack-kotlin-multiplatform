@@ -1,6 +1,5 @@
 package com.akjaw.fullerstack.screens.profile
 
-import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -20,7 +19,7 @@ class ProfileViewModel(
         this.emit(profile)
     }
 
-    fun signOut(activity: Activity) = viewModelScope.launch{
-        userAuthenticationManager.signOutUser(activity)
+    fun signOut() = viewModelScope.launch{
+        userAuthenticationManager.signOutUser()
     }
 }

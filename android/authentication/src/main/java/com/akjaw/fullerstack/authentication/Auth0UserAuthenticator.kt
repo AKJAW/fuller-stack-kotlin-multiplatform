@@ -2,7 +2,6 @@ package com.akjaw.fullerstack.authentication
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.util.Log
 import com.akjaw.fullerstack.authentication.model.Auth0Config
 import com.akjaw.fullerstack.authentication.model.AuthenticationResult
@@ -19,7 +18,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 internal class Auth0UserAuthenticator(
-    private val context: Context,
+    private val activity: Activity,
     private val auth0: Auth0,
     private val auth0Config: Auth0Config,
     private val credentialsManager: SecureCredentialsManager
@@ -29,7 +28,7 @@ internal class Auth0UserAuthenticator(
         return credentialsManager.hasValidCredentials()
     }
 
-    override suspend fun signInUser(activity: Activity): AuthenticationResult {
+    override suspend fun signInUser(): AuthenticationResult {
         return suspendCoroutine { continuation ->
             WebAuthProvider
                 .login(auth0)
@@ -64,7 +63,7 @@ internal class Auth0UserAuthenticator(
             }
         }
 
-    override suspend fun signOutUser(activity: Activity): AuthenticationResult {
+    override suspend fun signOutUser(): AuthenticationResult {
         return suspendCoroutine { continuation ->
             WebAuthProvider
                 .logout(auth0)

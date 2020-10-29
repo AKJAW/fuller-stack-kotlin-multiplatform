@@ -14,7 +14,7 @@ import org.kodein.di.singleton
 val navigatorModule = DI.Module("navigatorModule") {
     bind<ScreenNavigator>() with singleton { SimpleStackScreenNavigator(instance()) }
     bind<DialogManager>() with singleton {
-        val fragmentActivity = instance<FragmentActivity>("FragmentActivity")
+        val fragmentActivity = instance<FragmentActivity>()
         FragmentDialogManager(fragmentActivity.supportFragmentManager)
     }
     bind<BottomNavigationHelper>() with singleton { BottomNavigationHelper(instance()) }

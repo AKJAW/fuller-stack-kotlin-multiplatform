@@ -2,11 +2,9 @@ package com.akjaw.fullerstack.authentication.composition
 
 import android.content.Context
 import com.akjaw.fullerstack.authentication.ActivityAuthenticationLauncher
-import com.akjaw.fullerstack.authentication.Auth0UserAuthenticator
 import com.akjaw.fullerstack.authentication.AuthenticationLauncher
 import com.akjaw.fullerstack.authentication.GetUserProfile
 import com.akjaw.fullerstack.authentication.R
-import com.akjaw.fullerstack.authentication.UserAuthenticator
 import com.akjaw.fullerstack.authentication.model.Auth0Config
 import com.akjaw.fullerstack.authentication.token.TokenProvider
 import org.kodein.di.DI
@@ -22,14 +20,6 @@ val authenticationModule = DI.Module("authenticationModule") {
             schema = context.getString(R.string.com_auth0_schema),
             apiIdentifier = context.getString(R.string.api_identifier),
             scope = "openid profile email offline_access"
-        )
-    }
-    bind<UserAuthenticator>() with singleton {
-        Auth0UserAuthenticator(
-            context = instance("ApplicationContext"),
-            auth0 = instance(),
-            auth0Config = instance(),
-            credentialsManager = instance()
         )
     }
     bind() from singleton { GetUserProfile(instance(), instance()) }

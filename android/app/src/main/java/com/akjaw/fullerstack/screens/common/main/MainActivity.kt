@@ -5,9 +5,15 @@ import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.base.BaseActivity
 import com.akjaw.fullerstack.screens.common.navigation.MultiStack
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.kodein.di.DI
 import org.kodein.di.instance
 
 class MainActivity : BaseActivity() {
+
+    override val di: DI by DI.lazy {
+        extend(super.di)
+        import(mainActivityModule)
+    }
 
     private val multiStack: MultiStack by instance()
     private val bottomNavigationHelper: BottomNavigationHelper by instance()

@@ -65,7 +65,7 @@ class ProfileFragment : BaseFragment(R.layout.layout_profile) {
         }
 
         logOutButton.setOnClickListener {
-            profileViewModel.signOut(activity!!)
+            profileViewModel.signOut()
         }
     }
 
