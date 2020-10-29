@@ -45,7 +45,7 @@ internal class Auth0UserAuthenticator(
     private fun createLogInCallback(continuation: Continuation<AuthenticationResult>) =
         object : AuthCallback {
             override fun onSuccess(credentials: Credentials) {
-                Log.d("Auth", "authCallback succes $credentials")
+                Log.d("Auth", "authCallback success $credentials")
                 credentialsManager.saveCredentials(credentials)
                 continuation.resume(AuthenticationResult.SUCCESS)
             }
