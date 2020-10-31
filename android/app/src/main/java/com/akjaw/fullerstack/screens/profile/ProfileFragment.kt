@@ -7,11 +7,11 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.akjaw.framework.view.ViewFader
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.authentication.model.UserProfile
 import com.akjaw.fullerstack.screens.common.base.BaseFragment
@@ -30,6 +30,7 @@ class ProfileFragment : BaseFragment(R.layout.layout_profile) {
     private lateinit var nameTextView: TextView
     private lateinit var emailTextView: TextView
     private lateinit var logOutButton: Button
+    private val viewFader: ViewFader by lazy { ViewFader() }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,9 +45,18 @@ class ProfileFragment : BaseFragment(R.layout.layout_profile) {
         emailTextView = view.findViewById(R.id.profile_email)
         logOutButton = view.findViewById(R.id.profile_logout_button)
 
+        viewFader.setViews(
+            listOf(pictureImageView, nameTextView, emailTextView, logOutButton)
+        )
+
         profileViewModel.userProfile.observe(viewLifecycleOwner) { userProfile ->
             populateProfileScreen(userProfile)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewFader.destroyViews()
     }
 
     private fun populateProfileScreen(profile: UserProfile) {
@@ -71,21 +81,6 @@ class ProfileFragment : BaseFragment(R.layout.layout_profile) {
 
     private fun fadeInContent() {
         loadingIndicator.visibility = View.GONE
-        val content = listOf(pictureImageView, nameTextView, emailTextView, logOutButton)
-        val isContentHidden = content.none { it.isVisible }
-        if (isContentHidden) {
-            content.forEach {
-                it.fadeIn()
-            }
-        }
-    }
-
-    private fun View.fadeIn() {
-        alpha = 0f
-        visibility = View.VISIBLE
-        animate()
-            .alpha(1f)
-            .setDuration(300)
-            .setListener(null)
+        viewFader.fadeInViews()
     }
 }

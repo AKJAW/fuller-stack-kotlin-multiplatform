@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation(project(":shared"))
     api(project(":android:authentication"))
+    api(project(":android:framework"))
 
     // debugging
     debugImplementation(AndroidLibs.LEAK_CANARY)

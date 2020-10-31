@@ -6,6 +6,7 @@ include(
     "shared",
     "android:app",
     "android:authentication",
+    "android:framework",
     "javascript:react",
     "javascript:spa-authentication",
     "javascript:spa-persistance"

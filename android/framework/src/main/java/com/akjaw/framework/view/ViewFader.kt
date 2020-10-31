@@ -1,9 +1,12 @@
-package com.akjaw.fullerstack.authentication.presentation
+package com.akjaw.framework.view
 
 import android.animation.Animator
 import android.view.View
+import androidx.lifecycle.LifecycleObserver
 
-class ViewFader (private var views: List<View>?) {
+class ViewFader : LifecycleObserver {
+
+    private var views: List<View>? = null
 
     fun fadeOutViews(durationMilliseconds: Long = 300) {
         if (areViewsShown() == true) {
@@ -16,8 +19,12 @@ class ViewFader (private var views: List<View>?) {
             this.views?.forEach { it.fadeIn(durationMilliseconds) }
         }
     }
-    
-    fun destroy() {
+
+    fun setViews(views: List<View>) {
+        this.views = views
+    }
+
+    fun destroyViews() {
         views = null
     }
 

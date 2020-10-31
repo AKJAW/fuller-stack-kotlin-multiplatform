@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.authentication.presentation
+package com.akjaw.framework.view
 
 import android.animation.Animator
 

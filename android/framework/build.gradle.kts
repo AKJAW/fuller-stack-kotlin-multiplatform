@@ -1,8 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
+//    id("kotlin-kapt")
     id("de.mannodermaus.android-junit5")
 }
 
@@ -16,24 +15,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    defaultConfig {
-        manifestPlaceholders = mapOf(
-            "auth0Domain" to "@string/com_auth0_domain",
-            "auth0Scheme" to "@string/com_auth0_schema"
-        )
-    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
 dependencies {
-    implementation(project(":shared"))
-    implementation(project(":android:framework"))
-
-    implementation(AndroidLibs.KOTLIN_JDK)
-
-    implementation(AndroidLibs.AUTH0)
+//    implementation(AndroidLibs.KOTLIN_JDK)
 
     implementation(AndroidLibs.APP_COMPAT)
     implementation(AndroidLibs.MATERIAL)
@@ -48,5 +36,4 @@ dependencies {
 
     testImplementation(JVMTestingLibs.JUNIT5)
     testImplementation(SharedTestingLibs.MOCKK)
-    testImplementation(JVMTestingLibs.COROUTINES_TEST)
 }
