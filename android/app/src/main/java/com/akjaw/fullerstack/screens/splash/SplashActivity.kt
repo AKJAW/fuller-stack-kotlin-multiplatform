@@ -28,8 +28,7 @@ class SplashActivity : BaseActivity() {
                 finish()
             }
         } else {
-            authenticationLauncher.showAuthenticationScreen(this)
-            finish()
+            authenticationLauncher.showAuthenticationScreen()
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.akjaw.fullerstack.authentication.composition
 
 import android.content.Context
-import com.akjaw.fullerstack.authentication.ActivityAuthenticationLauncher
-import com.akjaw.fullerstack.authentication.AuthenticationLauncher
 import com.akjaw.fullerstack.authentication.GetUserProfile
 import com.akjaw.fullerstack.authentication.R
 import com.akjaw.fullerstack.authentication.model.Auth0Config
@@ -23,6 +21,5 @@ val authenticationModule = DI.Module("authenticationModule") {
         )
     }
     bind() from singleton { GetUserProfile(instance(), instance()) }
-    bind<AuthenticationLauncher>() with singleton { ActivityAuthenticationLauncher() }
     bind() from singleton { TokenProvider(instance()) }
 }

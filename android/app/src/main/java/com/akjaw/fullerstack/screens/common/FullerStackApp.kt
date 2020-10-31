@@ -9,10 +9,6 @@ import com.akjaw.fullerstack.composition.modules.androidModule
 import com.akjaw.fullerstack.composition.modules.databaseModule
 import com.akjaw.fullerstack.composition.modules.networkModule
 import com.akjaw.fullerstack.helpers.logger.HyperlinkedDebugTree
-import com.akjaw.fullerstack.screens.common.navigation.MultiStack
-import com.akjaw.fullerstack.screens.common.navigation.keys.NotesListScreen
-import com.akjaw.fullerstack.screens.common.navigation.keys.ProfileScreen
-import com.akjaw.fullerstack.screens.common.navigation.keys.SettingsScreen
 import composition.common
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,14 +28,6 @@ class FullerStackApp : Application(), DIAware {
         bind<Context>("ApplicationContext") with singleton { this@FullerStackApp.applicationContext }
         bind<CoroutineScope>("ApplicationCoroutineScope") with singleton { this@FullerStackApp.applicationScope }
         bind<AfterAuthenticationLauncher>() with singleton { MainActivityAfterAuthenticationLauncher() }
-        bind<MultiStack>() with singleton {
-            val rootKeys = listOf(
-                NotesListScreen(),
-                ProfileScreen(),
-                SettingsScreen()
-            )
-            MultiStack(rootKeys)
-        }
         import(androidModule)
         import(databaseModule)
         import(networkModule)
