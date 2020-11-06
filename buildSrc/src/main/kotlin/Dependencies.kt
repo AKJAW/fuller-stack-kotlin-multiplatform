@@ -2,10 +2,10 @@ object Versions {
 
     //shared
     const val KODEIN = "7.0.0"
-    const val COROUTINES = "1.3.7"
+    const val COROUTINES = "1.4.1"
     const val KTLINT = "0.36.0"
     const val KLOCK = "1.11.11"
-    const val SERIALIZATION = "0.20.0"
+    const val SERIALIZATION = "1.0.1"
 
     //shared test
     const val JUNIT5 = "5.6.2"
@@ -13,12 +13,13 @@ object Versions {
 
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
-    const val REACT = "16.13.1"
+    const val REACT = "16.14.0"
     const val REACT_ROUTER = "5.1.2"
     const val REDUX = "4.0.0"
     const val REACT_REDUX = "5.0.7"
-    const val MUIRWIK = "0.5.1"
-    const val NPM_METRIAL_UI = "^4.9.14"
+    const val MUIRWIK = "0.6.0"
+    const val NPM_MATERIAL_UI = "4.11.0"
+    const val NPM_MATERIAL_UI_ICONS = "4.9.1"
     const val AUTH0 = "1.1.0"
 
     //ktor
@@ -40,7 +41,7 @@ object Versions {
     const val SIMPLE_STACK = "2.4.0"
     const val SIMPLE_STACK_EXTENSIONS = "2.0.1"
     const val RETROFIT = "2.9.0"
-    const val RETROFIT_KOTLINX_SERIALIZATION = "0.5.0"
+    const val RETROFIT_KOTLINX_SERIALIZATION = "0.8.0"
     const val OKHTTP = "4.8.0"
     const val FRAGMENT_KTX = "1.2.5"
     const val LEAK_CANARY = "2.4"
@@ -53,8 +54,8 @@ object Versions {
 }
 
 object PluginsVersions {
-    const val KOTLIN = "1.3.72"
-    const val GRADLE_BUILD_TOOLS = "3.5.0"
+    const val KOTLIN = "1.4.10"
+    const val GRADLE_BUILD_TOOLS = "4.0.1"
     const val ANDROID_JUNIT5 = "1.6.2.0"
     const val DETEKT = "1.9.1"
     const val KTLINT = "9.2.1"
@@ -62,10 +63,10 @@ object PluginsVersions {
 
 object SharedLibs {
     const val KODEIN_DI = "org.kodein.di:kodein-di:${Versions.KODEIN}"
-    const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
+//    const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
     const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
-    const val SERIALIZATION_RUNTIME_COMMON = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.SERIALIZATION}"
+    const val SERIALIZATION_RUNTIME_COMMON = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.SERIALIZATION}"
 
 }
 
@@ -74,7 +75,7 @@ object SharedTestingLibs {
 }
 
 object JVMLibs {
-    const val SERIALIZATION_RUNTIME_JVM = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.SERIALIZATION}"
+//    const val SERIALIZATION_RUNTIME_JVM = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.SERIALIZATION}"
 }
 
 object JVMTestingLibs {
@@ -84,17 +85,17 @@ object JVMTestingLibs {
 
 object ReactLibs {
     const val HTML_JS = "org.jetbrains.kotlinx:kotlinx-html-js:${Versions.KOTLINX_HTML_JS}"
-    const val REACT = "org.jetbrains:kotlin-react:${Versions.REACT}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
-    const val REACT_ROUTER = "org.jetbrains:kotlin-react-router-dom:${Versions.REACT_ROUTER}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
-    const val REDUX = "org.jetbrains:kotlin-redux:${Versions.REDUX}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
-    const val REACT_REDUX = "org.jetbrains:kotlin-react-redux:${Versions.REACT_REDUX}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
-    const val REACT_DOM = "org.jetbrains:kotlin-react-dom:${Versions.REACT}-pre.104-kotlin-${PluginsVersions.KOTLIN}"
-    const val STYLED = "org.jetbrains:kotlin-styled:1.0.0-pre.104-kotlin-${PluginsVersions.KOTLIN}"
-    const val CSS_JS = "org.jetbrains:kotlin-css-js:1.0.0-pre.104-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT = "org.jetbrains:kotlin-react:${Versions.REACT}-pre.125-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT_ROUTER = "org.jetbrains:kotlin-react-router-dom:${Versions.REACT_ROUTER}-pre.125-kotlin-${PluginsVersions.KOTLIN}"
+    const val REDUX = "org.jetbrains:kotlin-redux:${Versions.REDUX}-pre.125-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT_REDUX = "org.jetbrains:kotlin-react-redux:${Versions.REACT_REDUX}-pre.125-kotlin-${PluginsVersions.KOTLIN}"
+    const val REACT_DOM = "org.jetbrains:kotlin-react-dom:${Versions.REACT}-pre.125-kotlin-${PluginsVersions.KOTLIN}"
+    const val STYLED = "org.jetbrains:kotlin-styled:5.2.0-pre.125-kotlin-${PluginsVersions.KOTLIN}"
+    const val CSS_JS = "org.jetbrains:kotlin-css-js:1.0.0-pre.125-kotlin-${PluginsVersions.KOTLIN}"
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
 
-    const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
-    const val SERIALIZATION_RUNTIME_JS = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.SERIALIZATION}"
+//    const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
+//    const val SERIALIZATION_RUNTIME_JS = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.SERIALIZATION}"
     const val KTOR_CLIENT_JS = "io.ktor:ktor-client-js:${Versions.KTOR}"
     const val KTOR_CLIENT_JSON = "io.ktor:ktor-client-json-js:${Versions.KTOR}"
     const val KTOR_CLIENT_SERIALIZATION = "io.ktor:ktor-client-serialization-js:${Versions.KTOR}"
@@ -135,7 +136,7 @@ object AndroidLibs {
 
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
 
-    const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
+//    const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
     const val RETROFIT_KOTLINX_SERIALIZATION = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.RETROFIT_KOTLINX_SERIALIZATION}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"

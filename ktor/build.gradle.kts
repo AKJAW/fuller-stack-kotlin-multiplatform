@@ -27,7 +27,7 @@ dependencies {
     implementation(SharedLibs.KLOCK)
 
     // serialization
-    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
+    implementation(SharedLibs.COROUTINES_CORE)
     implementation(KtorLibs.KTOR_SERIALIZATION)
 
     // database

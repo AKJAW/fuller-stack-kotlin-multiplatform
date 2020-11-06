@@ -29,7 +29,7 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
     implementation(AndroidLibs.LIFECYCLE_EXTENSTIONS)
 
-    implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(SharedLibs.COROUTINES_CORE)
 
     implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)

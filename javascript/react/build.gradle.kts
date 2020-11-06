@@ -26,14 +26,14 @@ dependencies {
     implementation(ReactLibs.CSS_JS)
 
     // react libraries wrappers
-    implementation(ReactLibs.MUIRWIK)
+    implementation(ReactLibs.MUIRWIK) //TODO replace with jar
 
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
 
     // network
-    implementation(ReactLibs.COROUTINES_JS)
-    implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
+    implementation(SharedLibs.COROUTINES_CORE)
+    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
     implementation(ReactLibs.KTOR_CLIENT_JS)
     implementation(ReactLibs.KTOR_CLIENT_JSON)
     implementation(ReactLibs.KTOR_CLIENT_SERIALIZATION)
@@ -47,15 +47,17 @@ kotlin {
         browser()
     }
 
+//    defaultJsCompilerType = KotlinJsCompilerType.LEGACY  // The default TODO this?
+
     sourceSets["main"].dependencies {
         implementation(npm("react", Versions.REACT))
         implementation(npm("react-dom", Versions.REACT))
         implementation(npm("react-router-dom", Versions.REACT_ROUTER))
 
-        implementation(npm("styled-components"))
-        implementation(npm("inline-style-prefixer"))
-        implementation(npm("@material-ui/core", Versions.NPM_METRIAL_UI))
-        implementation(npm("@material-ui/icons"))
+        implementation(npm("styled-components", "5.0.0"))
+        implementation(npm("inline-style-prefixer", "6.0.0"))
+        implementation(npm("@material-ui/core", Versions.NPM_MATERIAL_UI))
+        implementation(npm("@material-ui/icons", Versions.NPM_MATERIAL_UI_ICONS))
     }
 }
 

@@ -1,17 +1,19 @@
 plugins {
-    kotlin("multiplatform")
+    id("org.jetbrains.kotlin.multiplatform")
 }
 
 kotlin {
-    jvm("android") {
-        val main by compilations.getting {
-            kotlinOptions {
-                jvmTarget = "1.8"
+    targets {
+        jvm("android") {
+            val main by compilations.getting {
+                kotlinOptions {
+                    jvmTarget = "1.8"
+                }
             }
         }
-    }
-    js {
-        browser()
+        js {
+            browser()
+        }
     }
     detekt {
         input = files(
@@ -30,8 +32,8 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-common"))
-                implementation(SharedLibs.COROUTINES_COMMON)
+//                implementation(kotlin("stdlib-common"))
+                implementation(SharedLibs.COROUTINES_CORE)
                 implementation(SharedLibs.KLOCK)
                 implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
             }
@@ -40,41 +42,41 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation(SharedLibs.COROUTINES_COMMON)
+                implementation(SharedLibs.COROUTINES_CORE)
             }
         }
 
-        val androidMain by getting {
+        val androidMain by sourceSets.getting {
             dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-                implementation(AndroidLibs.COROUTINES_ANDROID)
-                implementation(JVMLibs.SERIALIZATION_RUNTIME_JVM)
+//                implementation(kotlin("stdlib-jdk8"))
+//                implementation(SharedLibs.COROUTINES_CORE)
+//                implementation(JVMLibs.SERIALIZATION_RUNTIME_JVM)
                 implementation(AndroidLibs.RETROFIT)
                 implementation(AndroidLibs.ROOM_RUNTIME)
                 implementation(AndroidLibs.ROOM_KTX)
             }
         }
-        val androidTest by getting {
+        val androidTest by sourceSets.getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-                implementation(SharedLibs.COROUTINES_COMMON)
+//                implementation(SharedLibs.COROUTINES_CORE)
                 implementation(JVMTestingLibs.COROUTINES_TEST)
             }
         }
 
-        val jsMain by getting {
+        val jsMain by sourceSets.getting {
             dependencies {
-                implementation(kotlin("stdlib-js"))
+//                implementation(kotlin("stdlib-js"))
                 implementation(ReactLibs.KTOR_CLIENT_JS)
-                implementation(ReactLibs.COROUTINES_JS)
-                implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
+//                implementation(ReactLibs.COROUTINES_JS)
+//                implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
             }
         }
-        val jsTest by getting {
+        val jsTest by sourceSets.getting {
             dependencies {
                 implementation(kotlin("test-js"))
-                implementation(SharedLibs.COROUTINES_COMMON)
+//                implementation(SharedLibs.COROUTINES_CORE)
             }
         }
     }

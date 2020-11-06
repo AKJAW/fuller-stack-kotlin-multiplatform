@@ -76,7 +76,7 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
 
     // network
-    implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(SharedLibs.COROUTINES_CORE)
     implementation(AndroidLibs.OKHTTP)
     implementation(AndroidLibs.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(AndroidLibs.RETROFIT)

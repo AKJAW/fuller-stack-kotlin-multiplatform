@@ -23,7 +23,7 @@ dependencies {
     implementation(ReactLibs.CSS_JS)
 
     // react libraries wrappers
-    implementation(ReactLibs.MUIRWIK)
+    implementation(ReactLibs.MUIRWIK) //TODO replace with jar
 }
 
 kotlin {
@@ -36,9 +36,9 @@ kotlin {
         implementation(npm("react-dom", Versions.REACT))
         implementation(npm("@auth0/auth0-react", Versions.AUTH0))
 
-        implementation(npm("styled-components"))
-        implementation(npm("inline-style-prefixer"))
-        implementation(npm("@material-ui/core", Versions.NPM_METRIAL_UI))
-        implementation(npm("@material-ui/icons"))
+        implementation(npm("styled-components", "5.0.0"))
+        implementation(npm("inline-style-prefixer", "6.0.0"))
+        implementation(npm("@material-ui/core", Versions.NPM_MATERIAL_UI))
+        implementation(npm("@material-ui/icons", Versions.NPM_MATERIAL_UI_ICONS))
     }
 }
