@@ -2,8 +2,8 @@ rootProject.name = "fuller_stack"
 
 enableFeaturePreview("GRADLE_METADATA")
 include(
-    "ktor",
     "shared",
+    "ktor",
     "android:app",
     "android:authentication",
     "android:framework",

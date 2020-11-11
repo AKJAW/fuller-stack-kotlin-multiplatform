@@ -15,7 +15,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("multiplatform") version PluginsVersions.KOTLIN
+//    kotlin("multiplatform") version PluginsVersions.KOTLIN
     kotlin("plugin.serialization") version PluginsVersions.KOTLIN
     id("io.gitlab.arturbosch.detekt") version PluginsVersions.DETEKT
     id("org.jlleitschuh.gradle.ktlint") version PluginsVersions.KTLINT
