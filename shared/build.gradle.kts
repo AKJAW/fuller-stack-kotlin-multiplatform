@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
 }
 
 kotlin {
@@ -8,6 +8,10 @@ kotlin {
             val main by compilations.getting {
                 kotlinOptions {
                     jvmTarget = "1.8"
+                    java {
+                        sourceCompatibility = JavaVersion.VERSION_1_8
+                        targetCompatibility = JavaVersion.VERSION_1_8
+                    }
                 }
             }
         }
@@ -35,7 +39,7 @@ kotlin {
 //                implementation(kotlin("stdlib-common"))
                 implementation(SharedLibs.COROUTINES_CORE)
                 implementation(SharedLibs.KLOCK)
-                implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
+                implementation(SharedLibs.KOTLINX_SERIALIZATION)
             }
         }
         val commonTest by getting {

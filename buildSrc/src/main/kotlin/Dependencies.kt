@@ -1,10 +1,10 @@
 object Versions {
 
     //shared
-    const val KODEIN = "7.0.0"
+    const val KODEIN = "7.1.0"
     const val COROUTINES = "1.4.1"
     const val KTLINT = "0.36.0"
-    const val KLOCK = "1.11.11"
+    const val KLOCK = "2.0.0-rc2"
     const val SERIALIZATION = "1.0.1"
 
     //shared test
@@ -23,7 +23,7 @@ object Versions {
     const val AUTH0 = "1.1.0"
 
     //ktor
-    const val KTOR = "1.3.2"
+    const val KTOR = "1.4.2"
     const val LOG_BACK = "1.2.3"
     const val EXPOSED = "0.26.1"
     const val H2 = "1.4.199"
@@ -63,11 +63,9 @@ object PluginsVersions {
 
 object SharedLibs {
     const val KODEIN_DI = "org.kodein.di:kodein-di:${Versions.KODEIN}"
-//    const val COROUTINES_COMMON =  "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.COROUTINES}"
     const val COROUTINES_CORE =  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
     const val KLOCK =  "com.soywiz.korlibs.klock:klock:${Versions.KLOCK}"
-    const val SERIALIZATION_RUNTIME_COMMON = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.SERIALIZATION}"
-
+    const val KOTLINX_SERIALIZATION = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.SERIALIZATION}"
 }
 
 object SharedTestingLibs {
@@ -75,7 +73,7 @@ object SharedTestingLibs {
 }
 
 object JVMLibs {
-//    const val SERIALIZATION_RUNTIME_JVM = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.SERIALIZATION}"
+//    const val KLOCK =  "com.soywiz.korlibs.klock:klock-jvm:${Versions.KLOCK}"
 }
 
 object JVMTestingLibs {
@@ -94,8 +92,6 @@ object ReactLibs {
     const val CSS_JS = "org.jetbrains:kotlin-css-js:1.0.0-pre.125-kotlin-${PluginsVersions.KOTLIN}"
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
 
-//    const val COROUTINES_JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.COROUTINES}"
-//    const val SERIALIZATION_RUNTIME_JS = "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.SERIALIZATION}"
     const val KTOR_CLIENT_JS = "io.ktor:ktor-client-js:${Versions.KTOR}"
     const val KTOR_CLIENT_JSON = "io.ktor:ktor-client-json-js:${Versions.KTOR}"
     const val KTOR_CLIENT_SERIALIZATION = "io.ktor:ktor-client-serialization-js:${Versions.KTOR}"
@@ -120,7 +116,7 @@ object KtorLibs {
 }
 
 object AndroidLibs {
-    const val KOTLIN_JDK = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.KTOR}"
+    const val KOTLIN_JDK = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${PluginsVersions.KOTLIN}"
 
     const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
     const val MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
@@ -136,7 +132,6 @@ object AndroidLibs {
 
     const val KODEIN_DI_FRAMEWORK_ANDROID_X = "org.kodein.di:kodein-di-framework-android-x:${Versions.KODEIN}"
 
-//    const val COROUTINES_ANDROID =  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
     const val RETROFIT_KOTLINX_SERIALIZATION = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.RETROFIT_KOTLINX_SERIALIZATION}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"

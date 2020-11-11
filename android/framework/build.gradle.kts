@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-//    id("kotlin-kapt")
+    id("kotlin-kapt")
     id("de.mannodermaus.android-junit5")
 }
 
@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-//    implementation(AndroidLibs.KOTLIN_JDK)
+    implementation(AndroidLibs.KOTLIN_JDK)
 
     implementation(AndroidLibs.APP_COMPAT)
     implementation(AndroidLibs.MATERIAL)

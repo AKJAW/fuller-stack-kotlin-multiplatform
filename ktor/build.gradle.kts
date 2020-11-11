@@ -26,8 +26,10 @@ dependencies {
     // date
     implementation(SharedLibs.KLOCK)
 
-    // serialization
+    // network
     implementation(SharedLibs.COROUTINES_CORE)
+
+    // serialization
     implementation(KtorLibs.KTOR_SERIALIZATION)
 
     // database
@@ -43,15 +45,11 @@ dependencies {
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-}
-
-tasks {
     val ktorRun by registering(JavaExec::class) {
         group = "custom"
         main = "server.MainKt"

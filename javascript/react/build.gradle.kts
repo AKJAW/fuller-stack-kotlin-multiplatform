@@ -26,14 +26,14 @@ dependencies {
     implementation(ReactLibs.CSS_JS)
 
     // react libraries wrappers
-    implementation(ReactLibs.MUIRWIK) //TODO replace with jar
+    implementation(ReactLibs.MUIRWIK)
 
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
 
     // network
     implementation(SharedLibs.COROUTINES_CORE)
-    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
+    implementation(SharedLibs.KOTLINX_SERIALIZATION)
     implementation(ReactLibs.KTOR_CLIENT_JS)
     implementation(ReactLibs.KTOR_CLIENT_JSON)
     implementation(ReactLibs.KTOR_CLIENT_SERIALIZATION)
@@ -46,8 +46,6 @@ kotlin {
     target {
         browser()
     }
-
-//    defaultJsCompilerType = KotlinJsCompilerType.LEGACY  // The default TODO this?
 
     sourceSets["main"].dependencies {
         implementation(npm("react", Versions.REACT))

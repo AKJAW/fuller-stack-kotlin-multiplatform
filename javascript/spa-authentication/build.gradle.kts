@@ -23,7 +23,7 @@ dependencies {
     implementation(ReactLibs.CSS_JS)
 
     // react libraries wrappers
-    implementation(ReactLibs.MUIRWIK) //TODO replace with jar
+    implementation(ReactLibs.MUIRWIK)
 }
 
 kotlin {
