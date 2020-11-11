@@ -46,7 +46,7 @@ val authenticationWrapper = functionalComponent<AuthenticationWrapperProps> { pr
 
     console.log(useAuth0)
     when {
-        useAuth0.isLoading || isTokenSet.not() -> {
+        useAuth0.isLoading || (useAuth0.isAuthenticated && isTokenSet.not()) -> {
             styledDiv {
                 css(AuthenticationWrapperClasses.authContainer)
                 mCircularProgress()

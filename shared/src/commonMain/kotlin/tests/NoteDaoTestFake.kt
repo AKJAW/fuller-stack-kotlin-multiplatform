@@ -35,7 +35,7 @@ class NoteDaoTestFake : NoteDao {
     override fun getAllNotes(): Flow<List<NoteEntity>> = notesMutableState
 
     override suspend fun addNote(addNotePayload: AddNotePayload): Int {
-        val latestId = notes.maxBy { it.localId }?.localId ?: -1
+        val latestId = notes.maxByOrNull { it.localId }?.localId ?: -1
         val newId = latestId + 1
 
         val newNote = NoteEntity(
