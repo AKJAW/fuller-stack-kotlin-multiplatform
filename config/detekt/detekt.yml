@@ -370,7 +370,7 @@ naming:
   MatchingDeclarationName:
     active: true
     mustBeFirst: true
-    excludes: ['**/react/**']
+    excludes: ['**/javascript/**']
   MemberNameEqualsClassName:
     active: true
     ignoreOverridden: true

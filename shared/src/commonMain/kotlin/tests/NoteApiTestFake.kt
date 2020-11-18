@@ -31,7 +31,7 @@ class NoteApiTestFake : NoteApi {
 
     override suspend fun addNote(addNotePayload: AddNotePayload): Int = runOrFail {
         if (willFail) throw Throwable()
-        val lastNoteId = notes.maxBy { it.apiId }?.apiId ?: -1
+        val lastNoteId = notes.maxByOrNull { it.apiId }?.apiId ?: -1
         val newNoteId = lastNoteId + 1
 
         val newNote = NoteSchema(

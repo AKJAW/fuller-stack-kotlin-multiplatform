@@ -6,20 +6,21 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-            android:name="com.akjaw.fullerstack.screens.common.CustomApplication"
+            android:name="com.akjaw.fullerstack.screens.common.FullerStackApp"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="com.akjaw.fullerstack.screens.common.main.MainActivity">
+        <activity android:name="com.akjaw.fullerstack.screens.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="com.akjaw.fullerstack.screens.common.main.MainActivity"/>
     </application>
 
 </manifest>

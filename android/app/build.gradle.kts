@@ -16,13 +16,17 @@ android {
     compileSdkVersion(Versions.COMPILE_SDK_VERSION)
 
     defaultConfig {
+        applicationId = "com.akjaw.fullerstack"
         minSdkVersion(Versions.MIN_SDK_VERSION)
         targetSdkVersion(Versions.TARGET_SDK_VERSION)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = mapOf(
+            "auth0Domain" to "@string/com_auth0_domain",
+            "auth0Scheme" to "@string/com_auth0_schema"
+        )
     }
-
     buildTypes {
         getByName("debug") {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
@@ -33,8 +37,8 @@ android {
         }
     }
     compileOptions {
-        setSourceCompatibility(JavaVersion.VERSION_1_8)
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     packagingOptions {
         exclude("META-INF/kotlinx-serialization-runtime.kotlin_module")
@@ -43,6 +47,8 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    api(project(":android:authentication"))
+    api(project(":android:framework"))
 
     // debugging
     debugImplementation(AndroidLibs.LEAK_CANARY)
@@ -59,6 +65,9 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
     implementation(AndroidLibs.FRAGMENT_KTX)
 
+    // ui
+    implementation(AndroidLibs.COIL)
+
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
@@ -67,12 +76,12 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
 
     // network
-    implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(SharedLibs.COROUTINES_CORE)
     implementation(AndroidLibs.OKHTTP)
     implementation(AndroidLibs.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(AndroidLibs.RETROFIT)
     implementation(AndroidLibs.RETROFIT_KOTLINX_SERIALIZATION)
-    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
+    implementation(SharedLibs.KOTLINX_SERIALIZATION)
 
     // persistance
     implementation(AndroidLibs.ROOM_RUNTIME)

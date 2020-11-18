@@ -8,6 +8,7 @@ import com.akjaw.fullerstack.screens.list.NotesListViewModel
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesSelectionTrackerFactory
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
+import com.akjaw.fullerstack.screens.profile.ProfileViewModel
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.direct
@@ -16,7 +17,7 @@ import org.kodein.di.provider
 import org.kodein.di.singleton
 
 val presentationModule = DI.Module("presentationModule") {
-    bind() from singleton { NotesListActionMode(instance("FragmentActivity")) }
+    bind() from singleton { NotesListActionMode(instance(), instance()) }
     bind() from singleton { NotesSelectionTrackerFactory(instance(), instance()) }
     bind() from singleton { NotesListAdapterFactory(instance(), instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
@@ -25,5 +26,8 @@ val presentationModule = DI.Module("presentationModule") {
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {
         NoteEditorViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())
+    }
+    bind<ViewModel>(tag = ProfileViewModel::class.java.simpleName) with provider {
+        ProfileViewModel(instance(), instance(), instance())
     }
 }

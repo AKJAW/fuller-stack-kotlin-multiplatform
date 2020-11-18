@@ -5,9 +5,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.FragmentActivity
 import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.screens.common.main.BottomNavigationHelper
 
 class NotesListActionMode(
-    private val fragmentActivity: FragmentActivity
+    private val fragmentActivity: FragmentActivity,
+    private val bottomNavigationHelper: BottomNavigationHelper
 ) : ActionMode.Callback {
 
     private var actionMode: ActionMode? = null
@@ -32,6 +34,7 @@ class NotesListActionMode(
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
 
     override fun onDestroyActionMode(mode: ActionMode?) {
+        bottomNavigationHelper.show()
         onActionModeDestroyed.invoke()
         actionMode = null
     }
@@ -46,6 +49,7 @@ class NotesListActionMode(
     fun startActionMode() {
         if (actionMode == null) {
             fragmentActivity.startActionMode(this)
+            bottomNavigationHelper.hide()
         }
     }
 

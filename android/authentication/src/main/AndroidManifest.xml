@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.akjaw.fullerstack.authentication">
+
+    <application>
+        <activity android:name=".presentation.AuthenticationActivity"/>
+    </application>
+</manifest>
