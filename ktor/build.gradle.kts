@@ -17,6 +17,7 @@ dependencies {
     implementation(KtorLibs.SERVER_CORE)
     implementation(KtorLibs.SERVER_NETTY)
     implementation(KtorLibs.JWT)
+    implementation(KtorLibs.WEB_SOCKETS)
     implementation(KtorLibs.LOG_BACK_CLASSIC)
 
     // dependency injection

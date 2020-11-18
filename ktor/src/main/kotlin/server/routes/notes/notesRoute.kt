@@ -5,8 +5,6 @@ import feature.DeleteNotePayload
 import feature.UpdateNotePayload
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.principal
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Route
@@ -18,6 +16,8 @@ import io.ktor.util.pipeline.PipelineContext
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
 import server.logger.ApiLogger
+import server.routes.getJsonData
+import server.routes.getUserId
 import server.storage.NotesService
 import server.storage.model.User
 
@@ -25,7 +25,6 @@ import server.storage.model.User
 fun Route.notesRoute() {
     val apiLogger: ApiLogger by di().instance()
     val notesService: NotesService by di().instance()
-    val notesCallHelper: NotesCallHelper by di().instance()
 
     get("/notes") {
         requireUser { user ->
@@ -36,7 +35,7 @@ fun Route.notesRoute() {
 
     post("/notes") {
         requireUser { user ->
-            val payload = notesCallHelper.getJsonData<AddNotePayload>(call)
+            val payload = getJsonData<AddNotePayload>(call)
             apiLogger.log("Post notes", payload.toString())
 
             if (payload == null) {
@@ -52,7 +51,7 @@ fun Route.notesRoute() {
 
     patch("/notes") {
         requireUser { user ->
-            val payload = notesCallHelper.getJsonData<UpdateNotePayload>(call)
+            val payload = getJsonData<UpdateNotePayload>(call)
             apiLogger.log("Patch notes", payload.toString())
 
             if (payload == null) {
@@ -75,7 +74,7 @@ fun Route.notesRoute() {
 
     delete("/notes") {
         requireUser { user ->
-            val deleteNotesPayloads = notesCallHelper.getJsonData<List<DeleteNotePayload>>(call)
+            val deleteNotesPayloads = getJsonData<List<DeleteNotePayload>>(call)
             apiLogger.log("Delete notes", deleteNotesPayloads.toString())
 
             if (deleteNotesPayloads == null || deleteNotesPayloads.isEmpty()) {
@@ -100,8 +99,7 @@ fun Route.notesRoute() {
 }
 
 private suspend inline fun PipelineContext<*, ApplicationCall>.requireUser(block: (userId: User) -> Unit) {
-    val jwtPrincipal = call.principal<JWTPrincipal>()
-    val userId = jwtPrincipal?.payload?.getClaim("sub")?.asString()
+    val userId = call.getUserId()
     if (userId == null) {
         call.respond(HttpStatusCode.Unauthorized, "User id is null")
         return

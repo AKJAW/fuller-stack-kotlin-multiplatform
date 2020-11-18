@@ -14,12 +14,16 @@ import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.cio.websocket.pingPeriod
 import io.ktor.response.respondText
-import io.ktor.routing.Routing
 import io.ktor.routing.get
+import io.ktor.routing.routing
 import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.cookie
+import io.ktor.websocket.WebSockets
 import org.kodein.di.ktor.di
 import server.composition.baseModule
 import server.composition.databaseModule
@@ -59,17 +63,18 @@ fun Application.module() {
         }
     }
 
-    install(Routing) {
-        get("/") {
-            call.respondText("Ktor server", ContentType.Text.Html)
-        }
-        authenticate {
-            notesRoute()
-        }
-    }
     install(ContentNegotiation) {
         json()
     }
+
+    install(WebSockets) {
+        pingPeriod = Duration.ofMinutes(1)
+    }
+
+    install(Sessions) {
+        cookie<NotesSession>("SESSION")
+    }
+
     install(CORS) {
         method(HttpMethod.Get)
         method(HttpMethod.Post)
@@ -80,5 +85,15 @@ fun Application.module() {
         header(HttpHeaders.AccessControlAllowOrigin)
         header(HttpHeaders.Authorization)
         host("*") // TODO change when react goes to production
+    }
+
+    routing {
+        get("/") {
+            call.respondText("Ktor server", ContentType.Text.Html)
+        }
+        authenticate {
+            notesSocket()
+            notesRoute()
+        }
     }
 }

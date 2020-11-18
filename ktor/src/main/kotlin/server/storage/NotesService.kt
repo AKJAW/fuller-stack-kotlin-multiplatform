@@ -32,7 +32,8 @@ class NotesService(
                     apiId = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
-                    lastModificationTimestamp = row[NotesTable.lastModificationUnixTimestamp].toLastModificationTimestamp(),
+                    lastModificationTimestamp = row[NotesTable.lastModificationUnixTimestamp]
+                        .toLastModificationTimestamp(),
                     creationTimestamp = row[NotesTable.creationUnixTimestamp].toCreationTimestamp(),
                     wasDeleted = row[NotesTable.wasDeleted]
                 )

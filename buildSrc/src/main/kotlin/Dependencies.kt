@@ -101,6 +101,7 @@ object KtorLibs {
     const val SERVER_CORE = "io.ktor:ktor-server-core:${Versions.KTOR}"
     const val SERVER_NETTY = "io.ktor:ktor-server-netty:${Versions.KTOR}"
     const val JWT = "io.ktor:ktor-auth-jwt:${Versions.KTOR}"
+    const val WEB_SOCKETS = "io.ktor:ktor-websockets:${Versions.KTOR}"
     const val LOG_BACK_CLASSIC = "ch.qos.logback:logback-classic:${Versions.LOG_BACK}"
 
     const val KODEIN_DI_FRAMEWORK_KTOR_SERVER = "org.kodein.di:kodein-di-framework-ktor-server-jvm:${Versions.KODEIN}"
