@@ -18,6 +18,7 @@ import org.kodein.di.ktor.di
 import server.logger.ApiLogger
 import server.routes.getJsonData
 import server.routes.getUserId
+import server.socket.SocketNotifier
 import server.storage.NotesStorage
 import server.storage.model.User
 
@@ -25,6 +26,7 @@ import server.storage.model.User
 fun Route.notesRoute() {
     val apiLogger: ApiLogger by di().instance()
     val notesStorage: NotesStorage by di().instance()
+    val socketNotifier: SocketNotifier by di().instance()
 
     get("/notes") {
         requireUser { user ->
@@ -43,8 +45,9 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
-            val addedId = notesStorage.addNote(payload, user)
+            socketNotifier.notifySocketOfChange(call, user)
 
+            val addedId = notesStorage.addNote(payload, user)
             call.respond(HttpStatusCode.OK, addedId)
         }
     }
@@ -59,8 +62,9 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
-            val wasUpdated = notesStorage.updateNote(payload, user)
+            socketNotifier.notifySocketOfChange(call, user)
 
+            val wasUpdated = notesStorage.updateNote(payload, user)
             if (wasUpdated) {
                 call.respond(HttpStatusCode.OK)
             } else {
@@ -81,6 +85,8 @@ fun Route.notesRoute() {
                 call.respond(HttpStatusCode.BadRequest, "No delete note payloads provided")
                 return@requireUser
             }
+
+            socketNotifier.notifySocketOfChange(call, user)
 
             val wereAllNotesDeleted = deleteNotesPayloads.map { payload ->
                 notesStorage.deleteNote(payload, user)

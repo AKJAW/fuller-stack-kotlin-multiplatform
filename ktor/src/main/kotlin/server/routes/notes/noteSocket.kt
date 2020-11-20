@@ -1,39 +1,53 @@
 package server.routes.notes
 
 import io.ktor.http.cio.websocket.CloseReason
+import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.close
+import io.ktor.http.cio.websocket.readText
 import io.ktor.routing.Route
-import io.ktor.sessions.get
-import io.ktor.sessions.sessions
 import io.ktor.websocket.WebSocketServerSession
 import io.ktor.websocket.webSocket
-import kotlinx.coroutines.channels.consume
+import kotlinx.coroutines.channels.consumeEach
 import org.kodein.di.instance
 import org.kodein.di.ktor.di
-import server.NotesSession
+import server.jwt.TokenParser
 import server.logger.ApiLogger
+import server.routes.getSessionId
 import server.routes.getUserId
+import server.socket.SocketServer
+import server.socket.UserSocketSession
 import server.storage.model.User
 
 
 fun Route.notesSocket() {
     val apiLogger: ApiLogger by di().instance()
+    val socketServer: SocketServer by di().instance()
+    val tokenParser: TokenParser by di().instance()
 
     webSocket("/notes/ws") {
-        val user = getUser() ?: return@webSocket
-        apiLogger.log("Socket user", user.toString())
-
-        val session = getSession() ?: return@webSocket
-        apiLogger.log("Socket session", session.toString())
-
-        //TODO
-        //server.addListener(...)
+        val userSocketSession = UserSocketSession(tokenParser)
+        apiLogger.log("Socket userSocketSession", userSocketSession.toString())
+        val sessionId = call.getSessionId()
+        if (sessionId == null) {
+            close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "No session"))
+            return@webSocket
+        }
+        apiLogger.log("Socket sessionId", sessionId)
 
         try {
-            incoming.consume { /* Empty */ }
+            incoming.consumeEach { frame ->
+                apiLogger.log("Socket incoming frame", frame.toString())
+                val token = frame.getBearerToken()
+                userSocketSession.initialize(token)
+                userSocketSession.getUser()?.let { user ->
+                    apiLogger.log("Socket incoming user", user.toString())
+                    socketServer.addListener(sessionId, user, this)
+                }
+            }
         } finally {
-            //TODO
-            //server.removeListener(...)
+            userSocketSession.getUser()?.let { user ->
+                socketServer.removeListener(sessionId, user, this)
+            }
         }
     }
 }
@@ -48,11 +62,12 @@ private suspend fun WebSocketServerSession.getUser(): User? {
     }
 }
 
-private suspend fun WebSocketServerSession.getSession(): NotesSession? {
-    val session = call.sessions.get<NotesSession>()
-    if (session == null) {
-        //TODO check if this is called when client disconnects. If so, remove from socket list
-        close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "No session"))
+private fun Frame.getBearerToken(): String? {
+    if (this is Frame.Text) {
+        val text = readText()
+        if(text.startsWith("Bearer")) {
+            return text.split(" ").last()
+        }
     }
-    return session
+    return null
 }

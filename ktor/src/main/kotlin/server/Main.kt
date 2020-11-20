@@ -3,6 +3,7 @@ package server
 import com.auth0.jwk.UrlJwkProvider
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.Application
+import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
@@ -23,11 +24,18 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.sessions.Sessions
 import io.ktor.sessions.cookie
+import io.ktor.sessions.get
+import io.ktor.sessions.sessions
+import io.ktor.sessions.set
+import io.ktor.util.generateNonce
 import io.ktor.websocket.WebSockets
 import org.kodein.di.ktor.di
 import server.composition.baseModule
 import server.composition.databaseModule
+import server.composition.socketModule
 import server.routes.notes.notesRoute
+import server.routes.notes.notesSocket
+import java.time.Duration
 
 fun main() {
     embeddedServer(
@@ -43,8 +51,9 @@ private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
 
 fun Application.module() {
     di {
-        import(databaseModule)
         import(baseModule)
+        import(databaseModule)
+        import(socketModule)
     }
 
     install(Authentication) {
@@ -75,6 +84,12 @@ fun Application.module() {
         cookie<NotesSession>("SESSION")
     }
 
+    intercept(ApplicationCallPipeline.Features) {
+        if (call.sessions.get<NotesSession>() == null) {
+            call.sessions.set(NotesSession(generateNonce()))
+        }
+    }
+
     install(CORS) {
         method(HttpMethod.Get)
         method(HttpMethod.Post)
@@ -91,8 +106,8 @@ fun Application.module() {
         get("/") {
             call.respondText("Ktor server", ContentType.Text.Html)
         }
+        notesSocket()
         authenticate {
-            notesSocket()
             notesRoute()
         }
     }
