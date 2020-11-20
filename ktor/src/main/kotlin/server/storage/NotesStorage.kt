@@ -15,7 +15,7 @@ import server.logger.ApiLogger
 import server.storage.model.NotesTable
 import server.storage.model.User
 
-class NotesService(
+class NotesStorage(
     private val database: ExposedDatabase,
     private val apiLogger: ApiLogger
 ) {

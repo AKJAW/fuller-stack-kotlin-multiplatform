@@ -18,18 +18,18 @@ import org.kodein.di.ktor.di
 import server.logger.ApiLogger
 import server.routes.getJsonData
 import server.routes.getUserId
-import server.storage.NotesService
+import server.storage.NotesStorage
 import server.storage.model.User
 
 @Suppress("LongMethod")
 fun Route.notesRoute() {
     val apiLogger: ApiLogger by di().instance()
-    val notesService: NotesService by di().instance()
+    val notesStorage: NotesStorage by di().instance()
 
     get("/notes") {
         requireUser { user ->
             apiLogger.log("Auth userId", user.toString())
-            call.respond(HttpStatusCode.OK, notesService.getNotes(user))
+            call.respond(HttpStatusCode.OK, notesStorage.getNotes(user))
         }
     }
 
@@ -43,7 +43,7 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
-            val addedId = notesService.addNote(payload, user)
+            val addedId = notesStorage.addNote(payload, user)
 
             call.respond(HttpStatusCode.OK, addedId)
         }
@@ -59,7 +59,7 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
-            val wasUpdated = notesService.updateNote(payload, user)
+            val wasUpdated = notesStorage.updateNote(payload, user)
 
             if (wasUpdated) {
                 call.respond(HttpStatusCode.OK)
@@ -83,7 +83,7 @@ fun Route.notesRoute() {
             }
 
             val wereAllNotesDeleted = deleteNotesPayloads.map { payload ->
-                notesService.deleteNote(payload, user)
+                notesStorage.deleteNote(payload, user)
             }.all { it }
 
             if (wereAllNotesDeleted) {
