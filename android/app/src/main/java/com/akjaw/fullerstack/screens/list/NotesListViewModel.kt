@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import feature.DeleteNotes
 import feature.GetNotes
-import feature.SynchronizeNotes
+import feature.synchronization.SynchronizeNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

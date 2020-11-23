@@ -1,9 +1,6 @@
-package feature
+package feature.synchronization
 
 import database.NoteDao
-import feature.synchronization.SynchronizeAddedNotes
-import feature.synchronization.SynchronizeDeletedNotes
-import feature.synchronization.SynchronizeUpdatedNotes
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext

@@ -1,11 +1,8 @@
-package feature
+package feature.synchronization
 
 import base.CommonDispatchers
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
-import feature.synchronization.SynchronizationUseCaseFactory
-import feature.synchronization.copyToEntity
-import feature.synchronization.copyToSchema
 import helpers.date.UnixTimestampProviderFake
 import runTest
 import tests.NoteApiTestFake

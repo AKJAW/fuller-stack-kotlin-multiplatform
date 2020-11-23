@@ -3,7 +3,6 @@ package feature.synchronization
 import com.soywiz.klock.DateTime
 import database.NoteDao
 import database.NoteEntity
-import feature.SynchronizeNotes
 import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import model.Note

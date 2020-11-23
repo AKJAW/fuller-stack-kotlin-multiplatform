@@ -3,10 +3,10 @@ package composition
 import feature.AddNote
 import feature.DeleteNotes
 import feature.GetNotes
-import feature.SynchronizeNotes
 import feature.UpdateNote
 import feature.synchronization.SynchronizeAddedNotes
 import feature.synchronization.SynchronizeDeletedNotes
+import feature.synchronization.SynchronizeNotes
 import feature.synchronization.SynchronizeUpdatedNotes
 import org.kodein.di.DI
 import org.kodein.di.bind
