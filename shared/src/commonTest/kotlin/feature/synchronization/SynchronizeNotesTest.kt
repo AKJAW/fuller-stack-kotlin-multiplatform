@@ -4,24 +4,21 @@ import base.CommonDispatchers
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
 import helpers.date.UnixTimestampProviderFake
-import runTest
+import io.kotest.core.spec.style.FunSpec
+import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SynchronizeNotesTest {
+class SynchronizeNotesTest : FunSpec({
 
-    private lateinit var noteDaoTestFake: NoteDaoTestFake
-    private lateinit var noteApiTestFake: NoteApiTestFake
-    private val timestampProviderFake = UnixTimestampProviderFake()
-    private lateinit var synchronizationUseCaseFactory: SynchronizationUseCaseFactory
-    private lateinit var SUT: SynchronizeNotes
+    lateinit var noteDaoTestFake: NoteDaoTestFake
+    lateinit var noteApiTestFake: NoteApiTestFake
+    val timestampProviderFake = UnixTimestampProviderFake()
+    lateinit var synchronizationUseCaseFactory: SynchronizationUseCaseFactory
+    lateinit var SUT: SynchronizeNotes
 
-    @BeforeTest
-    fun setUp() {
+    beforeTest {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         synchronizationUseCaseFactory = SynchronizationUseCaseFactory(
@@ -33,9 +30,7 @@ class SynchronizeNotesTest {
         SUT = synchronizationUseCaseFactory.createSynchronizeNotes()
     }
 
-    @JsName("DeletedApiNotesNotAddedLocally")
-    @Test
-    fun `Deleted api notes are not added to the local database`() = runTest {
+    suspendingTest("Deleted api notes are not added to the local database") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity()
@@ -50,9 +45,7 @@ class SynchronizeNotesTest {
         assertEquals(1, noteDaoTestFake.notes.count())
     }
 
-    @JsName("DeletedApiNotesNotAddedToApi")
-    @Test
-    fun `Deleted api notes are not added to the api`() = runTest {
+    suspendingTest("Deleted api notes are not added to the api") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity()
@@ -67,9 +60,7 @@ class SynchronizeNotesTest {
         assertEquals(2, noteApiTestFake.notes.count())
     }
 
-    @JsName("DeletedApiNotesNotUpdatedLocally")
-    @Test
-    fun `Deleted api notes are not updated in the local database`() = runTest {
+    suspendingTest("Deleted api notes are not updated in the local database") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity(title = "new")
@@ -84,9 +75,7 @@ class SynchronizeNotesTest {
         assertEquals(1, noteDaoTestFake.notes.count())
     }
 
-    @JsName("DeletedApiNotesAreNotReAddedLocally")
-    @Test
-    fun `Deleted api notes which were deleted locally are not re-added`() = runTest {
+    suspendingTest("Deleted api notes which were deleted locally are not re-added") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity()
         )
@@ -99,4 +88,4 @@ class SynchronizeNotesTest {
 
         assertEquals(1, noteDaoTestFake.notes.count())
     }
-}
+})

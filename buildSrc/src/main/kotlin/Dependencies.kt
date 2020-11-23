@@ -10,6 +10,7 @@ object Versions {
     //shared test
     const val JUNIT5 = "5.6.2"
     const val MOCKK = "1.10.0"
+    const val KOTEST = "4.3.1"
 
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
@@ -70,6 +71,8 @@ object SharedLibs {
 
 object SharedTestingLibs {
     const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
+    const val KOTEST_ASSERTIONS = "io.kotest:kotest-assertions-core:${Versions.KOTEST}"
+    const val KOTEST_FRAMEWORK_ENGINE = "io.kotest:kotest-framework-engine:${Versions.KOTEST}"
 }
 
 object JVMLibs {
