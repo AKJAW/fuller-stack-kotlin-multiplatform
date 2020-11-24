@@ -40,14 +40,13 @@ import java.time.Duration
 fun main() {
     embeddedServer(
         factory = Netty,
-        port = getPort(),
+        port = System.getenv("PORT")?.toIntOrNull() ?: 9000,
         module = Application::module,
         watchPaths = listOf("ktor")
     ).start(wait = true)
 }
 
-@Suppress("MagicNumber")
-private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
+data class NotesSession(val id: String)
 
 fun Application.module() {
     di {

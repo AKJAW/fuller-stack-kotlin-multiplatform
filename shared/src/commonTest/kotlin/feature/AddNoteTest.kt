@@ -3,34 +3,29 @@ package feature
 import base.CommonDispatchers
 import database.NoteEntity
 import helpers.date.UnixTimestampProviderFake
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
 import network.NoteSchema
-import runTest
+import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
-class AddNoteTest {
+class AddNoteTest : FunSpec({
 
-    companion object {
-        private const val TIMESTAMP = 70L
-        private const val TITLE = "title"
-        private const val CONTENT = "content"
-    }
+    val TIMESTAMP = 70L
+    val TITLE = "title"
+    val CONTENT = "content"
 
-    private lateinit var noteDaoTestFake: NoteDaoTestFake
-    private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var unixTimestampProviderFake: UnixTimestampProviderFake
-    private lateinit var SUT: AddNote
+    lateinit var noteDaoTestFake: NoteDaoTestFake
+    lateinit var noteApiTestFake: NoteApiTestFake
+    lateinit var unixTimestampProviderFake: UnixTimestampProviderFake
+    lateinit var SUT: AddNote
 
-    @BeforeTest
-    fun setUp() {
+    beforeTest {
         unixTimestampProviderFake = UnixTimestampProviderFake()
         unixTimestampProviderFake.timestamp = TIMESTAMP
         noteDaoTestFake = NoteDaoTestFake()
@@ -43,27 +38,21 @@ class AddNoteTest {
         )
     }
 
-    @JsName("TrueReturnedOnApiSuccess")
-    @Test
-    fun `When the API call is successful then return true`() = runTest {
+    suspendingTest("When the API call is successful then return true") {
         val result = SUT.executeAsync(TITLE, CONTENT)
 
-        assertTrue(result)
+        result.shouldBeTrue()
     }
 
-    @JsName("FalseReturnedOnApiFail")
-    @Test
-    fun `When the API call fails then return false`() = runTest {
+    suspendingTest("When the API call fails then return false") {
         noteApiTestFake.willFail = true
 
         val result = SUT.executeAsync(TITLE, CONTENT)
 
-        assertFalse(result)
+        result.shouldBeFalse()
     }
 
-    @JsName("AddsTheNoteToTheLocalDatabase")
-    @Test
-    fun `Adds the note to the local database`() = runTest {
+    suspendingTest("Adds the note to the local database") {
         SUT.executeAsync(TITLE, CONTENT)
 
         val expectedNote = NoteEntity(
@@ -73,12 +62,10 @@ class AddNoteTest {
             lastModificationTimestamp = TIMESTAMP.toLastModificationTimestamp(),
             creationTimestamp = TIMESTAMP.toCreationTimestamp()
         )
-        assertEquals(expectedNote, noteDaoTestFake.notes.first())
+        noteDaoTestFake.notes.first() shouldBe expectedNote
     }
 
-    @JsName("AddsTheNoteToTheAPI")
-    @Test
-    fun `Adds the note to the API`() = runTest {
+    suspendingTest("Adds the note to the API") {
         SUT.executeAsync(TITLE, CONTENT)
 
         val expectedNote = NoteSchema(
@@ -88,16 +75,14 @@ class AddNoteTest {
             lastModificationTimestamp = TIMESTAMP.toLastModificationTimestamp(),
             creationTimestamp = TIMESTAMP.toCreationTimestamp()
         )
-        assertEquals(expectedNote, noteApiTestFake.notes.first())
+        noteApiTestFake.notes.first() shouldBe expectedNote
     }
 
-    @JsName("SyncFailedIsSet")
-    @Test
-    fun `When request fails then set sync failed in the local database`() = runTest {
+    suspendingTest("When request fails then set sync failed in the local database") {
         noteApiTestFake.willFail = true
 
         SUT.executeAsync(TITLE, CONTENT)
 
-        assertEquals(true, noteDaoTestFake.notes.first().hasSyncFailed)
+        noteDaoTestFake.notes.first().hasSyncFailed.shouldBeTrue()
     }
-}
+})

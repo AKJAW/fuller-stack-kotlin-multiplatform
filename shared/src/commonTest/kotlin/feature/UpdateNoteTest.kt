@@ -4,41 +4,36 @@ import base.CommonDispatchers
 import com.soywiz.klock.DateTime
 import database.NoteEntity
 import helpers.date.UnixTimestampProviderFake
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import model.Note
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
 import network.NoteSchema
-import runTest
+import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
-class UpdateNoteTest {
+class UpdateNoteTest : FunSpec({
 
-    companion object {
-        private val date = DateTime.createAdjusted(2020, 7, 28)
-        private val INITIAL_NOTE = Note(
-            title = "title",
-            content = "content",
-            lastModificationTimestamp = date.unixMillisLong.toLastModificationTimestamp(),
-            creationTimestamp = date.unixMillisLong.toCreationTimestamp()
-        )
-        private const val UPDATED_TITLE = "Updated title"
-        private const val UPDATED_CONTENT = "Updated content"
-    }
+    val date = DateTime.createAdjusted(2020, 7, 28)
+    val INITIAL_NOTE = Note(
+        title = "title",
+        content = "content",
+        lastModificationTimestamp = date.unixMillisLong.toLastModificationTimestamp(),
+        creationTimestamp = date.unixMillisLong.toCreationTimestamp()
+    )
+    val UPDATED_TITLE = "Updated title"
+    val UPDATED_CONTENT = "Updated content"
 
-    private lateinit var unixTimestampProviderFake: UnixTimestampProviderFake
-    private lateinit var noteDaoTestFake: NoteDaoTestFake
-    private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var SUT: UpdateNote
+    lateinit var unixTimestampProviderFake: UnixTimestampProviderFake
+    lateinit var noteDaoTestFake: NoteDaoTestFake
+    lateinit var noteApiTestFake: NoteApiTestFake
+    lateinit var SUT: UpdateNote
 
-    @BeforeTest
-    fun setUp() {
+    beforeTest {
         unixTimestampProviderFake = UnixTimestampProviderFake()
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
@@ -52,27 +47,21 @@ class UpdateNoteTest {
         noteApiTestFake.initializeSchemas(listOf(INITIAL_NOTE))
     }
 
-    @JsName("TrueReturnedOnApiSuccess")
-    @Test
-    fun `When the API call is successful then return true`() = runTest {
+    suspendingTest("When the API call is successful then return true") {
         val result = SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        assertTrue(result)
+        result.shouldBeTrue()
     }
 
-    @JsName("FalseReturnedOnApiFail")
-    @Test
-    fun `When the API call fails then return false`() = runTest {
+    suspendingTest("When the API call fails then return false") {
         noteApiTestFake.willFail = true
 
         val result = SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        assertFalse(result)
+        result.shouldBeFalse()
     }
 
-    @JsName("NoteUpdatedInLocalDatabase")
-    @Test
-    fun `Note is updated in the local database`() = runTest {
+    suspendingTest("Note is updated in the local database") {
         val lastModificationTimestamp = 50L
         unixTimestampProviderFake.timestamp = lastModificationTimestamp
 
@@ -85,12 +74,11 @@ class UpdateNoteTest {
             lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp(),
             creationTimestamp = INITIAL_NOTE.creationTimestamp
         )
-        assertEquals(expectedNote, noteDaoTestFake.notes.first())
+
+        noteDaoTestFake.notes.first() shouldBe expectedNote
     }
 
-    @JsName("NoteUpdatedInAPI")
-    @Test
-    fun `Note is updated in the API`() = runTest {
+    suspendingTest("Note is updated in the API") {
         val lastModificationTimestamp = 50L
         unixTimestampProviderFake.timestamp = lastModificationTimestamp
 
@@ -103,28 +91,23 @@ class UpdateNoteTest {
             lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp(),
             creationTimestamp = INITIAL_NOTE.creationTimestamp
         )
-        assertEquals(expectedNote, noteApiTestFake.notes.first())
+        noteApiTestFake.notes.first() shouldBe expectedNote
     }
 
-    @JsName("SyncFailedSetOnApiFail")
-    @Test
-    fun `When API request fails then sync failed is set`() = runTest {
+    suspendingTest("When API request fails then sync failed is set") {
         noteApiTestFake.willFail = true
 
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        assertTrue(noteDaoTestFake.notes.first().hasSyncFailed)
+        noteDaoTestFake.notes.first().hasSyncFailed.shouldBeTrue()
     }
 
-    @JsName("SyncFailedSetOnApiSuccess")
-    @Test
-    fun `When API request succeeds then hasSyncFailed is updated`() = runTest {
+    suspendingTest("When API request succeeds then hasSyncFailed is updated") {
         noteDaoTestFake.initializeNoteEntities(listOf(INITIAL_NOTE.copy(hasSyncFailed = true)))
         noteApiTestFake.initializeSchemas(listOf(INITIAL_NOTE))
 
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        println(noteDaoTestFake.notes)
-        assertEquals(false, noteDaoTestFake.notes.first().hasSyncFailed)
+        noteDaoTestFake.notes.first().hasSyncFailed.shouldBeFalse()
     }
-}
+})
