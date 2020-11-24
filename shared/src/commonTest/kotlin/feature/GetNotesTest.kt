@@ -3,6 +3,8 @@ package feature
 import base.CommonDispatchers
 import database.NoteEntityMapper
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import model.Note
 import model.toCreationTimestamp
@@ -10,7 +12,6 @@ import model.toLastModificationTimestamp
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
 
 class GetNotesTest : FunSpec({
 
@@ -48,7 +49,7 @@ class GetNotesTest : FunSpec({
         val flow = SUT.executeAsync()
 
         val flowNotes = flow.first()
-        assertEquals(2, flowNotes.count())
+        flowNotes shouldHaveSize 2
     }
 
     suspendingTest("Deleted notes are not returned") {
@@ -58,7 +59,7 @@ class GetNotesTest : FunSpec({
         val flow = SUT.executeAsync()
 
         val flowNotes = flow.first()
-        assertEquals(1, flowNotes.count())
-        assertEquals(FIRST_NOTE, flowNotes.first())
+        flowNotes shouldHaveSize 1
+        flowNotes.first() shouldBe FIRST_NOTE
     }
 })

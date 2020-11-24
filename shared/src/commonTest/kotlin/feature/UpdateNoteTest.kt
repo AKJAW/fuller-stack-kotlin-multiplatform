@@ -5,6 +5,9 @@ import com.soywiz.klock.DateTime
 import database.NoteEntity
 import helpers.date.UnixTimestampProviderFake
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import model.Note
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
@@ -12,9 +15,6 @@ import network.NoteSchema
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class UpdateNoteTest : FunSpec({
 
@@ -50,7 +50,7 @@ class UpdateNoteTest : FunSpec({
     suspendingTest("When the API call is successful then return true") {
         val result = SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        assertTrue(result)
+        result.shouldBeTrue()
     }
 
     suspendingTest("When the API call fails then return false") {
@@ -58,7 +58,7 @@ class UpdateNoteTest : FunSpec({
 
         val result = SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        assertFalse(result)
+        result.shouldBeFalse()
     }
 
     suspendingTest("Note is updated in the local database") {
@@ -74,7 +74,8 @@ class UpdateNoteTest : FunSpec({
             lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp(),
             creationTimestamp = INITIAL_NOTE.creationTimestamp
         )
-        assertEquals(expectedNote, noteDaoTestFake.notes.first())
+
+        noteDaoTestFake.notes.first() shouldBe expectedNote
     }
 
     suspendingTest("Note is updated in the API") {
@@ -90,7 +91,7 @@ class UpdateNoteTest : FunSpec({
             lastModificationTimestamp = lastModificationTimestamp.toLastModificationTimestamp(),
             creationTimestamp = INITIAL_NOTE.creationTimestamp
         )
-        assertEquals(expectedNote, noteApiTestFake.notes.first())
+        noteApiTestFake.notes.first() shouldBe expectedNote
     }
 
     suspendingTest("When API request fails then sync failed is set") {
@@ -98,7 +99,7 @@ class UpdateNoteTest : FunSpec({
 
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        assertTrue(noteDaoTestFake.notes.first().hasSyncFailed)
+        noteDaoTestFake.notes.first().hasSyncFailed.shouldBeTrue()
     }
 
     suspendingTest("When API request succeeds then hasSyncFailed is updated") {
@@ -108,6 +109,6 @@ class UpdateNoteTest : FunSpec({
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
         println(noteDaoTestFake.notes)
-        assertEquals(false, noteDaoTestFake.notes.first().hasSyncFailed)
+        noteDaoTestFake.notes.first().hasSyncFailed.shouldBeFalse()
     }
 })

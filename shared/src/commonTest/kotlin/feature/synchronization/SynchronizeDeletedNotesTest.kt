@@ -8,10 +8,12 @@ import feature.synchronization.SynchronizationTestData.SECOND_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE_DATE
 import helpers.date.UnixTimestampProviderFake
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
 
 class SynchronizeDeletedNotesTest : FunSpec({
 
@@ -43,8 +45,9 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(1, noteDaoTestFake.notes.count())
-        assertEquals(1, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
+        noteDaoTestFake.notes shouldHaveSize 1
+        val notDeletedNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
+        notDeletedNotes shouldHaveSize 1
     }
 
     suspendingTest("Local wasDeleted true and last modification date is older then dont delete notes") {
@@ -60,8 +63,8 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(2, noteDaoTestFake.notes.count())
-        assertEquals(2, noteApiTestFake.notes.count())
+        noteDaoTestFake.notes shouldHaveSize 2
+        noteApiTestFake.notes shouldHaveSize 2
     }
 
     suspendingTest("Local wasDeleted true and last modification date is older then revert wasDeleted") {
@@ -77,7 +80,7 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(false, noteDaoTestFake.notes[1].wasDeleted)
+        noteDaoTestFake.notes[1].wasDeleted.shouldBeFalse()
     }
 
     suspendingTest("Local wasDeleted true and last modification date is older then set last modification as in the API") {
@@ -94,8 +97,8 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(firstNewerModificationTimestamp, noteDaoTestFake.notes[0].lastModificationTimestamp.unix)
-        assertEquals(secondNewerModificationTimestamp, noteDaoTestFake.notes[1].lastModificationTimestamp.unix)
+        noteDaoTestFake.notes[0].lastModificationTimestamp.unix shouldBe firstNewerModificationTimestamp
+        noteDaoTestFake.notes[1].lastModificationTimestamp.unix shouldBe secondNewerModificationTimestamp
     }
 
     suspendingTest("Api wasDeleted true and last modification date is the same then delete notes") {
@@ -110,9 +113,9 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        println(noteDaoTestFake.notes)
-        assertEquals(1, noteDaoTestFake.notes.count())
-        assertEquals(1, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
+        noteDaoTestFake.notes shouldHaveSize 1
+        val notDeletedNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
+        notDeletedNotes shouldHaveSize 1
     }
 
     suspendingTest("Api wasDeleted true and last modification date is older then revert wasDeleted") {
@@ -128,7 +131,7 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(false, noteApiTestFake.notes[1].wasDeleted)
+        noteApiTestFake.notes[1].wasDeleted.shouldBeFalse()
     }
 
     suspendingTest("Api wasDeleted true and last modification date is older then update last modification") {
@@ -145,7 +148,7 @@ class SynchronizeDeletedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(firstNewerModificationTimestamp, noteApiTestFake.notes[0].lastModificationTimestamp.unix)
-        assertEquals(secondNewerModificationTimestamp, noteApiTestFake.notes[1].lastModificationTimestamp.unix)
+        noteApiTestFake.notes[0].lastModificationTimestamp.unix shouldBe firstNewerModificationTimestamp
+        noteApiTestFake.notes[1].lastModificationTimestamp.unix shouldBe secondNewerModificationTimestamp
     }
 })

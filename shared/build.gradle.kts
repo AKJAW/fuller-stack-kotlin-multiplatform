@@ -7,7 +7,7 @@ kotlin {
             tasks.withType<Test> {
                 useJUnitPlatform()
             }
-            val main by compilations.getting {
+            compilations.all {
                 kotlinOptions {
                     jvmTarget = "1.8"
                     java {

@@ -4,14 +4,15 @@ import base.CommonDispatchers
 import database.NoteEntity
 import helpers.date.UnixTimestampProviderFake
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
 import network.NoteSchema
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AddNoteTest : FunSpec({
@@ -49,7 +50,7 @@ class AddNoteTest : FunSpec({
 
         val result = SUT.executeAsync(TITLE, CONTENT)
 
-        assertFalse(result)
+        result.shouldBeFalse()
     }
 
     suspendingTest("Adds the note to the local database") {
@@ -62,7 +63,7 @@ class AddNoteTest : FunSpec({
             lastModificationTimestamp = TIMESTAMP.toLastModificationTimestamp(),
             creationTimestamp = TIMESTAMP.toCreationTimestamp()
         )
-        assertEquals(expectedNote, noteDaoTestFake.notes.first())
+        noteDaoTestFake.notes.first() shouldBe expectedNote
     }
 
     suspendingTest("Adds the note to the API") {
@@ -75,7 +76,7 @@ class AddNoteTest : FunSpec({
             lastModificationTimestamp = TIMESTAMP.toLastModificationTimestamp(),
             creationTimestamp = TIMESTAMP.toCreationTimestamp()
         )
-        assertEquals(expectedNote, noteApiTestFake.notes.first())
+        noteApiTestFake.notes.first() shouldBe expectedNote
     }
 
     suspendingTest("When request fails then set sync failed in the local database") {
@@ -83,6 +84,6 @@ class AddNoteTest : FunSpec({
 
         SUT.executeAsync(TITLE, CONTENT)
 
-        assertEquals(true, noteDaoTestFake.notes.first().hasSyncFailed)
+        noteDaoTestFake.notes.first().hasSyncFailed.shouldBeTrue()
     }
 })

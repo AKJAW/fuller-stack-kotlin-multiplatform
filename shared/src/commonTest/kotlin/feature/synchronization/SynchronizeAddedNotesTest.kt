@@ -3,11 +3,14 @@ package feature.synchronization
 import base.CommonDispatchers
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
+import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
 
 class SynchronizeAddedNotesTest : FunSpec({
 
@@ -36,12 +39,14 @@ class SynchronizeAddedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(2, noteApiTestFake.notes.count())
-        val addedNote = noteApiTestFake.notes[1]
-        assertEquals(SECOND_NOTE.title, addedNote.title)
-        assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
+        assertSoftly {
+            noteApiTestFake.notes shouldHaveSize 2
+            val addedNote = noteApiTestFake.notes[1]
+            addedNote.title shouldBe SECOND_NOTE.title
+            addedNote.content shouldBe SECOND_NOTE.content
+            addedNote.creationTimestamp shouldBe SECOND_NOTE.creationTimestamp
+            addedNote.lastModificationTimestamp shouldBe SECOND_NOTE.lastModificationTimestamp
+        }
     }
 
     suspendingTest("When local database has new notes after adding them to API hasSyncFailed is set to false") {
@@ -55,7 +60,7 @@ class SynchronizeAddedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(false, noteDaoTestFake.notes[1].hasSyncFailed)
+        noteDaoTestFake.notes[1].hasSyncFailed.shouldBeFalse()
     }
 
     suspendingTest("When API has new notes the add them locally") {
@@ -68,11 +73,14 @@ class SynchronizeAddedNotesTest : FunSpec({
         )
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
-        assertEquals(2, noteDaoTestFake.notes.count())
-        val addedNote = noteDaoTestFake.notes[1]
-        assertEquals(SECOND_NOTE.title, addedNote.title)
-        assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
+
+        assertSoftly {
+            noteDaoTestFake.notes shouldHaveSize 2
+            val addedNote = noteDaoTestFake.notes[1]
+            addedNote.title shouldBe SECOND_NOTE.title
+            addedNote.content shouldBe SECOND_NOTE.content
+            addedNote.creationTimestamp shouldBe SECOND_NOTE.creationTimestamp
+            addedNote.lastModificationTimestamp shouldBe SECOND_NOTE.lastModificationTimestamp
+        }
     }
 })

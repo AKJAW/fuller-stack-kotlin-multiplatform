@@ -5,10 +5,10 @@ import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
 import helpers.date.UnixTimestampProviderFake
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldHaveSize
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
 
 class SynchronizeNotesTest : FunSpec({
 
@@ -42,7 +42,7 @@ class SynchronizeNotesTest : FunSpec({
 
         SUT.executeAsync()
 
-        assertEquals(1, noteDaoTestFake.notes.count())
+        noteDaoTestFake.notes shouldHaveSize 1
     }
 
     suspendingTest("Deleted api notes are not added to the api") {
@@ -57,7 +57,7 @@ class SynchronizeNotesTest : FunSpec({
 
         SUT.executeAsync()
 
-        assertEquals(2, noteApiTestFake.notes.count())
+        noteApiTestFake.notes shouldHaveSize 2
     }
 
     suspendingTest("Deleted api notes are not updated in the local database") {
@@ -72,7 +72,7 @@ class SynchronizeNotesTest : FunSpec({
 
         SUT.executeAsync()
 
-        assertEquals(1, noteDaoTestFake.notes.count())
+        noteDaoTestFake.notes shouldHaveSize 1
     }
 
     suspendingTest("Deleted api notes which were deleted locally are not re-added") {
@@ -86,6 +86,6 @@ class SynchronizeNotesTest : FunSpec({
 
         SUT.executeAsync()
 
-        assertEquals(1, noteDaoTestFake.notes.count())
+        noteDaoTestFake.notes shouldHaveSize 1
     }
 })

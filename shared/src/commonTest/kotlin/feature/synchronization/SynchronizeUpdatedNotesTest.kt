@@ -5,10 +5,11 @@ import com.soywiz.klock.days
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.shouldBe
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
 
 class SynchronizeUpdatedNotesTest : FunSpec({
 
@@ -30,14 +31,14 @@ class SynchronizeUpdatedNotesTest : FunSpec({
         val modificationTimestamp = SynchronizationTestData.SECOND_NOTE_DATE.plus(1.days).unixMillisLong
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
-            SECOND_NOTE.copyToEntity(title = "changed", lastModificationTimestamp = modificationTimestamp)
+            SECOND_NOTE.copyToEntity(title = "changed local", lastModificationTimestamp = modificationTimestamp)
         )
         noteApiTestFake.notes = mutableListOf(FIRST_NOTE.copyToSchema(), SECOND_NOTE.copyToSchema())
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(FIRST_NOTE.title, noteApiTestFake.notes[0].title)
-        assertEquals("changed", noteApiTestFake.notes[1].title)
+        noteApiTestFake.notes[0].title shouldBe FIRST_NOTE.title
+        noteApiTestFake.notes[1].title shouldBe "changed local"
     }
 
     suspendingTest("After note is updated in the API hasSyncFailed is updated") {
@@ -45,7 +46,7 @@ class SynchronizeUpdatedNotesTest : FunSpec({
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity(
-                title = "changed",
+                title = "changed local",
                 lastModificationTimestamp = modificationTimestamp,
                 hasSyncFailed = true
             )
@@ -54,7 +55,7 @@ class SynchronizeUpdatedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(false, noteDaoTestFake.notes[1].hasSyncFailed)
+        noteDaoTestFake.notes[1].hasSyncFailed.shouldBeFalse()
     }
 
     suspendingTest("API is more recent then update local database") {
@@ -67,7 +68,7 @@ class SynchronizeUpdatedNotesTest : FunSpec({
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(FIRST_NOTE.title, noteDaoTestFake.notes[0].title)
-        assertEquals("changed api", noteDaoTestFake.notes[1].title)
+        noteDaoTestFake.notes[0].title shouldBe FIRST_NOTE.title
+        noteDaoTestFake.notes[1].title shouldBe "changed api"
     }
 })
