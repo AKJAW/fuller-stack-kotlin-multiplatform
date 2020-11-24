@@ -13,7 +13,6 @@ import model.toLastModificationTimestamp
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertEquals
 
 class DeleteNotesTest : FunSpec({
 
@@ -75,15 +74,14 @@ class DeleteNotesTest : FunSpec({
     suspendingTest("Notes are deleted from the local database when API call succeeds") {
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        assertEquals(0, noteDaoTestFake.notes.count())
         noteDaoTestFake.notes shouldHaveSize 0
     }
 
     suspendingTest("Notes are deleted from the API") {
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        val notDeletedNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
-        notDeletedNotes shouldHaveSize 0
+        val remainingNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
+        remainingNotes shouldHaveSize 0
     }
 
     suspendingTest("Deleted API notes have update lastModificationTimestamp") {

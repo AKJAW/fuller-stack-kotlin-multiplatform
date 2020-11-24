@@ -65,10 +65,8 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
                 implementation(JVMTestingLibs.COROUTINES_TEST)
-//                implementation("io.kotest:kotest-assertions-core-jvm:4.3.1")
-//                implementation("io.kotest:kotest-framework-engine-jvm:4.3.1")
-                implementation("io.kotest:kotest-framework-api-jvm:4.3.1")
-                implementation("io.kotest:kotest-runner-junit5-jvm:4.3.1")
+                implementation(JVMTestingLibs.KOTEST_FRAMEWORK_API)
+                implementation(JVMTestingLibs.KOTEST_JUNIT5_RUNNER)
             }
         }
 
@@ -80,9 +78,7 @@ kotlin {
         val jsTest by sourceSets.getting {
             dependencies {
                 implementation(kotlin("test-js"))
-//                implementation("io.kotest:kotest-assertions-core-js:4.3.1")
-//                implementation("io.kotest:kotest-framework-engine-js:4.3.1")
-                implementation("io.kotest:kotest-framework-api-js:4.3.1")
+                implementation(ReactTestingLibs.KOTEST_FRAMEWORK_API)
             }
         }
     }

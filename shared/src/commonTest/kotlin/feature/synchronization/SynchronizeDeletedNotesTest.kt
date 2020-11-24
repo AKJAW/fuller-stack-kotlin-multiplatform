@@ -46,8 +46,8 @@ class SynchronizeDeletedNotesTest : FunSpec({
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
         noteDaoTestFake.notes shouldHaveSize 1
-        val notDeletedNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
-        notDeletedNotes shouldHaveSize 1
+        val remainingNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
+        remainingNotes shouldHaveSize 1
     }
 
     suspendingTest("Local wasDeleted true and last modification date is older then dont delete notes") {
@@ -114,8 +114,8 @@ class SynchronizeDeletedNotesTest : FunSpec({
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
         noteDaoTestFake.notes shouldHaveSize 1
-        val notDeletedNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
-        notDeletedNotes shouldHaveSize 1
+        val remainingNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
+        remainingNotes shouldHaveSize 1
     }
 
     suspendingTest("Api wasDeleted true and last modification date is older then revert wasDeleted") {

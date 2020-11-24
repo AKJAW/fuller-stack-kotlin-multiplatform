@@ -82,6 +82,8 @@ object JVMLibs {
 object JVMTestingLibs {
     const val JUNIT5 = "org.junit.jupiter:junit-jupiter:${Versions.JUNIT5}"
     const val COROUTINES_TEST =  "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
+    const val KOTEST_FRAMEWORK_API = "io.kotest:kotest-framework-api-jvm:${Versions.KOTEST}"
+    const val KOTEST_JUNIT5_RUNNER = "io.kotest:kotest-runner-junit5-jvm:${Versions.KOTEST}"
 }
 
 object ReactLibs {
@@ -98,6 +100,10 @@ object ReactLibs {
     const val KTOR_CLIENT_JS = "io.ktor:ktor-client-js:${Versions.KTOR}"
     const val KTOR_CLIENT_JSON = "io.ktor:ktor-client-json-js:${Versions.KTOR}"
     const val KTOR_CLIENT_SERIALIZATION = "io.ktor:ktor-client-serialization-js:${Versions.KTOR}"
+}
+
+object ReactTestingLibs {
+    const val KOTEST_FRAMEWORK_API = "io.kotest:kotest-framework-api-js:${Versions.KOTEST}"
 }
 
 object KtorLibs {

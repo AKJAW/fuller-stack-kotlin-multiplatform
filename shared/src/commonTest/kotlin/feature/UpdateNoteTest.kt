@@ -108,7 +108,6 @@ class UpdateNoteTest : FunSpec({
 
         SUT.executeAsync(INITIAL_NOTE.creationTimestamp, UPDATED_TITLE, UPDATED_CONTENT)
 
-        println(noteDaoTestFake.notes)
         noteDaoTestFake.notes.first().hasSyncFailed.shouldBeFalse()
     }
 })

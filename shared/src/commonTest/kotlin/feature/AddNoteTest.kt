@@ -13,7 +13,6 @@ import network.NoteSchema
 import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.test.assertTrue
 
 class AddNoteTest : FunSpec({
 
@@ -42,7 +41,7 @@ class AddNoteTest : FunSpec({
     suspendingTest("When the API call is successful then return true") {
         val result = SUT.executeAsync(TITLE, CONTENT)
 
-        assertTrue(result)
+        result.shouldBeTrue()
     }
 
     suspendingTest("When the API call fails then return false") {
