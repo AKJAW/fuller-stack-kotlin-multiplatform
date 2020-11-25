@@ -8,6 +8,7 @@ import com.akjaw.fullerstack.authentication.navigation.AfterAuthenticationLaunch
 import com.akjaw.fullerstack.composition.modules.androidModule
 import com.akjaw.fullerstack.composition.modules.databaseModule
 import com.akjaw.fullerstack.composition.modules.networkModule
+import com.akjaw.fullerstack.composition.modules.socketModule
 import com.akjaw.fullerstack.helpers.logger.HyperlinkedDebugTree
 import composition.common
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +32,7 @@ class FullerStackApp : Application(), DIAware {
         import(androidModule)
         import(databaseModule)
         import(networkModule)
+        import(socketModule)
         import(authenticationModule)
         import(common)
     }

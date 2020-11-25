@@ -6,8 +6,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 
 class ListenToSocketUpdates(
@@ -24,7 +26,12 @@ class ListenToSocketUpdates(
             return
         }
         job = scope.launch {
-            noteSocket.getNotesFlow().collect { apiNotes ->
+            noteSocket.getNotesFlow()
+                .retry {
+                    delay(5000)
+                    true
+                }
+                .collect { apiNotes ->
                 val localNotes = noteDao.getAllNotes().firstOrNull()
                 if (localNotes != null) {
                     synchronizeNotes.executeAsync(localNotes, apiNotes)
