@@ -96,7 +96,7 @@ dependencies {
     implementation(AndroidLibs.SIMPLE_STACK_EXTENSIONS)
 
     testImplementation(JVMTestingLibs.JUNIT5)
-    testImplementation(SharedTestingLibs.MOCKK)
+    testImplementation(JVMTestingLibs.MOCKK)
     testImplementation(JVMTestingLibs.COROUTINES_TEST)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)

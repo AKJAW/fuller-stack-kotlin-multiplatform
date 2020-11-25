@@ -9,7 +9,7 @@ object Versions {
 
     //shared test
     const val JUNIT5 = "5.6.2"
-    const val MOCKK = "1.10.0"
+    const val MOCKK = "1.10.2"
     const val KOTEST = "4.3.1"
 
     //react
@@ -70,7 +70,6 @@ object SharedLibs {
 }
 
 object SharedTestingLibs {
-    const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
     const val KOTEST_ASSERTIONS = "io.kotest:kotest-assertions-core:${Versions.KOTEST}"
     const val KOTEST_FRAMEWORK_ENGINE = "io.kotest:kotest-framework-engine:${Versions.KOTEST}"
 }
@@ -81,6 +80,7 @@ object JVMLibs {
 
 object JVMTestingLibs {
     const val JUNIT5 = "org.junit.jupiter:junit-jupiter:${Versions.JUNIT5}"
+    const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
     const val COROUTINES_TEST =  "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
     const val KOTEST_FRAMEWORK_API = "io.kotest:kotest-framework-api-jvm:${Versions.KOTEST}"
     const val KOTEST_JUNIT5_RUNNER = "io.kotest:kotest-runner-junit5-jvm:${Versions.KOTEST}"

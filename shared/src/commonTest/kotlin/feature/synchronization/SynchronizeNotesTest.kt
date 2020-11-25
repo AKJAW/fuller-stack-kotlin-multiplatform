@@ -15,13 +15,12 @@ class SynchronizeNotesTest : FunSpec({
     lateinit var noteDaoTestFake: NoteDaoTestFake
     lateinit var noteApiTestFake: NoteApiTestFake
     val timestampProviderFake = UnixTimestampProviderFake()
-    lateinit var synchronizationUseCaseFactory: SynchronizationUseCaseFactory
     lateinit var SUT: SynchronizeNotes
 
     beforeTest {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
-        synchronizationUseCaseFactory = SynchronizationUseCaseFactory(
+        val synchronizationUseCaseFactory = SynchronizationUseCaseFactory(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,
             noteApi = noteApiTestFake,

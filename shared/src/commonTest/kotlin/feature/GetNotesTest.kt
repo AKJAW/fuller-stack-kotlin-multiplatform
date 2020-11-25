@@ -10,7 +10,6 @@ import model.Note
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
 import suspendingTest
-import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
 
 class GetNotesTest : FunSpec({
@@ -30,12 +29,10 @@ class GetNotesTest : FunSpec({
 
     val noteEntityMapper: NoteEntityMapper = NoteEntityMapper()
     lateinit var noteDaoTestFake: NoteDaoTestFake
-    lateinit var noteApiTestFake: NoteApiTestFake
     lateinit var SUT: GetNotes
 
     beforeTest {
         noteDaoTestFake = NoteDaoTestFake()
-        noteApiTestFake = NoteApiTestFake()
         SUT = GetNotes(
             coroutineDispatcher = CommonDispatchers.MainDispatcher,
             noteDao = noteDaoTestFake,

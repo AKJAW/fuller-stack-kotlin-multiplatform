@@ -5,6 +5,7 @@ import feature.DeleteNotes
 import feature.GetNotes
 import feature.UpdateNote
 import feature.synchronization.SynchronizeAddedNotes
+import feature.synchronization.SynchronizeApiAndLocalNotes
 import feature.synchronization.SynchronizeDeletedNotes
 import feature.synchronization.SynchronizeNotes
 import feature.synchronization.SynchronizeUpdatedNotes
@@ -28,8 +29,8 @@ val useCaseModule = DI.Module("UseCaseModule") {
     }
     bind() from singleton { SynchronizeAddedNotes(instance("BackgroundDispatcher"), instance(), instance()) }
     bind() from singleton { SynchronizeUpdatedNotes(instance("BackgroundDispatcher"), instance(), instance()) }
-    bind() from singleton {
-        SynchronizeNotes(
+    bind<SynchronizeNotes>() with singleton {
+        SynchronizeApiAndLocalNotes(
             coroutineDispatcher = instance("BackgroundDispatcher"),
             noteDao = instance(),
             noteApi = instance(),

@@ -17,7 +17,7 @@ internal class SynchronizationUseCaseFactory(
     private val noteApi: NoteApi,
     private val timestampProvider: UnixTimestampProvider
 ) {
-    fun createSynchronizeNotes(): SynchronizeNotes = SynchronizeNotes(
+    fun createSynchronizeNotes(): SynchronizeNotes = SynchronizeApiAndLocalNotes(
         coroutineDispatcher = coroutineDispatcher,
         noteDao = noteDao,
         noteApi = noteApi,
