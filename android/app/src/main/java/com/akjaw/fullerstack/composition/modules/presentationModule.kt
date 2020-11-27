@@ -3,6 +3,7 @@ package com.akjaw.fullerstack.composition.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.akjaw.fullerstack.screens.common.ViewModelFactory
+import com.akjaw.fullerstack.screens.common.main.MainActivityViewModel
 import com.akjaw.fullerstack.screens.editor.NoteEditorViewModel
 import com.akjaw.fullerstack.screens.list.NotesListViewModel
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
@@ -29,5 +30,8 @@ val presentationModule = DI.Module("presentationModule") {
     }
     bind<ViewModel>(tag = ProfileViewModel::class.java.simpleName) with provider {
         ProfileViewModel(instance(), instance(), instance())
+    }
+    bind<ViewModel>(tag = MainActivityViewModel::class.java.simpleName) with provider {
+        MainActivityViewModel(instance())
     }
 }

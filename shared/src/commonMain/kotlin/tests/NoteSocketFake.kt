@@ -14,4 +14,6 @@ class NoteSocketFake : NoteSocket {
         }
 
     override fun getNotesFlow(): Flow<List<NoteSchema>> = notesMutableState
+
+    override fun close() { /* Empty */}
 }

@@ -47,7 +47,7 @@ class SocketWrapper(
 
     }
 
-    fun close() {
+    override fun close() {
         flow = null
         socket?.close(1000, null)
     }

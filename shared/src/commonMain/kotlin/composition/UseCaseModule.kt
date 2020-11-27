@@ -4,6 +4,7 @@ import feature.AddNote
 import feature.DeleteNotes
 import feature.GetNotes
 import feature.UpdateNote
+import feature.socket.ListenToSocketUpdates
 import feature.synchronization.SynchronizeAddedNotes
 import feature.synchronization.SynchronizeApiAndLocalNotes
 import feature.synchronization.SynchronizeDeletedNotes
@@ -20,12 +21,7 @@ val useCaseModule = DI.Module("UseCaseModule") {
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton {
-        SynchronizeDeletedNotes(
-            instance("BackgroundDispatcher"),
-            instance(),
-            instance(),
-            instance()
-        )
+        SynchronizeDeletedNotes(instance("BackgroundDispatcher"), instance(), instance(), instance())
     }
     bind() from singleton { SynchronizeAddedNotes(instance("BackgroundDispatcher"), instance(), instance()) }
     bind() from singleton { SynchronizeUpdatedNotes(instance("BackgroundDispatcher"), instance(), instance()) }
@@ -38,5 +34,8 @@ val useCaseModule = DI.Module("UseCaseModule") {
             synchronizeAddedNotes = instance(),
             synchronizeUpdatedNotes = instance()
         )
+    }
+    bind() from singleton {
+        ListenToSocketUpdates(instance("BackgroundDispatcher"), instance(), instance(), instance())
     }
 }

@@ -32,15 +32,16 @@ class ListenToSocketUpdates(
                     true
                 }
                 .collect { apiNotes ->
-                val localNotes = noteDao.getAllNotes().firstOrNull()
-                if (localNotes != null) {
-                    synchronizeNotes.executeAsync(localNotes, apiNotes)
+                    val localNotes = noteDao.getAllNotes().firstOrNull()
+                    if (localNotes != null) {
+                        synchronizeNotes.executeAsync(localNotes, apiNotes)
+                    }
                 }
-            }
         }
     }
 
-    fun destroy() {
+    fun close() {
+        noteSocket.close()
         scope.cancel()
     }
 }

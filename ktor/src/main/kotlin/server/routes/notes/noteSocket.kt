@@ -46,6 +46,7 @@ fun Route.notesSocket() {
             }
         } finally {
             userSocketSession.getUser()?.let { user ->
+                apiLogger.log("Socket ended", user.toString())
                 socketServer.removeListener(sessionId, user, this)
             }
         }

@@ -6,4 +6,6 @@ import network.NoteSchema
 interface NoteSocket {
 
     fun getNotesFlow(): Flow<List<NoteSchema>>
+
+    fun close()
 }

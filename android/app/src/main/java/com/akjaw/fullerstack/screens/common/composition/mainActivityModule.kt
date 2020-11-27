@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.common.main
+package com.akjaw.fullerstack.screens.common.composition
 
 import com.akjaw.fullerstack.composition.modules.navigatorModule
 import com.akjaw.fullerstack.composition.modules.presentationModule

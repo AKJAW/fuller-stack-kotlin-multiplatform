@@ -45,9 +45,10 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
+            val addedId = notesStorage.addNote(payload, user)
+
             socketNotifier.notifySocketOfChange(call, user)
 
-            val addedId = notesStorage.addNote(payload, user)
             call.respond(HttpStatusCode.OK, addedId)
         }
     }
@@ -62,9 +63,10 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
+            val wasUpdated = notesStorage.updateNote(payload, user)
+
             socketNotifier.notifySocketOfChange(call, user)
 
-            val wasUpdated = notesStorage.updateNote(payload, user)
             if (wasUpdated) {
                 call.respond(HttpStatusCode.OK)
             } else {
@@ -86,11 +88,11 @@ fun Route.notesRoute() {
                 return@requireUser
             }
 
-            socketNotifier.notifySocketOfChange(call, user)
-
             val wereAllNotesDeleted = deleteNotesPayloads.map { payload ->
                 notesStorage.deleteNote(payload, user)
             }.all { it }
+
+            socketNotifier.notifySocketOfChange(call, user)
 
             if (wereAllNotesDeleted) {
                 call.respond(HttpStatusCode.OK)
