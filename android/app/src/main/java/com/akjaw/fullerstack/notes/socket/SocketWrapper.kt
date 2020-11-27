@@ -23,36 +23,34 @@ class SocketWrapper(
     private var socket: WebSocket? = null
     private var flow: Flow<List<NoteSchema>>? = null
 
-    fun connect(): Flow<List<NoteSchema>> {
-        return callbackFlow {
-            val listener = SocketListener(
-                onData = { json ->
-                    val noteSchema = Json.decodeFromString(
-                        ListSerializer(NoteSchema.serializer()),
-                        json
-                    )
-                    sendBlocking(noteSchema)
-                },
-                onError = {
-                    //TOOD find out what error is thrown, then decide
-                    cancel()
-                }
-            )
-            socket = okHttpClient.newWebSocket(socketRequest, listener)
-            socket?.send("Bearer ${tokenProvider.getToken()?.jwt}")
-            awaitClose { socket?.cancel() }
-        }.apply {
-            flow = this
-        }
-
-    }
-
     override fun close() {
         flow = null
         socket?.close(1000, null)
+        socket = null
     }
 
     override fun getNotesFlow(): Flow<List<NoteSchema>> {
         return flow ?: connect()
+    }
+
+    private fun connect(): Flow<List<NoteSchema>> = callbackFlow {
+        val listener = SocketListener(
+            onData = { json ->
+                val noteSchema = Json.decodeFromString(
+                    ListSerializer(NoteSchema.serializer()),
+                    json
+                )
+                sendBlocking(noteSchema)
+            },
+            onError = {
+                //TOOD find out what error is thrown, then decide
+                cancel()
+            }
+        )
+        socket = okHttpClient.newWebSocket(socketRequest, listener)
+        socket?.send("Bearer ${tokenProvider.getToken()?.jwt}")
+        awaitClose { socket?.cancel() }
+    }.apply {
+        flow = this
     }
 }
