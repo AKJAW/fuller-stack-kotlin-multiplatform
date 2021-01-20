@@ -1,4 +1,4 @@
-package feature.local.sorting
+package feature.local.sort
 
 sealed class SortProperty(val type: SortType) {
     class Name(type: SortType): SortProperty(type)

@@ -1,4 +1,4 @@
-package feature.local.sorting
+package feature.local.sort
 
 enum class SortType {
     ASCENDING,

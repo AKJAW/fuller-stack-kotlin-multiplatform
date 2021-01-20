@@ -1,6 +1,8 @@
-package feature.local.sorting
+package feature.local.sort
 
-import feature.local.sorting.SortNotes
+import feature.local.sort.SortNotes
+import feature.local.sort.SortProperty
+import feature.local.sort.SortType
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.headers
 import io.kotest.data.row
