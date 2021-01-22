@@ -1,5 +1,6 @@
 package com.akjaw.fullerstack.composition.modules
 
+import com.akjaw.fullerstack.helpers.network.ApiUrl
 import com.akjaw.fullerstack.notes.network.AuthenticationInterceptor
 import com.akjaw.fullerstack.notes.network.NoteService
 import com.akjaw.fullerstack.notes.network.RetrofitNoteApi
@@ -29,7 +30,7 @@ val networkModule = DI.Module("networkModule") {
     bind<NoteService>() with singleton {
         val contentType = "application/json".toMediaType()
         Retrofit.Builder()
-            .baseUrl("https://fuller-stack-ktor.herokuapp.com")
+            .baseUrl(ApiUrl.BASE_URL)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .client(instance<OkHttpClient>())
             .build()

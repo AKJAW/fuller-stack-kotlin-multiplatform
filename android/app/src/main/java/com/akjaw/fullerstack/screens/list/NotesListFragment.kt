@@ -1,6 +1,7 @@
 package com.akjaw.fullerstack.screens.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
@@ -13,6 +14,7 @@ import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.recyclerview.SpacingItemDecoration
 import com.akjaw.fullerstack.screens.common.toParcelable
+import com.akjaw.fullerstack.screens.list.recyclerview.ActionRowViewHolder
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
@@ -45,7 +47,8 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         val ids = savedInstanceState?.getLongArray(SELECTED_NOTE_IDS)
         notesListAdapter = notesListAdapterFactory.create(
             initialSelectedNotes = ids?.toList(),
-            onItemClicked = ::onNoteClicked
+            onItemClicked = ::onNoteClicked,
+            onSearchInputChange = { Log.d("aaaa", it) }
         )
         viewModel.initializeNotes()
     }
@@ -71,6 +74,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
         notesRecyclerView.apply {
             adapter = notesListAdapter
+            recycledViewPool.setMaxRecycledViews(ActionRowViewHolder.VIEW_TYPE, 1)
             notesRecyclerView.setHasFixedSize(true)
             notesRecyclerView.layoutManager = LinearLayoutManager(context)
             val spacing = resources.getDimension(R.dimen.note_item_spacing)

@@ -1,28 +1,24 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.akjaw.framework.utility.KeyboardCloser
 import com.akjaw.fullerstack.android.R
 import com.soywiz.klock.DateFormat
-import com.soywiz.klock.format
 import model.CreationTimestamp
 import model.Note
+
 
 class NotesListAdapter(
     notesSelectionTrackerFactory: NotesSelectionTrackerFactory,
     initialSelectedNotes: List<CreationTimestamp>,
     private val dateFormat: DateFormat,
-    private val onItemClicked: (Note) -> Unit
-) : RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
+    private val keyboardCloser: KeyboardCloser,
+    private val onItemClicked: (Note) -> Unit,
+    private val onSearchInputChange: (String) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val notesSelectionTracker = notesSelectionTrackerFactory.create(
         initialSelectedNotes = initialSelectedNotes,
@@ -30,18 +26,41 @@ class NotesListAdapter(
     )
     private var notes: List<Note> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val rootView = inflater.inflate(R.layout.item_notes_list, parent, false)
-        return NoteViewHolder(rootView, dateFormat, notesSelectionTracker, onItemClicked)
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> ActionRowViewHolder.VIEW_TYPE
+            else -> NoteViewHolder.VIEW_TYPE
+        }
     }
 
-    override fun getItemCount(): Int = notes.count()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            ActionRowViewHolder.VIEW_TYPE -> {
+                val rootView = inflater.inflate(R.layout.item_action_row, parent, false)
+                ActionRowViewHolder(keyboardCloser, onSearchInputChange, rootView)
+            }
+            NoteViewHolder.VIEW_TYPE -> {
+                val rootView = inflater.inflate(R.layout.item_notes_list, parent, false)
+                NoteViewHolder(rootView, dateFormat, notesSelectionTracker, onItemClicked)
+            }
+            else -> throw IllegalStateException("View type $viewType not supported")
+        }
+    }
 
-    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val note = notes[position]
-        val isSelected = notesSelectionTracker.isSelected(note.creationTimestamp)
-        holder.bind(note, isSelected)
+    override fun getItemCount(): Int = notes.count() + 1
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder.itemViewType) {
+            ActionRowViewHolder.VIEW_TYPE -> {
+                (holder as ActionRowViewHolder).bind()
+            }
+            NoteViewHolder.VIEW_TYPE -> {
+                val note = notes[position - 1]
+                val isSelected = notesSelectionTracker.isSelected(note.creationTimestamp)
+                (holder as NoteViewHolder).bind(note, isSelected)
+            }
+        }
     }
 
     fun setNotes(newNotes: List<Note>) {
@@ -60,48 +79,4 @@ class NotesListAdapter(
         }
 
     fun getSelectedNoteIds(): List<Long> = notesSelectionTracker.getSelectedNotes()
-
-    class NoteViewHolder(
-        rootView: View,
-        private val dateFormat: DateFormat,
-        private val selectionTracker: NotesSelectionTracker,
-        private val onItemClicked: (Note) -> Unit
-    ) : RecyclerView.ViewHolder(rootView) {
-        val noteContainer: View = rootView.findViewById(R.id.note_container)
-        val title: TextView = rootView.findViewById(R.id.note_title)
-        val date: TextView = rootView.findViewById(R.id.note_date)
-        val noteSyncFailed: ImageView = rootView.findViewById(R.id.note_sync_failed)
-
-        fun bind(note: Note, isSelected: Boolean) {
-            title.text = note.title
-            date.text = dateFormat.format(note.creationTimestamp.unix)
-            noteSyncFailed.isVisible = note.hasSyncFailed
-            setBackgroundColor(isSelected)
-
-            noteContainer.setOnClickListener {
-                if (selectionTracker.isSelectionModeEnabled()) {
-                    selectionTracker.select(note.creationTimestamp)
-                } else {
-                    onItemClicked(note)
-                }
-            }
-
-            noteContainer.setOnLongClickListener {
-                selectionTracker.select(note.creationTimestamp)
-                true
-            }
-        }
-
-        private fun setBackgroundColor(isSelected: Boolean) {
-            noteContainer.background.colorFilter =
-                when {
-                    isSelected -> {
-                        val context = noteContainer.context
-                        val color = ContextCompat.getColor(context, R.color.selectedNoteBackground)
-                        PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-                    }
-                    else -> null
-                }
-        }
-    }
 }
