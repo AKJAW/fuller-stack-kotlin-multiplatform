@@ -14,10 +14,10 @@ import com.akjaw.fullerstack.screens.common.base.BaseFragment
 import com.akjaw.fullerstack.screens.common.navigation.ScreenNavigator
 import com.akjaw.fullerstack.screens.common.recyclerview.SpacingItemDecoration
 import com.akjaw.fullerstack.screens.common.toParcelable
-import com.akjaw.fullerstack.screens.list.recyclerview.ActionRowViewHolder
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapter
 import com.akjaw.fullerstack.screens.list.recyclerview.NotesListAdapterFactory
 import com.akjaw.fullerstack.screens.list.recyclerview.selection.NotesListActionMode
+import com.akjaw.fullerstack.screens.list.view.ActionRowView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import model.Note
 import org.kodein.di.direct
@@ -30,6 +30,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
     }
 
     private lateinit var toolbar: Toolbar
+    private lateinit var actionRowView: ActionRowView
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var fab: FloatingActionButton
     private lateinit var notesRecyclerView: RecyclerView
@@ -47,8 +48,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         val ids = savedInstanceState?.getLongArray(SELECTED_NOTE_IDS)
         notesListAdapter = notesListAdapterFactory.create(
             initialSelectedNotes = ids?.toList(),
-            onItemClicked = ::onNoteClicked,
-            onSearchInputChange = { Log.d("aaaa", it) }
+            onItemClicked = ::onNoteClicked
         )
         viewModel.initializeNotes()
     }
@@ -64,9 +64,18 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         super.onViewCreated(view, savedInstanceState)
         toolbar = view.findViewById(R.id.toolbar)
         toolbar.title = getString(R.string.notes_list_toolbar_title)
+        actionRowView = view.findViewById(R.id.action_row)
         notesRecyclerView = view.findViewById(R.id.notes_list)
         loadingIndicator = view.findViewById(R.id.loading_indicator)
         fab = view.findViewById(R.id.floating_action_button)
+
+        actionRowView.initialize(
+            keyboardCloser,
+            onSearchInputChange = {
+                notesListActionMode.exitActionMode()
+                viewModel.changeSearchValue(it)
+            }
+        )
 
         fab.setOnClickListener {
             onFabClick()
@@ -74,7 +83,6 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
 
         notesRecyclerView.apply {
             adapter = notesListAdapter
-            recycledViewPool.setMaxRecycledViews(ActionRowViewHolder.VIEW_TYPE, 1)
             notesRecyclerView.setHasFixedSize(true)
             notesRecyclerView.layoutManager = LinearLayoutManager(context)
             val spacing = resources.getDimension(R.dimen.note_item_spacing)
@@ -84,6 +92,11 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
         viewModel.viewState.observe(viewLifecycleOwner) {
             render(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        actionRowView.unbind()
     }
 
     private fun onFabClick() {
@@ -96,6 +109,7 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             is NotesListViewModel.NotesListState.Loading -> loadingIndicator.visibility = View.VISIBLE
             is NotesListViewModel.NotesListState.ShowingList -> {
                 loadingIndicator.visibility = View.INVISIBLE
+                notesRecyclerView.scrollToPosition(0)
                 notesListAdapter.setNotes(viewState.notes)
             }
         }

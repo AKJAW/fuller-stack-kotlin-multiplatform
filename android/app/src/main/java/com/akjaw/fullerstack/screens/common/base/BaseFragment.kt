@@ -15,7 +15,7 @@ abstract class BaseFragment : KeyedFragment, DIAware {
     constructor(@LayoutRes layoutRes: Int) : super(layoutRes)
 
     override val di: DI by di()
-    private val keyboardCloser: KeyboardCloser by instance()
+    protected val keyboardCloser: KeyboardCloser by instance()
 
     fun hideKeyboard() {
         keyboardCloser.close()

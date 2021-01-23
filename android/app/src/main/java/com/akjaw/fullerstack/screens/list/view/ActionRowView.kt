@@ -1,26 +1,28 @@
-package com.akjaw.fullerstack.screens.list.recyclerview
+package com.akjaw.fullerstack.screens.list.view
 
+import android.content.Context
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.akjaw.framework.utility.KeyboardCloser
 import com.akjaw.framework.view.doAfterDistinctTextChange
 import com.akjaw.framework.view.setOnAnimationEnd
 import com.akjaw.fullerstack.android.R
 import com.google.android.material.textfield.TextInputLayout
 
-class ActionRowViewHolder(
-    private val keyboardCloser: KeyboardCloser,
-    private val onSearchInputChange: (String) -> Unit,
-    rootView: View
-) : RecyclerView.ViewHolder(rootView) {
+class ActionRowView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    companion object {
-        const val VIEW_TYPE = 2
+    init {
+        inflate(context, R.layout.view_action_row, this)
     }
 
     private val textInputLayout: TextInputLayout = rootView.findViewById(R.id.search_input_layout)
@@ -30,7 +32,10 @@ class ActionRowViewHolder(
     private var textWatcher: TextWatcher? = null
     private var isSearchInputVisible = false
 
-    fun bind() {
+    fun initialize(
+        keyboardCloser: KeyboardCloser,
+        onSearchInputChange: (String) -> Unit
+    ) {
         textWatcher = searchInput.doAfterDistinctTextChange { text ->
             onSearchInputChange(text)
         }
