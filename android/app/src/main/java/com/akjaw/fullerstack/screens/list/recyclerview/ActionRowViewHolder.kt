@@ -26,6 +26,7 @@ class ActionRowViewHolder(
     private val textInputLayout: TextInputLayout = rootView.findViewById(R.id.search_input_layout)
     private val searchInput: EditText = rootView.findViewById(R.id.search_input_edit_text)
     private val searchIcon: ImageView = rootView.findViewById(R.id.search_icon)
+    private val sortIcon: ImageView = rootView.findViewById(R.id.sort_icon)
     private var textWatcher: TextWatcher? = null
     private var isSearchInputVisible = false
 
@@ -63,8 +64,6 @@ class ActionRowViewHolder(
             searchInput.isEnabled = true
             searchIcon.isClickable = true
         }
-        scaleAnimation.duration = 500
-        scaleAnimation.fillAfter = true
         textInputLayout.startAnimation(scaleAnimation)
     }
 
@@ -91,7 +90,7 @@ class ActionRowViewHolder(
                 Animation.RELATIVE_TO_SELF,
                 0.5f
             )
-        scaleAnimation.duration = 500
+        scaleAnimation.duration = 300
         scaleAnimation.fillAfter = true
         return scaleAnimation
     }

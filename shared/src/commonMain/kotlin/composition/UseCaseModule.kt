@@ -4,6 +4,8 @@ import feature.AddNote
 import feature.DeleteNotes
 import feature.GetNotes
 import feature.UpdateNote
+import feature.local.search.SearchNotes
+import feature.local.sort.SortNotes
 import feature.socket.ListenToSocketUpdates
 import feature.synchronization.SynchronizeAddedNotes
 import feature.synchronization.SynchronizeApiAndLocalNotes
@@ -38,4 +40,6 @@ val useCaseModule = DI.Module("UseCaseModule") {
     bind() from singleton {
         ListenToSocketUpdates(instance("BackgroundDispatcher"), instance(), instance(), instance())
     }
+    bind() from singleton { SearchNotes() }
+    bind() from singleton { SortNotes() }
 }

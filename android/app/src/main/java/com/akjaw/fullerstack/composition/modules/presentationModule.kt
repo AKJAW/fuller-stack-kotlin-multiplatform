@@ -25,7 +25,14 @@ val presentationModule = DI.Module("presentationModule") {
     bind() from singleton { KeyboardCloser(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
     bind<ViewModel>(tag = NotesListViewModel::class.java.simpleName) with provider {
-        NotesListViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())
+        NotesListViewModel(
+            applicationScope = instance("ApplicationCoroutineScope"),
+            getNotes = instance(),
+            deleteNotes = instance(),
+            synchronizeNotes = instance(),
+            searchNotes = instance(),
+            sortNotes = instance()
+        )
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {
         NoteEditorViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())
