@@ -1,14 +1,10 @@
 package feature.local.search
 
-import feature.local.sort.SortNotes
-import feature.local.sort.SortProperty
-import feature.local.sort.SortType
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.headers
 import io.kotest.data.row
 import io.kotest.data.table
 import io.kotest.matchers.shouldBe
-import model.CreationTimestamp
 import model.Note
 
 class SearchNotesTest : FunSpec({

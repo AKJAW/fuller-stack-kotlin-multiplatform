@@ -1,8 +1,5 @@
 package feature.local.sort
 
-import feature.local.sort.SortNotes
-import feature.local.sort.SortProperty
-import feature.local.sort.SortType
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.headers
 import io.kotest.data.row
@@ -29,10 +26,10 @@ class SortNotesTest : FunSpec({
             io.kotest.data.forAll(
                 table(
                     headers("sortProperty", "expected order"),
-                    row(SortProperty.Name(SortType.ASCENDING), listOf(notes[0], notes[1], notes[2])),
-                    row(SortProperty.Name(SortType.DESCENDING), listOf(notes[2], notes[1], notes[0])),
-                    row(SortProperty.CreationDate(SortType.ASCENDING), listOf(notes[1], notes[2], notes[0])),
-                    row(SortProperty.CreationDate(SortType.DESCENDING), listOf(notes[0], notes[2], notes[1]))
+                    row(SortProperty(SortType.NAME, SortDirection.ASCENDING), listOf(notes[0], notes[1], notes[2])),
+                    row(SortProperty(SortType.NAME, SortDirection.DESCENDING), listOf(notes[2], notes[1], notes[0])),
+                    row(SortProperty(SortType.CREATION_DATE, SortDirection.ASCENDING), listOf(notes[1], notes[2], notes[0])),
+                    row(SortProperty(SortType.CREATION_DATE, SortDirection.DESCENDING), listOf(notes[0], notes[2], notes[1]))
 
                 )
             ) { sortType, expectedOrder ->

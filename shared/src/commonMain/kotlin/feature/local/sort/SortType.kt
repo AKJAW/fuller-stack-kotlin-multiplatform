@@ -1,6 +1,6 @@
 package feature.local.sort
 
 enum class SortType {
-    ASCENDING,
-    DESCENDING
+    CREATION_DATE,
+    NAME
 }
