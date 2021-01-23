@@ -1,4 +1,4 @@
-package com.akjaw.fullerstack.screens.list
+package com.akjaw.fullerstack.screens.list.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.screens.list.NotesListViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import model.CreationTimestamp
 import model.toCreationTimestamp

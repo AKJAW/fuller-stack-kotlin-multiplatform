@@ -8,6 +8,8 @@ import feature.DeleteNotes
 import feature.GetNotes
 import feature.local.search.SearchNotes
 import feature.local.sort.SortNotes
+import feature.local.sort.SortProperty
+import feature.local.sort.SortDirection
 import feature.synchronization.SynchronizeNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
@@ -30,6 +32,7 @@ internal class NotesListViewModel(
     }
 
     private val searchValueFlow: MutableStateFlow<String> = MutableStateFlow("")
+    private val sortPropertyFlow: MutableStateFlow<SortProperty> = MutableStateFlow(SortProperty.DEFAULT)
     private val _viewState = MutableLiveData<NotesListState>(NotesListState.Loading)
     val viewState: LiveData<NotesListState> = _viewState
 
@@ -43,9 +46,10 @@ internal class NotesListViewModel(
     }
 
     private fun listenToNoteChanges(notesFlow: Flow<List<Note>>) = viewModelScope.launch {
-        notesFlow.combine(searchValueFlow) { notes, searchValue ->
+        combine(notesFlow, searchValueFlow, sortPropertyFlow) { notes, searchValue, sortProperty ->
             val filteredNotes = searchNotes.execute(notes, searchValue)
-            filteredNotes
+            val sortedNotes = sortNotes.execute(filteredNotes, sortProperty)
+            sortedNotes
         }.collect {
             _viewState.postValue(NotesListState.ShowingList(it))
         }
@@ -57,5 +61,9 @@ internal class NotesListViewModel(
 
     fun changeSearchValue(text: String) {
         searchValueFlow.value = text
+    }
+
+    fun changeSortProperty(sortProperty: SortProperty) {
+        sortPropertyFlow.value = sortProperty
     }
 }

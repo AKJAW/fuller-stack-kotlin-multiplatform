@@ -8,6 +8,9 @@ import feature.DeleteNotes
 import feature.GetNotes
 import feature.local.search.SearchNotes
 import feature.local.sort.SortNotes
+import feature.local.sort.SortProperty
+import feature.local.sort.SortDirection
+import feature.local.sort.SortType
 import feature.synchronization.*
 import helpers.date.UnixTimestampProvider
 import io.mockk.every
@@ -141,6 +144,16 @@ internal class NotesListViewModelTest {
                 Arguments.of("", NOTES),
             )
         }
+    }
 
+    @Test
+    fun `Changing the sort type changes the notes sorting`() {
+        SUT.initializeNotes()
+
+        SUT.changeSortProperty(SortProperty(SortType.NAME, SortDirection.DESCENDING))
+
+        val viewState = SUT.viewState.getOrAwaitValue()
+        val expectedViewState = NotesListState.ShowingList(listOf(NOTES[2], NOTES[1], NOTES[0]))
+        assertEquals(expectedViewState, viewState)
     }
 }
