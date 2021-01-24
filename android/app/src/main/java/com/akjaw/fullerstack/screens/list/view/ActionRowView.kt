@@ -1,27 +1,26 @@
 package com.akjaw.fullerstack.screens.list.view
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.activityViewModels
 import com.akjaw.framework.utility.KeyboardCloser
 import com.akjaw.framework.view.doAfterDistinctTextChange
+import com.akjaw.framework.view.makeInvisible
 import com.akjaw.framework.view.setOnAnimationEnd
+import com.akjaw.framework.view.show
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.navigation.DialogManager
-import com.akjaw.fullerstack.screens.list.NotesListViewModel
 import com.google.android.material.textfield.TextInputLayout
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
-import org.kodein.di.android.x.di
-import org.kodein.di.direct
 import org.kodein.di.instance
 
 class ActionRowView @JvmOverloads constructor(
@@ -30,7 +29,32 @@ class ActionRowView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), DIAware {
 
+    class SavedState: BaseSavedState {
+
+        var searchInputText: String? = null
+
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(source: Parcel?) : super(source) {
+            searchInputText = source?.readString()
+        }
+
+        override fun writeToParcel(out: Parcel?, flags: Int) {
+            super.writeToParcel(out, flags)
+            out?.writeString(searchInputText)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel?): SavedState = SavedState(source)
+                override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+            }
+        }
+    }
+
     init {
+        isSaveEnabled = true
         inflate(context, R.layout.view_action_row, this)
     }
 
@@ -43,6 +67,35 @@ class ActionRowView @JvmOverloads constructor(
     private val sortIcon: ImageView = rootView.findViewById(R.id.sort_icon)
     private var textWatcher: TextWatcher? = null
     private var isSearchInputVisible = false
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return super.onSaveInstanceState().let { superState ->
+            val text = searchInput.text?.toString()
+            if (text != null) {
+                SavedState(superState).apply {
+                    searchInputText = text
+                }
+            } else {
+                superState
+            }
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        when (state) {
+            is SavedState -> {
+                super.onRestoreInstanceState(state.superState)
+                state.searchInputText?.let { searchInputText ->
+                    if (searchInputText.isNotEmpty()) {
+                        searchInput.setText(searchInputText)
+                        textInputLayout.show()
+                        isSearchInputVisible = true
+                    }
+                }
+            }
+            else -> super.onRestoreInstanceState(state)
+        }
+    }
 
     fun initialize(
         keyboardCloser: KeyboardCloser,
@@ -79,7 +132,7 @@ class ActionRowView @JvmOverloads constructor(
     }
 
     private fun expandInput() {
-        textInputLayout.visibility = View.VISIBLE
+        textInputLayout.show()
         val scaleAnimation = createScaleAnimation(0f, 1f)
         scaleAnimation.setOnAnimationEnd {
             searchInput.isEnabled = true
@@ -93,7 +146,7 @@ class ActionRowView @JvmOverloads constructor(
         searchInput.isEnabled = false
         val scaleAnimation = createScaleAnimation(1f, 0f)
         scaleAnimation.setOnAnimationEnd {
-            textInputLayout.visibility = View.INVISIBLE
+            textInputLayout.makeInvisible()
             searchIcon.isClickable = true
         }
         textInputLayout.startAnimation(scaleAnimation)

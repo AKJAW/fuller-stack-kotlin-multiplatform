@@ -38,11 +38,15 @@ class NotesListAdapter(
         (holder as NoteViewHolder).bind(note, isSelected)
     }
 
-    fun setNotes(newNotes: List<Note>) {
+    fun setNotes(newNotes: List<Note>, callbackOnItemsChanged: () -> Unit) {
         val diffCallback = NotesDiffCallback(notes, newNotes)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
+        val oldNotes = notes
         notes = newNotes
         diffResult.dispatchUpdatesTo(this)
+        if (oldNotes !== newNotes) {
+            callbackOnItemsChanged()
+        }
     }
 
     private fun onNoteSelectionChanged(creationTimestamps: List<CreationTimestamp>) =

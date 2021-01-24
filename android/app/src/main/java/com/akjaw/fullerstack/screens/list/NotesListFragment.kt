@@ -109,8 +109,10 @@ class NotesListFragment : BaseFragment(R.layout.layout_notes_list) {
             is NotesListViewModel.NotesListState.Loading -> loadingIndicator.visibility = View.VISIBLE
             is NotesListViewModel.NotesListState.ShowingList -> {
                 loadingIndicator.visibility = View.INVISIBLE
-                notesRecyclerView.scrollToPosition(0)
-                notesListAdapter.setNotes(viewState.notes)
+                notesListAdapter.setNotes(
+                    newNotes = viewState.notes,
+                    callbackOnItemsChanged = { notesRecyclerView.scrollToPosition(0) }
+                )
             }
         }
     }
