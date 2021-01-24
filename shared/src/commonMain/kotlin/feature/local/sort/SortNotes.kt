@@ -10,20 +10,14 @@ class SortNotes {
 
     private class NotesComparator(private val sortProperty: SortProperty) : Comparator<Note> {
         override fun compare(a: Note, b: Note): Int {
-            return when (sortProperty.type) {
-                SortType.NAME -> {
-                    if (sortProperty.direction == SortDirection.ASCENDING) {
-                        compareValues(a.title, b.title)
-                    } else {
-                        compareValues(b.title, a.title)
-                    }
+            return when (sortProperty.direction) {
+                SortDirection.ASCENDING -> when (sortProperty.type) {
+                    SortType.NAME -> compareValues(a.title, b.title)
+                    SortType.CREATION_DATE -> compareValues(a.creationTimestamp.unix, b.creationTimestamp.unix)
                 }
-                SortType.CREATION_DATE -> {
-                    if (sortProperty.direction == SortDirection.ASCENDING) {
-                        compareValues(a.creationTimestamp.unix, b.creationTimestamp.unix)
-                    } else {
-                        compareValues(b.creationTimestamp.unix, a.creationTimestamp.unix)
-                    }
+                SortDirection.DESCENDING -> when (sortProperty.type) {
+                    SortType.NAME -> compareValues(b.title, a.title)
+                    SortType.CREATION_DATE -> compareValues(b.creationTimestamp.unix, a.creationTimestamp.unix)
                 }
             }
         }

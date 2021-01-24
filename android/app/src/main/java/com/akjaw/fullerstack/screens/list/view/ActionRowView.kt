@@ -9,21 +9,33 @@ import android.view.animation.ScaleAnimation
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
 import com.akjaw.framework.utility.KeyboardCloser
 import com.akjaw.framework.view.doAfterDistinctTextChange
 import com.akjaw.framework.view.setOnAnimationEnd
 import com.akjaw.fullerstack.android.R
+import com.akjaw.fullerstack.screens.common.navigation.DialogManager
+import com.akjaw.fullerstack.screens.list.NotesListViewModel
 import com.google.android.material.textfield.TextInputLayout
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.di
+import org.kodein.di.android.x.di
+import org.kodein.di.direct
+import org.kodein.di.instance
 
 class ActionRowView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr), DIAware {
 
     init {
         inflate(context, R.layout.view_action_row, this)
     }
+
+    override val di: DI by di()
+    private val dialogManager: DialogManager by instance()
 
     private val textInputLayout: TextInputLayout = rootView.findViewById(R.id.search_input_layout)
     private val searchInput: EditText = rootView.findViewById(R.id.search_input_edit_text)
@@ -54,6 +66,10 @@ class ActionRowView @JvmOverloads constructor(
                 expandInput()
             }
             isSearchInputVisible = !isSearchInputVisible
+        }
+
+        sortIcon.setOnClickListener {
+            dialogManager.showSortDialog()
         }
     }
 
