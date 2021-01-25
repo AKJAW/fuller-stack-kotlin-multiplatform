@@ -29,8 +29,10 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         bottomNavigationView = findViewById(R.id.bottom_navigation)
 
+        if (savedInstanceState == null) {
+            mainActivityViewModel.startNotesSocket()
+        }
         bottomNavigationHelper.initialize(supportFragmentManager, bottomNavigationView)
-        mainActivityViewModel.startNotesSocket()
     }
 
     override fun onDestroy() {
