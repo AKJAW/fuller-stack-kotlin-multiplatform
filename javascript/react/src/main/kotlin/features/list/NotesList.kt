@@ -25,9 +25,11 @@ interface NotesListProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
     var sortProperty: SortProperty
+    var searchValue: String
     var dateFormat: DateFormat
     var openEditor: (note: Note?) -> Unit
     var changeSort: (sortProperty: SortProperty) -> Unit
+    var changeSearchValue: (searchValue: String) -> Unit
 }
 
 @Suppress("MagicNumber")
@@ -57,6 +59,8 @@ val notesList = functionalComponent<NotesListProps> { props ->
                 attrs.onAddNoteClick = props.openEditor
                 attrs.sortProperty = props.sortProperty
                 attrs.changeSort = props.changeSort
+                attrs.searchValue = props.searchValue
+                attrs.changeSearchValue = props.changeSearchValue
             }
             mList {
                 css(NotesListClasses.list)
