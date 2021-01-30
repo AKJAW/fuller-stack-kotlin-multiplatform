@@ -13,6 +13,7 @@ import store.AppState
 import store.RThunk
 import store.nullAction
 
+@Suppress("MagicNumber")
 class SynchronizeNotesThunk(
     private val scope: CoroutineScope,
     private val dexieNoteDao: DexieNoteDao

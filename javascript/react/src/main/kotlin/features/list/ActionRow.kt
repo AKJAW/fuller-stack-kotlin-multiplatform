@@ -5,16 +5,30 @@ import com.ccfraser.muirwik.components.button.MIconButtonSize
 import com.ccfraser.muirwik.components.button.mButton
 import com.ccfraser.muirwik.components.button.mIconButton
 import com.ccfraser.muirwik.components.form.MFormControlVariant
-import com.ccfraser.muirwik.components.input.mInput
 import com.ccfraser.muirwik.components.mTextField
 import com.ccfraser.muirwik.components.menu.mMenu
 import com.ccfraser.muirwik.components.menu.mMenuItem
-import com.ccfraser.muirwik.components.menu.mMenuItemWithIcon
 import com.ccfraser.muirwik.components.targetInputValue
 import feature.local.sort.SortDirection
 import feature.local.sort.SortProperty
 import feature.local.sort.SortType
-import kotlinx.css.*
+import kotlinx.css.Display
+import kotlinx.css.FontWeight
+import kotlinx.css.JustifyContent
+import kotlinx.css.LinearDimension
+import kotlinx.css.TextTransform
+import kotlinx.css.display
+import kotlinx.css.fontSize
+import kotlinx.css.fontWeight
+import kotlinx.css.height
+import kotlinx.css.justifyContent
+import kotlinx.css.margin
+import kotlinx.css.padding
+import kotlinx.css.paddingBottom
+import kotlinx.css.paddingLeft
+import kotlinx.css.textTransform
+import kotlinx.css.top
+import kotlinx.css.width
 import model.Note
 import org.w3c.dom.Node
 import react.RProps
@@ -85,7 +99,10 @@ val actionRow = functionalComponent<ActionRowProps> { props ->
                 css(ActionRowClasses.searchInput)
             }
         } else {
-            mButton(caption = "Add a new note", variant = MButtonVariant.outlined, onClick = { props.onAddNoteClick(null) }) {
+            mButton(
+                caption = "Add a new note",
+                variant = MButtonVariant.outlined, onClick = { props.onAddNoteClick(null) }
+            ) {
                 css(ActionRowClasses.addButton)
             }
         }
