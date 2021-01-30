@@ -1,7 +1,7 @@
 package com.akjaw.fullerstack.composition.modules
 
-import com.akjaw.fullerstack.helpers.network.ApiUrl
 import com.akjaw.fullerstack.notes.socket.SocketWrapper
+import network.ApiUrl
 import okhttp3.Request
 import org.kodein.di.DI
 import org.kodein.di.bind
