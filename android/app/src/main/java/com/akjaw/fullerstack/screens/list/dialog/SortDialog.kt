@@ -34,7 +34,6 @@ class SortDialog : DialogFragment(), DIAware {
     }
 
     private lateinit var rootView: View
-    private var sortProperty = SortProperty.DEFAULT
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val activity = activity ?: throw IllegalStateException("Activity is null")
@@ -44,28 +43,42 @@ class SortDialog : DialogFragment(), DIAware {
         builder.setView(rootView)
 
         return builder.create().apply {
-            rootView.findViewById<RadioGroup>(R.id.group_sort_by)
-                ?.setOnSortPropertyChangedListener()
-            rootView.findViewById<RadioGroup>(R.id.group_sort_direction)
-                ?.setOnSortPropertyChangedListener()
+            //TODO view depending on selection
+            rootView.findViewById<RadioGroup>(R.id.group_sort_by)?.let { sortByGroup ->
+                val id = when (viewModel.sortProperty.type) {
+                    SortType.CREATION_DATE -> R.id.sort_by_creation_date
+                    SortType.NAME -> R.id.sort_by_name
+                }
+                sortByGroup.findViewById<RadioButton>(id).isChecked = true
+                sortByGroup.setOnSortPropertyChangedListener()
+            }
+            rootView.findViewById<RadioGroup>(R.id.group_sort_direction)?.let { directionGroup ->
+                val id = when (viewModel.sortProperty.direction) {
+                    SortDirection.ASCENDING -> R.id.sort_direction_ascending
+                    SortDirection.DESCENDING -> R.id.sort_direction_descending
+                }
+                directionGroup.findViewById<RadioButton>(id).isChecked = true
+                directionGroup.setOnSortPropertyChangedListener()
+            }
         }
     }
 
     private fun RadioGroup.setOnSortPropertyChangedListener() {
         setOnCheckedChangeListener { radioGroup, checkedId ->
             val radioButton = radioGroup.findViewById<RadioButton>(checkedId) ?: return@setOnCheckedChangeListener
-            val sortProperty = getSortProperty(radioButton.id)
-            viewModel.changeSortProperty(sortProperty)
+            val newSortProperty = getSortProperty(radioButton.id)
+            viewModel.changeSortProperty(newSortProperty)
         }
     }
 
     private fun getSortProperty(@IdRes radioButtonId: Int): SortProperty {
+        val currentSortProperty = viewModel.sortProperty
         return when (radioButtonId) {
-            R.id.sort_by_creation_date -> sortProperty.copy(type = SortType.CREATION_DATE)
-            R.id.sort_by_name -> sortProperty.copy(type = SortType.NAME)
-            R.id.sort_direction_ascending -> sortProperty.copy(direction = SortDirection.ASCENDING)
-            R.id.sort_direction_descending -> sortProperty.copy(direction = SortDirection.DESCENDING)
-            else -> sortProperty
+            R.id.sort_by_creation_date -> currentSortProperty.copy(type = SortType.CREATION_DATE)
+            R.id.sort_by_name -> currentSortProperty.copy(type = SortType.NAME)
+            R.id.sort_direction_ascending -> currentSortProperty.copy(direction = SortDirection.ASCENDING)
+            R.id.sort_direction_descending -> currentSortProperty.copy(direction = SortDirection.DESCENDING)
+            else -> currentSortProperty
         }
     }
 }

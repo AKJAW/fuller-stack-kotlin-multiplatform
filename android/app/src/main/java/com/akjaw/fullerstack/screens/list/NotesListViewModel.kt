@@ -33,6 +33,8 @@ internal class NotesListViewModel(
 
     private val searchValueFlow: MutableStateFlow<String> = MutableStateFlow("")
     private val sortPropertyFlow: MutableStateFlow<SortProperty> = MutableStateFlow(SortProperty.DEFAULT)
+    val sortProperty: SortProperty
+        get() = sortPropertyFlow.value
     private val _viewState = MutableLiveData<NotesListState>(NotesListState.Loading)
     val viewState: LiveData<NotesListState> = _viewState
 
