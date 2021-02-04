@@ -152,6 +152,7 @@ class ActionRowView @JvmOverloads constructor(
         textInputLayout.startAnimation(scaleAnimation)
     }
 
+    @Suppress("MagicNumber")
     private fun createScaleAnimation(fromX: Float, toX: Float): ScaleAnimation {
         val scaleAnimation =
             ScaleAnimation(

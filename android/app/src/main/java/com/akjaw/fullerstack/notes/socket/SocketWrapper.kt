@@ -20,12 +20,16 @@ class SocketWrapper(
     private val socketRequest: Request
 ) : NoteSocket {
 
+    companion object {
+        private const val NORMAL_CLOSE = 1000
+    }
+
     private var socket: WebSocket? = null
     private var flow: Flow<List<NoteSchema>>? = null
 
     override fun close() {
         flow = null
-        socket?.close(1000, null)
+        socket?.close(NORMAL_CLOSE, null)
         socket = null
     }
 

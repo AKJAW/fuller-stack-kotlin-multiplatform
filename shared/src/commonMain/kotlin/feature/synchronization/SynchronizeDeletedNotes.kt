@@ -11,6 +11,7 @@ import network.NoteApi
 import network.NoteSchema
 import network.safeApiCall
 
+@Suppress("LongMethod", "ComplexMethod")
 class SynchronizeDeletedNotes(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val noteDao: NoteDao,

@@ -9,10 +9,12 @@ import feature.GetNotes
 import feature.local.search.SearchNotes
 import feature.local.sort.SortNotes
 import feature.local.sort.SortProperty
-import feature.local.sort.SortDirection
 import feature.synchronization.SynchronizeNotes
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import model.CreationTimestamp
 import model.Note

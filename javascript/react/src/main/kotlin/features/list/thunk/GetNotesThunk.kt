@@ -9,6 +9,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import model.CreationTimestamp
+import model.Note
 import org.kodein.di.instance
 import redux.RAction
 import redux.WrapperAction
