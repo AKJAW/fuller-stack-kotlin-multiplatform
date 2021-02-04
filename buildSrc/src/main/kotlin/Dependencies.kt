@@ -9,7 +9,8 @@ object Versions {
 
     //shared test
     const val JUNIT5 = "5.6.2"
-    const val MOCKK = "1.10.0"
+    const val MOCKK = "1.10.2"
+    const val KOTEST = "4.3.1"
 
     //react
     const val KOTLINX_HTML_JS = "0.7.1"
@@ -69,7 +70,8 @@ object SharedLibs {
 }
 
 object SharedTestingLibs {
-    const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
+    const val KOTEST_ASSERTIONS = "io.kotest:kotest-assertions-core:${Versions.KOTEST}"
+    const val KOTEST_FRAMEWORK_ENGINE = "io.kotest:kotest-framework-engine:${Versions.KOTEST}"
 }
 
 object JVMLibs {
@@ -78,7 +80,10 @@ object JVMLibs {
 
 object JVMTestingLibs {
     const val JUNIT5 = "org.junit.jupiter:junit-jupiter:${Versions.JUNIT5}"
+    const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
     const val COROUTINES_TEST =  "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
+    const val KOTEST_FRAMEWORK_API = "io.kotest:kotest-framework-api-jvm:${Versions.KOTEST}"
+    const val KOTEST_JUNIT5_RUNNER = "io.kotest:kotest-runner-junit5-jvm:${Versions.KOTEST}"
 }
 
 object ReactLibs {
@@ -97,10 +102,15 @@ object ReactLibs {
     const val KTOR_CLIENT_SERIALIZATION = "io.ktor:ktor-client-serialization-js:${Versions.KTOR}"
 }
 
+object ReactTestingLibs {
+    const val KOTEST_FRAMEWORK_API = "io.kotest:kotest-framework-api-js:${Versions.KOTEST}"
+}
+
 object KtorLibs {
     const val SERVER_CORE = "io.ktor:ktor-server-core:${Versions.KTOR}"
     const val SERVER_NETTY = "io.ktor:ktor-server-netty:${Versions.KTOR}"
     const val JWT = "io.ktor:ktor-auth-jwt:${Versions.KTOR}"
+    const val WEB_SOCKETS = "io.ktor:ktor-websockets:${Versions.KTOR}"
     const val LOG_BACK_CLASSIC = "ch.qos.logback:logback-classic:${Versions.LOG_BACK}"
 
     const val KODEIN_DI_FRAMEWORK_KTOR_SERVER = "org.kodein.di:kodein-di-framework-ktor-server-jvm:${Versions.KODEIN}"

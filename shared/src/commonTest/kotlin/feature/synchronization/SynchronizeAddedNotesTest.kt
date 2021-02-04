@@ -3,22 +3,22 @@ package feature.synchronization
 import base.CommonDispatchers
 import feature.synchronization.SynchronizationTestData.FIRST_NOTE
 import feature.synchronization.SynchronizationTestData.SECOND_NOTE
-import runTest
+import io.kotest.assertions.assertSoftly
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
+import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
-class SynchronizeAddedNotesTest {
+class SynchronizeAddedNotesTest : FunSpec({
 
-    private lateinit var noteDaoTestFake: NoteDaoTestFake
-    private lateinit var noteApiTestFake: NoteApiTestFake
-    private lateinit var SUT: SynchronizeAddedNotes
+    lateinit var noteDaoTestFake: NoteDaoTestFake
+    lateinit var noteApiTestFake: NoteApiTestFake
+    lateinit var SUT: SynchronizeAddedNotes
 
-    @BeforeTest
-    fun setUp() {
+    beforeTest {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         SUT = SynchronizeAddedNotes(
@@ -28,9 +28,7 @@ class SynchronizeAddedNotesTest {
         )
     }
 
-    @JsName("DatabaseNewNotesAddToApi")
-    @Test
-    fun `When local database has new notes the add them to the api`() = runTest {
+    suspendingTest("When local database has new notes the add them to the api") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity()
@@ -41,17 +39,17 @@ class SynchronizeAddedNotesTest {
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(2, noteApiTestFake.notes.count())
-        val addedNote = noteApiTestFake.notes[1]
-        assertEquals(SECOND_NOTE.title, addedNote.title)
-        assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
+        assertSoftly {
+            noteApiTestFake.notes shouldHaveSize 2
+            val addedNote = noteApiTestFake.notes[1]
+            addedNote.title shouldBe SECOND_NOTE.title
+            addedNote.content shouldBe SECOND_NOTE.content
+            addedNote.creationTimestamp shouldBe SECOND_NOTE.creationTimestamp
+            addedNote.lastModificationTimestamp shouldBe SECOND_NOTE.lastModificationTimestamp
+        }
     }
 
-    @JsName("DatabaseNewNotesApiSuccessUpdateHasSyncFailed")
-    @Test
-    fun `When local database has new notes after adding them to API hasSyncFailed is set to false`() = runTest {
+    suspendingTest("When local database has new notes after adding them to API hasSyncFailed is set to false") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity(),
             SECOND_NOTE.copyToEntity(hasSyncFailed = true)
@@ -62,12 +60,10 @@ class SynchronizeAddedNotesTest {
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
 
-        assertEquals(false, noteDaoTestFake.notes[1].hasSyncFailed)
+        noteDaoTestFake.notes[1].hasSyncFailed.shouldBeFalse()
     }
 
-    @JsName("ApiNewNotesAddToDatabase")
-    @Test
-    fun `When API has new notes the add them locally`() = runTest {
+    suspendingTest("When API has new notes the add them locally") {
         noteDaoTestFake.notes = listOf(
             FIRST_NOTE.copyToEntity()
         )
@@ -77,11 +73,14 @@ class SynchronizeAddedNotesTest {
         )
 
         SUT.executeAsync(noteDaoTestFake.notes, noteApiTestFake.notes)
-        assertEquals(2, noteDaoTestFake.notes.count())
-        val addedNote = noteDaoTestFake.notes[1]
-        assertEquals(SECOND_NOTE.title, addedNote.title)
-        assertEquals(SECOND_NOTE.content, addedNote.content)
-        assertEquals(SECOND_NOTE.creationTimestamp, addedNote.creationTimestamp)
-        assertEquals(SECOND_NOTE.lastModificationTimestamp, addedNote.lastModificationTimestamp)
+
+        assertSoftly {
+            noteDaoTestFake.notes shouldHaveSize 2
+            val addedNote = noteDaoTestFake.notes[1]
+            addedNote.title shouldBe SECOND_NOTE.title
+            addedNote.content shouldBe SECOND_NOTE.content
+            addedNote.creationTimestamp shouldBe SECOND_NOTE.creationTimestamp
+            addedNote.lastModificationTimestamp shouldBe SECOND_NOTE.lastModificationTimestamp
+        }
     }
-}
+})

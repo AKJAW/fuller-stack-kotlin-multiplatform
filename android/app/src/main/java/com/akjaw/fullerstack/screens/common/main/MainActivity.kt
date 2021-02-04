@@ -1,11 +1,14 @@
 package com.akjaw.fullerstack.screens.common.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.screens.common.base.BaseActivity
+import com.akjaw.fullerstack.screens.common.composition.mainActivityModule
 import com.akjaw.fullerstack.screens.common.navigation.MultiStack
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.kodein.di.DI
+import org.kodein.di.direct
 import org.kodein.di.instance
 
 class MainActivity : BaseActivity() {
@@ -15,6 +18,7 @@ class MainActivity : BaseActivity() {
         import(mainActivityModule)
     }
 
+    private val mainActivityViewModel: MainActivityViewModel by viewModels { di.direct.instance() }
     private val multiStack: MultiStack by instance()
     private val bottomNavigationHelper: BottomNavigationHelper by instance()
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -26,6 +30,7 @@ class MainActivity : BaseActivity() {
         bottomNavigationView = findViewById(R.id.bottom_navigation)
 
         bottomNavigationHelper.initialize(supportFragmentManager, bottomNavigationView)
+        mainActivityViewModel.startNotesSocket()
     }
 
     override fun onDestroy() {

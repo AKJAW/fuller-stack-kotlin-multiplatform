@@ -47,6 +47,6 @@ dependencies {
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
     testImplementation(JVMTestingLibs.JUNIT5)
-    testImplementation(SharedTestingLibs.MOCKK)
+    testImplementation(JVMTestingLibs.MOCKK)
     testImplementation(JVMTestingLibs.COROUTINES_TEST)
 }

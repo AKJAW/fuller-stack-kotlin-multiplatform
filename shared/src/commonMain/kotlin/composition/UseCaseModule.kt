@@ -3,10 +3,12 @@ package composition
 import feature.AddNote
 import feature.DeleteNotes
 import feature.GetNotes
-import feature.SynchronizeNotes
 import feature.UpdateNote
+import feature.socket.ListenToSocketUpdates
 import feature.synchronization.SynchronizeAddedNotes
+import feature.synchronization.SynchronizeApiAndLocalNotes
 import feature.synchronization.SynchronizeDeletedNotes
+import feature.synchronization.SynchronizeNotes
 import feature.synchronization.SynchronizeUpdatedNotes
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -19,17 +21,12 @@ val useCaseModule = DI.Module("UseCaseModule") {
     bind() from singleton { AddNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton { UpdateNote(instance("BackgroundDispatcher"), instance(), instance(), instance()) }
     bind() from singleton {
-        SynchronizeDeletedNotes(
-            instance("BackgroundDispatcher"),
-            instance(),
-            instance(),
-            instance()
-        )
+        SynchronizeDeletedNotes(instance("BackgroundDispatcher"), instance(), instance(), instance())
     }
     bind() from singleton { SynchronizeAddedNotes(instance("BackgroundDispatcher"), instance(), instance()) }
     bind() from singleton { SynchronizeUpdatedNotes(instance("BackgroundDispatcher"), instance(), instance()) }
-    bind() from singleton {
-        SynchronizeNotes(
+    bind<SynchronizeNotes>() with singleton {
+        SynchronizeApiAndLocalNotes(
             coroutineDispatcher = instance("BackgroundDispatcher"),
             noteDao = instance(),
             noteApi = instance(),
@@ -37,5 +34,8 @@ val useCaseModule = DI.Module("UseCaseModule") {
             synchronizeAddedNotes = instance(),
             synchronizeUpdatedNotes = instance()
         )
+    }
+    bind() from singleton {
+        ListenToSocketUpdates(instance("BackgroundDispatcher"), instance(), instance(), instance())
     }
 }

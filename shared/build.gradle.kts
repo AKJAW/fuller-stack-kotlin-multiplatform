@@ -1,11 +1,13 @@
 plugins {
     kotlin("multiplatform")
 }
-
 kotlin {
     targets {
         jvm("android") {
-            val main by compilations.getting {
+            tasks.withType<Test> {
+                useJUnitPlatform()
+            }
+            compilations.all {
                 kotlinOptions {
                     jvmTarget = "1.8"
                     java {
@@ -36,7 +38,6 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-//                implementation(kotlin("stdlib-common"))
                 implementation(SharedLibs.COROUTINES_CORE)
                 implementation(SharedLibs.KLOCK)
                 implementation(SharedLibs.KOTLINX_SERIALIZATION)
@@ -46,15 +47,14 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(SharedTestingLibs.KOTEST_ASSERTIONS)
+                implementation(SharedTestingLibs.KOTEST_FRAMEWORK_ENGINE)
                 implementation(SharedLibs.COROUTINES_CORE)
             }
         }
 
         val androidMain by sourceSets.getting {
             dependencies {
-//                implementation(kotlin("stdlib-jdk8"))
-//                implementation(SharedLibs.COROUTINES_CORE)
-//                implementation(JVMLibs.SERIALIZATION_RUNTIME_JVM)
                 implementation(AndroidLibs.RETROFIT)
                 implementation(AndroidLibs.ROOM_RUNTIME)
                 implementation(AndroidLibs.ROOM_KTX)
@@ -64,23 +64,21 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
-//                implementation(SharedLibs.COROUTINES_CORE)
                 implementation(JVMTestingLibs.COROUTINES_TEST)
+                implementation(JVMTestingLibs.KOTEST_FRAMEWORK_API)
+                implementation(JVMTestingLibs.KOTEST_JUNIT5_RUNNER)
             }
         }
 
         val jsMain by sourceSets.getting {
             dependencies {
-//                implementation(kotlin("stdlib-js"))
                 implementation(ReactLibs.KTOR_CLIENT_JS)
-//                implementation(ReactLibs.COROUTINES_JS)
-//                implementation(ReactLibs.SERIALIZATION_RUNTIME_JS)
             }
         }
         val jsTest by sourceSets.getting {
             dependencies {
                 implementation(kotlin("test-js"))
-//                implementation(SharedLibs.COROUTINES_CORE)
+                implementation(ReactTestingLibs.KOTEST_FRAMEWORK_API)
             }
         }
     }

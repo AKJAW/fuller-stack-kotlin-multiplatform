@@ -15,7 +15,7 @@ import server.logger.ApiLogger
 import server.storage.model.NotesTable
 import server.storage.model.User
 
-class NotesService(
+class NotesStorage(
     private val database: ExposedDatabase,
     private val apiLogger: ApiLogger
 ) {
@@ -32,7 +32,8 @@ class NotesService(
                     apiId = row[NotesTable.id].value,
                     title = row[NotesTable.title],
                     content = row[NotesTable.content],
-                    lastModificationTimestamp = row[NotesTable.lastModificationUnixTimestamp].toLastModificationTimestamp(),
+                    lastModificationTimestamp = row[NotesTable.lastModificationUnixTimestamp]
+                        .toLastModificationTimestamp(),
                     creationTimestamp = row[NotesTable.creationUnixTimestamp].toCreationTimestamp(),
                     wasDeleted = row[NotesTable.wasDeleted]
                 )

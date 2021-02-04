@@ -6,9 +6,9 @@ import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
 import database.NoteEntityMapper
 import feature.DeleteNotes
 import feature.GetNotes
-import feature.SynchronizeNotes
 import feature.synchronization.SynchronizeAddedNotes
 import feature.synchronization.SynchronizeDeletedNotes
+import feature.synchronization.SynchronizeNotes
 import feature.synchronization.SynchronizeUpdatedNotes
 import helpers.date.UnixTimestampProvider
 import io.mockk.every
