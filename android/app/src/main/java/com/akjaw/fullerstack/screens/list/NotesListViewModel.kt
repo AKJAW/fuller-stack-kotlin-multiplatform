@@ -10,6 +10,7 @@ import feature.local.search.SearchNotes
 import feature.local.sort.SortNotes
 import feature.local.sort.SortProperty
 import feature.synchronization.SynchronizeNotes
+import helpers.date.PatternProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,8 @@ internal class NotesListViewModel(
     private val deleteNotes: DeleteNotes,
     private val synchronizeNotes: SynchronizeNotes,
     private val searchNotes: SearchNotes,
-    private val sortNotes: SortNotes
+    private val sortNotes: SortNotes,
+    private val patternProvider: PatternProvider
 ) : ViewModel() {
 
     internal sealed class NotesListState {
@@ -50,12 +52,18 @@ internal class NotesListViewModel(
     }
 
     private fun listenToNoteChanges(notesFlow: Flow<List<Note>>) = viewModelScope.launch {
-        combine(notesFlow, searchValueFlow, sortPropertyFlow) { notes, searchValue, sortProperty ->
+        combine(
+            notesFlow,
+            searchValueFlow,
+            sortPropertyFlow,
+            patternProvider.patternFlow
+        ) { notes, searchValue, sortProperty, dateFormat ->
             val filteredNotes = searchNotes.execute(notes, searchValue)
             val sortedNotes = sortNotes.execute(filteredNotes, sortProperty)
-            sortedNotes
-        }.collect {
-            _viewState.postValue(NotesListState.ShowingList(it))
+            val notesWithFormat = sortedNotes.map { it.copy(dateFormat = dateFormat) }
+            notesWithFormat
+        }.collect { notes ->
+            _viewState.postValue(NotesListState.ShowingList(notes))
         }
     }
 

@@ -31,7 +31,8 @@ val presentationModule = DI.Module("presentationModule") {
             deleteNotes = instance(),
             synchronizeNotes = instance(),
             searchNotes = instance(),
-            sortNotes = instance()
+            sortNotes = instance(),
+            patternProvider = instance()
         )
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {

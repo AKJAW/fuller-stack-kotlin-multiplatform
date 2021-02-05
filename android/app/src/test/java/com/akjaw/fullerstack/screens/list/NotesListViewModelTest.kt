@@ -3,6 +3,7 @@ package com.akjaw.fullerstack.screens.list
 import com.akjaw.fullerstack.InstantExecutorExtension
 import com.akjaw.fullerstack.getOrAwaitValue
 import com.akjaw.fullerstack.screens.list.NotesListViewModel.NotesListState
+import com.soywiz.klock.DateFormat
 import database.NoteEntityMapper
 import feature.DeleteNotes
 import feature.GetNotes
@@ -12,13 +13,17 @@ import feature.local.sort.SortProperty
 import feature.local.sort.SortDirection
 import feature.local.sort.SortType
 import feature.synchronization.*
+import helpers.date.NoteDateFormat
+import helpers.date.PatternProvider
 import helpers.date.UnixTimestampProvider
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.setMain
+import model.CreationTimestamp
 import model.Note
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -38,9 +43,9 @@ internal class NotesListViewModelTest {
 
     companion object {
         private val NOTES = listOf(
-            Note(title = "first", content = "Hey"),
-            Note(title = "second", content = "Hi"),
-            Note(title = "third", content = "Hello")
+            Note(title = "first", content = "Hey", creationTimestamp = CreationTimestamp(3)),
+            Note(title = "second", content = "Hi", creationTimestamp = CreationTimestamp(2)),
+            Note(title = "third", content = "Hello", creationTimestamp = CreationTimestamp(1))
         )
     }
 
@@ -57,6 +62,10 @@ internal class NotesListViewModelTest {
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
     private val testCoroutineScope = TestCoroutineScope()
+
+    private val patternProvider: PatternProvider = mockk {
+        every { patternFlow } returns flow { emit(PatternFormat.Default) }
+    }
 
     @BeforeEach
     fun setUp() {
@@ -78,7 +87,8 @@ internal class NotesListViewModelTest {
             deleteNotes = deleteNotes,
             synchronizeNotes = synchronizeNotes,
             searchNotes = SearchNotes(),
-            sortNotes = SortNotes()
+            sortNotes = SortNotes(),
+            patternProvider = patternProvider
         )
 
         noteDaoTestFake.initializeNoteEntities(NOTES)
@@ -155,5 +165,30 @@ internal class NotesListViewModelTest {
         val viewState = SUT.viewState.getOrAwaitValue()
         val expectedViewState = NotesListState.ShowingList(listOf(NOTES[2], NOTES[1], NOTES[0]))
         assertEquals(expectedViewState, viewState)
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(DateFormatArgumentsProvider::class)
+    fun `Depending on the patternFlow, the notes have that date format`(
+        dateFormat: DateFormat
+    ) {
+        every { patternProvider.patternFlow } returns flow { emit(dateFormat) }
+        SUT.initializeNotes()
+
+        val viewState = SUT.viewState.getOrAwaitValue() as? NotesListState.ShowingList
+        assertEquals(dateFormat, viewState?.notes?.getOrNull(0)?.dateFormat)
+        assertEquals(dateFormat, viewState?.notes?.getOrNull(1)?.dateFormat)
+        assertEquals(dateFormat, viewState?.notes?.getOrNull(2)?.dateFormat)
+    }
+
+    private class DateFormatArgumentsProvider : ArgumentsProvider {
+        override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> {
+            return Stream.of(
+                Arguments.of(DateFormat(NoteDateFormat.NOTES_LIST_ITEM_MONTH.value)),
+                Arguments.of(DateFormat(NoteDateFormat.NOTES_LIST_ITEM_MONTH_HOUR.value)),
+                Arguments.of(DateFormat(NoteDateFormat.NOTES_LIST_ITEM_YEAR.value)),
+                Arguments.of(DateFormat(NoteDateFormat.NOTES_LIST_ITEM_YEAR_HOUR.value)),
+            )
+        }
     }
 }

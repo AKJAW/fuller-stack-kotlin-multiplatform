@@ -1,6 +1,5 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import helpers.date.NoteDateFormat
 import model.Note
 import model.toCreationTimestamp
 
@@ -16,7 +15,6 @@ class NotesListAdapterFactory(
         return NotesListAdapter(
             initialSelectedNotes = selectedNotes,
             notesSelectionTrackerFactory = notesSelectionTrackerFactory,
-            dateFormat = NoteDateFormat.Default,
             onItemClicked = onItemClicked,
         )
     }

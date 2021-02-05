@@ -15,7 +15,6 @@ import model.Note
 
 class NoteViewHolder(
     rootView: View,
-    private val dateFormat: DateFormat,
     private val selectionTracker: NotesSelectionTracker,
     private val onItemClicked: (Note) -> Unit
 ) : RecyclerView.ViewHolder(rootView) {
@@ -31,6 +30,7 @@ class NoteViewHolder(
 
     fun bind(note: Note, isSelected: Boolean) {
         title.text = note.title
+        val dateFormat = note.dateFormat
         date.text = dateFormat.format(note.creationTimestamp.unix)
         noteSyncFailed.isVisible = note.hasSyncFailed
         setBackgroundColor(isSelected)
