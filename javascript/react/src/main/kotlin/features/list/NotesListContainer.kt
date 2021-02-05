@@ -1,11 +1,9 @@
 package features.list
 
-import composition.KodeinEntry
 import feature.local.sort.SortProperty
 import features.editor.NoteEditorSlice
-import helpers.date.PatternProvider
+import helpers.date.NoteDateFormat
 import model.Note
-import org.kodein.di.instance
 import react.RBuilder
 import react.RClass
 import react.RComponent
@@ -46,8 +44,7 @@ private interface DispatchProps : RProps {
 }
 
 private class NotesListContainer(props: NotesListConnectedProps) : RComponent<NotesListConnectedProps, RState>(props) {
-    val patternProvider by KodeinEntry.di.instance<PatternProvider>()
-    val dateFormat = patternProvider.getNotesListItemPattern()
+    val dateFormat = NoteDateFormat.Default
 
     override fun componentDidMount() {
         props.getNotesList()

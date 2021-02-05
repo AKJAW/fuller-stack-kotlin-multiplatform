@@ -4,6 +4,8 @@ import base.CommonDispatchers
 import database.NoteEntityMapper
 import helpers.date.KlockUnixTimestampProvider
 import helpers.date.PatternProvider
+import helpers.date.PatternSaver
+import helpers.date.PatternStorage
 import helpers.date.UnixTimestampProvider
 import helpers.validation.NoteEditorInputValidator
 import helpers.validation.NoteInputValidator
@@ -21,7 +23,9 @@ val common = DI.Module("Common") {
     bind() from singleton { NoteEntityMapper() }
     bind<CoroutineDispatcher>(tag = "BackgroundDispatcher") with singleton { CommonDispatchers.BackgroundDispatcher }
     bind<UnixTimestampProvider>() with singleton { KlockUnixTimestampProvider() }
-    bind() from singleton { PatternProvider(instance()) }
+    bind("PatternStorage") from singleton { PatternStorage(instance()) }
+    bind<PatternProvider>() with singleton { instance("PatternStorage") }
+    bind<PatternSaver>() with singleton { instance("PatternStorage") }
     bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }
     import(useCaseModule)
 }

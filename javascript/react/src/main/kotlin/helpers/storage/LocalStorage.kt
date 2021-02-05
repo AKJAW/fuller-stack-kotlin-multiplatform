@@ -1,6 +1,6 @@
 package helpers.storage
 
-import kotlin.browser.window
+import kotlinx.browser.window
 
 class LocalStorage : Storage {
 

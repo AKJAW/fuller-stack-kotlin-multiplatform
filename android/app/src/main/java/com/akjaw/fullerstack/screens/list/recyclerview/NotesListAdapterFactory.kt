@@ -1,12 +1,10 @@
 package com.akjaw.fullerstack.screens.list.recyclerview
 
-import com.akjaw.framework.utility.KeyboardCloser
-import helpers.date.PatternProvider
+import helpers.date.NoteDateFormat
 import model.Note
 import model.toCreationTimestamp
 
 class NotesListAdapterFactory(
-    private val patternProvider: PatternProvider,
     private val notesSelectionTrackerFactory: NotesSelectionTrackerFactory,
 ) {
     fun create(
@@ -18,7 +16,7 @@ class NotesListAdapterFactory(
         return NotesListAdapter(
             initialSelectedNotes = selectedNotes,
             notesSelectionTrackerFactory = notesSelectionTrackerFactory,
-            dateFormat = patternProvider.getNotesListItemPattern(),
+            dateFormat = NoteDateFormat.Default,
             onItemClicked = onItemClicked,
         )
     }
