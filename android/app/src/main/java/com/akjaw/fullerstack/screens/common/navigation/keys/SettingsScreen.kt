@@ -1,6 +1,6 @@
 package com.akjaw.fullerstack.screens.common.navigation.keys
 
-import com.akjaw.fullerstack.screens.common.base.BaseFragment
+import androidx.fragment.app.Fragment
 import com.akjaw.fullerstack.screens.settings.SettingsFragment
 import kotlinx.android.parcel.Parcelize
 
@@ -9,5 +9,5 @@ class SettingsScreen : MultiStackFragmentKey() {
 
     override fun getKeyIdentifier(): String = RootFragments.SETTINGS.name
 
-    override fun instantiateFragment(): BaseFragment = SettingsFragment()
+    override fun instantiateFragment(): Fragment = SettingsFragment()
 }

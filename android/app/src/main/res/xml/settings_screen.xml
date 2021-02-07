@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+            app:key="@string/note_date_pattern_key"
+            app:title="@string/settings_change_date_format_title"
+            app:summary="@string/settings_change_date_format_summary"/>
+
+</PreferenceScreen>

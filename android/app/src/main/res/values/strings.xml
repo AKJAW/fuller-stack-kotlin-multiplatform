@@ -34,4 +34,7 @@
     <string name="profile_name_placeholder">Name</string>
     <string name="profile_email_placeholder">Email</string>
     <string name="profile_log_out_button">Log out</string>
+
+    <string name="settings_change_date_format_title">Date format</string>
+    <string name="settings_change_date_format_summary">Change the notes date format</string>
 </resources>

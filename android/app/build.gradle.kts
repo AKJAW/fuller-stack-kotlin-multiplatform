@@ -64,6 +64,7 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_VIEWMODEL)
     implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
     implementation(AndroidLibs.FRAGMENT_KTX)
+    implementation(AndroidLibs.PREFERENCE)
 
     // ui
     implementation(AndroidLibs.COIL)

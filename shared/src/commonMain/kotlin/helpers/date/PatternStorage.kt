@@ -4,20 +4,28 @@ import com.soywiz.klock.DateFormat
 import helpers.storage.Storage
 import kotlinx.coroutines.flow.MutableStateFlow
 
-internal class PatternStorage(private val storage: Storage): PatternProvider, PatternSaver {
+internal class PatternStorage(
+    private val storage: Storage,
+    private val notesDatePatternStorageKey: NotesDatePatternStorageKey
+    ): PatternProvider, PatternSaver {
 
-    companion object {
-        private const val NOTES_LIST_ITEM_PATTERN_KEY = "NOTES_LIST_ITEM_PATTERN"
+    override val patternFlow: MutableStateFlow<DateFormat> = MutableStateFlow(getSavedPattern())
+
+    override fun getPattern(): DateFormat = patternFlow.value
+
+    override fun setPattern(dateFormat: DateFormat) {
+        storage.setString(notesDatePatternStorageKey.value, dateFormat.toString())
+        patternFlow.value = dateFormat
     }
 
-    override val patternFlow: MutableStateFlow<DateFormat> = MutableStateFlow(getNotesListItemPattern())
-
-    private fun getNotesListItemPattern(): DateFormat {
-        val pattern = storage.getString(NOTES_LIST_ITEM_PATTERN_KEY) ?: return NoteDateFormat.Default
+    private fun getSavedPattern(): DateFormat {
+        val pattern = storage.getString(notesDatePatternStorageKey.value) ?: return initializeDefault()
         return DateFormat(pattern)
     }
 
-    override fun setPattern(noteDateFormat: NoteDateFormat) {
-        storage.setString(NOTES_LIST_ITEM_PATTERN_KEY, noteDateFormat.value)
+    private fun initializeDefault(): DateFormat {
+        val defaultFormat = NoteDateFormat.Default
+        storage.setString(notesDatePatternStorageKey.value, defaultFormat.toString())
+        return defaultFormat
     }
 }

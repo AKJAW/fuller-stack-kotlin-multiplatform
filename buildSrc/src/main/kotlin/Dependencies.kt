@@ -137,6 +137,7 @@ object AndroidLibs {
     const val LIFECYCLE_RUNTIME_KTX =  "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE}"
     const val LIFECYCLE_EXTENSTIONS =  "androidx.lifecycle:lifecycle-extensions:${Versions.LIFECYCLE}"
     const val FRAGMENT_KTX =  "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
+    const val PREFERENCE =  "androidx.preference:preference:1.1.0"
 
     const val COIL = "io.coil-kt:coil:1.0.0"
 

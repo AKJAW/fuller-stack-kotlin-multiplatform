@@ -23,7 +23,7 @@ val common = DI.Module("Common") {
     bind() from singleton { NoteEntityMapper() }
     bind<CoroutineDispatcher>(tag = "BackgroundDispatcher") with singleton { CommonDispatchers.BackgroundDispatcher }
     bind<UnixTimestampProvider>() with singleton { KlockUnixTimestampProvider() }
-    bind("PatternStorage") from singleton { PatternStorage(instance()) }
+    bind("PatternStorage") from singleton { PatternStorage(instance(), instance()) }
     bind<PatternProvider>() with singleton { instance("PatternStorage") }
     bind<PatternSaver>() with singleton { instance("PatternStorage") }
     bind<NoteInputValidator>() with singleton { NoteEditorInputValidator() }

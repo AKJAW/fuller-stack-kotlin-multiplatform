@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface PatternProvider {
 
     val patternFlow: Flow<DateFormat>
+
+    fun getPattern(): DateFormat
 }
