@@ -2,7 +2,6 @@ package com.akjaw.fullerstack.screens.common
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import com.akjaw.fullerstack.android.R
 import com.akjaw.fullerstack.authentication.composition.authenticationModule

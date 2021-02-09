@@ -33,7 +33,7 @@ class GetUserProfile(
                     continuation.resume(userProfile)
                 }
 
-                override fun onFailure(error: AuthenticationException?) {
+                override fun onFailure(error: AuthenticationException) {
                     Log.d("Auth", "userInfo failure $error")
                     continuation.resume(null)
                 }

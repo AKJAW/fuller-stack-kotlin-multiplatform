@@ -160,7 +160,7 @@ object AndroidLibs {
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Versions.LEAK_CANARY}"
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 
-    const val AUTH0 = "com.auth0.android:auth0:1.25.0"
+    const val AUTH0 = "com.auth0.android:auth0:1.30.0"
 }
 
 object AndroidTestingLibs {

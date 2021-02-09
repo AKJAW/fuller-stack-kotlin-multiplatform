@@ -36,7 +36,7 @@ class TokenProvider(
                 }
             }
 
-            override fun onFailure(error: CredentialsManagerException?) {
+            override fun onFailure(error: CredentialsManagerException) {
                 Log.d("Auth", "getCredentials failure $error")
                 continuation.resume(Result.FAILURE)
             }

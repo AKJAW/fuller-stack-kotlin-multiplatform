@@ -1,7 +1,6 @@
 package com.akjaw.fullerstack.screens.settings
 
 import android.os.Bundle
-import android.util.Log
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.akjaw.fullerstack.android.R
@@ -11,6 +10,7 @@ import helpers.date.NoteDateFormat
 import helpers.date.NotesDatePatternStorageKey
 import helpers.date.PatternProvider
 import helpers.date.PatternSaver
+import helpers.date.toNoteDateFormat
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -43,7 +43,8 @@ class SettingsFragment : PreferenceFragmentCompat(), DIAware {
 
             val savedPattern = patternProvider.getPattern()
             if (value !=  savedPattern.toString()) {
-                val index = NoteDateFormat.values().indexOfFirst { it.value == savedPattern.toString() }
+                val noteDateFormat = savedPattern.toNoteDateFormat()
+                val index = NoteDateFormat.values().indexOf(noteDateFormat)
                 setValueIndex(index)
             }
 
