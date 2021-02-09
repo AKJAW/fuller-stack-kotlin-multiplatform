@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 internal class PatternStorage(
     private val storage: Storage,
     private val notesDatePatternStorageKey: NotesDatePatternStorageKey
-    ): PatternProvider, PatternSaver {
+) : PatternProvider, PatternSaver {
 
     override val patternFlow: MutableStateFlow<DateFormat> = MutableStateFlow(getSavedPattern())
 
@@ -24,7 +24,7 @@ internal class PatternStorage(
     }
 
     private fun initializeDefault(): DateFormat {
-        val defaultFormat = NoteDateFormat.Default
+        val defaultFormat = NoteDateFormat.Default.toDateFormat()
         storage.setString(notesDatePatternStorageKey.value, defaultFormat.toString())
         return defaultFormat
     }

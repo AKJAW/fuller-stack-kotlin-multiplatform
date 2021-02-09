@@ -29,7 +29,7 @@ dependencies {
     implementation(ReactLibs.MUIRWIK)
 
     // dependency injection
-    implementation(SharedLibs.KODEIN_DI)
+    implementation(ReactLibs.KODEIN_DI_FRAMEWORK_JAVASCRIPT)
 
     // network
     implementation(SharedLibs.COROUTINES_CORE)

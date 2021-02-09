@@ -1,7 +1,7 @@
 object Versions {
 
     //shared
-    const val KODEIN = "7.1.0"
+    const val KODEIN = "7.3.1"
     const val COROUTINES = "1.4.1"
     const val KTLINT = "0.36.0"
     const val KLOCK = "2.0.0-rc2"
@@ -96,6 +96,8 @@ object ReactLibs {
     const val STYLED = "org.jetbrains:kotlin-styled:5.2.0-pre.125-kotlin-${PluginsVersions.KOTLIN}"
     const val CSS_JS = "org.jetbrains:kotlin-css-js:1.0.0-pre.125-kotlin-${PluginsVersions.KOTLIN}"
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
+
+    const val KODEIN_DI_FRAMEWORK_JAVASCRIPT = "org.kodein.di:kodein-di-js:${Versions.KODEIN}"
 
     const val KTOR_CLIENT_JS = "io.ktor:ktor-client-js:${Versions.KTOR}"
     const val KTOR_CLIENT_JSON = "io.ktor:ktor-client-json-js:${Versions.KTOR}"

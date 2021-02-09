@@ -3,6 +3,7 @@ package features.list
 import feature.local.sort.SortProperty
 import features.editor.NoteEditorSlice
 import helpers.date.NoteDateFormat
+import helpers.date.toDateFormat
 import model.Note
 import react.RBuilder
 import react.RClass
@@ -44,7 +45,7 @@ private interface DispatchProps : RProps {
 }
 
 private class NotesListContainer(props: NotesListConnectedProps) : RComponent<NotesListConnectedProps, RState>(props) {
-    val dateFormat = NoteDateFormat.Default
+    val dateFormat = NoteDateFormat.Default.toDateFormat()
 
     override fun componentDidMount() {
         props.getNotesList()
