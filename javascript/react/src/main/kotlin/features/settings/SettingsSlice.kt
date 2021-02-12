@@ -20,12 +20,12 @@ object SettingsSlice {
         val selectedNoteDateFormat: NoteDateFormat = NoteDateFormat.Default
     )
 
-    private val patternStorage by KodeinEntry.di.instance<PatternProvider>()
+    private val patternProvider by KodeinEntry.di.instance<PatternProvider>()
     private val patternSaver by KodeinEntry.di.instance<PatternSaver>()
 
     private val settingsScope = CoroutineScope(SupervisorJob())
     private val listenForNoteDateFormatThunk by lazy {
-        ListenForNoteDateFormatThunk(settingsScope, patternStorage)
+        ListenForNoteDateFormatThunk(settingsScope, patternProvider)
     }
 
     fun listenToNoteDateFormatChanges(): RThunk = listenForNoteDateFormatThunk

@@ -29,7 +29,6 @@ import styled.styledDiv
 
 interface NotesListItemProps : RProps {
     var note: Note
-    var dateFormat: DateFormat
     var onNoteClicked: (note: Note) -> Unit
 }
 
@@ -75,7 +74,7 @@ val notesListItem = functionalComponent<NotesListItemProps> { props ->
                 }
             }
             span {
-                + props.dateFormat.format(note.creationTimestamp.unix)
+                + note.dateFormat.format(note.creationTimestamp.unix)
             }
         }
     }
