@@ -16,17 +16,21 @@ import feature.synchronization.*
 import helpers.date.NoteDateFormat
 import helpers.date.PatternProvider
 import helpers.date.UnixTimestampProvider
+import helpers.date.toDateFormat
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import model.CreationTimestamp
 import model.Note
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -64,11 +68,12 @@ internal class NotesListViewModelTest {
     private val testCoroutineScope = TestCoroutineScope()
 
     private val patternProvider: PatternProvider = mockk {
-        every { patternFlow } returns flow { emit(PatternFormat.Default) }
+        every { patternFlow } returns flow { emit(NoteDateFormat.Default.toDateFormat()) }
     }
 
     @BeforeEach
     fun setUp() {
+        Dispatchers.setMain(Dispatchers.Unconfined)
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         getNotes = GetNotes(testCoroutineDispatcher, noteDaoTestFake, noteEntityMapper)
@@ -92,6 +97,11 @@ internal class NotesListViewModelTest {
         )
 
         noteDaoTestFake.initializeNoteEntities(NOTES)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
