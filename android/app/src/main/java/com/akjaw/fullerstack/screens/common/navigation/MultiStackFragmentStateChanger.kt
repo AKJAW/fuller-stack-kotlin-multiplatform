@@ -112,7 +112,7 @@ class MultiStackFragmentStateChanger(
                 var fragment: Fragment? = fragmentManager.findFragmentByTag(newKey.fragmentTag)
                 if (newKey == stateChange.topNewKey<Any>()) {
                     if (fragment != null) {
-                        if (fragment.isRemoving) { // Fragments are quirky, they die asynchronously. Ignore if they're still there.
+                        if (fragment.isRemoving) {
                             fragment = newKey.newFragment()
                             replace(containerId, fragment, newKey.fragmentTag)
                         } else if (fragment.isDetached) {

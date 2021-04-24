@@ -2,6 +2,10 @@ package features.list
 
 import DexieNoteDao
 import composition.KodeinEntry
+import feature.local.search.SearchNotes
+import feature.local.sort.SortNotes
+import feature.local.sort.SortProperty
+import feature.local.sort.SortType
 import features.list.thunk.GetNotesThunk
 import features.list.thunk.SynchronizeNotesThunk
 import kotlinx.coroutines.CoroutineScope
@@ -15,11 +19,16 @@ import store.RThunk
 
 object NotesListSlice {
     data class State(
+        val originalList: Array<Note> = emptyArray(),
         val notesList: Array<Note> = emptyArray(),
-        val isLoading: Boolean = true
+        val isLoading: Boolean = true,
+        val sortProperty: SortProperty = SortProperty.DEFAULT,
+        val searchValue: String = ""
     )
 
     private val dexieNoteDao by KodeinEntry.di.instance<DexieNoteDao>()
+    private val sortNotes by KodeinEntry.di.instance<SortNotes>()
+    private val searchNotes by KodeinEntry.di.instance<SearchNotes>()
 
     private val notesListScope = CoroutineScope(SupervisorJob())
     private val getNotesListThunk = GetNotesThunk(notesListScope, dexieNoteDao)
@@ -39,15 +48,34 @@ object NotesListSlice {
 
     class SetIsLoading(val isLoading: Boolean) : RAction
 
+    class SetSortProperty(val sortProperty: SortProperty) : RAction
+
+    class SetSearchValue(val searchValue: String) : RAction
+
     fun reducer(state: State = State(), action: RAction): State {
         return when (action) {
             is SetNotesList -> {
-                state.copy(notesList = action.notesList, isLoading = false)
+                val notesList = calculateNotes(action.notesList.toList(), state.searchValue, state.sortProperty)
+                state.copy(originalList = action.notesList, notesList = notesList, isLoading = false)
             }
             is SetIsLoading -> {
                 state.copy(isLoading = action.isLoading)
             }
+            is SetSortProperty -> {
+                val notesList = calculateNotes(state.originalList.toList(), state.searchValue, action.sortProperty)
+                state.copy(notesList = notesList, sortProperty = action.sortProperty)
+            }
+            is SetSearchValue -> {
+                val notesList = calculateNotes(state.originalList.toList(), action.searchValue, state.sortProperty)
+                state.copy(notesList = notesList, searchValue = action.searchValue)
+            }
             else -> state
         }
+    }
+
+    private fun calculateNotes(notes: List<Note>, searchValue: String, sortProperty: SortProperty): Array<Note> {
+        val filteredNotes = searchNotes.execute(notes, searchValue)
+        val sortedNotes = sortNotes.execute(filteredNotes, sortProperty)
+        return sortedNotes.toTypedArray()
     }
 }

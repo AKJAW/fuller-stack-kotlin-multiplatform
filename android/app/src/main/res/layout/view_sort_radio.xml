@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+>
+
+    <RadioGroup
+            android:id="@+id/group_sort_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+    >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort by"
+        />
+
+        <RadioButton
+                android:id="@+id/sort_by_creation_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Creation date"
+        />
+        <RadioButton
+                android:id="@+id/sort_by_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+        />
+    </RadioGroup>
+
+    <RadioGroup
+            android:id="@+id/group_sort_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+    >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Direction"
+        />
+
+        <RadioButton
+                android:id="@+id/sort_direction_ascending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ascending"
+        />
+        <RadioButton
+                android:id="@+id/sort_direction_descending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Descending"
+        />
+    </RadioGroup>
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.akjaw.fullerstack.composition.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.akjaw.framework.utility.KeyboardCloser
 import com.akjaw.fullerstack.screens.common.ViewModelFactory
 import com.akjaw.fullerstack.screens.common.main.MainActivityViewModel
 import com.akjaw.fullerstack.screens.editor.NoteEditorViewModel
@@ -21,9 +22,17 @@ val presentationModule = DI.Module("presentationModule") {
     bind() from singleton { NotesListActionMode(instance(), instance()) }
     bind() from singleton { NotesSelectionTrackerFactory(instance(), instance()) }
     bind() from singleton { NotesListAdapterFactory(instance(), instance()) }
+    bind() from singleton { KeyboardCloser(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
     bind<ViewModel>(tag = NotesListViewModel::class.java.simpleName) with provider {
-        NotesListViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())
+        NotesListViewModel(
+            applicationScope = instance("ApplicationCoroutineScope"),
+            getNotes = instance(),
+            deleteNotes = instance(),
+            synchronizeNotes = instance(),
+            searchNotes = instance(),
+            sortNotes = instance()
+        )
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {
         NoteEditorViewModel(instance("ApplicationCoroutineScope"), instance(), instance(), instance())

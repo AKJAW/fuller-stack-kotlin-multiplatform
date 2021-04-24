@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
+import network.ApiUrl
 import network.NoteSchema
 
 class KtorNoteSocket(
@@ -38,7 +39,7 @@ class KtorNoteSocket(
     private fun connect(): Flow<List<NoteSchema>> = callbackFlow {
         session = client.webSocketSession(
             method = HttpMethod.Get,
-            host = "fuller-stack-ktor.herokuapp.com",
+            host = ApiUrl.BASE_URL,
             port = 9001,
             path = "/notes/ws",
         )

@@ -21,6 +21,10 @@ import org.kodein.di.instance
 
 class AuthenticationActivity : AppCompatActivity(R.layout.activity_authentication), DIAware {
 
+    companion object {
+        private const val ANIMATION_DURATION = 150L
+    }
+
     override val di: DI by DI.lazy {
         val customApplication = application as DIAware
         extend(customApplication.di)
@@ -73,11 +77,11 @@ class AuthenticationActivity : AppCompatActivity(R.layout.activity_authenticatio
 
     private fun hideLoading() {
         loadingIndicator.visibility = View.GONE
-        viewFader.fadeInViews(150)
+        viewFader.fadeInViews(ANIMATION_DURATION)
     }
 
     private fun showLoading() {
-        viewFader.fadeOutViews(150)
+        viewFader.fadeOutViews(ANIMATION_DURATION)
         loadingIndicator.visibility = View.VISIBLE
     }
 

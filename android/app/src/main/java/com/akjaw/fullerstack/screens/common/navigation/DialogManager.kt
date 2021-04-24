@@ -8,4 +8,6 @@ interface DialogManager {
         noteIdentifiers: List<CreationTimestamp>,
         onNotesDeleted: () -> Unit
     )
+
+    fun showSortDialog()
 }

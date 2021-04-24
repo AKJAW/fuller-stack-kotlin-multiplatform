@@ -18,6 +18,11 @@ class ListenToSocketUpdates(
     private val noteSocket: NoteSocket,
     private val synchronizeNotes: SynchronizeNotes
 ) {
+
+    companion object {
+        private const val SOCKET_RETRY_DELAY_MILLISECONDS = 5000L
+    }
+
     private val scope: CoroutineScope = CoroutineScope(coroutineDispatcher)
     private var job: Job? = null
 
@@ -28,7 +33,7 @@ class ListenToSocketUpdates(
         job = scope.launch {
             noteSocket.getNotesFlow()
                 .retry {
-                    delay(5000)
+                    delay(SOCKET_RETRY_DELAY_MILLISECONDS)
                     true
                 }
                 .collect { apiNotes ->

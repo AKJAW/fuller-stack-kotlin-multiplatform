@@ -6,6 +6,7 @@ import com.akjaw.fullerstack.notes.network.RetrofitNoteApi
 import com.akjaw.fullerstack.notes.socket.SessionCookieJar
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import network.ApiUrl
 import network.NoteApi
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -29,7 +30,7 @@ val networkModule = DI.Module("networkModule") {
     bind<NoteService>() with singleton {
         val contentType = "application/json".toMediaType()
         Retrofit.Builder()
-            .baseUrl("https://fuller-stack-ktor.herokuapp.com")
+            .baseUrl(ApiUrl.BASE_URL)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .client(instance<OkHttpClient>())
             .build()

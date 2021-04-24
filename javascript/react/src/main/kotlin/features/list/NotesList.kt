@@ -3,6 +3,7 @@ package features.list
 import com.ccfraser.muirwik.components.list.mList
 import com.ccfraser.muirwik.components.mCircularProgress
 import com.soywiz.klock.DateFormat
+import feature.local.sort.SortProperty
 import kotlinx.css.Align
 import kotlinx.css.Display
 import kotlinx.css.JustifyContent
@@ -23,8 +24,12 @@ import styled.styledDiv
 interface NotesListProps : RProps {
     var isLoading: Boolean
     var notesList: Array<Note>
-    var openEditor: (note: Note?) -> Unit
+    var sortProperty: SortProperty
+    var searchValue: String
     var dateFormat: DateFormat
+    var openEditor: (note: Note?) -> Unit
+    var changeSort: (sortProperty: SortProperty) -> Unit
+    var changeSearchValue: (searchValue: String) -> Unit
 }
 
 @Suppress("MagicNumber")
@@ -50,8 +55,12 @@ val notesList = functionalComponent<NotesListProps> { props ->
             css(NotesListClasses.loading)
             mCircularProgress { }
         } else {
-            child(addNoteButton) {
-                attrs.onClick = props.openEditor
+            child(actionRow) {
+                attrs.onAddNoteClick = props.openEditor
+                attrs.sortProperty = props.sortProperty
+                attrs.changeSort = props.changeSort
+                attrs.searchValue = props.searchValue
+                attrs.changeSearchValue = props.changeSearchValue
             }
             mList {
                 css(NotesListClasses.list)
