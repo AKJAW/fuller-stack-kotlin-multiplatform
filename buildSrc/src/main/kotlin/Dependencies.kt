@@ -1,7 +1,7 @@
 object Versions {
 
     //shared
-    const val KODEIN = "7.1.0"
+    const val KODEIN = "7.3.1"
     const val COROUTINES = "1.4.1"
     const val KTLINT = "0.36.0"
     const val KLOCK = "2.0.0-rc2"
@@ -97,6 +97,8 @@ object ReactLibs {
     const val CSS_JS = "org.jetbrains:kotlin-css-js:1.0.0-pre.125-kotlin-${PluginsVersions.KOTLIN}"
     const val MUIRWIK = "com.ccfraser.muirwik:muirwik-components:${Versions.MUIRWIK}"
 
+    const val KODEIN_DI_FRAMEWORK_JAVASCRIPT = "org.kodein.di:kodein-di-js:${Versions.KODEIN}"
+
     const val KTOR_CLIENT_JS = "io.ktor:ktor-client-js:${Versions.KTOR}"
     const val KTOR_CLIENT_JSON = "io.ktor:ktor-client-json-js:${Versions.KTOR}"
     const val KTOR_CLIENT_SERIALIZATION = "io.ktor:ktor-client-serialization-js:${Versions.KTOR}"
@@ -137,6 +139,7 @@ object AndroidLibs {
     const val LIFECYCLE_RUNTIME_KTX =  "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE}"
     const val LIFECYCLE_EXTENSTIONS =  "androidx.lifecycle:lifecycle-extensions:${Versions.LIFECYCLE}"
     const val FRAGMENT_KTX =  "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
+    const val PREFERENCE =  "androidx.preference:preference:1.1.0"
 
     const val COIL = "io.coil-kt:coil:1.0.0"
 
@@ -157,7 +160,7 @@ object AndroidLibs {
     const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Versions.LEAK_CANARY}"
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 
-    const val AUTH0 = "com.auth0.android:auth0:1.25.0"
+    const val AUTH0 = "com.auth0.android:auth0:1.30.0"
 }
 
 object AndroidTestingLibs {

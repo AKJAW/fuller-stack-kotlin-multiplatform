@@ -21,7 +21,7 @@ import org.kodein.di.singleton
 val presentationModule = DI.Module("presentationModule") {
     bind() from singleton { NotesListActionMode(instance(), instance()) }
     bind() from singleton { NotesSelectionTrackerFactory(instance(), instance()) }
-    bind() from singleton { NotesListAdapterFactory(instance(), instance()) }
+    bind() from singleton { NotesListAdapterFactory(instance()) }
     bind() from singleton { KeyboardCloser(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di.direct) }
     bind<ViewModel>(tag = NotesListViewModel::class.java.simpleName) with provider {
@@ -31,7 +31,8 @@ val presentationModule = DI.Module("presentationModule") {
             deleteNotes = instance(),
             synchronizeNotes = instance(),
             searchNotes = instance(),
-            sortNotes = instance()
+            sortNotes = instance(),
+            patternProvider = instance()
         )
     }
     bind<ViewModel>(tag = NoteEditorViewModel::class.java.simpleName) with provider {

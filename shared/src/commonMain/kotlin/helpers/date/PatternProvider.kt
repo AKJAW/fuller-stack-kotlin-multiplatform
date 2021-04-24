@@ -2,18 +2,11 @@ package helpers.date
 
 import com.soywiz.klock.DateFormat
 import helpers.storage.Storage
+import kotlinx.coroutines.flow.Flow
 
-class PatternProvider(private val storage: Storage) {
-    companion object {
-        private const val NOTES_LIST_ITEM_PATTERN = "NOTES_LIST_ITEM_PATTERN"
-        private const val NOTES_LIST_ITEM_DEFAULT = "dd.MM"
-    }
+interface PatternProvider {
 
-    fun getNotesListItemPattern(): DateFormat =
-        getOrDefault(NOTES_LIST_ITEM_PATTERN, NOTES_LIST_ITEM_DEFAULT)
+    val patternFlow: Flow<DateFormat>
 
-    private fun getOrDefault(key: String, defaultPattern: String): DateFormat {
-        val pattern = storage.getString(key) ?: defaultPattern
-        return DateFormat(pattern)
-    }
+    fun getPattern(): DateFormat
 }

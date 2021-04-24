@@ -57,7 +57,7 @@ internal class Auth0UserAuthenticator(
                 continuation.resume(AuthenticationResult.FAILURE)
             }
 
-            override fun onFailure(exception: AuthenticationException?) {
+            override fun onFailure(exception: AuthenticationException) {
                 Log.d("Auth", "authCallback failure $exception")
                 continuation.resume(AuthenticationResult.FAILURE)
             }
@@ -79,7 +79,7 @@ internal class Auth0UserAuthenticator(
                 return continuation.resume(AuthenticationResult.SUCCESS)
             }
 
-            override fun onFailure(error: Auth0Exception?) {
+            override fun onFailure(error: Auth0Exception) {
                 Log.d("Auth", "authCallback failure $error")
                 return continuation.resume(AuthenticationResult.FAILURE)
             }

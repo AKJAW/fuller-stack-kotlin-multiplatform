@@ -2,6 +2,8 @@ package store
 
 import features.editor.NoteEditorSlice
 import features.list.NotesListSlice
+import features.settings.SettingsSlice
+import features.settings.settingsPage
 import redux.Reducer
 import redux.combineReducers
 import kotlin.reflect.KProperty1
@@ -9,7 +11,8 @@ import kotlin.reflect.KProperty1
 fun combinedReducers() = combineReducersInferred(
     mapOf(
         AppState::notesListState to NotesListSlice::reducer,
-        AppState::noteEditorState to NoteEditorSlice::reducer
+        AppState::noteEditorState to NoteEditorSlice::reducer,
+        AppState::settingsState to SettingsSlice::reducer,
     )
 )
 

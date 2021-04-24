@@ -27,7 +27,7 @@ import react.functionalComponent
 import styled.StyleSheet
 import styled.css
 import useAuth0
-import kotlin.browser.window
+import kotlinx.browser.window
 
 @Suppress("MagicNumber")
 private object UserProfileClasses : StyleSheet("UserProfile", isStatic = true) {

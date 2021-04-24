@@ -4,10 +4,13 @@ import DexieNoteDao
 import composition.KodeinEntry
 import feature.GetNotes
 import features.list.NotesListSlice
+import helpers.date.PatternProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import model.CreationTimestamp
 import model.Note
@@ -24,6 +27,7 @@ class GetNotesThunk(
     private val dexieNoteDao: DexieNoteDao
 ) : RThunk {
     private val getNotes by KodeinEntry.di.instance<GetNotes>()
+    private val patternProvider by KodeinEntry.di.instance<PatternProvider>()
     private var notesFlowJob: Job? = null
 
     // TODO should this be cancelled somewhere?
@@ -34,7 +38,9 @@ class GetNotesThunk(
             while (dexieNoteDao.isInitialized.not()) {
                 delay(100)
             }
-            getNotes.executeAsync().collect { notes ->
+            getNotes.executeAsync().combine(patternProvider.patternFlow) { notes, dateFormat ->
+                notes.map { it.copy(dateFormat = dateFormat) }
+            }.collect { notes ->
                 val action = NotesListSlice.SetNotesList(notes.toTypedArray())
                 dispatch(action)
             }

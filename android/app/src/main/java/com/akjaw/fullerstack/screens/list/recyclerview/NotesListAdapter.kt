@@ -14,7 +14,6 @@ import model.Note
 class NotesListAdapter(
     notesSelectionTrackerFactory: NotesSelectionTrackerFactory,
     initialSelectedNotes: List<CreationTimestamp>,
-    private val dateFormat: DateFormat,
     private val onItemClicked: (Note) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -27,7 +26,7 @@ class NotesListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val rootView = inflater.inflate(R.layout.item_notes_list, parent, false)
-        return NoteViewHolder(rootView, dateFormat, notesSelectionTracker, onItemClicked)
+        return NoteViewHolder(rootView, notesSelectionTracker, onItemClicked)
     }
 
     override fun getItemCount(): Int = notes.count()

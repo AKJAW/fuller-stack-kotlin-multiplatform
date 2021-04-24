@@ -26,7 +26,6 @@ interface NotesListProps : RProps {
     var notesList: Array<Note>
     var sortProperty: SortProperty
     var searchValue: String
-    var dateFormat: DateFormat
     var openEditor: (note: Note?) -> Unit
     var changeSort: (sortProperty: SortProperty) -> Unit
     var changeSearchValue: (searchValue: String) -> Unit
@@ -67,7 +66,6 @@ val notesList = functionalComponent<NotesListProps> { props ->
                 props.notesList.forEach { note ->
                     child(notesListItem) {
                         attrs.note = note
-                        attrs.dateFormat = props.dateFormat
                         attrs.onNoteClicked = props.openEditor
                     }
                 }

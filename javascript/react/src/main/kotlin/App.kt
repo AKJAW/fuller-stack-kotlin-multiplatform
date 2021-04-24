@@ -3,7 +3,7 @@ import com.ccfraser.muirwik.components.mContainer
 import com.ccfraser.muirwik.components.styles.Breakpoint
 import composition.KodeinEntry
 import features.home.homePage
-import features.profile.profilePage
+import features.settings.settingsPageContainer
 import org.kodein.di.instance
 import react.RBuilder
 import react.RComponent
@@ -29,7 +29,7 @@ class App : RComponent<RProps, RState>() {
                             child(homePage)
                         }
                         route("/profile") {
-                            child(profilePage)
+                            settingsPageContainer {}
                         }
                     }
                 }

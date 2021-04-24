@@ -3,8 +3,8 @@ import com.ccfraser.muirwik.components.styles.mStylesProvider
 import react.dom.render
 import react.redux.provider
 import store.myStore
-import kotlin.browser.document
-import kotlin.browser.window
+import kotlinx.browser.document
+import kotlinx.browser.window
 
 fun main() {
     render(document.getElementById("root")) {
