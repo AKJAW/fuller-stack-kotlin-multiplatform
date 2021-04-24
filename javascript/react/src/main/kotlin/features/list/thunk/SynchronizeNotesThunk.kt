@@ -2,7 +2,7 @@ package features.list.thunk
 
 import DexieNoteDao
 import composition.KodeinEntry
-import feature.SynchronizeNotes
+import feature.synchronization.SynchronizeNotes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -13,6 +13,7 @@ import store.AppState
 import store.RThunk
 import store.nullAction
 
+@Suppress("MagicNumber")
 class SynchronizeNotesThunk(
     private val scope: CoroutineScope,
     private val dexieNoteDao: DexieNoteDao

@@ -3,7 +3,6 @@ package feature.synchronization
 import com.soywiz.klock.DateTime
 import database.NoteDao
 import database.NoteEntity
-import feature.SynchronizeNotes
 import helpers.date.UnixTimestampProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import model.Note
@@ -18,7 +17,7 @@ internal class SynchronizationUseCaseFactory(
     private val noteApi: NoteApi,
     private val timestampProvider: UnixTimestampProvider
 ) {
-    fun createSynchronizeNotes(): SynchronizeNotes = SynchronizeNotes(
+    fun createSynchronizeNotes(): SynchronizeNotes = SynchronizeApiAndLocalNotes(
         coroutineDispatcher = coroutineDispatcher,
         noteDao = noteDao,
         noteApi = noteApi,

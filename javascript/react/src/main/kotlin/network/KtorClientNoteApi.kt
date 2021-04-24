@@ -16,7 +16,7 @@ class KtorClientNoteApi(
     private val client: HttpClient
 ) : NoteApi {
 
-    val apiUrl = "https://fuller-stack-ktor.herokuapp.com/notes"
+    val apiUrl = "${ApiUrl.BASE_URL}/notes"
     val json = KotlinxSerializer()
 
     override suspend fun getNotes(): List<NoteSchema> {

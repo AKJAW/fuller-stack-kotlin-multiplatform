@@ -24,4 +24,17 @@
     </plurals>
     <string name="delete_notes_dialog_confirm">Yes</string>
     <string name="delete_notes_dialog_cancel">Cancel</string>
+
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_profile">Profile</string>
+    <string name="bottom_nav_settings">Settings</string>
+
+    <string name="profile_toolbar_title">Profile</string>
+    <string name="profile_image_description">User profile picture</string>
+    <string name="profile_name_placeholder">Name</string>
+    <string name="profile_email_placeholder">Email</string>
+    <string name="profile_log_out_button">Log out</string>
+
+    <string name="settings_change_date_format_title">Date format</string>
+    <string name="settings_change_date_format_summary">Change the notes date format</string>
 </resources>

@@ -22,6 +22,7 @@ class TokenProvider(
 
     fun getToken(): AccessToken? = accessToken
 
+    //TODO handle failure case
     suspend fun initializeToken(): Result = suspendCoroutine { continuation ->
         credentialsManager.getCredentials(object :BaseCallback<Credentials, CredentialsManagerException> {
 
@@ -35,7 +36,7 @@ class TokenProvider(
                 }
             }
 
-            override fun onFailure(error: CredentialsManagerException?) {
+            override fun onFailure(error: CredentialsManagerException) {
                 Log.d("Auth", "getCredentials failure $error")
                 continuation.resume(Result.FAILURE)
             }

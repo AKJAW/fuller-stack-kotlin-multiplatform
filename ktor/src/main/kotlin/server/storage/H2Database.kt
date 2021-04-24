@@ -25,7 +25,7 @@ class H2Database : ExposedDatabase {
         transaction {
             createMissingTablesAndColumns(NotesTable)
             NotesTable.insert {
-                it[userId] = "LrviSpxuDVsE0263vbgcvRPycCgvxPlB@clients"
+                it[userId] = "auth0|5f79afef52cb550078487c6d"
                 it[title] = "Note 1"
                 it[content] = "Content of one"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 1).unixMillisLong
@@ -33,7 +33,7 @@ class H2Database : ExposedDatabase {
                 it[wasDeleted] = false
             }
             NotesTable.insert {
-                it[userId] = "LrviSpxuDVsE0263vbgcvRPycCgvxPlB@clients"
+                it[userId] = "auth0|5f79afef52cb550078487c6d"
                 it[title] = "Note 2"
                 it[content] = "Content of two"
                 it[creationUnixTimestamp] = DateTime.createAdjusted(2020, 6, 2).unixMillisLong

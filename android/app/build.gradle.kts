@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation(project(":shared"))
     api(project(":android:authentication"))
+    api(project(":android:framework"))
 
     // debugging
     debugImplementation(AndroidLibs.LEAK_CANARY)
@@ -63,6 +64,10 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_VIEWMODEL)
     implementation(AndroidLibs.LIFECYCLE_LIVEDATA)
     implementation(AndroidLibs.FRAGMENT_KTX)
+    implementation(AndroidLibs.PREFERENCE)
+
+    // ui
+    implementation(AndroidLibs.COIL)
 
     // dependency injection
     implementation(SharedLibs.KODEIN_DI)
@@ -72,12 +77,12 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
 
     // network
-    implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(SharedLibs.COROUTINES_CORE)
     implementation(AndroidLibs.OKHTTP)
     implementation(AndroidLibs.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(AndroidLibs.RETROFIT)
     implementation(AndroidLibs.RETROFIT_KOTLINX_SERIALIZATION)
-    implementation(SharedLibs.SERIALIZATION_RUNTIME_COMMON)
+    implementation(SharedLibs.KOTLINX_SERIALIZATION)
 
     // persistance
     implementation(AndroidLibs.ROOM_RUNTIME)
@@ -92,7 +97,7 @@ dependencies {
     implementation(AndroidLibs.SIMPLE_STACK_EXTENSIONS)
 
     testImplementation(JVMTestingLibs.JUNIT5)
-    testImplementation(SharedTestingLibs.MOCKK)
+    testImplementation(JVMTestingLibs.MOCKK)
     testImplementation(JVMTestingLibs.COROUTINES_TEST)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ESPRESSO_CORE)

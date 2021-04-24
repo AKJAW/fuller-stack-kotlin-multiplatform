@@ -3,6 +3,7 @@ package server
 import com.auth0.jwk.UrlJwkProvider
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.Application
+import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
@@ -14,33 +15,44 @@ import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.cio.websocket.pingPeriod
 import io.ktor.response.respondText
-import io.ktor.routing.Routing
 import io.ktor.routing.get
+import io.ktor.routing.routing
 import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.cookie
+import io.ktor.sessions.get
+import io.ktor.sessions.sessions
+import io.ktor.sessions.set
+import io.ktor.util.generateNonce
+import io.ktor.websocket.WebSockets
 import org.kodein.di.ktor.di
 import server.composition.baseModule
 import server.composition.databaseModule
+import server.composition.socketModule
 import server.routes.notes.notesRoute
+import server.routes.notes.notesSocket
+import java.time.Duration
 
 fun main() {
     embeddedServer(
         factory = Netty,
-        port = getPort(),
+        port = System.getenv("PORT")?.toIntOrNull() ?: 9000,
         module = Application::module,
         watchPaths = listOf("ktor")
     ).start(wait = true)
 }
 
-@Suppress("MagicNumber")
-private fun getPort() = System.getenv("PORT")?.toIntOrNull() ?: 9000
+data class NotesSession(val id: String)
 
 fun Application.module() {
     di {
-        import(databaseModule)
         import(baseModule)
+        import(databaseModule)
+        import(socketModule)
     }
 
     install(Authentication) {
@@ -59,17 +71,24 @@ fun Application.module() {
         }
     }
 
-    install(Routing) {
-        get("/") {
-            call.respondText("Ktor server", ContentType.Text.Html)
-        }
-        authenticate {
-            notesRoute()
-        }
-    }
     install(ContentNegotiation) {
         json()
     }
+
+    install(WebSockets) {
+        pingPeriod = Duration.ofMinutes(1)
+    }
+
+    install(Sessions) {
+        cookie<NotesSession>("SESSION")
+    }
+
+    intercept(ApplicationCallPipeline.Features) {
+        if (call.sessions.get<NotesSession>() == null) {
+            call.sessions.set(NotesSession(generateNonce()))
+        }
+    }
+
     install(CORS) {
         method(HttpMethod.Get)
         method(HttpMethod.Post)
@@ -80,5 +99,15 @@ fun Application.module() {
         header(HttpHeaders.AccessControlAllowOrigin)
         header(HttpHeaders.Authorization)
         host("*") // TODO change when react goes to production
+    }
+
+    routing {
+        get("/") {
+            call.respondText("Ktor server", ContentType.Text.Html)
+        }
+        notesSocket()
+        authenticate {
+            notesRoute()
+        }
     }
 }

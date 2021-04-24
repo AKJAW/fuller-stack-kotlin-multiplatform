@@ -7,6 +7,10 @@ plugins {
 }
 
 android {
+    defaultConfig {
+        minSdkVersion(Versions.MIN_SDK_VERSION)
+        targetSdkVersion(Versions.TARGET_SDK_VERSION)
+    }
     compileSdkVersion(Versions.COMPILE_SDK_VERSION)
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -25,6 +29,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":android:framework"))
 
     implementation(AndroidLibs.KOTLIN_JDK)
 
@@ -36,12 +41,12 @@ dependencies {
     implementation(AndroidLibs.LIFECYCLE_RUNTIME_KTX)
     implementation(AndroidLibs.LIFECYCLE_EXTENSTIONS)
 
-    implementation(AndroidLibs.COROUTINES_ANDROID)
+    implementation(SharedLibs.COROUTINES_CORE)
 
     implementation(SharedLibs.KODEIN_DI)
     implementation(AndroidLibs.KODEIN_DI_FRAMEWORK_ANDROID_X)
 
     testImplementation(JVMTestingLibs.JUNIT5)
-    testImplementation(SharedTestingLibs.MOCKK)
+    testImplementation(JVMTestingLibs.MOCKK)
     testImplementation(JVMTestingLibs.COROUTINES_TEST)
 }

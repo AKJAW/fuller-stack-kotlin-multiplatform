@@ -6,10 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import feature.DeleteNotes
 import feature.GetNotes
-import feature.SynchronizeNotes
+import feature.local.search.SearchNotes
+import feature.local.sort.SortNotes
+import feature.local.sort.SortProperty
+import feature.synchronization.SynchronizeNotes
+import helpers.date.PatternProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import model.CreationTimestamp
 import model.Note
@@ -18,7 +24,10 @@ internal class NotesListViewModel(
     private val applicationScope: CoroutineScope,
     private val getNotes: GetNotes,
     private val deleteNotes: DeleteNotes,
-    private val synchronizeNotes: SynchronizeNotes
+    private val synchronizeNotes: SynchronizeNotes,
+    private val searchNotes: SearchNotes,
+    private val sortNotes: SortNotes,
+    private val patternProvider: PatternProvider
 ) : ViewModel() {
 
     internal sealed class NotesListState {
@@ -26,6 +35,10 @@ internal class NotesListViewModel(
         data class ShowingList(val notes: List<Note>) : NotesListState()
     }
 
+    private val searchValueFlow: MutableStateFlow<String> = MutableStateFlow("")
+    private val sortPropertyFlow: MutableStateFlow<SortProperty> = MutableStateFlow(SortProperty.DEFAULT)
+    val sortProperty: SortProperty
+        get() = sortPropertyFlow.value
     private val _viewState = MutableLiveData<NotesListState>(NotesListState.Loading)
     val viewState: LiveData<NotesListState> = _viewState
 
@@ -39,12 +52,30 @@ internal class NotesListViewModel(
     }
 
     private fun listenToNoteChanges(notesFlow: Flow<List<Note>>) = viewModelScope.launch {
-        notesFlow.collect {
-            _viewState.postValue(NotesListState.ShowingList(it))
+        combine(
+            notesFlow,
+            searchValueFlow,
+            sortPropertyFlow,
+            patternProvider.patternFlow
+        ) { notes, searchValue, sortProperty, dateFormat ->
+            val filteredNotes = searchNotes.execute(notes, searchValue)
+            val sortedNotes = sortNotes.execute(filteredNotes, sortProperty)
+            val notesWithFormat = sortedNotes.map { it.copy(dateFormat = dateFormat) }
+            notesWithFormat
+        }.collect { notes ->
+            _viewState.postValue(NotesListState.ShowingList(notes))
         }
     }
 
     fun deleteNotes(creationTimestamps: List<CreationTimestamp>) = applicationScope.launch {
         deleteNotes.executeAsync(creationTimestamps)
+    }
+
+    fun changeSearchValue(text: String) {
+        searchValueFlow.value = text
+    }
+
+    fun changeSortProperty(sortProperty: SortProperty) {
+        sortPropertyFlow.value = sortProperty
     }
 }

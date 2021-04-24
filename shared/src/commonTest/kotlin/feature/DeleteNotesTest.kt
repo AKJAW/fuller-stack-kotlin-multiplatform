@@ -2,43 +2,39 @@ package feature
 
 import base.CommonDispatchers
 import helpers.date.UnixTimestampProviderFake
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import model.Note
 import model.toCreationTimestamp
 import model.toLastModificationTimestamp
-import runTest
+import suspendingTest
 import tests.NoteApiTestFake
 import tests.NoteDaoTestFake
-import kotlin.js.JsName
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
-class DeleteNotesTest {
+class DeleteNotesTest : FunSpec({
 
-    companion object {
-        private val FIRST_NOTE = Note(
-            title = "first",
-            content = "first",
-            lastModificationTimestamp = 1L.toLastModificationTimestamp(),
-            creationTimestamp = 1L.toCreationTimestamp()
-        )
-        private val SECOND_NOTE = Note(
-            title = "second",
-            content = "second",
-            lastModificationTimestamp = 2L.toLastModificationTimestamp(),
-            creationTimestamp = 2L.toCreationTimestamp()
-        )
-    }
+    val FIRST_NOTE = Note(
+        title = "first",
+        content = "first",
+        lastModificationTimestamp = 1L.toLastModificationTimestamp(),
+        creationTimestamp = 1L.toCreationTimestamp()
+    )
+    val SECOND_NOTE = Note(
+        title = "second",
+        content = "second",
+        lastModificationTimestamp = 2L.toLastModificationTimestamp(),
+        creationTimestamp = 2L.toCreationTimestamp()
+    )
 
-    private lateinit var noteDaoTestFake: NoteDaoTestFake
-    private lateinit var noteApiTestFake: NoteApiTestFake
-    private val timestampProviderFake = UnixTimestampProviderFake()
-    private lateinit var SUT: DeleteNotes
+    lateinit var noteDaoTestFake: NoteDaoTestFake
+    lateinit var noteApiTestFake: NoteApiTestFake
+    val timestampProviderFake = UnixTimestampProviderFake()
+    lateinit var SUT: DeleteNotes
 
-    @BeforeTest
-    fun setUp() {
+    beforeTest {
         noteDaoTestFake = NoteDaoTestFake()
         noteApiTestFake = NoteApiTestFake()
         SUT = DeleteNotes(
@@ -51,73 +47,60 @@ class DeleteNotesTest {
         noteApiTestFake.initializeSchemas(listOf(FIRST_NOTE, SECOND_NOTE))
     }
 
-    @JsName("TrueReturnedOnApiSuccess")
-    @Test
-    fun `When the API call is successful then return true`() = runTest {
+    suspendingTest("When the API call is successful then return true") {
         val result = SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        assertTrue(result)
+        result.shouldBeTrue()
     }
 
-    @JsName("FalseReturnedOnApiFail")
-    @Test
-    fun `When the API call fails then return false`() = runTest {
+    suspendingTest("When the API call fails then return false") {
         noteApiTestFake.willFail = true
 
         val result = SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        assertFalse(result)
+        result.shouldBeFalse()
     }
 
-    @JsName("wasDeletedSetToTrue")
-    @Test
-    fun `When the API call fails then the entities remain in the local database with wasDeleted set to true`() = runTest {
+    suspendingTest("When the API call fails then the entities remain in the local database with wasDeleted set to true") {
         noteApiTestFake.willFail = true
 
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
         val wereAllDeleted = noteDaoTestFake.notes.all { it.wasDeleted }
-        assertTrue(wereAllDeleted)
-        assertEquals(2, noteDaoTestFake.notes.count())
+        wereAllDeleted.shouldBeTrue()
+        noteDaoTestFake.notes shouldHaveSize 2
     }
 
-    @JsName("NotesAreDeletedFromLocalDatabaseWhenApiSucceeds")
-    @Test
-    fun `Notes are deleted from the local database when API call succeeds`() = runTest {
+    suspendingTest("Notes are deleted from the local database when API call succeeds") {
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        assertEquals(0, noteDaoTestFake.notes.count())
+        noteDaoTestFake.notes shouldHaveSize 0
     }
 
-    @JsName("NotesAreDeletedFromAPI")
-    @Test
-    fun `Notes are deleted from the API`() = runTest {
+    suspendingTest("Notes are deleted from the API") {
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
-        assertEquals(0, noteApiTestFake.notes.filterNot { it.wasDeleted }.count())
+        val remainingNotes = noteApiTestFake.notes.filterNot { it.wasDeleted }
+        remainingNotes shouldHaveSize 0
     }
 
-    @JsName("DeletedApiLastModificationUpdated")
-    @Test
-    fun `Deleted API notes have update lastModificationTimestamp`() = runTest {
+    suspendingTest("Deleted API notes have update lastModificationTimestamp") {
         timestampProviderFake.timestamp = 100L
 
         SUT.executeAsync(listOf(FIRST_NOTE.creationTimestamp, SECOND_NOTE.creationTimestamp))
 
         val deletedNotes = noteApiTestFake.notes.filter { it.wasDeleted }
-        assertEquals(100L, deletedNotes[0].lastModificationTimestamp.unix)
-        assertEquals(100L, deletedNotes[1].lastModificationTimestamp.unix)
+        deletedNotes[0].lastModificationTimestamp.unix shouldBe 100L
+        deletedNotes[1].lastModificationTimestamp.unix shouldBe 100L
     }
 
-    @JsName("localLastModificationTimestampUpdated")
-    @Test
-    fun `When the API call fails then the entities remain in the local database with an updated lastModificationTimestamp`() = runTest {
+    suspendingTest("When the API call fails then the entities remain in the local database with an updated lastModificationTimestamp") {
         noteApiTestFake.willFail = true
         timestampProviderFake.timestamp = 100L
 
         SUT.executeAsync(listOf(SECOND_NOTE.creationTimestamp))
 
-        assertEquals(1L, noteDaoTestFake.notes[0].lastModificationTimestamp.unix)
-        assertEquals(100L, noteDaoTestFake.notes[1].lastModificationTimestamp.unix)
+        noteDaoTestFake.notes[0].lastModificationTimestamp.unix shouldBe 1L
+        noteDaoTestFake.notes[1].lastModificationTimestamp.unix shouldBe 100L
     }
-}
+})
