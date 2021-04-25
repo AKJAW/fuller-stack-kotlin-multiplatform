@@ -28,7 +28,8 @@ private interface DispatchProps : RProps {
     var changeNoteDateFormat: (noteDateFormat: NoteDateFormat) -> Unit
 }
 
-private class SettingsPageContainer(props: SettingsPageConnectedProps) : RComponent<SettingsPageConnectedProps, RState>(props) {
+private class SettingsPageContainer(props: SettingsPageConnectedProps) :
+    RComponent<SettingsPageConnectedProps, RState>(props) {
 
     override fun componentDidMount() {
         props.listenToNoteDateFormatChanges()
