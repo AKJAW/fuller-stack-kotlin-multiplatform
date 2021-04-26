@@ -30,7 +30,7 @@ val networkModule = DI.Module("networkModule") {
     bind<NoteService>() with singleton {
         val contentType = "application/json".toMediaType()
         Retrofit.Builder()
-            .baseUrl(ApiUrl.BASE_URL)
+            .baseUrl(ApiUrl.BASE_URL_WITH_PROTOCOL)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .client(instance<OkHttpClient>())
             .build()

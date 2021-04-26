@@ -40,8 +40,7 @@ class KtorNoteSocket(
         session = client.webSocketSession(
             method = HttpMethod.Get,
             host = ApiUrl.BASE_URL,
-            port = 9001,
-            path = "/notes/ws",
+            path = ApiUrl.SOCKET_ENDPOINT,
         )
 
         session?.send(Frame.Text("Bearer ${tokenProvider.accessToken}"))

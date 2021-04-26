@@ -11,7 +11,7 @@ import org.kodein.di.singleton
 val socketModule = DI.Module("socketModule") {
     bind("socketRequest") from singleton {
         Request.Builder()
-        .url(ApiUrl.SOCKET_URL)
+        .url(ApiUrl.SOCKET_URL_WITH_PROTOCOL)
         .build()
     }
     bind() from singleton { SocketWrapper(instance(), instance(), instance("socketRequest")) }

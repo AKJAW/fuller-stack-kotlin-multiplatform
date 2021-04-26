@@ -16,8 +16,8 @@ class KtorClientNoteApi(
     private val client: HttpClient
 ) : NoteApi {
 
-    val apiUrl = "${ApiUrl.BASE_URL}/notes"
-    val json = KotlinxSerializer()
+    private val apiUrl = ApiUrl.NOTES_URL_WITH_PROTOCOL
+    private val json = KotlinxSerializer()
 
     override suspend fun getNotes(): List<NoteSchema> {
         return client.get(apiUrl)
