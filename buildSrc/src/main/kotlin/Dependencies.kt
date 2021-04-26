@@ -157,7 +157,6 @@ object AndroidLibs {
     const val SIMPLE_STACK = "com.github.Zhuinden:simple-stack:${Versions.SIMPLE_STACK}"
     const val SIMPLE_STACK_EXTENSIONS = "com.github.Zhuinden:simple-stack-extensions:${Versions.SIMPLE_STACK_EXTENSIONS}"
 
-    const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:${Versions.LEAK_CANARY}"
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 
     const val AUTH0 = "com.auth0.android:auth0:1.30.0"
