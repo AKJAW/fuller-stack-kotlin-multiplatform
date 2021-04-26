@@ -7,7 +7,7 @@ include(
     "android:app",
     "android:authentication",
     "android:framework",
-    "javascript:react",
+    "javascript:spa-app",
     "javascript:spa-authentication",
     "javascript:spa-persistance"
 )

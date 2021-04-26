@@ -1,17 +1,12 @@
 package features.list
 
 import DexieNoteDao
-import com.soywiz.klock.DateFormat
 import composition.KodeinEntry
 import feature.local.search.SearchNotes
 import feature.local.sort.SortNotes
 import feature.local.sort.SortProperty
-import feature.local.sort.SortType
 import features.list.thunk.GetNotesThunk
 import features.list.thunk.SynchronizeNotesThunk
-import helpers.date.NoteDateFormat
-import helpers.date.NotesDatePatternStorageKey
-import helpers.date.toDateFormat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob

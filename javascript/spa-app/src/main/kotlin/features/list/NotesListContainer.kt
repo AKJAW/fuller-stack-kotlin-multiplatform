@@ -2,8 +2,6 @@ package features.list
 
 import feature.local.sort.SortProperty
 import features.editor.NoteEditorSlice
-import helpers.date.NoteDateFormat
-import helpers.date.toDateFormat
 import model.Note
 import react.RBuilder
 import react.RClass
