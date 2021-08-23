@@ -10,8 +10,8 @@ repositories {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":javascript:spa-authentication"))
-    implementation(project(":javascript:spa-persistance"))
+    implementation(project(":react:spa-authentication"))
+    implementation(project(":react:spa-persistance"))
 
     implementation(kotlin("stdlib-js"))
 

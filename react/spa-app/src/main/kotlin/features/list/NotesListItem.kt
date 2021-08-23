@@ -3,7 +3,7 @@ package features.list
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemText
 import com.ccfraser.muirwik.components.mIcon
-import com.soywiz.klock.DateFormat
+import com.ccfraser.muirwik.components.mTypography
 import com.soywiz.klock.format
 import kotlinx.css.Align
 import kotlinx.css.Color
@@ -21,7 +21,6 @@ import kotlinx.css.rgba
 import kotlinx.css.width
 import model.Note
 import react.RProps
-import react.dom.span
 import react.functionalComponent
 import styled.StyleSheet
 import styled.css
@@ -73,9 +72,7 @@ val notesListItem = functionalComponent<NotesListItemProps> { props ->
                     css(NotesListItemClasses.syncFailedIcon)
                 }
             }
-            span {
-                + note.dateFormat.format(note.creationTimestamp.unix)
-            }
+            mTypography(text = note.dateFormat.format(note.creationTimestamp.unix))
         }
     }
 }

@@ -9,6 +9,7 @@ import com.ccfraser.muirwik.components.button.mButton
 import com.ccfraser.muirwik.components.mAvatar
 import com.ccfraser.muirwik.components.mGridContainer
 import com.ccfraser.muirwik.components.mGridItem
+import kotlinx.browser.window
 import kotlinx.css.Color
 import kotlinx.css.LinearDimension
 import kotlinx.css.TextAlign
@@ -27,7 +28,6 @@ import react.functionalComponent
 import styled.StyleSheet
 import styled.css
 import useAuth0
-import kotlinx.browser.window
 
 @Suppress("MagicNumber")
 private object UserProfileClasses : StyleSheet("UserProfile", isStatic = true) {
@@ -70,13 +70,13 @@ val userProfile = functionalComponent<RProps> {
             mAvatar(src = user?.picture)
         }
         if (user?.name != user?.email) {
-            mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
+            mGridItem(xs = MGridSize.cells12) {
                 child(profileText) {
                     attrs.label = "Name"
                     attrs.text = user?.name
                 }
             }
-            mGridItem(xs = MGridSize.cells12, md = MGridSize.cells6) {
+            mGridItem(xs = MGridSize.cells12) {
                 child(profileText) {
                     attrs.label = "Email"
                     attrs.text = user?.email

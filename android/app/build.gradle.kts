@@ -51,7 +51,6 @@ dependencies {
     api(project(":android:framework"))
 
     // debugging
-    debugImplementation(AndroidLibs.LEAK_CANARY)
     implementation(AndroidLibs.TIMBER)
 
     // kotlin jdk

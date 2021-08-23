@@ -2,7 +2,6 @@ package features.list
 
 import com.ccfraser.muirwik.components.list.mList
 import com.ccfraser.muirwik.components.mCircularProgress
-import com.soywiz.klock.DateFormat
 import feature.local.sort.SortProperty
 import kotlinx.css.Align
 import kotlinx.css.Display

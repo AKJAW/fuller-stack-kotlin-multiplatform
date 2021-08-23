@@ -36,7 +36,7 @@ class SynchronizeUpdatedNotes(
         if (isLocalMoreRecent) {
             val payload = UpdateNotePayload(
                 title = localNote.title,
-                content = localNote.title,
+                content = localNote.content,
                 lastModificationTimestamp = localNote.lastModificationTimestamp,
                 creationTimestamp = localNote.creationTimestamp
             )
@@ -48,7 +48,7 @@ class SynchronizeUpdatedNotes(
         } else {
             val payload = UpdateNotePayload(
                 title = apiNote.title,
-                content = apiNote.title,
+                content = apiNote.content,
                 lastModificationTimestamp = apiNote.lastModificationTimestamp,
                 creationTimestamp = apiNote.creationTimestamp
             )

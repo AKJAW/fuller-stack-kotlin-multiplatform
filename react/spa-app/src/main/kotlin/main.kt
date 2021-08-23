@@ -1,10 +1,10 @@
 import com.ccfraser.muirwik.components.mThemeProvider
 import com.ccfraser.muirwik.components.styles.mStylesProvider
+import kotlinx.browser.document
+import kotlinx.browser.window
 import react.dom.render
 import react.redux.provider
 import store.myStore
-import kotlinx.browser.document
-import kotlinx.browser.window
 
 fun main() {
     render(document.getElementById("root")) {
