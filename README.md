@@ -2,6 +2,9 @@
 ![](https://github.com/AKJAW/fuller-stack-kotlin-multiplatform/workflows/Build%20all%20platforms/badge.svg)
 ![](https://github.com/AKJAW/fuller-stack-kotlin-multiplatform/workflows/Static%20code%20analysis/badge.svg)
 ![](https://github.com/AKJAW/fuller-stack-kotlin-multiplatform/workflows/Tests/badge.svg)
+<a href="https://androidweekly.net/issues/issue-480">
+<img src="https://androidweekly.net/issues/issue-480/badge">
+</a>
 
 A simple note taking app for Android and the Web. Both client platforms share code using Kotlin Multiplatform and use
 a Ktor server.
